@@ -1,1 +1,46 @@
-<html><head><title>Contact</title></head><body><h1>Contact Us</h1><p>Email: info@thesmartysolution.com<br>Phone: +35799810330</p><form action='https://formspree.io/f/your-form-id' method='POST'><input type='text' name='name' placeholder='Your Name'><input type='email' name='email' placeholder='Your Email'><textarea name='message' placeholder='Your Message'></textarea><button type='submit'>Send</button></form></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contact - The Smarty Solution Ltd</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+<style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+  nav { background: #1d4ed8; padding: 1em; }
+  nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
+  nav ul li { display: inline; }
+  nav ul li a { color: white; text-decoration: none; font-weight: bold; }
+  .section { padding: 2em; }
+  .whatsapp { position: fixed; bottom: 20px; right: 20px; z-index: 999; }
+</style>
+
+</head>
+<body>
+  
+<nav>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="divisions.html">Divisions</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+  <div class="section">
+    <h1>Contact Us</h1>
+    <p>Phone: +35799810330<br>Email: info@thesmartysolution.com</p>
+    <form action="https://formspree.io/f/your-form-id" method="POST">
+      <input type="text" name="name" placeholder="Your Name"><br>
+      <input type="email" name="email" placeholder="Your Email"><br>
+      <textarea name="message" placeholder="Your Message"></textarea><br>
+      <button type="submit">Send</button>
+    </form>
+    </div>
+  
+<a class="whatsapp" href="https://wa.me/35799810330?text=Hello,%20I'm%20interested%20in%20your%20services" target="_blank">
+  <img src="whatsapp-icon.png" alt="WhatsApp" width="50" height="50">
+</a>
+
+</body>
+</html>
