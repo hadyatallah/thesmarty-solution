@@ -1,31 +1,36 @@
 
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Home - The Smarty Solution Ltd</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        nav { background-color: #1d4ed8; padding: 1em; }
-        nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 15px; }
-        nav ul li { display: inline; }
-        nav ul li a { color: white; text-decoration: none; font-weight: bold; }
-        nav ul li a:hover { text-decoration: underline; }
-        .container { padding: 2em; }
-        h1 { color: #1d4ed8; }
-    </style>
+  <title>The Smarty Solution Ltd</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; }
+    nav { background: #1d4ed8; padding: 1em; }
+    nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
+    nav ul li { display: inline; }
+    nav ul li a { color: white; text-decoration: none; font-weight: bold; }
+    .hero { background: url('hero.jpg') center/cover no-repeat; height: 300px; display: flex; justify-content: center; align-items: center; color: white; font-size: 2em; font-weight: bold; text-shadow: 1px 1px 5px #000; }
+    .section { padding: 2em; }
+    .whatsapp { position: fixed; bottom: 20px; right: 20px; z-index: 999; }
+  </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="divisions.html">Divisions</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
-    <div class="container">
-        <h1>Welcome to The Smarty Solution Ltd</h1>
-        <p>Innovative solutions in real estate, technical services, and hospitality equipment.</p>
-    </div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="projects.html">Projects</a></li>
+      <li><a href="divisions.html">Divisions</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="hero">Welcome to The Smarty Solution</div>
+  <div class="section">
+    <p>We deliver real estate innovation, restaurant technical services, and equipment solutions.</p>
+  </div>
+  <a class="whatsapp" href="https://wa.me/35799810330?text=Hello,%20I'm%20interested%20in%20your%20services" target="_blank">
+    <img src="whatsapp-icon.png" alt="WhatsApp" width="50" height="50">
+  </a>
 </body>
 </html>
