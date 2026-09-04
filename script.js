@@ -19,7 +19,7 @@ document.querySelectorAll('[data-year]').forEach((element) => {
   element.textContent = new Date().getFullYear();
 });
 
-// TSS Opportunity Agent
+// TSS Business Assistant
 (() => {
   const endpoint = window.TSS_AGENT_ENDPOINT || 'https://thesmarty-solution-agent.vercel.app/api/tss-agent';
 
@@ -41,21 +41,21 @@ document.querySelectorAll('[data-year]').forEach((element) => {
   const launch = document.createElement('button');
   launch.className = 'tss-agent-launch';
   launch.type = 'button';
-  launch.setAttribute('aria-label', 'Open The Smarty Solution opportunity assistant');
-  launch.innerHTML = '<span>TSS</span><span class="label">Opportunity Assistant</span>';
+  launch.setAttribute('aria-label', 'Open The Smarty Solution business assistant');
+  launch.innerHTML = '<span>TSS</span><span class="label">Ask TSS</span>';
 
   const panel = document.createElement('section');
   panel.className = 'tss-agent';
-  panel.setAttribute('aria-label', 'The Smarty Solution opportunity assistant');
+  panel.setAttribute('aria-label', 'The Smarty Solution business assistant');
   panel.innerHTML = `
     <div class="tss-agent-head">
-      <div class="tss-agent-id"><div class="tss-agent-mark">TSS</div><div><strong>Opportunity Assistant</strong><small>Business development & Kiti enquiries</small></div></div>
+      <div class="tss-agent-id"><div class="tss-agent-mark">TSS</div><div><strong>TSS Business Assistant</strong><small>Cyprus · Opportunities · Business Development</small></div></div>
       <button class="tss-agent-close" type="button" aria-label="Close assistant">×</button>
     </div>
     <div class="tss-agent-body" aria-live="polite"></div>
     <div class="tss-agent-foot">
-      <form class="tss-agent-form"><input class="tss-agent-input" maxlength="1200" autocomplete="off" placeholder="Ask about Kiti or working with TSS" aria-label="Message"><button class="tss-agent-send" type="submit" aria-label="Send">→</button></form>
-      <div class="tss-agent-note">Preliminary information only. The assistant cannot provide legal, planning, tax, valuation or investment advice.</div>
+      <form class="tss-agent-form"><input class="tss-agent-input" maxlength="1200" autocomplete="off" placeholder="Ask about Cyprus, opportunities or TSS" aria-label="Message"><button class="tss-agent-send" type="submit" aria-label="Send">→</button></form>
+      <div class="tss-agent-note">General information only. Legal, tax, planning, valuation and investment matters should be independently verified with the appropriate professional.</div>
     </div>`;
 
   document.body.append(launch, panel);
@@ -106,7 +106,7 @@ document.querySelectorAll('[data-year]').forEach((element) => {
       button.disabled = true;
       button.textContent = 'Sending...';
       const data = new FormData(leadBox);
-      data.append('_subject', 'Qualified website enquiry - TSS Opportunity Assistant');
+      data.append('_subject', 'Qualified website enquiry - TSS Business Assistant');
       data.append('source', window.location.href);
       data.append('conversation', messages.map((m) => `${m.role}: ${m.content}`).join('\n\n'));
       try {
@@ -128,10 +128,11 @@ document.querySelectorAll('[data-year]').forEach((element) => {
     const wrap = document.createElement('div');
     wrap.className = 'tss-quick';
     [
-      "I'm a developer interested in Kiti",
-      "I have an opportunity to present",
-      "I need business development support",
-      "I'm looking for investment opportunities"
+      'Investing in Cyprus',
+      'Cyprus real estate',
+      'Explore opportunities',
+      'Grow my business',
+      'Submit an opportunity'
     ].forEach((text) => {
       const button = document.createElement('button');
       button.type = 'button';
@@ -150,7 +151,7 @@ document.querySelectorAll('[data-year]').forEach((element) => {
     launch.setAttribute('aria-expanded', 'true');
     if (!started) {
       started = true;
-      addMessage('assistant', 'I can help you assess the Kiti development opportunity, understand how TSS works, or submit a business opportunity for review.');
+      addMessage('assistant', 'I can help you explore Cyprus investment and real estate, understand TSS services, review current opportunities, or discuss an opportunity you would like TSS to evaluate.');
       quickPrompts();
     }
     setTimeout(() => input.focus(), 50);
@@ -166,7 +167,7 @@ document.querySelectorAll('[data-year]').forEach((element) => {
     messages.push({ role: 'user', content: value });
     input.value = '';
     input.disabled = true;
-    const status = addMessage('status', 'Reviewing your enquiry...', 'status');
+    const status = addMessage('status', 'Reviewing your question...', 'status');
 
     try {
       const response = await fetch(endpoint, {
