@@ -20,11 +20,8 @@ document.querySelectorAll('[data-year]').forEach((element) => {
 });
 
 // TSS Opportunity Agent
-// On the live GitHub Pages site the widget remains hidden until a secure serverless
-// endpoint is configured. Vercel preview deployments use the same-origin API automatically.
 (() => {
-  const endpoint = window.TSS_AGENT_ENDPOINT || (window.location.hostname.endsWith('.vercel.app') ? '/api/tss-agent' : '');
-  if (!endpoint) return;
+  const endpoint = window.TSS_AGENT_ENDPOINT || 'https://thesmarty-solution-agent.vercel.app/api/tss-agent';
 
   const style = document.createElement('style');
   style.textContent = `
