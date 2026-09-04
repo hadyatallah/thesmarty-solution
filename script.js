@@ -1,3 +1,5 @@
+const TSS_FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxwAe2Jdq390XmsRmSpFb6DWTxM19VVMjf7bSLg9QNUxiBMufOifmjR8appeD354CKy/exec';
+
 const menuButton = document.querySelector('.menu');
 const menu = document.querySelector('.navlinks');
 
@@ -18,6 +20,88 @@ if (menuButton && menu) {
 document.querySelectorAll('[data-year]').forEach((element) => {
   element.textContent = new Date().getFullYear();
 });
+
+function tssFormParams_(data) {
+  const params = new URLSearchParams();
+  for (const [key, value] of data.entries()) {
+    if (typeof value === 'string') params.append(key, value);
+  }
+  return params;
+}
+
+async function submitTssEnquiry_(data) {
+  const response = await fetch(TSS_FORM_ENDPOINT, {
+    method: 'POST',
+    mode: 'no-cors',
+    body: tssFormParams_(data)
+  });
+  return response;
+}
+
+// Website enquiry forms
+(() => {
+  document.querySelectorAll('form[data-tss-form]').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const button = form.querySelector('button[type="submit"]');
+      const originalLabel = button ? button.textContent : '';
+      let status = form.querySelector('[data-tss-form-status]');
+      if (!status) {
+        status = document.createElement('p');
+        status.className = 'small';
+        status.setAttribute('data-tss-form-status', '');
+        status.setAttribute('role', 'status');
+        if (button) button.insertAdjacentElement('afterend', status);
+        else form.appendChild(status);
+      }
+
+      const data = new FormData(form);
+      data.set('source', window.location.href);
+
+      if (form.dataset.tssForm === 'kiti') {
+        const originalMessage = String(data.get('message') || '').trim();
+        const detailedMessage = [
+          `Role: ${data.get('profile') || '-'}`,
+          `Structure to assess: ${data.get('structure') || '-'}`,
+          `Development / investment background: ${data.get('experience') || '-'}`,
+          `Indicative timing: ${data.get('timing') || '-'}`,
+          `Indicative project / investment capacity: ${data.get('capital') || '-'}`,
+          `Privacy consent: ${data.get('privacy_consent') || '-'}`,
+          '',
+          'What they would like to evaluate:',
+          originalMessage
+        ].join('\n');
+        data.set('message', detailedMessage);
+        data.set('interest', 'Kiti property opportunity');
+      }
+
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Sending...';
+      }
+      status.textContent = '';
+
+      try {
+        await submitTssEnquiry_(data);
+        form.reset();
+        status.textContent = 'Thank you. Your enquiry has been received. A confirmation email has been sent to the address you provided.';
+        if (button) button.textContent = 'Sent';
+      } catch (error) {
+        status.textContent = 'Your enquiry could not be sent. Please try again or contact us by WhatsApp.';
+        if (button) button.textContent = originalLabel || 'Try again';
+      } finally {
+        if (button) {
+          setTimeout(() => {
+            button.disabled = false;
+            button.textContent = originalLabel;
+          }, 2500);
+        }
+      }
+    });
+  });
+})();
 
 // TSS Business Assistant
 (() => {
@@ -106,15 +190,13 @@ document.querySelectorAll('[data-year]').forEach((element) => {
       button.disabled = true;
       button.textContent = 'Sending...';
       const data = new FormData(leadBox);
-      data.append('_subject', 'Qualified website enquiry - TSS Business Assistant');
+      data.append('interest', 'AI assistant website enquiry');
+      data.append('message', 'Qualified lead submitted through the TSS Business Assistant.');
       data.append('source', window.location.href);
       data.append('conversation', messages.map((m) => `${m.role}: ${m.content}`).join('\n\n'));
       try {
-        const response = await fetch('https://formspree.io/f/mgvkjkpv', {
-          method: 'POST', body: data, headers: { Accept: 'application/json' }
-        });
-        if (!response.ok) throw new Error('Lead submission failed');
-        leadBox.innerHTML = '<strong>Sent to TSS for review.</strong><small>A member of the team can follow up using the details you provided.</small>';
+        await submitTssEnquiry_(data);
+        leadBox.innerHTML = '<strong>Sent to TSS for review.</strong><small>A confirmation email has been sent to you. A member of the team can follow up using the details you provided.</small>';
       } catch (error) {
         button.disabled = false;
         button.textContent = 'Try again';
