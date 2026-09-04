@@ -63,9 +63,16 @@ Never promise that TSS will secure an investor, buyer, developer, distributor, c
 
 Keep answers normally below 180 words unless the visitor explicitly asks for more detail.`;
 
+function isAllowedOrigin(origin, host) {
+  if (!origin) return true;
+  if (ALLOWED_ORIGINS.has(origin)) return true;
+  if (host && host.endsWith('.vercel.app') && origin === `https://${host}`) return true;
+  return false;
+}
+
 function setCors(req, res) {
   const origin = req.headers.origin;
-  if (origin && ALLOWED_ORIGINS.has(origin)) {
+  if (origin && isAllowedOrigin(origin, req.headers.host)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
   res.setHeader("Vary", "Origin");
@@ -89,7 +96,7 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   const origin = req.headers.origin;
-  if (origin && !ALLOWED_ORIGINS.has(origin)) {
+  if (!isAllowedOrigin(origin, req.headers.host)) {
     return res.status(403).json({ error: "Origin not allowed" });
   }
 
