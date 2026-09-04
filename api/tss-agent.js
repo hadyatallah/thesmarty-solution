@@ -1,7 +1,5 @@
 import OpenAI from "openai";
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
 const ALLOWED_ORIGINS = new Set([
   "https://www.thesmartysolution.com",
   "https://thesmartysolution.com"
@@ -100,7 +98,8 @@ export default async function handler(req, res) {
     return res.status(403).json({ error: "Origin not allowed" });
   }
 
-  if (!process.env.OPENAI_API_KEY) {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
     return res.status(503).json({ error: "Agent is not configured yet" });
   }
 
@@ -114,6 +113,7 @@ export default async function handler(req, res) {
   const input = `${page ? `Current website page: ${page}\n\n` : ""}${conversation}\n\nRespond to the visitor's latest message.`;
 
   try {
+    const client = new OpenAI({ apiKey });
     const response = await client.responses.create({
       model: "gpt-5.6-luna",
       instructions: SYSTEM_PROMPT,
