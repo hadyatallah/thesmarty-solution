@@ -24,7 +24,13 @@ document.querySelectorAll('[data-year]').forEach((element) => {
 // Social links in the footer across all site pages.
 (() => {
   const footer = document.querySelector('.footer');
-  if (!footer || footer.querySelector('.footer-socials')) return;
+  if (!footer) return;
+
+  footer.querySelectorAll('a[href*="instagram.com/thesmartysolution"],a[href*="facebook.com/share/1U5CfVZhT1"]').forEach((link) => {
+    const legacyItem = link.closest('li');
+    if (legacyItem && !legacyItem.classList.contains('footer-socials')) legacyItem.remove();
+  });
+  if (footer.querySelector('.footer-socials')) return;
 
   const contactColumn = Array.from(footer.querySelectorAll('.footergrid > div')).find((column) => {
     const heading = column.querySelector('h3');
