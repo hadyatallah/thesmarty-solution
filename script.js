@@ -21,6 +21,39 @@ document.querySelectorAll('[data-year]').forEach((element) => {
   element.textContent = new Date().getFullYear();
 });
 
+// Social links in the footer across all site pages.
+(() => {
+  const footer = document.querySelector('.footer');
+  if (!footer || footer.querySelector('.footer-socials')) return;
+
+  const contactColumn = Array.from(footer.querySelectorAll('.footergrid > div')).find((column) => {
+    const heading = column.querySelector('h3');
+    return heading && heading.textContent.trim().toLowerCase() === 'contact';
+  });
+  const list = contactColumn && contactColumn.querySelector('ul');
+  if (!list) return;
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .footer-socials{display:flex;align-items:center;gap:9px;margin-top:14px!important}
+    .footer-socials a{display:inline-grid;place-items:center;width:38px;height:38px;border:1px solid rgba(255,255,255,.18);border-radius:50%;color:#dbe7ee!important;background:rgba(255,255,255,.04);transition:.2s}
+    .footer-socials a:hover{color:#fff!important;border-color:rgba(92,230,223,.72);background:rgba(18,199,192,.13);transform:translateY(-2px)}
+    .footer-socials svg{width:18px;height:18px;display:block}
+  `;
+  document.head.appendChild(style);
+
+  const item = document.createElement('li');
+  item.className = 'footer-socials';
+  item.innerHTML = `
+    <a href="https://www.instagram.com/thesmartysolution/" target="_blank" rel="noopener noreferrer" aria-label="The Smarty Solution on Instagram" title="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <a href="https://www.facebook.com/share/1U5CfVZhT1/" target="_blank" rel="noopener noreferrer" aria-label="The Smarty Solution on Facebook" title="Facebook">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.8 22v-8h2.7l.4-3.1h-3.1V8.9c0-.9.3-1.5 1.6-1.5H17V4.6c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.3H8.2V14h2.6v8h3z"/></svg>
+    </a>`;
+  list.appendChild(item);
+})();
+
 function tssFormParams_(data) {
   const params = new URLSearchParams();
   for (const [key, value] of data.entries()) {
