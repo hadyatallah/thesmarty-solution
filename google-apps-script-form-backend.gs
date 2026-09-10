@@ -6,6 +6,11 @@
 const TSS_ENQUIRY_SHEET_ID = '1Hq-pYK4XSKyIcKsKg6IjOQKI-CvKaYrRmmtY80Zojao';
 const TSS_ENQUIRY_SHEET_NAME = 'Sheet1';
 const TSS_TIMEZONE = 'Asia/Nicosia';
+const TSS_MIN_FORM_TIME_MS = 3500;
+const TSS_MAX_FORM_TIME_MS = 6 * 60 * 60 * 1000;
+const TSS_RATE_LIMIT_SECONDS = 60;
+const TSS_DUPLICATE_WINDOW_MS = 30 * 60 * 1000;
+const TSS_GLOBAL_LIMIT_PER_MINUTE = 25;
 
 function doPost(e) {
   try {
@@ -13,7 +18,22 @@ function doPost(e) {
 
     // Honeypot field. Real visitors leave this empty.
     if (clean_(p.website, 200)) {
-      return jsonResponse_({ ok: true });
+      return jsonResponse_({
+        ok: false,
+        blocked: true,
+        code: 'SPAM_REJECTED',
+        error: 'Submission rejected'
+      });
+    }
+
+    const proof = validateFormProof_(p);
+    if (!proof.ok) {
+      return jsonResponse_({
+        ok: false,
+        blocked: true,
+        code: proof.code,
+        error: proof.error
+      });
     }
 
     const lead = {
@@ -28,11 +48,28 @@ function doPost(e) {
     };
 
     if (!lead.name || !lead.email || (!lead.message && !lead.conversation)) {
-      return jsonResponse_({ ok: false, error: 'Missing required fields' });
+      return jsonResponse_({
+        ok: false,
+        code: 'INVALID_REQUEST',
+        error: 'Missing required fields'
+      });
     }
 
     if (!isValidEmail_(lead.email)) {
-      return jsonResponse_({ ok: false, error: 'Invalid email address' });
+      return jsonResponse_({
+        ok: false,
+        code: 'INVALID_EMAIL',
+        error: 'Invalid email address'
+      });
+    }
+
+    if (countUrls_(lead.message) > 3) {
+      return jsonResponse_({
+        ok: false,
+        blocked: true,
+        code: 'SPAM_REJECTED',
+        error: 'Too many links'
+      });
     }
 
     const lock = LockService.getScriptLock();
@@ -41,19 +78,70 @@ function doPost(e) {
     let enquiryId;
     let priority;
     let followUpDue;
-    let duplicate;
+    let rowNumber;
+    let sheet;
+    let cache = null;
 
     try {
       const ss = SpreadsheetApp.openById(TSS_ENQUIRY_SHEET_ID);
-      const sheet = ss.getSheetByName(TSS_ENQUIRY_SHEET_NAME);
+      sheet = ss.getSheetByName(TSS_ENQUIRY_SHEET_NAME);
       if (!sheet) throw new Error('Enquiry sheet not found');
 
-      duplicate = isRecentDuplicate_(sheet, lead.email, lead.message, lead.conversation);
+      if (isRecentDuplicate_(sheet, lead.email, lead.message, lead.conversation)) {
+        return jsonResponse_({
+          ok: false,
+          blocked: true,
+          code: 'DUPLICATE',
+          error: 'Matching enquiry received recently'
+        });
+      }
+
+      try {
+        cache = CacheService.getScriptCache();
+      } catch (cacheError) {
+        console.warn('Script cache unavailable: ' + cacheError);
+      }
+
+      if (cache) {
+        const nonceKey = 'nonce:' + cacheKey_(proof.nonce);
+        if (cache.get(nonceKey)) {
+          return jsonResponse_({
+            ok: false,
+            blocked: true,
+            code: 'DUPLICATE',
+            error: 'Submission token already used'
+          });
+        }
+
+        const rateKey = 'email:' + cacheKey_(lead.email);
+        if (cache.get(rateKey)) {
+          return jsonResponse_({
+            ok: false,
+            blocked: true,
+            code: 'RATE_LIMITED',
+            error: 'Please wait before submitting again'
+          });
+        }
+
+        const burstKey = 'burst:' + Math.floor(Date.now() / 60000);
+        const burstCount = Number(cache.get(burstKey) || 0);
+        if (burstCount >= TSS_GLOBAL_LIMIT_PER_MINUTE) {
+          return jsonResponse_({
+            ok: false,
+            blocked: true,
+            code: 'SERVICE_BUSY',
+            error: 'Submission service is busy'
+          });
+        }
+        cache.put(burstKey, String(burstCount + 1), 120);
+      }
+
       enquiryId = nextEnquiryId_(sheet);
       priority = isPriority_(lead) ? 'Priority' : 'Standard';
       followUpDue = addBusinessDays_(new Date(), priority === 'Priority' ? 1 : 2);
 
-      sheet.appendRow([
+      rowNumber = sheet.getLastRow() + 1;
+      const row = [
         enquiryId,
         new Date(),
         lead.name,
@@ -66,29 +154,67 @@ function doPost(e) {
         lead.conversation,
         priority,
         followUpDue,
-        duplicate ? 'Duplicate - Review' : 'New',
-        duplicate ? 'Yes' : 'No'
-      ]);
+        'New',
+        'No'
+      ].map(safeSheetValue_);
+
+      sheet.getRange(rowNumber, 5).setNumberFormat('@');
+      sheet.getRange(rowNumber, 1, 1, row.length).setValues([row]);
+
+      if (cache) {
+        try {
+          cache.put('nonce:' + cacheKey_(proof.nonce), '1', 21600);
+          cache.put('email:' + cacheKey_(lead.email), '1', TSS_RATE_LIMIT_SECONDS);
+        } catch (cacheError) {
+          console.warn('Could not update anti-spam cache: ' + cacheError);
+        }
+      }
     } finally {
       lock.releaseLock();
     }
 
-    // Exact repeated submissions are logged but do not create duplicate email noise.
-    if (!duplicate) {
-      const token = getGraphAccessToken_();
-      sendInternalNotification_(token, lead, enquiryId, priority, followUpDue);
-      sendAcknowledgement_(token, lead, enquiryId);
+    let internalNotificationSent = false;
+    let confirmationSent = false;
+    let token = null;
+
+    try {
+      token = getGraphAccessToken_();
+    } catch (mailError) {
+      console.error('Microsoft token error: ' + mailError);
+    }
+
+    if (token) {
+      try {
+        sendInternalNotification_(token, lead, enquiryId, priority, followUpDue);
+        internalNotificationSent = true;
+      } catch (mailError) {
+        console.error('Internal notification error: ' + mailError);
+      }
+
+      try {
+        sendAcknowledgement_(token, lead, enquiryId);
+        confirmationSent = true;
+      } catch (mailError) {
+        console.error('Customer confirmation error: ' + mailError);
+      }
     }
 
     return jsonResponse_({
       ok: true,
+      recorded: true,
       enquiryId,
       priority,
-      duplicate
+      duplicate: false,
+      internalNotificationSent,
+      confirmationSent
     });
   } catch (err) {
     console.error(err && err.stack ? err.stack : err);
-    return jsonResponse_({ ok: false, error: 'Submission could not be recorded' });
+    return jsonResponse_({
+      ok: false,
+      code: 'SERVER_ERROR',
+      error: 'Submission could not be recorded'
+    });
   }
 }
 
@@ -261,7 +387,7 @@ function isRecentDuplicate_(sheet, email, message, conversation) {
   const rowCount = lastRow - startRow + 1;
   const values = sheet.getRange(startRow, 2, rowCount, 9).getValues();
   const now = Date.now();
-  const content = `${message || ''}\n${conversation || ''}`.trim();
+  const content = normalizeContent_(`${message || ''}\n${conversation || ''}`);
 
   for (let i = values.length - 1; i >= 0; i--) {
     const timestamp = values[i][0];       // B
@@ -270,13 +396,78 @@ function isRecentDuplicate_(sheet, email, message, conversation) {
     const rowConversation = String(values[i][8] || '');        // J
 
     if (!(timestamp instanceof Date)) continue;
-    if (now - timestamp.getTime() > 30 * 60 * 1000) break;
+    if (now - timestamp.getTime() > TSS_DUPLICATE_WINDOW_MS) break;
 
-    const rowContent = `${rowMessage}\n${rowConversation}`.trim();
+    const rowContent = normalizeContent_(`${rowMessage}\n${rowConversation}`);
     if (rowEmail === email && rowContent === content) return true;
   }
 
   return false;
+}
+
+function validateFormProof_(params) {
+  const startedAt = Number(params.form_started_at);
+  const elapsed = Number(params.form_elapsed_ms);
+  const nonce = clean_(params.form_nonce, 120);
+
+  if (!params.form_started_at || !params.form_elapsed_ms ||
+      !Number.isFinite(startedAt) || !Number.isFinite(elapsed) ||
+      startedAt <= 0 || !nonce) {
+    return {
+      ok: false,
+      code: 'FORM_VERIFICATION_REQUIRED',
+      error: 'Form verification is missing'
+    };
+  }
+
+  if (!/^[a-z0-9-]{12,120}$/i.test(nonce)) {
+    return {
+      ok: false,
+      code: 'FORM_VERIFICATION_REQUIRED',
+      error: 'Form verification is invalid'
+    };
+  }
+
+  if (elapsed < TSS_MIN_FORM_TIME_MS) {
+    return {
+      ok: false,
+      code: 'TOO_FAST',
+      error: 'Form completed too quickly'
+    };
+  }
+
+  if (elapsed > TSS_MAX_FORM_TIME_MS) {
+    return {
+      ok: false,
+      code: 'EXPIRED_FORM',
+      error: 'Form session expired'
+    };
+  }
+
+  return { ok: true, nonce };
+}
+
+function countUrls_(value) {
+  const matches = String(value || '').match(/https?:\/\/|www\./gi);
+  return matches ? matches.length : 0;
+}
+
+function cacheKey_(value) {
+  const digest = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    String(value || ''),
+    Utilities.Charset.UTF_8
+  );
+  return Utilities.base64EncodeWebSafe(digest).slice(0, 40);
+}
+
+function safeSheetValue_(value) {
+  if (typeof value !== 'string') return value;
+  return /^[=+\-@]/.test(value) ? "'" + value : value;
+}
+
+function normalizeContent_(value) {
+  return String(value || '').trim().replace(/\s+/g, ' ');
 }
 
 function getRequiredProperty_(name) {

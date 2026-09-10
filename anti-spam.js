@@ -1,9 +1,11 @@
-// Lightweight client-side anti-spam controls for public enquiry forms.
-// These controls reduce automated submissions without adding a third-party CAPTCHA.
+// Low-friction client-side checks for public enquiry forms.
+// Matching checks are enforced again by the Google Apps Script backend.
 (() => {
-  const MIN_FILL_TIME_MS = 4500;
+  const MIN_FILL_TIME_MS = 3500;
+  const MAX_FILL_TIME_MS = 6 * 60 * 60 * 1000;
   const SUBMIT_COOLDOWN_MS = 60000;
   const STORAGE_KEY = 'tss_last_enquiry_submit';
+  const preparedForms = new WeakMap();
 
   const randomInt = (min, max) => {
     if (window.crypto && window.crypto.getRandomValues) {
@@ -14,60 +16,81 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  const setStatus = (form, message) => {
-    let status = form.querySelector('[data-tss-antispam-status]');
+  const createNonce = () => {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+      return window.crypto.randomUUID();
+    }
+    return `${Date.now().toString(36)}-${randomInt(100000, 999999)}-${randomInt(100000, 999999)}`;
+  };
+
+  const ensureHiddenInput = (form, name) => {
+    let input = form.querySelector(`input[name="${name}"]`);
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      form.appendChild(input);
+    }
+    return input;
+  };
+
+  const getStatus = (form) => {
+    let status = form.querySelector('[data-tss-form-status]');
     if (!status) {
       status = document.createElement('p');
-      status.className = 'small';
-      status.setAttribute('data-tss-antispam-status', '');
-      status.setAttribute('role', 'alert');
+      status.className = 'form-status small';
+      status.setAttribute('data-tss-form-status', '');
+      status.setAttribute('role', 'status');
+      status.setAttribute('aria-live', 'polite');
       const button = form.querySelector('button[type="submit"]');
-      if (button) button.insertAdjacentElement('beforebegin', status);
+      if (button) button.insertAdjacentElement('afterend', status);
       else form.appendChild(status);
     }
+    return status;
+  };
+
+  const setStatus = (form, message) => {
+    const status = getStatus(form);
+    status.dataset.state = message ? 'error' : '';
     status.textContent = message || '';
   };
 
-  document.querySelectorAll('form[data-tss-form]').forEach((form) => {
-    const startedAt = Date.now();
-    const a = randomInt(2, 9);
-    const b = randomInt(2, 9);
-    const expected = a + b;
+  const readLastSubmit = () => {
+    try {
+      return Number(window.localStorage.getItem(STORAGE_KEY) || 0);
+    } catch (_) {
+      return 0;
+    }
+  };
 
-    const wrap = document.createElement('div');
-    wrap.setAttribute('data-tss-human-check', '');
-    wrap.style.margin = '18px 0';
-    wrap.innerHTML = `
-      <div style="padding:14px 16px;border:1px solid #d7e1e5;border-radius:12px;background:#f7faf9">
-        <label style="display:flex;gap:10px;align-items:flex-start;font-weight:400;margin-bottom:12px">
-          <input type="checkbox" name="human_confirmed" value="Yes" required style="width:auto;margin-top:4px">
-          <span>I confirm I am a real person and this is a genuine enquiry.</span>
-        </label>
-        <label for="tss-human-${form.dataset.tssForm}" style="display:block;font-weight:600;margin-bottom:6px">Human check: what is ${a} + ${b}?</label>
-        <input id="tss-human-${form.dataset.tssForm}" name="human_answer" type="text" inputmode="numeric" autocomplete="off" required maxlength="2" pattern="[0-9]{1,2}" style="max-width:120px" aria-describedby="tss-human-help-${form.dataset.tssForm}">
-        <div id="tss-human-help-${form.dataset.tssForm}" class="small" style="margin-top:6px">This helps us block automated spam.</div>
-      </div>`;
+  const markSubmitted = () => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, String(Date.now()));
+    } catch (_) {
+      // Continue when storage is unavailable.
+    }
+  };
 
-    const button = form.querySelector('button[type="submit"]');
-    if (button) button.insertAdjacentElement('beforebegin', wrap);
-    else form.appendChild(wrap);
+  const resetProof = (form) => {
+    const state = preparedForms.get(form);
+    if (!state) return;
+    state.startedAt = Date.now();
+    state.startedInput.value = String(state.startedAt);
+    state.elapsedInput.value = '';
+    state.nonceInput.value = createNonce();
+  };
 
-    const startedInput = document.createElement('input');
-    startedInput.type = 'hidden';
-    startedInput.name = 'form_started_at';
-    startedInput.value = String(startedAt);
-    form.appendChild(startedInput);
+  const prepare = (form) => {
+    if (!form || preparedForms.has(form)) return;
 
-    const elapsedInput = document.createElement('input');
-    elapsedInput.type = 'hidden';
-    elapsedInput.name = 'form_elapsed_ms';
-    form.appendChild(elapsedInput);
-
-    const nonceInput = document.createElement('input');
-    nonceInput.type = 'hidden';
-    nonceInput.name = 'form_nonce';
-    nonceInput.value = `${Date.now().toString(36)}-${randomInt(100000, 999999)}`;
-    form.appendChild(nonceInput);
+    const state = {
+      startedAt: Date.now(),
+      startedInput: ensureHiddenInput(form, 'form_started_at'),
+      elapsedInput: ensureHiddenInput(form, 'form_elapsed_ms'),
+      nonceInput: ensureHiddenInput(form, 'form_nonce')
+    };
+    preparedForms.set(form, state);
+    resetProof(form);
 
     form.addEventListener('submit', (event) => {
       setStatus(form, '');
@@ -80,7 +103,7 @@
         return;
       }
 
-      const elapsed = Date.now() - startedAt;
+      const elapsed = Date.now() - state.startedAt;
       if (elapsed < MIN_FILL_TIME_MS) {
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -88,24 +111,11 @@
         return;
       }
 
-      const answer = form.querySelector('input[name="human_answer"]');
-      if (!answer || Number(answer.value) !== expected) {
+      if (elapsed > MAX_FILL_TIME_MS) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        if (answer) {
-          answer.setCustomValidity('Please enter the correct answer.');
-          answer.reportValidity();
-          answer.addEventListener('input', () => answer.setCustomValidity(''), { once: true });
-        }
-        setStatus(form, 'Please complete the human verification correctly.');
-        return;
-      }
-
-      const humanCheck = form.querySelector('input[name="human_confirmed"]');
-      if (!humanCheck || !humanCheck.checked) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        setStatus(form, 'Please confirm that this is a genuine enquiry.');
+        resetProof(form);
+        setStatus(form, 'This form has been open for a while. Please review it once more, then submit again.');
         return;
       }
 
@@ -118,20 +128,33 @@
         return;
       }
 
-      try {
-        const lastSubmit = Number(localStorage.getItem(STORAGE_KEY) || 0);
-        if (lastSubmit && Date.now() - lastSubmit < SUBMIT_COOLDOWN_MS) {
-          event.preventDefault();
-          event.stopImmediatePropagation();
-          setStatus(form, 'An enquiry was just submitted from this browser. Please wait a minute before sending another.');
-          return;
-        }
-        localStorage.setItem(STORAGE_KEY, String(Date.now()));
-      } catch (_) {
-        // Continue if localStorage is unavailable.
+      const lastSubmit = readLastSubmit();
+      if (lastSubmit && Date.now() - lastSubmit < SUBMIT_COOLDOWN_MS) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        setStatus(form, 'An enquiry was just submitted from this browser. Please wait one minute before sending another.');
+        return;
       }
 
-      elapsedInput.value = String(elapsed);
+      state.elapsedInput.value = String(elapsed);
     }, true);
-  });
+
+    form.addEventListener('tss:submission-confirmed', () => {
+      markSubmitted();
+      resetProof(form);
+    });
+
+    form.addEventListener('tss:submission-processing', () => {
+      markSubmitted();
+      resetProof(form);
+    });
+  };
+
+  window.TSSAntiSpam = {
+    markSubmitted,
+    prepare,
+    resetProof
+  };
+
+  document.querySelectorAll('form[data-tss-form]').forEach(prepare);
 })();

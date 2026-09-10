@@ -68,13 +68,86 @@ function tssFormParams_(data) {
   return params;
 }
 
+class TssSubmissionError extends Error {
+  constructor(code, message, payload = null) {
+    super(message);
+    this.name = 'TssSubmissionError';
+    this.code = code;
+    this.payload = payload;
+  }
+}
+
 async function submitTssEnquiry_(data) {
-  const response = await fetch(TSS_FORM_ENDPOINT, {
-    method: 'POST',
-    mode: 'no-cors',
-    body: tssFormParams_(data)
-  });
-  return response;
+  let response;
+
+  try {
+    response = await fetch(TSS_FORM_ENDPOINT, {
+      method: 'POST',
+      body: tssFormParams_(data),
+      redirect: 'follow'
+    });
+  } catch (error) {
+    if (navigator.onLine === false) {
+      throw new TssSubmissionError('OFFLINE', 'No internet connection');
+    }
+    return { state: 'processing', payload: null };
+  }
+
+  if (response.type === 'opaque') {
+    return { state: 'processing', payload: null };
+  }
+
+  if (!response.ok) {
+    throw new TssSubmissionError('HTTP_ERROR', `Submission failed with status ${response.status}`);
+  }
+
+  let payload;
+  try {
+    payload = await response.json();
+  } catch (error) {
+    return { state: 'processing', payload: null };
+  }
+
+  if (!payload || payload.ok !== true) {
+    throw new TssSubmissionError(
+      payload && payload.code ? payload.code : 'REJECTED',
+      payload && payload.error ? payload.error : 'Submission rejected',
+      payload
+    );
+  }
+
+  return {
+    state: payload.recorded === true && payload.enquiryId ? 'confirmed' : 'processing',
+    payload
+  };
+}
+
+function tssFormErrorMessage_(error) {
+  const messages = {
+    DUPLICATE: 'This enquiry matches one received recently, so it was not sent again. Check your confirmation email or contact us if you need help.',
+    EXPIRED_FORM: 'This form has been open for too long. Please review it and submit again.',
+    FORM_VERIFICATION_REQUIRED: 'We could not verify this submission. Please refresh the page and try again.',
+    INVALID_EMAIL: 'Please check the email address and submit again.',
+    INVALID_REQUEST: 'Please check the required information and submit again.',
+    OFFLINE: 'You appear to be offline. Reconnect and try again.',
+    RATE_LIMITED: 'An enquiry was just submitted with these details. Please wait one minute before trying again.',
+    SERVICE_BUSY: 'The enquiry service is receiving unusually high traffic. Please wait a few minutes and try again.',
+    SPAM_REJECTED: 'We could not verify this submission. Please refresh the page and try again.',
+    TOO_FAST: 'Please take a moment to review the form, then submit again.'
+  };
+  return messages[error && error.code] || 'Your enquiry could not be sent. Please try again or contact us by WhatsApp.';
+}
+
+function setTssFormStatus_(status, state, message) {
+  status.dataset.state = state;
+  status.textContent = message;
+}
+
+function tssCreateNonce_() {
+  if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+    return window.crypto.randomUUID();
+  }
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}`;
 }
 
 // Website enquiry forms
@@ -89,9 +162,10 @@ async function submitTssEnquiry_(data) {
       let status = form.querySelector('[data-tss-form-status]');
       if (!status) {
         status = document.createElement('p');
-        status.className = 'small';
+        status.className = 'form-status small';
         status.setAttribute('data-tss-form-status', '');
         status.setAttribute('role', 'status');
+        status.setAttribute('aria-live', 'polite');
         if (button) button.insertAdjacentElement('afterend', status);
         else form.appendChild(status);
       }
@@ -120,15 +194,31 @@ async function submitTssEnquiry_(data) {
         button.disabled = true;
         button.textContent = 'Sending...';
       }
-      status.textContent = '';
+      setTssFormStatus_(status, '', '');
 
       try {
-        await submitTssEnquiry_(data);
-        form.reset();
-        status.textContent = 'Thank you. Your enquiry has been received. A confirmation email has been sent to the address you provided.';
-        if (button) button.textContent = 'Sent';
+        const result = await submitTssEnquiry_(data);
+        if (result.state === 'confirmed') {
+          const payload = result.payload;
+          const reference = payload.enquiryId ? ` Reference: ${payload.enquiryId}.` : '';
+          const emailMessage = payload.confirmationSent === true
+            ? ' A confirmation email has been sent to the address you provided.'
+            : ' Your enquiry was recorded, but the confirmation email could not be verified.';
+          form.reset();
+          form.dispatchEvent(new CustomEvent('tss:submission-confirmed'));
+          setTssFormStatus_(status, 'success', `Thank you. Your enquiry has been received.${emailMessage}${reference}`);
+          if (button) button.textContent = 'Sent';
+        } else {
+          form.dispatchEvent(new CustomEvent('tss:submission-processing'));
+          setTssFormStatus_(
+            status,
+            'processing',
+            'Your request was sent for processing, but we could not confirm the backend response. Please wait for the confirmation email before submitting it again.'
+          );
+          if (button) button.textContent = 'Processing';
+        }
       } catch (error) {
-        status.textContent = 'Your enquiry could not be sent. Please try again or contact us by WhatsApp.';
+        setTssFormStatus_(status, 'error', tssFormErrorMessage_(error));
         if (button) button.textContent = originalLabel || 'Try again';
       } finally {
         if (button) {
@@ -208,15 +298,23 @@ async function submitTssEnquiry_(data) {
     trigger.textContent = 'Share my details with TSS';
     body.appendChild(trigger);
 
+    const leadStartedAt = Date.now();
+    const leadNonce = tssCreateNonce_();
     leadBox = document.createElement('form');
     leadBox.className = 'tss-lead';
+    leadBox.dataset.tssForm = 'assistant';
     leadBox.innerHTML = `
       <strong>Send this conversation to TSS</strong>
       <div class="two"><input name="name" required placeholder="Full name"><input name="company" placeholder="Company"></div>
       <div class="two"><input name="email" type="email" required placeholder="Business email"><input name="phone" placeholder="Phone"></div>
+      <div class="tss-honeypot" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <input type="hidden" name="form_started_at" value="${leadStartedAt}">
+      <input type="hidden" name="form_elapsed_ms" value="">
+      <input type="hidden" name="form_nonce" value="${leadNonce}">
       <button type="submit">Send for review</button>
       <small>Your details and this chat summary will be sent to The Smarty Solution for follow-up. Do not submit confidential documents or banking information here.</small>`;
     body.appendChild(leadBox);
+    if (window.TSSAntiSpam) window.TSSAntiSpam.prepare(leadBox);
 
     trigger.addEventListener('click', () => {
       leadBox.classList.toggle('open');
@@ -225,6 +323,17 @@ async function submitTssEnquiry_(data) {
 
     leadBox.addEventListener('submit', async (event) => {
       event.preventDefault();
+      const elapsed = Date.now() - leadStartedAt;
+      const honeypot = leadBox.querySelector('input[name="website"]');
+      if (honeypot && honeypot.value.trim()) {
+        addMessage('status', 'We could not verify this submission. Please use the website contact form or WhatsApp instead.', 'status');
+        return;
+      }
+      if (elapsed < 3500) {
+        addMessage('status', 'Please take a moment to review your details, then send them again.', 'status');
+        return;
+      }
+      leadBox.querySelector('input[name="form_elapsed_ms"]').value = String(elapsed);
       const button = leadBox.querySelector('button');
       button.disabled = true;
       button.textContent = 'Sending...';
@@ -234,12 +343,25 @@ async function submitTssEnquiry_(data) {
       data.append('source', window.location.href);
       data.append('conversation', messages.map((m) => `${m.role}: ${m.content}`).join('\n\n'));
       try {
-        await submitTssEnquiry_(data);
-        leadBox.innerHTML = '<strong>Sent to TSS for review.</strong><small>A confirmation email has been sent to you. A member of the team can follow up using the details you provided.</small>';
+        const result = await submitTssEnquiry_(data);
+        if (result.state === 'confirmed') {
+          const payload = result.payload;
+          const reference = payload.enquiryId ? ` Reference: ${payload.enquiryId}.` : '';
+          const emailText = payload.confirmationSent === true
+            ? 'A confirmation email has been sent to you.'
+            : 'The enquiry was recorded, but the confirmation email could not be verified.';
+          leadBox.dispatchEvent(new CustomEvent('tss:submission-confirmed'));
+          leadBox.innerHTML = `<strong>Sent to TSS for review.</strong><small>${emailText}${reference} A member of the team can follow up using the details you provided.</small>`;
+        } else {
+          leadBox.dispatchEvent(new CustomEvent('tss:submission-processing'));
+          button.disabled = true;
+          button.textContent = 'Processing';
+          addMessage('status', 'Your details were sent for processing, but the backend response could not be confirmed. Please wait for the confirmation email before trying again.', 'status');
+        }
       } catch (error) {
         button.disabled = false;
         button.textContent = 'Try again';
-        addMessage('status', 'Your details could not be sent. Please use the website contact form or WhatsApp instead.', 'status');
+        addMessage('status', tssFormErrorMessage_(error), 'status');
       }
       body.scrollTop = body.scrollHeight;
     });
