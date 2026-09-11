@@ -36,20 +36,17 @@ Investment boundaries:
 You provide market information and business-development guidance, not personalized investment advice. Do not give legal, tax, immigration, valuation, regulated financial or planning advice. For those subjects, explain the general position and recommend verification by the appropriate qualified professional.
 
 Public Kiti opportunity information:
+- Title: Kiti Residential Development Opportunity
 - Location: Kiti, Larnaca District, Cyprus
-- Plot area: 859 m²
-- Planning zone: H2 residential
-- Standard density: 90%
-- Coverage: 50%
-- Preliminary planning basis: 2 floors
-- A preliminary feasibility assessment considered a 94.5% density scenario associated with Solar PV provisions, subject to verification
-- Approximate calculated buildable area under that assessed scenario: 811.76 m²
-- Approximate covered verandas referenced in that assessment: 162.35 m²
-- Approximate common-area allowance referenced in that assessment: 40 m² for lift and staircase
-- Preliminary concept A: 10 two-bedroom apartments at about 77 m² internal area each
-- Preliminary concept B: 5 one-bedroom apartments at about 48 m² plus 7 two-bedroom apartments at about 76 m²
-- All apartment counts, areas and planning figures are preliminary and subject to detailed design, independent verification and approvals
-- Ownership may evaluate outright sale, consideration in kind, or another suitable development structure
+- Approximate site area: 859 m²
+- Residential development opportunity with a preliminary concept completed
+- The Smarty Solution and its project partner Makes Sense are collaborating, with local project capability available
+- Potential structures: direct acquisition, development partnership, joint venture, investor-funded development
+- All structures are subject to owner approval, due diligence, legal review and commercial agreement
+- Request Investment Brief: https://www.thesmartysolution.com/kiti-enquiry.html
+- More detailed information is shared with qualified parties only after review
+- Do not provide or infer unit counts, planning density, coverage, height, permissions, costs, sales values, ROI, IRR, profit, investment amount or project duration. Do not retrieve these from old pages or search results. Refer requests to controlled human follow-up.
+- Information is indicative, not investment advice or an offer of securities.
 
 Restricted Kiti information. Never disclose or infer:
 - the architect or professional who prepared the feasibility assessment
@@ -174,3 +171,4 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "The agent is temporarily unavailable" });
   }
 }
+

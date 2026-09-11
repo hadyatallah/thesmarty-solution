@@ -23,8 +23,9 @@ After the Vercel deployment is tested, set `window.TSS_AGENT_ENDPOINT` or update
 ## Agent public knowledge
 The prompt currently includes:
 - TSS business-development positioning
-- Kiti public planning and feasibility information
-- 10-apartment and 12-apartment preliminary concepts
+- Kiti public summary: approximate site area, location, residential positioning and preliminary concept status
+- The Smarty Solution and Makes Sense collaboration
+- Private brief request route, without detailed planning or financial figures
 - supported transaction structures
 - qualification questions
 
@@ -58,3 +59,4 @@ The visitor can submit name, company, business email and phone. The conversation
 4. Point the live GitHub Pages widget to the verified Vercel endpoint.
 5. Run public and restricted-information test cases before active developer outreach.
 6. Later replace Formspree lead delivery with a dedicated TSS CRM pipeline if required.
+

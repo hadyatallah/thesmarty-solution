@@ -176,6 +176,8 @@ function tssCreateNonce_() {
       if (form.dataset.tssForm === 'kiti') {
         const originalMessage = String(data.get('message') || '').trim();
         const detailedMessage = [
+          'Source opportunity: Kiti Residential Development Opportunity',
+          'Enquiry type: Investor / Development Opportunity',
           `Role: ${data.get('profile') || '-'}`,
           `Structure to assess: ${data.get('structure') || '-'}`,
           `Development / investment background: ${data.get('experience') || '-'}`,
@@ -187,7 +189,8 @@ function tssCreateNonce_() {
           originalMessage
         ].join('\n');
         data.set('message', detailedMessage);
-        data.set('interest', 'Kiti property opportunity');
+        data.set('interest', 'Investor / Development Opportunity');
+        data.set('source_opportunity', 'Kiti Residential Development Opportunity');
       }
 
       if (button) {
@@ -437,3 +440,4 @@ function tssCreateNonce_() {
     send(input.value);
   });
 })();
+
