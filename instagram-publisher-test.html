@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TSS Instagram Publisher Test</title>
+  <style>
+    body{font-family:Arial,sans-serif;background:#f5f7fa;color:#0b1f33;margin:0;padding:24px}
+    .wrap{max-width:720px;margin:0 auto;background:white;padding:24px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.08)}
+    h1{margin-top:0}.note{font-size:14px;color:#52606d;margin-bottom:20px}
+    label{display:block;font-weight:600;margin:14px 0 6px}
+    input,textarea{width:100%;box-sizing:border-box;padding:12px;border:1px solid #cbd5e1;border-radius:10px;font:inherit}
+    textarea{min-height:140px;resize:vertical}
+    .row{display:flex;gap:12px;align-items:center;margin-top:14px}.row input{width:auto}
+    button{margin-top:18px;padding:12px 18px;border:0;border-radius:10px;background:#0f7f99;color:#fff;font-weight:700;cursor:pointer}
+    pre{margin-top:20px;padding:14px;background:#0b1f33;color:#e6f6fb;border-radius:10px;white-space:pre-wrap;word-break:break-word;min-height:60px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>TSS Instagram Publisher Test</h1>
+    <div class="note">Internal test page. The publisher key is used only in this browser request and is not stored by this page.</div>
+
+    <label for="key">TSS Publisher Key</label>
+    <input id="key" type="password" autocomplete="off" />
+
+    <label for="imageUrl">Public HTTPS image URL</label>
+    <input id="imageUrl" type="url" value="https://www.thesmartysolution.com/hero.jpg" />
+
+    <label for="caption">Caption</label>
+    <textarea id="caption">TSS Instagram API dry-run test.</textarea>
+
+    <div class="row">
+      <input id="dryRun" type="checkbox" checked />
+      <label for="dryRun" style="margin:0;font-weight:600">Dry run only (does not publish)</label>
+    </div>
+
+    <button id="run">Run Test</button>
+    <pre id="result">Ready.</pre>
+  </div>
+
+<script>
+const run = document.getElementById('run');
+const result = document.getElementById('result');
+run.addEventListener('click', async () => {
+  result.textContent = 'Running...';
+  const key = document.getElementById('key').value.trim();
+  const imageUrl = document.getElementById('imageUrl').value.trim();
+  const caption = document.getElementById('caption').value;
+  const dryRun = document.getElementById('dryRun').checked;
+  if (!key) { result.textContent = 'Enter the TSS Publisher Key.'; return; }
+  try {
+    const r = await fetch('/api/publish-instagram', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-tss-publisher-key': key
+      },
+      body: JSON.stringify({ imageUrl, caption, dryRun })
+    });
+    const data = await r.json().catch(() => ({error:'Non-JSON response'}));
+    result.textContent = JSON.stringify({status:r.status, ...data}, null, 2);
+  } catch (e) {
+    result.textContent = 'Request failed: ' + e.message;
+  }
+});
+</script>
+</body>
+</html>
