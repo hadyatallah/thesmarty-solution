@@ -1,0 +1,21 @@
+{
+  "id": "2026-09-14-cheapest-property-debate",
+  "platform": "instagram",
+  "format": "feed",
+  "status": "approved",
+  "designSystemVersion": 1,
+  "template": "question-debate",
+  "width": 1080,
+  "height": 1350,
+  "topic": "Property investment quality versus entry price",
+  "topicKey": "cyprus-property-entry-price-vs-quality-2026-09-14",
+  "headline": "The cheapest property is not always the best investment",
+  "creativeKey": "tss-v1-debate-cyprus-property-entry-price-2026-09-14",
+  "imageUrl": "https://thesmarty-solution-agent.vercel.app/api/social-creative?template=question-debate&category=SMARTY+DEBATE+%2F+CYPRUS+PROPERTY&headline=THE+CHEAPEST+PROPERTY&subheadline=ISN%27T+ALWAYS+THE+BEST+INVESTMENT&body=Entry+price+matters.+So+do+demand%2C+location%2C+liquidity+and+the+exit+strategy+behind+the+purchase.&callout=WOULD+YOU+PAY+MORE+FOR+A+STRONGER+INVESTMENT+CASE%3F&location=CYPRUS&credit=The+Smarty+Solution+%C2%B7+Investment+discussion",
+  "caption": "The cheapest property is not always the best investment.\n\nA lower purchase price can look attractive, but price alone does not create a strong investment case. Demand, location, liquidity, operating costs and the eventual exit matter too.\n\nSometimes paying more for the right asset can make more sense than buying the cheapest option available.\n\nWould you pay more for a stronger investment case?\n\n#CyprusProperty #CyprusInvestment #PropertyInvestment #InvestInCyprus #TheSmartySolution",
+  "publishAt": null,
+  "createdAt": "2026-09-14T01:45:00+03:00",
+  "updatedAt": "2026-09-14T01:45:00+03:00",
+  "attempts": 0,
+  "lastError": null
+}
