@@ -18,6 +18,17 @@ function isHttpsUrl(value) {
   }
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function makeMetaError(data, status) {
+  const error = new Error(data?.error?.message || `Meta API request failed (${status})`);
+  error.meta = data?.error || data;
+  error.status = status;
+  return error;
+}
+
 async function metaPost(path, token, params) {
   const body = new URLSearchParams(params);
   const response = await fetch(`${GRAPH_BASE}${path}`, {
@@ -30,13 +41,49 @@ async function metaPost(path, token, params) {
   });
 
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const error = new Error(data?.error?.message || `Meta API request failed (${response.status})`);
-    error.meta = data?.error || data;
-    error.status = response.status;
-    throw error;
-  }
+  if (!response.ok) throw makeMetaError(data, response.status);
   return data;
+}
+
+async function metaGet(path, token, params = {}) {
+  const url = new URL(`${GRAPH_BASE}${path}`);
+  for (const [key, value] of Object.entries(params)) {
+    url.searchParams.set(key, value);
+  }
+
+  const response = await fetch(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw makeMetaError(data, response.status);
+  return data;
+}
+
+async function waitForContainer(containerId, token) {
+  const maxAttempts = 12;
+  const delayMs = 1500;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    const status = await metaGet(`/${containerId}`, token, {
+      fields: 'status_code,status',
+    });
+
+    if (status.status_code === 'FINISHED') return status;
+
+    if (status.status_code === 'ERROR' || status.status_code === 'EXPIRED') {
+      const error = new Error(`Instagram media processing failed: ${status.status || status.status_code}`);
+      error.meta = status;
+      error.status = 422;
+      throw error;
+    }
+
+    if (attempt < maxAttempts) await sleep(delayMs);
+  }
+
+  const error = new Error('Instagram media is still processing. Please retry in a moment.');
+  error.status = 503;
+  throw error;
 }
 
 export default async function handler(req, res) {
@@ -101,6 +148,8 @@ export default async function handler(req, res) {
       throw new Error('Meta did not return a media container ID.');
     }
 
+    const processing = await waitForContainer(container.id, accessToken);
+
     const published = await metaPost(`/${instagramUserId}/media_publish`, accessToken, {
       creation_id: container.id,
     });
@@ -108,6 +157,7 @@ export default async function handler(req, res) {
     return send(res, 200, {
       ok: true,
       containerId: container.id,
+      processingStatus: processing.status_code,
       mediaId: published.id || null,
       hashtagCount,
     });
@@ -118,7 +168,7 @@ export default async function handler(req, res) {
       meta: error.meta,
     });
 
-    return send(res, 502, {
+    return send(res, error.status === 503 ? 503 : 502, {
       ok: false,
       error: error.message || 'Instagram publishing failed.',
       meta: error.meta || undefined,
