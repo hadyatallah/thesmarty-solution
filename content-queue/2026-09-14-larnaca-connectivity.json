@@ -2,7 +2,7 @@
   "id": "2026-09-14-larnaca-connectivity",
   "platform": "instagram",
   "format": "feed",
-  "status": "approved",
+  "status": "published",
   "designSystemVersion": 1,
   "template": "place-opportunity",
   "width": 1080,
@@ -15,7 +15,20 @@
   "caption": "Larnaca's next investment story may be bigger than property.\n\nCyprus has announced plans for special supply and storage zones at Larnaca Airport, while the development roadmap for Larnaca's port and marina is also moving forward.\n\nThat matters because investment value is not created by property alone. Connectivity, logistics, infrastructure and business activity can change the economics of an entire city.\n\nCould connectivity become Larnaca's biggest long-term advantage?\n\nSources: Government of Cyprus and Cyprus Ports Authority, 2026. Photo: A.Savin, Wikipedia.\n\n#Larnaca #CyprusInvestment #CyprusBusiness #InvestInCyprus #TheSmartySolution",
   "publishAt": null,
   "createdAt": "2026-09-14T01:25:00+03:00",
-  "updatedAt": "2026-09-14T01:25:00+03:00",
-  "attempts": 0,
-  "lastError": null
+  "updatedAt": "2026-09-13T22:29:50.905Z",
+  "attempts": 1,
+  "lastError": null,
+  "qa": {
+    "passed": true,
+    "checkedAt": "2026-09-13T22:29:39.284Z",
+    "designSystemVersion": 1,
+    "dimensions": "1080x1350",
+    "template": "place-opportunity",
+    "duplicateWindowDays": 30,
+    "hashtagCount": 5
+  },
+  "publishedAt": "2026-09-13T22:29:50.905Z",
+  "containerId": "18115144042819867",
+  "mediaId": "17960737947219567",
+  "processingStatus": "FINISHED"
 }
