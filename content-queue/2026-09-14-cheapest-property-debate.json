@@ -2,7 +2,7 @@
   "id": "2026-09-14-cheapest-property-debate",
   "platform": "instagram",
   "format": "feed",
-  "status": "approved",
+  "status": "published",
   "designSystemVersion": 1,
   "template": "question-debate",
   "width": 1080,
@@ -15,7 +15,20 @@
   "caption": "The cheapest property is not always the best investment.\n\nA lower purchase price can look attractive, but price alone does not create a strong investment case. Demand, location, liquidity, operating costs and the eventual exit matter too.\n\nSometimes paying more for the right asset can make more sense than buying the cheapest option available.\n\nWould you pay more for a stronger investment case?\n\n#CyprusProperty #CyprusInvestment #PropertyInvestment #InvestInCyprus #TheSmartySolution",
   "publishAt": null,
   "createdAt": "2026-09-14T01:45:00+03:00",
-  "updatedAt": "2026-09-14T01:45:00+03:00",
-  "attempts": 0,
-  "lastError": null
+  "updatedAt": "2026-09-13T22:47:22.193Z",
+  "attempts": 1,
+  "lastError": null,
+  "qa": {
+    "passed": true,
+    "checkedAt": "2026-09-13T22:47:13.710Z",
+    "designSystemVersion": 1,
+    "dimensions": "1080x1350",
+    "template": "question-debate",
+    "duplicateWindowDays": 30,
+    "hashtagCount": 5
+  },
+  "publishedAt": "2026-09-13T22:47:22.193Z",
+  "containerId": "18115146502819867",
+  "mediaId": "18024840431699383",
+  "processingStatus": "FINISHED"
 }
