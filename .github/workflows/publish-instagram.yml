@@ -1,0 +1,131 @@
+name: Publish TSS Instagram Queue
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content-queue/**.json'
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: tss-instagram-publisher
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Process publishing queue
+        env:
+          TSS_PUBLISHER_KEY: ${{ secrets.TSS_PUBLISHER_KEY }}
+          TSS_PUBLISHER_URL: https://thesmarty-solution-agent.vercel.app/api/publish-instagram
+        run: |
+          node <<'NODE'
+          import fs from 'node:fs';
+          import path from 'node:path';
+
+          const dir = 'content-queue';
+          if (!fs.existsSync(dir)) process.exit(0);
+
+          const now = Date.now();
+          const files = fs.readdirSync(dir).filter(f => f.endsWith('.json')).sort();
+          let changed = false;
+          let failures = 0;
+
+          for (const file of files) {
+            const full = path.join(dir, file);
+            const item = JSON.parse(fs.readFileSync(full, 'utf8'));
+
+            if (item.status !== 'approved') continue;
+            if (item.platform && item.platform !== 'instagram') continue;
+            if (item.format && item.format !== 'feed') continue;
+
+            const publishAt = item.publishAt ? Date.parse(item.publishAt) : 0;
+            if (Number.isFinite(publishAt) && publishAt > now) continue;
+
+            if (!item.imageUrl || !item.caption) {
+              item.status = 'failed';
+              item.lastError = 'Missing imageUrl or caption';
+              item.updatedAt = new Date().toISOString();
+              fs.writeFileSync(full, JSON.stringify(item, null, 2) + '\n');
+              changed = true;
+              failures++;
+              continue;
+            }
+
+            if (!process.env.TSS_PUBLISHER_KEY) {
+              console.error('Missing GitHub Actions secret TSS_PUBLISHER_KEY');
+              process.exit(2);
+            }
+
+            const response = await fetch(process.env.TSS_PUBLISHER_URL, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-tss-publisher-key': process.env.TSS_PUBLISHER_KEY,
+              },
+              body: JSON.stringify({
+                imageUrl: item.imageUrl,
+                caption: item.caption,
+                dryRun: false,
+              }),
+            });
+
+            const data = await response.json().catch(() => ({}));
+            item.attempts = (item.attempts || 0) + 1;
+            item.updatedAt = new Date().toISOString();
+
+            if (response.ok && data.ok) {
+              item.status = 'published';
+              item.publishedAt = new Date().toISOString();
+              item.containerId = data.containerId || null;
+              item.mediaId = data.mediaId || null;
+              item.processingStatus = data.processingStatus || null;
+              item.lastError = null;
+              console.log(`Published ${file}: ${item.mediaId || 'no media id'}`);
+            } else {
+              item.status = 'approved';
+              item.lastError = data.error || `HTTP ${response.status}`;
+              item.lastMeta = data.meta || null;
+              failures++;
+              console.error(`Failed ${file}:`, item.lastError);
+            }
+
+            fs.writeFileSync(full, JSON.stringify(item, null, 2) + '\n');
+            changed = true;
+          }
+
+          if (changed) {
+            fs.writeFileSync('.queue-changed', '1');
+          }
+          if (failures) {
+            console.error(`${failures} queue item(s) did not publish.`);
+          }
+          NODE
+
+      - name: Save publishing results
+        if: always()
+        run: |
+          if [ ! -f .queue-changed ]; then
+            echo 'No queue changes.'
+            exit 0
+          fi
+          git config user.name 'TSS Publisher Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add content-queue/*.json
+          if git diff --cached --quiet; then
+            echo 'Nothing to commit.'
+            exit 0
+          fi
+          git commit -m 'Update Instagram publishing queue [skip ci]'
+          git push
