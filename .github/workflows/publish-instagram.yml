@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'content-queue/**.json'
+      - 'social/design-system.json'
+      - 'api/social-creative.js'
   schedule:
     - cron: '*/15 * * * *'
   workflow_dispatch:
@@ -37,15 +39,44 @@ jobs:
           const dir = 'content-queue';
           if (!fs.existsSync(dir)) process.exit(0);
 
+          const design = JSON.parse(fs.readFileSync('social/design-system.json', 'utf8'));
+          const allowedTemplates = new Set(design.feed.templates || []);
           const now = Date.now();
+          const duplicateWindowMs = (design.publishing.duplicateWindowDays || 30) * 86400000;
           const files = fs.readdirSync(dir).filter(f => f.endsWith('.json')).sort();
+          const all = files.map(file => ({ file, full: path.join(dir, file), item: JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) }));
+          const recentPublished = all
+            .map(x => x.item)
+            .filter(x => x.status === 'published' && x.publishedAt && (now - Date.parse(x.publishedAt)) <= duplicateWindowMs);
+
           let changed = false;
           let failures = 0;
 
-          for (const file of files) {
-            const full = path.join(dir, file);
-            const item = JSON.parse(fs.readFileSync(full, 'utf8'));
+          const normalize = value => String(value || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
+          const tokens = value => new Set(normalize(value).split(' ').filter(Boolean));
+          const similarity = (a, b) => {
+            const A = tokens(a), B = tokens(b);
+            if (!A.size || !B.size) return 0;
+            let intersection = 0;
+            for (const t of A) if (B.has(t)) intersection++;
+            const union = new Set([...A, ...B]).size;
+            return union ? intersection / union : 0;
+          };
+          const hashtagCount = caption => (String(caption || '').match(/(^|\s)#[\p{L}\p{N}_]+/gu) || []).length;
 
+          function reject(record, reason) {
+            record.item.status = 'rejected';
+            record.item.lastError = reason;
+            record.item.updatedAt = new Date().toISOString();
+            record.item.qa = { passed: false, reason, checkedAt: new Date().toISOString(), designSystemVersion: design.version };
+            fs.writeFileSync(record.full, JSON.stringify(record.item, null, 2) + '\n');
+            changed = true;
+            failures++;
+            console.error(`Rejected ${record.file}: ${reason}`);
+          }
+
+          for (const record of all) {
+            const item = record.item;
             if (item.status !== 'approved') continue;
             if (item.platform && item.platform !== 'instagram') continue;
             if (item.format && item.format !== 'feed') continue;
@@ -54,14 +85,60 @@ jobs:
             if (Number.isFinite(publishAt) && publishAt > now) continue;
 
             if (!item.imageUrl || !item.caption) {
-              item.status = 'failed';
-              item.lastError = 'Missing imageUrl or caption';
-              item.updatedAt = new Date().toISOString();
-              fs.writeFileSync(full, JSON.stringify(item, null, 2) + '\n');
-              changed = true;
-              failures++;
+              reject(record, 'Missing imageUrl or caption');
               continue;
             }
+            if (item.designSystemVersion !== design.version) {
+              reject(record, `Design system version must be ${design.version}`);
+              continue;
+            }
+            if (item.width !== design.feed.width || item.height !== design.feed.height) {
+              reject(record, `Feed creative must be ${design.feed.width}x${design.feed.height}`);
+              continue;
+            }
+            if (!allowedTemplates.has(item.template)) {
+              reject(record, 'Unapproved TSS template');
+              continue;
+            }
+            if (design.feed.plainFullFramePhotoAllowed === false && !String(item.imageUrl).startsWith('https://thesmarty-solution-agent.vercel.app/api/social-creative')) {
+              reject(record, 'Feed creative must use the TSS branded creative renderer');
+              continue;
+            }
+            if (hashtagCount(item.caption) > design.publishing.maxHashtags) {
+              reject(record, `Caption exceeds ${design.publishing.maxHashtags} hashtags`);
+              continue;
+            }
+            if (!item.headline || !item.topicKey || !item.creativeKey) {
+              reject(record, 'headline, topicKey and creativeKey are required for duplicate protection');
+              continue;
+            }
+
+            const duplicate = recentPublished.find(old => {
+              if (old.id === item.id) return false;
+              if (old.creativeKey && old.creativeKey === item.creativeKey) return true;
+              if (old.topicKey && old.topicKey === item.topicKey) return true;
+              if (old.headline && normalize(old.headline) === normalize(item.headline)) return true;
+              if (old.headline && similarity(old.headline, item.headline) >= 0.72) return true;
+              if (old.imageUrl && old.imageUrl === item.imageUrl) return true;
+              return false;
+            });
+
+            if (duplicate) {
+              reject(record, `Duplicate protection: too similar to ${duplicate.id}`);
+              continue;
+            }
+
+            item.qa = {
+              passed: true,
+              checkedAt: new Date().toISOString(),
+              designSystemVersion: design.version,
+              dimensions: `${item.width}x${item.height}`,
+              template: item.template,
+              duplicateWindowDays: design.publishing.duplicateWindowDays,
+              hashtagCount: hashtagCount(item.caption)
+            };
+            fs.writeFileSync(record.full, JSON.stringify(item, null, 2) + '\n');
+            changed = true;
 
             if (!process.env.TSS_PUBLISHER_KEY) {
               console.error('Missing GitHub Actions secret TSS_PUBLISHER_KEY');
@@ -74,11 +151,7 @@ jobs:
                 'Content-Type': 'application/json',
                 'x-tss-publisher-key': process.env.TSS_PUBLISHER_KEY,
               },
-              body: JSON.stringify({
-                imageUrl: item.imageUrl,
-                caption: item.caption,
-                dryRun: false,
-              }),
+              body: JSON.stringify({ imageUrl: item.imageUrl, caption: item.caption, dryRun: false }),
             });
 
             const data = await response.json().catch(() => ({}));
@@ -92,25 +165,21 @@ jobs:
               item.mediaId = data.mediaId || null;
               item.processingStatus = data.processingStatus || null;
               item.lastError = null;
-              console.log(`Published ${file}: ${item.mediaId || 'no media id'}`);
+              console.log(`Published ${record.file}: ${item.mediaId || 'no media id'}`);
+              recentPublished.push(item);
             } else {
               item.status = 'approved';
               item.lastError = data.error || `HTTP ${response.status}`;
               item.lastMeta = data.meta || null;
               failures++;
-              console.error(`Failed ${file}:`, item.lastError);
+              console.error(`Failed ${record.file}:`, item.lastError);
             }
 
-            fs.writeFileSync(full, JSON.stringify(item, null, 2) + '\n');
-            changed = true;
+            fs.writeFileSync(record.full, JSON.stringify(item, null, 2) + '\n');
           }
 
-          if (changed) {
-            fs.writeFileSync('.queue-changed', '1');
-          }
-          if (failures) {
-            console.error(`${failures} queue item(s) did not publish.`);
-          }
+          if (changed) fs.writeFileSync('.queue-changed', '1');
+          if (failures) console.error(`${failures} queue item(s) did not publish.`);
           NODE
 
       - name: Save publishing results
