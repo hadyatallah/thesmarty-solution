@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TSS Publisher Test</title>
+  <style>
+    body{font-family:Arial,sans-serif;max-width:760px;margin:40px auto;padding:0 20px;background:#f7f9fb;color:#0d223a}
+    h1{font-size:28px;margin-bottom:8px}.card{background:#fff;border:1px solid #d9e0e7;border-radius:14px;padding:20px;box-shadow:0 3px 12px rgba(0,0,0,.05)}
+    label{display:block;font-weight:700;margin:16px 0 6px}input,textarea{width:100%;box-sizing:border-box;padding:12px;border:1px solid #bfcbd6;border-radius:8px;font:inherit}textarea{min-height:150px}
+    .row{display:flex;gap:10px;align-items:center;margin-top:16px}.row input{width:auto}button{margin-top:18px;padding:12px 18px;border:0;border-radius:8px;background:#087f9f;color:white;font-weight:700;cursor:pointer}button:disabled{opacity:.5}
+    pre{white-space:pre-wrap;word-break:break-word;background:#0d223a;color:#fff;padding:14px;border-radius:8px;margin-top:18px}.note{font-size:14px;color:#4e6072}
+  </style>
+</head>
+<body>
+  <h1>TSS Instagram Publisher Test</h1>
+  <p class="note">Internal test utility. The publisher key is entered in your browser only and is not stored in this page or GitHub.</p>
+  <div class="card">
+    <label for="key">Publisher key</label>
+    <input id="key" type="password" autocomplete="off" />
+
+    <label for="imageUrl">Public image URL</label>
+    <input id="imageUrl" type="url" value="https://www.thesmartysolution.com/aphrodites-rock-cyprus.webp" />
+
+    <label for="caption">Caption</label>
+    <textarea id="caption">TSS API publishing test. No live campaign content. #Cyprus #TheSmartySolution</textarea>
+
+    <div class="row">
+      <input id="dryRun" type="checkbox" checked />
+      <label for="dryRun" style="margin:0;font-weight:400">Dry run only</label>
+    </div>
+
+    <button id="send">Run test</button>
+    <pre id="result">Ready.</pre>
+  </div>
+  <script>
+    const sendBtn = document.getElementById('send');
+    const result = document.getElementById('result');
+    sendBtn.addEventListener('click', async () => {
+      sendBtn.disabled = true;
+      result.textContent = 'Running...';
+      try {
+        const response = await fetch('/api/publish-instagram', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-tss-publisher-key': document.getElementById('key').value
+          },
+          body: JSON.stringify({
+            imageUrl: document.getElementById('imageUrl').value,
+            caption: document.getElementById('caption').value,
+            dryRun: document.getElementById('dryRun').checked
+          })
+        });
+        const data = await response.json().catch(() => ({ error: 'Non-JSON response' }));
+        result.textContent = JSON.stringify({ status: response.status, ...data }, null, 2);
+      } catch (err) {
+        result.textContent = JSON.stringify({ error: err.message }, null, 2);
+      } finally {
+        sendBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
