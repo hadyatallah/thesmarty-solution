@@ -39,7 +39,7 @@ async function metaPost(path, token, params) {
   return data;
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return send(res, 405, { ok: false, error: 'Method not allowed' });
@@ -124,4 +124,4 @@ module.exports = async function handler(req, res) {
       meta: error.meta || undefined,
     });
   }
-};
+}
