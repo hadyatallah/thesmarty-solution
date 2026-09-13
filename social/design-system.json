@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "status": "active",
+  "feed": {
+    "width": 1080,
+    "height": 1350,
+    "aspectRatio": "4:5",
+    "templates": ["insight-data", "question-debate", "place-opportunity"],
+    "plainFullFramePhotoAllowed": false
+  },
+  "vertical": {
+    "width": 1080,
+    "height": 1920,
+    "aspectRatio": "9:16",
+    "feedAssetReuseAllowed": false
+  },
+  "palette": {
+    "dominant": "warm-off-white",
+    "primary": "deep-navy",
+    "accents": ["muted-slate-blue", "restrained-tss-teal"]
+  },
+  "fixedElements": {
+    "categoryLabel": "top-left",
+    "rule": true,
+    "logo": "top-right",
+    "footer": "THE SMARTY SOLUTION · CONNECT · DEVELOP · INVEST"
+  },
+  "geography": {
+    "occupiedCyprusImageryAllowed": false,
+    "preferredRepublicOfCyprusAreas": ["Larnaca", "Limassol", "Nicosia", "Paphos", "Paralimni", "Protaras", "Ayia Napa", "Troodos", "Platres", "Lefkara"]
+  },
+  "publishing": {
+    "maxHashtags": 5,
+    "duplicateWindowDays": 30,
+    "requireBrandTemplate": true,
+    "requireFactCheckForFactualClaims": true,
+    "requireSafeMarginCheck": true,
+    "requireCropCheck": true
+  }
+}
