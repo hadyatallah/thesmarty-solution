@@ -1,0 +1,35 @@
+[
+  {
+    "id": "2026-09-14-cheapest-property-debate",
+    "mediaId": "18024840431699383",
+    "readable": false,
+    "error": "Meta rejected the request. Check credentials, permissions and account status.",
+    "meta": {
+      "code": 100,
+      "subcode": 33,
+      "type": "IGApiException"
+    }
+  },
+  {
+    "id": "2026-09-14-larnaca-connectivity",
+    "mediaId": "17960737947219567",
+    "readable": false,
+    "error": "Meta rejected the request. Check credentials, permissions and account status.",
+    "meta": {
+      "code": 100,
+      "subcode": 33,
+      "type": "IGApiException"
+    }
+  },
+  {
+    "id": "2026-09-14-larnaca-investor-attention",
+    "mediaId": "18112361699157883",
+    "readable": false,
+    "error": "Meta rejected the request. Check credentials, permissions and account status.",
+    "meta": {
+      "code": 100,
+      "subcode": 33,
+      "type": "IGApiException"
+    }
+  }
+]
