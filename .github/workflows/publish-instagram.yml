@@ -57,6 +57,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_SHA: ${{ github.sha }}
         run: node social/scripts/check-samples.js
+      - name: Verify final posts awaiting user approval without publishing
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: node social/scripts/check-review-batches.js
       - name: Retain QA and actual published asset evidence
         if: always()
         uses: actions/upload-artifact@v4

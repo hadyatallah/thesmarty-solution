@@ -1,4 +1,5 @@
-import { ACCOUNT, QA_VERSION, immutableAssetUrl, requireThat, sha256, sign, validateImage, validateManifest, verifySignature, checkSources } from '../social/lib/qa.js';
+import { ACCOUNT, QA_VERSION, enforceUserApproval, immutableAssetUrl, requireThat, sha256, sign, validateImage, validateManifest, verifySignature, checkSources } from '../social/lib/qa.js';
+import approvalPolicy from '../social/user-approval-policy.json' with { type: 'json' };
 
 const VERSION = process.env.META_GRAPH_VERSION || 'v25.0';
 const credentials = () => ({
@@ -50,7 +51,7 @@ async function inspect(c) {
   }
   const keys = ['TSS_PUBLISHER_KEY', 'INSTAGRAM_ACCESS_TOKEN', 'INSTAGRAM_USER_ID', 'FACEBOOK_PAGE_ACCESS_TOKEN', 'FACEBOOK_PAGE_TOKEN', 'META_PAGE_ACCESS_TOKEN', 'FB_PAGE_ACCESS_TOKEN', 'FACEBOOK_PAGE_ID', 'META_PAGE_ID', 'FB_PAGE_ID', 'FACEBOOK_USER_ACCESS_TOKEN', 'FACEBOOK_ACCESS_TOKEN', 'META_USER_ACCESS_TOKEN'];
   const environmentReferences = Object.fromEntries(keys.map(name => [name, Boolean(process.env[name])]));
-  return { ...accounts, recent, qaVersion: QA_VERSION, environmentReferences };
+  return { ...accounts, recent, qaVersion: QA_VERSION, environmentReferences, userApprovalPolicy: { requiredCount: approvalPolicy.requiredCount, recordedCount: approvalPolicy.firstPostIds.filter(id => approvalPolicy.approvals[id]).length } };
 }
 async function validate(item, c) {
   validateManifest(item);
@@ -103,7 +104,11 @@ export default async function handler(req, res) {
     requireThat(verifySignature(payload, signature, key), 'Signed QA manifest required. Legacy direct publish requests are blocked');
     const { item, action } = payload;
     requireThat(['dryRun', 'prepare', 'publishInstagram', 'publishFacebook'].includes(action), 'Invalid publishing action');
-    if (action !== 'dryRun') requireThat(item?.qaOnly !== true, 'QA-only assets cannot be published');
+    if (action !== 'dryRun') {
+      requireThat(item?.qaOnly !== true, 'QA-only assets cannot be published');
+      requireThat(!item?.platforms?.includes('facebook') || c.fb, 'Facebook Page publishing credentials are not configured');
+      enforceUserApproval(item, approvalPolicy);
+    }
     const accounts = await validate(item, c);
     if (action === 'dryRun') return res.status(200).json({ ok: true, dryRun: true, qaVersion: QA_VERSION, accounts, assetSha256: item.asset.sha256 });
     if (action === 'prepare') {

@@ -1,0 +1,79 @@
+{
+  "qaVersion": 2,
+  "id": "tss-review-05-british-emigration-feed",
+  "status": "draft",
+  "reviewBatch": "2026-09-initial",
+  "reviewNumber": 5,
+  "topic": "British emigration: measured outflow versus unproven tax motives",
+  "topicKey": "british-emigration-2025-evidence-not-tax-causation",
+  "headline": "A UK TAX EXODUS? WHAT THE DATA SAY.",
+  "creativeKey": "british-emigration-2025-evidence-not-tax-causation-landmark-v2-feed",
+  "format": "feed",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "publishAt": "2026-09-15T09:15:00+03:00",
+  "caption": "ONS estimates 246,000 British nationals left the UK long-term in 2025, versus 257,000 in 2024. The 2025 figure is provisional.\n\nThese counts do not establish that tax caused the departures. Motives need separate evidence.\n\nWhich relocation question would you want properly researched?\n\nSource: ONS: UK emigration explained, 21 May 2026.\nhttps://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/ukemigrationexplainedwhatweknowaboutbritsmovingabroad/2026-05-21\n\nPhoto: Finikoudes, Larnaca, Cyprus, Georgy Papantoniou, CC BY 3.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Finikoudes_by_Georgy_-_panoramio.jpg\nhttps://creativecommons.org/licenses/by/3.0\n\n#Cyprus #Relocation #UnitedKingdom #Migration #TheSmartySolution",
+  "creative": {
+    "designVersion": 2,
+    "format": "feed",
+    "template": "insight-data",
+    "photoKey": "finikoudes",
+    "text": {
+      "category": "RELOCATION / EVIDENCE",
+      "headline": "A UK TAX EXODUS? WHAT THE DATA SAY.",
+      "highlight": "246,000",
+      "body": "British nationals leaving the UK, 2025. Provisional ONS estimate; not proof of motive.",
+      "question": "What evidence would establish why they moved?",
+      "location": "FINIKOUDES / LARNACA, CYPRUS",
+      "source": "ONS | year ending Dec 2025 | provisional"
+    },
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "ONS estimates 246,000 long-term British emigrants in 2025 versus 257,000 in 2024; 2025 is provisional.",
+        "sourceIds": [
+          "ons-emigration"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "ons-emigration",
+        "title": "ONS: UK emigration explained, 21 May 2026",
+        "url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/ukemigrationexplainedwhatweknowaboutbritsmovingabroad/2026-05-21",
+        "expectedText": "An estimated 246,000 left the UK",
+        "reviewNote": "Provisional 2025 long-term emigration; no proof of tax motives.",
+        "sourceType": "official-statistics",
+        "checkedAt": "2026-09-14T12:20:37.319301Z",
+        "validUntil": "2026-09-21T12:20:37.319301Z",
+        "additionalEvidence": [
+          "257,000 who are estimated to have left the previous year"
+        ]
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Finikoudes, Larnaca, Cyprus",
+    "photoSha256": "e2ea620d908b8365fe8d9a82811d5a15cfcfe6efbfaab525f5127522509d6dee",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Finikoudes_by_Georgy_-_panoramio.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "asset": {
+    "path": "social/assets/5a738140a3391931dd6c1a12325592cbb4a826f181894cb403bafb54f7782e05.png",
+    "sha256": "5a738140a3391931dd6c1a12325592cbb4a826f181894cb403bafb54f7782e05",
+    "pixelHash": "276dbc2e0464edcf1f74dc0e2303ff337862013217f2152ef7581e95c4bc76b8",
+    "visualSignature": "rgb32:+vjz+vjz/Pn0/Pn0/Pn0/Pr0+/n0/Pn0/Pr0/Pn1+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz//78///////7///9///+///9/fv2+vfz+vjz+vjz+ffy8PDt8fHu8PDt7/Dt9PTw8fHt7u/s7/Dt9/by/Pr0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz+vjz+/jz+Pbypa20ipWgmbK5pqmynqKslqGq19nZ/vv2+ffy+vjz+Pfy3uLi3ODh3eHh2t/g4+bk3+Li2d7f2+Dg7Ozq9PPv8/Lu8/Lu8/Lu8/Lu8/Lu9PPv+vjz+vjz+vjz+ffy///5wMLGXlpugtHVVsPJbIeWTl1yp6+2///6+Pbx+vjz+vjz9/Xw9vTw9fTv9fTw9PPv9fTw9fPv9vTw8/Lu8vHu8vHt8fHt8vHu8vHt8fHt8vLt+Pfy+ffy+Pbx+ffy+/nz4uPioqqyubm/fKiynrrAg4yZrLS7///5+Pby+vjz+ffy/Pz3/Pr1+/r1/fz4/v34/Pr1//75/fz3/fz3/fz3/fz3/v34//74//34/v35/v75+/r2/fz4/v33//748fDt5efl7O3r4uXj7eno6Obl5ujn6uzq+vjz+vjz+ffy/vz23N7d6Onm5OXk0dXV19ra5+fmwsjL19na2dzc5OXj297dztLT19ra0dXW0NPVz9PU3+Hg1NfY0tbW2tzc6ernx87RyM7Q1NjZzdTWw8nNz9TV8fLu+vjz+vjz+ffy//33m6WuxMrPw8nMjZqml6Ot8fLvsbm+m6avmKSuy9DSt77Do661nKexqLG4kp+pkJyomKOtlKCqoqy0yc3Q1djZfoyakZ2nmKSti5ijlqGr0dXW//74+Pby+vjz+vjz+vjztr7Csrq/srq/tLzB4uTirra9usLGqbO5q7S7tr3D5ebkvMPHusHGq7O7ys7R/Pr19fTw+Pfy9/Xx+/n1+fjz9fXy+fjz+/n09PPv+Pbx+/n0+ffz+vjz+vjz+ffy/fv1z9HTt73Cpa21qbC43d/eqbC4qrC4rLK5ub7Do6214eLhpa62o6y0p7C3yc7Q+vjz+/n0+vjz+/nz+vjz+vjz+vjz+vjz+vjz/Pn0+/nz+vjz+vjz+vjz+vjz+vjz+vjz5O7q6/Pv5/Hu3+zo+Pjz4u7q5vLt5vHt4Ozp+/v5+vjz/fv2/fz6/v34+/r1+ffy+ffy+ffy+ffz+vjz+vjz+ffy+ffy+ffy+ffy+ffy+vjz+vjz+vjz+vjz+vjz+vjzoMvLmMbHgru8ib6/x9/ciL6/gru8hLy9gLu87PDs/vr1+vjz+ffy+ffy+vjz+/nz+/n0+/n0+/jz+/n0+/nz+/n0+/n0+/n0+/n0+/jz+/n0+vjz+vjz+vjz+vjz+Pfy6+/r8vLu8/Pv8PLu4+vn8/Tv8/Tw8/Pv8PLu9vXx9vXw9vTw9vXw+Pbx9fTv9vTw9fPv9PTv9/bx9vXw9/bx9PPv9PPv9/bx9fTw9vXw9vXw+fjz+vjz+vjz+/n09vXw1tjZ1tjZ2Nrb3uDe09XW1tjY2dvb2dvb3N3d293d3N7d3d/e3uDf4uTi2dvb3+Hg5OXj2Nvb3N7d293d4eLh19ra2Nra4OHg3N7d2t3c3t/e9vTw+/nz+vjz+vjz+vjz5OXj5+jm3+Hg4+Tj5OXk5ufl297d4uPh+Pfy/fv3/Pr1/vz3/fz3/Pv2/Pr1/fz3/vz3/fz2+/r1/Pv2/fv2/v33/Pn1+Pby+vfz+Pfy+ffy+vfz+vjz+vjz/Pn08PTv3ebkx8rNyM3P2t3dztLTyc3P1NfX2dvbzdHSyc7Q1NfYyc7QxsrNyMzO19rZys/Q1tnZzNDS1djZ0dTVz9PUy8/R5OXj/Pr0+Pby+vjy+ffy+ffy+vjz+vjz/Pn08/Xw7fLu8vDs8O/r8/Lu8vHt8fDt9PLw9fTw9PPw9PPv9fTw8/Lv8/Lu9PPv9vXx8fHu8O/r9PPv7+/r8/Lv9fTw8/Lv9/bx/fv2/fv2/Pv2/Pv2/fr1+vjz+vjz+vjz+/jz9PDs+ffz+/n2/Pr3+Pby9vXv8/Lr8/Hs7+3o7uzn8O7p8/Hr8O/q8O7p8e/p9PLt+vnz8/Hq+vjy8vDq8O7o8fDp9vXv8vHs8O/p8O7o7+3o8O7p+vjz+vjz+/n09vTvg31veHNiiot9hoV3fX14Y2VZUVlCam5ebW5kU1dRTlNJTE5FTE1EVltLUVVKVlJLdG5jeHlyjo2Fj5KJVFdFZmZThIyHQUY6ODkrR0M2SEUxZWVS/fv2+ffy+/n09vTwd3RaXlIrUU0pNj0bS0UzXFU5R040REU4RUc7UlNLR0lDTVBEP0QuQEcwTU8zT0wxNzImQD85U1NMSEtDSEw9gX98tri6mJiXXV9UR1ZGQVNBYGpc/fr2+vjz+/nz+PbzamZQX1QxV082S0YlWlZCgIJzmKWgiJukbnVyMDUxPD43VVpBVmFEYGJFa2REVlc0XVc/S0lBb3N0jpWbsbm/0srS4eLr+///293dVFJMTEhAaWRd/fv2+ffy+/jz9/bzfnRhUkg3RToxUEEvVFNQLU5pIERfMlRtaXR8QklIV1pOQ0YzRU49VFc5aWFGY1xAa2NIWFlHXm9raH1/V2VqU19lT1daUVVWW19hgYOBjpCNn5+a/Pr0+vjz+/jz9/bygXhuTkQ6Rzo0UEA7V0hCJC85Ii05Q0pTbHJ3WlBMXFlPZllKYVxNY2RZg3dxe25qW0xEYk5GV0hAU01INjg6PkRAHiMgGxgWFxYUJS4yERwmP0ZO/vz2+ffy+/n09vTubGxuP0dQWVJMTkVATUVASVddV2duXHF8fYSIdWFaZFdUbl5XmoJ5goOHtLjEkIqROCooTDw6TkBKLjJBEyk0JSQnHx4eExQVMS8vlZiUkZCGqaWZ/Pr1+vjz/Pn08/Lud3JwWE1LWU5IUkpEQj88UFdcRj4+eUsvSVRbMjY6OzEvV09MeGpkWllYjKSocGZhOCkmNjQ4Qjw+RUNIJCgrJh8iOjQxPz48Njk7cm5ppJqK4NfC+ffz+vjz+/nz9/bxenZ1czUWjGFIMi8wNjMzVFVUQzQsplgmg3dsbl9XhHpxhnVpnpWJnp6WnJyUnZ2Ui392k4V6mZmQkpGJjIuEg4N9hIJ7REdILTAzDgwMf3Zp3dTB+Pby+vjz+/n09vPucHN1iU0svoJZf3hwfHJqnJeOrqaYqp+RtLCkqaKYsayiq6WbraierKqhrKWarquhpaObpqadqKifn6CZnp6Xm5qSl5aOkJKLk5KKQ0A8kId43dTA+ffz+vjz+/n09/TvnpaQnYyBtKCPs6uftK6isauhrqujrqykqqefqqigqKaeqqifqqieqaeeqqqhrKqhrq2kr62krq2jsK+krayhsK6hureqwsG01dHBk4p7l5B/yb+r+vn0+vjz+/n0+PXwwrqztK6ntrKsuLOrubatuLauubevu7mvurmwuLevubmwvLqxu7uxvb20vr62vr61vb20vr60vb2zu7qwu7qvt7esmp2YmZyYqKmil4+Cj4uAoJuP+/n1+vjz+vjz+Pfy4+fm3eLj4ubl3uTk7vDt4OXk3uPj5uno7e/s3ePj4OTk+Pby/Pr0+/n0+/n0+/n0/Pn0/Pn0/Pn0/Pn0/Pn0+/jz9/Xx9/Tw9/Tw/Pn0/fv1+/n0+vjz+vjz+vjz+ffy4OLi3uHh3ODf3uHh3eHh3uLh3eHg4OPi4ePj5Ofl7e7r+Pfy+vjz+vjz+vjz+vjz9vXx9fXx9fXx9fXx9fXx9fXx9vbx9vby9vby9fXw9fXw9vbx+vjz+vjz+vjz+ffz4eLh19ra19na293d3N7d3N7e2Nva4OHg2dzc7u3q/Pr1+ffz+vjz+vjz+vjz+vjz8vTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8vTv+vjz+vjz+vjz+vjz/Pv1/fv2/fz2/fv1/fr1+/r1/fv1/Pv1/fv1/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz",
+    "layoutSha256": "dfd16e83b66fa90ad1718f16cfe204117b7bb40aa571299325e780bd7850fe75",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
+}

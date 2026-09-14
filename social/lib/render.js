@@ -29,6 +29,7 @@ async function wrap(text, size, bold, width, maxLines) {
   return lines;
 }
 export async function renderCreative(input) {
+  if (input.designVersion === 2) return renderLandmarkCreative(input);
   const format = input.format;
   requireThat(['feed', 'story', 'reel'].includes(format), 'Explicit format is required');
   const width = 1080, height = format === 'feed' ? 1350 : 1920;
@@ -92,4 +93,65 @@ export async function renderCreative(input) {
   }
   const buffer = await sharp({ create: { width, height, channels: 3, background: C.cream } }).composite(layers).png().toBuffer();
   return { buffer, layout: { format, width, height, textRegions: regions, logoSha256: LOGO_SHA, photoSha256, palette: C, safeArea: { left: 72, right: 1008, top, bottom } } };
+}
+
+// The same renderer and template family now support the approved photo-led
+// references. Legacy diagnostic exports retain their existing rendering.
+async function renderLandmarkCreative(input) {
+  requireThat(['feed', 'story', 'reel'].includes(input.format), 'Explicit format is required');
+  requireThat(['insight-data', 'question-debate', 'place-opportunity'].includes(input.template), 'Unknown template');
+  const width = 1080, height = input.format === 'feed' ? 1350 : 1920, vertical = input.format !== 'feed';
+  const top = vertical ? 220 : 64, bottom = vertical ? 1620 : 1298;
+  const photoTop = vertical ? 1040 : 720, photoHeight = vertical ? 430 : 455;
+  const colors = { ...C, cream: '#faf8f3', sky: '#e9f1f7' }, layers = [], regions = [];
+  function box(x, y, w, h, color) {
+    layers.push({ input: Buffer.from(`<svg width="${w}" height="${h}" xmlns="http://www.w3.org/2000/svg"><rect width="${w}" height="${h}" fill="${color}"/></svg>`), left: x, top: y });
+  }
+  async function block(text, x, y, size, lineHeight, maxLines, color = C.navy, bold = true, w = 936) {
+    const lines = await wrap(text, size, bold, w, maxLines);
+    for (let i = 0; i < lines.length; i++) {
+      const r = await textImage(lines[i], size, bold, color), yy = y + i * lineHeight;
+      requireThat(x >= 72 && x + r.info.width <= 1008 && yy >= top && yy + r.info.height <= bottom, 'Text outside safe margins');
+      layers.push({ input: r.data, left: x, top: yy });
+      regions.push({ text: lines[i], x, y: yy, width: r.info.width, height: r.info.height, size });
+    }
+    return y + lines.length * lineHeight;
+  }
+  const logo = await fs.readFile(path.join(ROOT, '..', 'logo-mark.png'));
+  requireThat(sha256(logo) === LOGO_SHA, 'Logo bytes do not match the approved TSS mark');
+  const logoImage = await sharp(logo).trim().resize({ width: 230 }).png().toBuffer({ resolveWithObject: true });
+  const logoRegion = { x: 774, y: top, width: logoImage.info.width, height: logoImage.info.height };
+  layers.push({ input: logoImage.data, left: logoRegion.x, top });
+  const name = await textImage('The Smarty Solution', 24, false, C.navy), tagline = await textImage('Connect · Develop · Invest', 18, false, C.slate);
+  await block('The Smarty Solution', 1008 - name.info.width, top + 104, 24, 30, 1, C.navy, false, 300);
+  await block('Connect · Develop · Invest', 1008 - tagline.info.width, top + 144, 18, 25, 1, C.slate, false, 280);
+  const t = input.text || {};
+  await block(t.category, 72, top + 18, 20, 27, 1, C.slate, true, 560);
+  box(72, top + 61, 534, 2, C.navy);
+  let y = top + 178;
+  y = await block(t.headline, 72, y, 62, 74, 3) + 22;
+  if (t.highlight) y = await block(t.highlight, 72, y, 68, 80, 2, C.teal) + 20;
+  if (t.body) y = await block(t.body, 72, y, 28, 38, 3, C.navy, false) + 22;
+  if (t.question) { box(72, y, 7, 34, C.teal); y = await block(t.question, 97, y, 26, 35, 2, C.navy, true, 910); }
+  requireThat(y <= photoTop - 24, 'Copy overlaps the photo. Shorten it before exporting');
+  const catalog = JSON.parse(await fs.readFile(path.join(ROOT, 'photo-catalog.json'), 'utf8')), p = catalog.photos[input.photoKey];
+  requireThat(p?.approved === true && p.republicControlled === true && p.evidenceUrl && p.reviewNote && p.licence && p.licenceUrl, 'Photograph lacks geographic or rights QA');
+  requireThat(/^[a-zA-Z0-9._/-]+$/.test(p.path) && !p.path.includes('..'), 'Invalid photo path');
+  const photo = await fs.readFile(path.join(ROOT, '..', p.path)), photoSha256 = sha256(photo);
+  requireThat(photoSha256 === p.sha256, 'Approved photograph changed');
+  const oriented = sharp(photo, { failOn: 'warning' }).rotate(), stats = await oriented.stats();
+  requireThat(stats.entropy > 1 && stats.channels.some(c => c.stdev > 12), 'Blank or failed photograph');
+  const projected = await oriented.resize(936, photoHeight, { fit: 'cover', position: p.cropPosition || 'centre' }).png().toBuffer();
+  layers.push({ input: projected, left: 72, top: photoTop });
+  await block(t.location, 72, photoTop + photoHeight + 18, 20, 27, 1, C.slate, true);
+  await block(t.source, 72, photoTop + photoHeight + 57, 18, 25, 2, C.slate, false);
+  await block('THESMARTYSOLUTION.COM', 72, bottom - 28, 20, 28, 1, C.navy, true);
+  box(610, bottom - 20, 398, 2, C.teal);
+  for (let i = 0; i < regions.length; i++) for (let j = i + 1; j < regions.length; j++) {
+    const a = regions[i], b = regions[j];
+    requireThat(!(a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y), 'Text regions overlap');
+  }
+  for (const r of regions) requireThat(!(r.x < logoRegion.x + logoRegion.width && r.x + r.width > logoRegion.x && r.y < logoRegion.y + logoRegion.height && r.y + r.height > logoRegion.y), 'Text overlaps the TSS logo');
+  const buffer = await sharp({ create: { width, height, channels: 3, background: colors.cream } }).composite(layers).png().toBuffer();
+  return { buffer, layout: { designVersion: 2, format: input.format, width, height, textRegions: regions, logoSha256: LOGO_SHA, logoRegion, photoSha256, palette: colors, photoRegion: { x: 72, y: photoTop, width: 936, height: photoHeight }, safeArea: { left: 72, right: 1008, top, bottom } } };
 }

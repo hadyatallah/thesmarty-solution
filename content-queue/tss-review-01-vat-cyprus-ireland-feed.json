@@ -1,0 +1,79 @@
+{
+  "qaVersion": 2,
+  "id": "tss-review-01-vat-cyprus-ireland-feed",
+  "status": "draft",
+  "reviewBatch": "2026-09-initial",
+  "reviewNumber": 1,
+  "topic": "Standard VAT comparison: Cyprus and Ireland",
+  "topicKey": "tax-standard-vat-cyprus-ireland",
+  "headline": "CYPRUS VS IRELAND. COMPARE THE SAME TAX.",
+  "creativeKey": "tax-standard-vat-cyprus-ireland-landmark-v2-feed",
+  "format": "feed",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "publishAt": "2026-09-15T09:15:00+03:00",
+  "caption": "Comparing Cyprus and Ireland? Compare the same tax.\n\nStandard VAT is 19% in Cyprus and 23% in Ireland. These are VAT rates, not corporation tax rates. The applicable VAT rate can vary by product or service.\n\nWhich business cost would you compare first?\n\nSource: European Commission: national VAT rates.\nhttps://europa.eu/youreurope/business/finance-and-tax/vat/vat-rules-rates/index_en.htm\n\nPhoto: Paphos Castle, Cyprus, Bukvoed, CC BY 4.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Cyprus-Paphos-Castle-0957.jpg\nhttps://creativecommons.org/licenses/by/4.0\n\n#Cyprus #CyprusBusiness #Ireland #VAT #TheSmartySolution",
+  "creative": {
+    "designVersion": 2,
+    "format": "feed",
+    "template": "insight-data",
+    "photoKey": "paphos-castle",
+    "text": {
+      "category": "TAX / BUSINESS COSTS",
+      "headline": "CYPRUS VS IRELAND. COMPARE THE SAME TAX.",
+      "highlight": "19% vs 23%",
+      "body": "Standard VAT rates. Different from taxes on company profits.",
+      "question": "Which business cost would you compare first?",
+      "location": "PAPHOS CASTLE / CYPRUS",
+      "source": "European Commission | checked 14 Sep 2026"
+    },
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "Standard VAT: Cyprus 19%, Ireland 23%; applicable rates depend on the product or service.",
+        "sourceIds": [
+          "ec-vat"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "ec-vat",
+        "title": "European Commission: national VAT rates",
+        "url": "https://europa.eu/youreurope/business/finance-and-tax/vat/vat-rules-rates/index_en.htm",
+        "expectedText": "CY Cyprus 19",
+        "reviewNote": "Standard VAT only; do not infer corporation tax or transaction-specific VAT.",
+        "sourceType": "tax-authority",
+        "checkedAt": "2026-09-14T12:20:37.319301Z",
+        "validUntil": "2026-09-21T12:20:37.319301Z",
+        "additionalEvidence": [
+          "IE Ireland 23"
+        ]
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Paphos Castle, Cyprus",
+    "photoSha256": "560965147a1c035ae48c9155079dfe8b8f8ae8a5a1fe9a2ad5f7435a3c809c6f",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Cyprus-Paphos-Castle-0957.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "asset": {
+    "path": "social/assets/d73035a02f34d47835fd3edf1d13a58b093a9c06164ba0a84c2d567440538f1a.png",
+    "sha256": "d73035a02f34d47835fd3edf1d13a58b093a9c06164ba0a84c2d567440538f1a",
+    "pixelHash": "099be5f483deea1c8b211c162de0fbe8f354e13db1811bc4eff721ae602cd899",
+    "visualSignature": "rgb32:+vjz+vjz+/r0+/nz/Pn0/Pr0/Pr0+/n0/Pr0+/n0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz//78///////7///9///+///9/fv2+vfz+vjz+vjz+vfz8PDt9PTv8PHu7+/s8PDt8/Pv7/Dt8vLv+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz+vjz+/jz+Pbypa20ipWgmbK5pqmynqKslqGq19nZ/vv2+ffy+vjz+vjz3+Pj4+bl3eLh2N7e2+Dg4uXk3OHh5Ofl9PLu8/Lu8/Lu8/Lu8/Lu8/Lu8/Lu9PPv+vjz+vjz+vjz+ffy///5wMLGXlpugtHVVsPJbIeWTl1yp6+2///6+Pbx+vjz+vjz9vXw9PPv9fPv9vTw9fPv9fPv9fTw9PPv8/Lu8vHt8fHt8vLu8vHu8fHt8vHt8vHt+ffy+ffy+ffy+Pfy+fjz4+Tio6uzu7q/famyoLvBhI2arLS7///5+Pby+vjz+vjz/vz3/v33//75/v76/v76/fv3/Pv3/v75/Pr1/fz4//76/fz2/Pr2/v77/v35/v75+vn0/Pv2/Pv3//768/Pw4OLh5efm3N/e6ubk4uHg4eTj6+zq+vjz+vjz+vjz+ffy1tna1tnZz9PUxMnMw8jM2Nrb293eys7Q6ern3uDfzdHT3uDf6OjmwsfL0dTVy9DR8O/s293d19ra0NTVys/R5ejm8fHu8/Lu6Ovp8PHu8/Pv7u/s+vjz+vjz+/n08/LutLzBxcrNo622tLvBlqKspa+3pa63mKSu5+nor7i+lqKsxszPyc/UiZejl6OslqKtusHFmqWvlaGskZ2olaCqyM3Q///6/v37/v36/f35+/jz+/nz+vjz+vjz+/jz9/bxvsTIv8XJtr7Dsbq/r7i+qbK6rbW8srvArra8t7/E5+nnqrS6u8LGq7W7zdHT1djZtr7DtLvBsrrAp7C4r7e94eLhs7vAsLi+vcPHwsjL/fr1+ffz+vjz+vjz+/n09fPvvcLHu8DFr7a8qbG4oqy0sLi+pq62nqixpa62pq228/HtxMjLsbi+laCrv8XJ1NjYnaiwpq+3p7C4o6y1nqmx5ebkwMbKoau0p7C4tbzC7u3q/Pr0+ffy+vjz+vjz+vnz5u/q5e7q2unm5vLt+/z4+/z4+fv2+vr3+Pr24Ozo3enm2ern6/Pw/Pz5/Pr1+/n0/fv3/fz5/fz4//77/Pv3+/n0/fv3/f35/Pv3+/r3+fby+vjz+vjz+vjz+vjz+vjzoMvKmsfHmMfHmsfHx97czuLflMTEpczM3Ojll8bGoszLncnJps3N1OXi//v2+fjz+ffy+ffy+ffz+ffy+vjz+vnz+ffy+ffy+vjz+ffy+vjz+vjz+vjz+vjz+vjz+ffy7O/r7/Ht9PPv8/Pv6u3q8vHt7vDs7PDs8fLu6ezp7e/s9fTw7vDs7fDs9/Xx9vTw9fTw9vXw9vXw9fTv9fTw9/bx+Pby9fTw9PPv+fjz+vjz+vjz+vjz+vjz+vjz+vfz4uHh5OTj3d/e5ebk3uDf5+jl5OTj4uPi7Ozp3N7d3uDf4+Tj5+fm5OTi5+jm3uDf4+Xj6Onm6enn4+Xj2t3c3+Hf4ePh3N7e1tna7+/r/Pn0+fjz+vjz+vjz/Pn08vXw3+fky87QzNHS293d1tnZ09fX09bX3+Hg19ra2Nva2dvb0NTV2Nrb19ra4OHg19raztLU1djY293d0NTV1djY9PPu+ffy+ffy+vjz+ffy+vjz+vjz+vjz+vjz/Pn08vTv5+3q6+nn5ufl6+zp5+jm5+jm5+jm7Ozp6Onn6enn6+vo5ufk6Ojm6Onn7Ozo6urn4+Ti6Ojm7e3q6Onn6uro+ffy+vjz+fjz+fjz+ffz+ffz+ffz+vjz+vjz+vjz+vj0/Pv1/v32/vz2/fz2/v32/vz2/v32/vz2/vz2/vz2/vz2//32/vz2//z1/vz2/fz3/v34/fz3/vz1//z2//z1/fr0/fr0/fr0/fr0/fr0/fr0/Pr0+vjz+vjz+vjz+fjz8vLv8PHv8PHv8PHv8PHv8PHv8PHv8PHv8PHv8PHv8PHv8PDu7/Dv6/Dz8PHv9fHr9fLr9vTt7vHw7vLz7/Ly8PDv8PDv7/Dv7/Dv7/Du7/Du8fHv+vjz+vjz+/nz9vXxgqC7YomuaI6xZ46xZo6yZY+zZI+0ZI+0Y461Yo61YI22YY64YYy1doyfmpOGq5h9noxxfHBcjYV1XnCEZ2lqXX2hTXerTneoTHamTHSlRmyeZoWs/Pr0+vjz+/n09vTxdJOsUXqcWYCgWYCgWYGhWIKjWIOkWYOmWYOmU4GoY4Oegn93Y2Jhg2tSooRej3VVi3BRf2NFiWtHgGZFfmdIRWmPOWeaPWSUOmOTN2KSLVmLU3Wc/fr0+fjz+/n09vXwg5alZH2SbIWcbIabaoSZa4WabIWbcIidbYeeZoajeoWQlnJPimhLl3RSoHpUlnRRl3ZUmnpYknNRkG9KiG9SVG+OSm2US2uPSmmORWmNO2CGXXqY/fr0+vjz+/n09fTwb3yiSl2PWFxkW2eEYHGbX3GfanqhW22haXigZHSdaWl5n3dYnnZWpHpUmHFMjWtJlXFNjmtIjmtIjWpEfWRJP1d7OlZ/OVV9NFN7NFJ7K0lzUGmK/fv1+vjz/Pnz9PPxW2ymLT18UExFPz89NkJtMz92UVd7Mz92MTVVIiZJMSgvoXpYjGZKk21MoHlTf14/jmdEhmE/hmNBf189gWhKZ2ZlWVpeVFZaTFJYTlNaQ0lQWF1n/fr1+vjz+/n09/TvnpF+Z2BTjIdzraiTb3drTVNJJh8aHRMRFAsLCggHNikcrotnjnNbeF1IlnRVlnthiW5WgmxVfmpTkH5mkYJnl4lqjYBjiX1fhHpdbmVOdGpNm5N4/fv3+ffy+/n19vPtcmhfmZF6t62Q2cao0sm4lqWZSlFMUkc/gHNjj39tmoJsqZR6rZyGqZiBqpiDr6CKo5WBnpF7jX9qj4JtkYdxjoNqjINqh31ibWVQRkM4RT0sW1VK/fv3+ffy+/n09/XvtKqUq55/uq2N0b6Yz76i18WvuLCcpZ2HwqiKq5F0qo9ysJt/qZN1tJ17qZd6r5l4oIxvl4RoeWxZfnJef3Ridm5geHFinJJ3m5F0oZp+kYlpf3di+vj0+vjz+/n09vTvqaCNkYVrvKyI1cOgxreaw7KV38emvLWeYlxQnYJo38Okx6uN17qUvKJ/qJFxqZBtaFlETkc8Y1hLc2hYTElCi4Bqlo12kot1gnheenVjnph6p6CD/fv2+ffy+vj0+fbwuKmJmYdjsZ51uKV9wbCLz72d38ik0riRTEM6inJZ3MGh2ryZ4sSdup59qI9vXVVKFhgcCgwOIB8eKykoIiMmU09Hr6J/XllIJCMhLiwoKCgnd3Ro//74+ffy+vj0+Pbx0MGft6eBw7WPvKqDva6O2cqw3sqp0LychnVhcmJSp41xu6SFxq2Is5x9sZ2DaGJbQEFBS0tIUlJRT09OWFhVS0xOmpWCv7WUV1VOT0xLS0pHfXpy/vv2+ffy+vjz+ffy4ebm3uTl5unp5urq4ebm6u3s6u3r3uTk5+vq+/r29PPv8vHu9/Xx/fv2/Pr1/fv1/fv1//z3/vz2/vz2/vv2/vz2+/n1/fv3//75//z2/vz2/fv1+vjz+vjz+vjz+Pfy4uTj29/f3uHg3uHg3+Lh4eTj4ePi3+Pi3+Li5+nn7u/s6+3r9vXx+vjz+vfy+ffy9fXx9PXw9fXw9fXw9fXw9fXw9fXw9PTv9PTw9PXw9PXw9vXw+vjz+vjz+vjz+ffz4eLh19nZ19ra293d3N7d3N7d19ra3+Hg2dzc7e3q/Pn0+ffz+vjz+vjz+vjz+vjz8vTv8fTv8fTv8fTv8fTv8fTv8fTv8vTv8fTv8fTv8fTv8vTv+vjz+vjz+vjz+vjz/Pv1/fv1/fz2/fv1/fr1/Pr1/fv1/Pv1/fv1/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz",
+    "layoutSha256": "603c1fabe16b9c9e932fbb3464f5731aab8ad0a489032cd163b00c6241b75db7",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
+}

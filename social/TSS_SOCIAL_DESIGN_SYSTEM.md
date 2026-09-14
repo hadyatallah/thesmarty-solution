@@ -1,8 +1,10 @@
-# TSS Social Design System v1
+# TSS Social Design System v2
 
 Status: ACTIVE
 
 This file is the source of truth for all new The Smarty Solution social creatives.
+It extends the existing repository system using Hady's September 2026 references.
+The machine-readable companion is `social/design-system.json`.
 
 ## Brand objective
 Every TSS post should be recognisable as part of the same editorial publication before the viewer notices the logo. Content may vary; the visual grammar must not.
@@ -19,14 +21,14 @@ Every TSS post should be recognisable as part of the same editorial publication 
 ## Fixed anatomy
 1. Small uppercase category label at top-left, e.g. `SMARTY INSIGHT / CYPRUS PROPERTY`
 2. Thin horizontal rule aligned with category label
-3. TSS logo at top-right, consistent size and clear space
+3. Original TSS mark at top-right, then The Smarty Solution and Connect - Develop - Invest as real text with clear space
 4. Strong editorial headline, normally 2-5 lines
 5. One dominant fact, question or visual
 6. Supporting copy kept short
-7. Footer: `THE SMARTY SOLUTION · CONNECT · DEVELOP · INVEST`
+7. Lower real-photo panel, location label, concise source line and `THESMARTYSOLUTION.COM` footer
 
 ## Template family
-Only these three feed templates are permitted unless the design system itself is revised.
+Only these three template families are permitted. Each format is composed separately.
 
 ### A. Insight / Data
 Use for GDP, tax, property, tourism and economic facts.
@@ -34,7 +36,7 @@ Use for GDP, tax, property, tourism and economic facts.
 - Large navy headline
 - One large blue/slate number or statistic
 - Maximum 3-4 short supporting facts
-- Optional small restrained image panel
+- Verified real Cyprus photograph in the lower image panel
 
 ### B. Question / Debate
 Use for audience engagement, unpopular opinions and investment questions.
@@ -60,6 +62,18 @@ Use for Larnaca, Limassol, Paphos, Kiti and other locations/opportunities.
 - Avoid visible third-party branding as a dominant feature where a cleaner alternative exists
 - Credit externally licensed imagery where required
 
+Every v2 photograph must be approved in `social/photo-catalog.json` by original
+file hash, source, licence, actual landmark and Republic-controlled geography.
+Current approved locations are Paphos Castle, Larnaca Castle, Finikoudes,
+Pano Lefkara and Petra tou Romiou. An AI location label alone is insufficient.
+Only a location label appears on the creative; required photo attribution is
+provided in its caption. Older landmark photos illustrate a location, not a
+current property listing.
+
+The original `logo-mark.png` is pinned to SHA-256
+`1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459`.
+Its diagonal teal S is preserved; it cannot be replaced by an AI-rendered logo.
+
 ## Typography and hierarchy
 - Clean contemporary sans-serif only
 - Bold/extra-bold headline
@@ -82,18 +96,31 @@ Before approval, compare the creative against the most recent TSS grid and rejec
 Stories/Reels use dedicated 1080x1920 (9:16) assets. Never reuse a 4:5 feed asset directly.
 - Preserve the same cream/navy/slate/teal identity
 - Keep important text within the central safe area
+- Vertical text safe area: x=72..1008, y=220..1620; feed: x=72..1008, y=64..1298
 - Use the same category-label and logo logic where practical
 - Reels should favour real location/business footage and restrained editorial overlays
 
 ## Content mix
-TSS should behave primarily as a Cyprus/Lebanon business and investment intelligence publication.
+Write for investors, entrepreneurs and people considering relocation. Choose
+topics and European comparison countries using measured audience demand,
+official data and credible original market studies. Useful audience content
+should be roughly 80% of the mix, with 20% direct TSS promotion.
 - Cyprus Investment Intelligence
 - Property & Development
 - Tax & Business
+- European tax, property, cost-of-living and relocation comparisons
 - Cyprus ↔ Lebanon
 - Opportunity / Debate
 
 Direct TSS promotion should normally remain around 15-25% of content.
+
+Questions and challenging hooks need verified evidence. Never claim migration
+counts prove a tax motive. Name the observation period, provisional status,
+measure and material exceptions. A national household measure is not a rent
+quote for a newcomer; a house-price index is not a forecast or rental yield.
+Read the actual primary sources and maintain claim-to-source evidence with
+direct URLs, scope notes, check dates and expiry. A failed source blocks the
+post. Numbers in a reference design are not automatically verified facts.
 
 ## Publishing QA gate
 A post must pass all of the following before it is marked approved:
@@ -109,4 +136,22 @@ A post must pass all of the following before it is marked approved:
 - duplicate/topic check against previous 30 days
 - Cyprus geographic imagery rule satisfied
 
+All 17 checks in `social/lib/qa.js` must pass, including inspecting the actual
+exported file. OCR validates final text regions; bounds reject clipping and
+overlap; final bytes and decoded pixels are fingerprinted. V2 Reels require
+complete MP4 decoding, scene-image OCR, OCR of the actual encoded scenes,
+per-second frame comparisons, transitions and ending checks. Captions use no
+more than five relevant hashtags; Story captions remain below 120 characters.
+
 If any check fails, status remains draft and it must not enter the publishing queue.
+Passing QA sets the first ten posts to `awaiting_user_approval`. Notify Hady
+here when a final post or revision is ready. Only explicit user approval of
+the exact creative and caption can populate `social/user-approval-policy.json`.
+Technical QA cannot substitute for this approval. Content changes need revision
+approval; scheduling-only changes preserve content approval but require a fresh
+technical QA seal.
+
+Full automatic publishing follows the ten approvals and inspected live rollout
+tests. Each enabled format needs its own actual live proof. Target three
+quality-controlled items per day across feed, Story and Reel; publish fewer
+when a slot cannot pass quality, fresh-evidence or duplicate gates.

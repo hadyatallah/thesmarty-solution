@@ -1,11 +1,15 @@
 {
-  "version": 1,
+  "version": 2,
   "status": "active",
   "feed": {
     "width": 1080,
     "height": 1350,
     "aspectRatio": "4:5",
-    "templates": ["insight-data", "question-debate", "place-opportunity"],
+    "templates": [
+      "insight-data",
+      "question-debate",
+      "place-opportunity"
+    ],
     "plainFullFramePhotoAllowed": false
   },
   "vertical": {
@@ -15,19 +19,38 @@
     "feedAssetReuseAllowed": false
   },
   "palette": {
-    "dominant": "warm-off-white",
+    "dominant": "light-off-white",
     "primary": "deep-navy",
-    "accents": ["muted-slate-blue", "restrained-tss-teal"]
+    "accents": [
+      "tss-teal",
+      "muted-slate-blue",
+      "pale-sky-blue"
+    ]
   },
   "fixedElements": {
     "categoryLabel": "top-left",
     "rule": true,
-    "logo": "top-right",
-    "footer": "THE SMARTY SOLUTION · CONNECT · DEVELOP · INVEST"
+    "logo": "top-right-original-asset",
+    "wordmark": "The Smarty Solution",
+    "tagline": "Connect \u00b7 Develop \u00b7 Invest",
+    "footer": "THESMARTYSOLUTION.COM",
+    "locationLabel": true,
+    "sourceLabel": true
   },
   "geography": {
     "occupiedCyprusImageryAllowed": false,
-    "preferredRepublicOfCyprusAreas": ["Larnaca", "Limassol", "Nicosia", "Paphos", "Paralimni", "Protaras", "Ayia Napa", "Troodos", "Platres", "Lefkara"]
+    "preferredRepublicOfCyprusAreas": [
+      "Larnaca",
+      "Limassol",
+      "Nicosia",
+      "Paphos",
+      "Paralimni",
+      "Protaras",
+      "Ayia Napa",
+      "Troodos",
+      "Platres",
+      "Lefkara"
+    ]
   },
   "publishing": {
     "maxHashtags": 5,
@@ -35,6 +58,22 @@
     "requireBrandTemplate": true,
     "requireFactCheckForFactualClaims": true,
     "requireSafeMarginCheck": true,
-    "requireCropCheck": true
+    "requireCropCheck": true,
+    "firstPostsRequireUserApproval": 10
+  },
+  "content": {
+    "audiences": [
+      "investors",
+      "entrepreneurs",
+      "people-relocating"
+    ],
+    "coreTopics": [
+      "Cyprus property",
+      "taxes and comparable tax differences",
+      "European relocation and housing comparisons"
+    ],
+    "evidence": "official primary sources and credible original market studies; no unsupported forecasts or migration motives",
+    "targetUsefulShare": 0.8,
+    "targetPromotionShare": 0.2
   }
 }

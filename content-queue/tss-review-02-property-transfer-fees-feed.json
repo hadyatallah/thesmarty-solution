@@ -1,0 +1,79 @@
+{
+  "qaVersion": 2,
+  "id": "tss-review-02-property-transfer-fees-feed",
+  "status": "draft",
+  "reviewBatch": "2026-09-initial",
+  "reviewNumber": 2,
+  "topic": "Cyprus acquisition costs: transfer fee and VAT interaction",
+  "topicKey": "cyprus-acquisition-transfer-fees-vat",
+  "headline": "A PROPERTY PRICE ISN'T THE FULL COST.",
+  "creativeKey": "cyprus-acquisition-transfer-fees-vat-landmark-v2-feed",
+  "format": "feed",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "publishAt": "2026-09-15T09:15:00+03:00",
+  "caption": "Before comparing Cyprus properties, compare the full acquisition cost.\n\nDLS says no transfer fee is collected when VAT is charged on the same transaction for the same property, subject to its stated conditions. Where transfer fees are charged, a 50% discount applies, with exceptions.\n\nHave the exact property and transaction checked before budgeting.\n\nSource: Cyprus DLS: sale and exchange.\nhttps://portal.dls.moi.gov.cy/en/application_forms/polisi-antallagi/\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
+  "creative": {
+    "designVersion": 2,
+    "format": "feed",
+    "template": "insight-data",
+    "photoKey": "larnaca-castle",
+    "text": {
+      "category": "PROPERTY / BUYING COSTS",
+      "headline": "A PROPERTY PRICE ISN'T THE FULL COST.",
+      "highlight": "CHECK TRANSFER FEES",
+      "body": "Cyprus: VAT and transfer fees interact. The exact transaction matters.",
+      "question": "Do you compare the total acquisition cost?",
+      "location": "LARNACA CASTLE / CYPRUS",
+      "source": "Cyprus DLS | checked 14 Sep 2026"
+    },
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "DLS states a same-transaction VAT transfer-fee waiver, with conditions, and a 50% discount where fees are charged, with exceptions.",
+        "sourceIds": [
+          "dls-transfer"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "dls-transfer",
+        "title": "Cyprus DLS: sale and exchange",
+        "url": "https://portal.dls.moi.gov.cy/en/application_forms/polisi-antallagi/",
+        "expectedText": "A 50% discount on the immovable property transfer fee",
+        "reviewNote": "Same-transaction VAT waiver and fee reductions have exceptions. No personal fee quote.",
+        "sourceType": "land-registry",
+        "checkedAt": "2026-09-14T12:20:37.319301Z",
+        "validUntil": "2026-09-21T12:20:37.319301Z",
+        "additionalEvidence": [
+          "where Value Added Tax is charged for the same transaction"
+        ]
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Larnaca Castle, Cyprus",
+    "photoSha256": "c6a4caacaaf97e1a5277d7b26d285e56f149d32da590cf93623c783482b11bcc",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:2022_Larnaca_castle_courtyard.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "asset": {
+    "path": "social/assets/43499dce82c6e5e70f4931756011e93f14b9b2db34764937e756b464afffb7e3.png",
+    "sha256": "43499dce82c6e5e70f4931756011e93f14b9b2db34764937e756b464afffb7e3",
+    "pixelHash": "3ade3280d6043aad568a89b96754214902a053498912f56774ea2d3fb734915d",
+    "visualSignature": "rgb32:+vjz+vjz+/n0/Pr0/Pr0/Pjz/Pn0/Pr0+/n0/Pn0/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz//78///////7///9///+///9/fv2+vfz+vjz+vjz+ffy8fHu7u/s7u/s9PPw8fHu8PDt8vLu8vHu7/Dt+Pfy+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz+vjz+/jz+Pbypa20ipWgmbK5pqmynqKslqGq19nZ/vv2+ffy+vjz+Pfy4OTj2N7e2+Dg5ujn3eLi2+Dg3+Pi3+Li3OLh7u7r9PPv8/Lu8/Lu8/Lu8/Lu9PPv+vjz+vjz+vjz+ffy///5wMLGXlpugtHVVsPJbIeWTl1yp6+2///6+Pbx+vjz+vjz9vXw9vXx9fTv8/Lu9PTv9fTw9fPv9fPv9fPv8vHu8fDt8vHt8vHu8vLu8fHt8vHu+Pby+Pfy+Pby+ffz+/j04ePhoaqyurm+fKixn7rAhI2arLS7///5+Pby+vjz+ffy/Pz3+/r1/fz4//77/f35/vz3/v35/v76/v75/v36//36///6/v34/Pv2//77/v76/Pz4/vz3/fz3//348fDt5efl6+zq4uTi7uvp5+bk4eTj6+zq+vjz+vjz+ffy/vz2293d7Ozp0tbWwcfKztLU19razNDSxMnMys7Qy8/RyM3PxcrN2tzb5OXjwsjLxcrN2dvb2dvcz9PU293d6ernwcjMytDS19rbwcnNyM/S9fXx7u/s+vjz+vjz+ffy//33mqWuxMrPvcTIo622jZmlqbK5kZ2oqrO7kJ2qlqKtn6qyxsvNvcTI19vdpK62mKOtk5+ppa+2nKewub/Eyc7PjJmklqGrlKCq0NTVwsfL//74+ffy+vjz+vjz+vjz+vjztr7DsLm/t7/EvcXI4uTjrLW8xMrMvMTJ1djZ3eDf3+LgwcfKvcTItb3BwMfLuMDF7+/r9vbx9PPv9/fy+fjy9vXx9vbx9vbx+/n0+fjz+ffy+ffz+vjz+vjz+ffy/fv1z9HTuL7Dpay1qbC439/fusDFu7/EoquzvcLGxsnN4OHhtrzCtLvArrW8rbO6x8rN7Ozp///5/fv2/vz3+vjz/v33/vz2/vv2/vv2/vv2+/nz+vjz+vjz+vjz+vjz+vjz5vDr5fDs5vHs1ufl3Onl6PLt3+zo8vfz3+vnzOHe1ebj7PLt5O/r4u7r3uzp4O3p0+Th0ePg1eXiz+Lg9vbxzuLf0+Th0+Th1eXi1eXi8PPv/Pn0+vjz+vjz+/n09PXwoMrKqM7Ohr2+fbm6ksTErNDPfLi6yuDd1ubjlcXFhLy+jsLDhL2+hLy9ir/AiL7AoMvKlsbGksTEe7i62+jlnsnKl8bGhb2+lMXFjsLCyuDe//z3+Pfy+vjz+vjz+vjz8vTv8/Tw9/fy8fLv8PHt7/Ht8fLu8fLu+PXx9PPv8/Pv7O/r8fPv8PLt8vLu7vHt9/Xw8/Pv8fLv9fXw8/Pv9/bx9PTw8fLu8vLu8/Pv9PXw+/jz+vjz+vjz+/jz9/bx293c0dPV2Nvb5uXk2Nra5OTi3N7e4uPi2t3c2dvb5OTj29zc5OXj3d7e2tzc4eLg5+jl3t/f4OHg293c5OXi4ePh3N3d3t/f2t3c6+vo/Pn0+fjz+vjz+vjz+vjz+vjz5OTi3N/e3uDe8/Pv/fz3/fv2/fv2/fz2+/r1/Pv1/fz3/Pv2/Pv1/fv2/fv2/Pv2/fz3/Pr1/vz2+vjz+ffy+ffy+Pbx+Pbx+ffz+ffy+vjz+vjz+vjz+vjz/Pn08vXw2ePh09bX1tnZ2dvb1djZyc7QzdHT0tXWz9TV1tnZzM/Sz9PU0NTVztLUy9DSxsvOz9PU3N7dxsvN5OXj/Pr0+Pfx+vjy+ffy+ffy+vfy+ffy+ffy+vjz+vjz/Pn08/Xw6e/q9PLu7u7q9PLu9PLu7+7q7+/r8vHt8fDs8vHs8fDs8vHs8fDr7u3p8O/r8fDt9PPv9vTx8vHu+Pbz/Pn1/fr2/fv2/Pr1/Pr1+vj0/Pr1/Pr1+vjz+vjz+vjz+vnz+fj0+Pfz+Pfz+Pfz+Pbz+fj0+ffz+ffz/fv3//77+vn2+vn1/f36/Pz6/Pv49/bw8/Ps9PPt8/Lr8vHq8vTr7+7o7evn8O7p9PLr9/Tt8O7p8vDr+vjz+vjz+vjz+PfyydXmvMzivs3jwM/jxNLmydbozdrsy9nqu8jZq7XDkZqkipObkpymo623qrzOQlJHP05ARFJFU11UanJhbHheWmpUR1VKUmBQU1hSdm9ldG1Yo5uG/Pr2+fjy+vjz+PfzucnjqL3fr8Lhtsnmm6m8iZWikZ2riJGcZm54bHF2en+Db3J0eH2Aio2NgouUQlBQFSQYM0QxOEU/OD9BP0NESFFFQ1I9Okg3Ji8rLC8uSUY2f3pp/Pr1+vjz+vjz+Pbzucjjp7vfq77gssboj5mnc3uBa3aBc3uBgYWIiIqLiouJkZSXlJeZlpmaeXp2mpuVTVhRLj0xJy8uJSsuLTE1LjMzNTo3MTYyKjEpKCwoHR8dQkZA/Pr1+vjz+vjz+PbztcnooLrjpb/nornbg4qQhY6WgIqThYqOipCSlJmcmJ6fnKSqoqqyk5icZGVio5uMh4l+ERsRMTc1JyssHyEiLDEyHiMeMjc1SU1NHR0bJicqT09M/fv1+ffz+/jz+Pbyr7nInKvCscHYrbzNfYKEf4eNiZWgm6ewmqSsm6Sroau1nqiwnaSpio+QZ2hko5eCjoh3ICUeJislQUZGSE9UN0FJHiYjUFtciJajZ3F8NT1EipGb//75+ffy+/n09vTupJSAkn9nn5B9mot4j4R1eHVwaWppb3V6k5qel5uem5+hpaqwoaeuf4KBZWZfmo98lX9kiYJ3REI8nJqVs7GubnR/foaKpqqpo6iqoaapjpKVkZef/vz3+ffy+vn0+PbwqZZ/nYVoqZZ7oo95nIx2hHhlVE5DQkJEdXl9jY+QmJqcl5qelZiccG1mZGFWjoBqgnRQfXdcNTcnjIFwn5N+YWBgbXB4qaekoJ+cpaSieHV0cXB1/Pr1+vjz+vjz/PnzqJV+b1hFiXRifWxeVkY7Y1NHS0I9Qj9ATU1Na2pofHt5eHNpeXZwbW5saWdfgXlkNj8lLDohNEMoMTkiNkMiXmZHV15ahY5wg410iZF7T1NFXF5d//73+ffy+/n09vTveWldNCQaQzo4fXdzVlBRlpORkpKTkZGUmZugl5mcmZyem56flZeXmp+imaCoiY+THiYaDxsNFCEUFyIUHioYcX5ydoCEd4N5d4F1bnluY21neoGC/fv1+ffz+/n09/XwkpCMbmpniISCsq6qyMfDxsfGx8fHxsbFw8TCwcHAv7++vLy7vL28ubq4tbWyu7u4XmJZLzQrLjQrKzEmTVRKq7K5r7jCpa67oau6maS1X2pgcXtp/fr2+vjz+vjz+ffy3tzX1NPP1dTRzs3KysnGycjHx8bFw8LAxMK/xcPAw8K/w8K+xMO/wcG/vb27uLe0sLGwnJ2cfXx2gX91mpmTtLa1uLq5ubu6vcDCxMfMkZeGg45o/fv3+vjz+vjz+ffy4ubl2+Dg4eXk5uno4ebl5uno7O3r4ebl3eLj9PPw+/n0+vjz+vjz+/n0+vn0+vj0+ffy9/Xw9/Tv9/Xv9/Xv+vfy+vjy+vjy+/n0+/n0/vv4/vv3+vjz+vjz+vjz+ffy4eTj3ODf3ODg4eTj3+Lh4ePj3uHh4eTj3ODg7e7r/Pr1+ffz+vjz+vjz+vjz+vjz9vbx9vbx9vfy9vfy9vbx9fXx9fbx9fXx9fXx9fXx9PXw9fXw+vjz+vjz+vjz+ffz4eLh19ra2Nra3N3d3N7e3N7d19ra3+Hf2tzc7u3q/Pr1+ffz+vjz+vjz+vjz+vjz8vTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8vTv+vjz+vjz+vjz+vjz/Pv1/fv1/fv2/fv1/fr1/Pr1/fv1/Pv1/fv1/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz",
+    "layoutSha256": "93a2b456133c8a9a0e5d6cf55bb89e304f6a1b3f184bf03d720a69a0b9f5405a",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
+}

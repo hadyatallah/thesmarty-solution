@@ -3,7 +3,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import sharp from 'sharp';
-import { normalize, requireThat, sha256, validateImage, visualSignature } from './qa.js';
+import { imageFingerprint, normalize, requireThat, sha256, validateImage, visualSignature } from './qa.js';
 
 async function videoEvidenceAtFile(file, info) {
   const v = info.streams.find(s => s.codec_type === 'video'), duration = Number(info.format.duration);
@@ -31,12 +31,28 @@ export async function analyzeVideo(buffer, enforcePublishingPolicy = false) {
 
 export async function inspectExport(item, buffer) {
   if (item.format === 'reel') return inspectVideo(item, buffer);
+  return inspectRenderedImage(item, buffer);
+}
+
+// Dedicated Reel scene PNGs get the same text/photo inspection before encoding.
+// The live Reel path still requires the actual inspected MP4.
+export async function inspectRenderedImage(item, buffer) {
   const result = await validateImage(buffer, item);
   const layoutBytes = await fs.readFile(`${item.asset.path}.layout.json`);
   requireThat(sha256(layoutBytes) === item.asset.layoutSha256, 'Layout evidence changed');
   const layout = JSON.parse(layoutBytes);
   requireThat(layout.format === item.format && layout.width === item.asset.width && layout.height === item.asset.height && layout.logoSha256 === item.creative.logoSha256, 'Incorrect layout evidence');
-  requireThat(normalize(layout.textRegions.map(r => r.text).join(' ')) === normalize([...Object.values(item.creative.text), 'CONNECT · DEVELOP · INVEST', 'THE SMARTY SOLUTION'].filter(Boolean).join(' ')), 'Creative text is missing from the final layout');
+  const expectedText = item.creative.designVersion === 2
+    ? ['The Smarty Solution', 'Connect · Develop · Invest', ...Object.values(item.creative.text), 'THESMARTYSOLUTION.COM']
+    : [...Object.values(item.creative.text), 'CONNECT · DEVELOP · INVEST', 'THE SMARTY SOLUTION'];
+  requireThat(layout.designVersion === item.creative.designVersion, 'Incorrect design version evidence');
+  requireThat(normalize(layout.textRegions.map(r => r.text).join(' ')) === normalize(expectedText.filter(Boolean).join(' ')), 'Creative text is missing from the final layout');
+  if (layout.designVersion === 2) {
+    requireThat(layout.logoRegion && layout.photoRegion, 'Logo/photo bounds required');
+    for (const r of layout.textRegions) for (const b of [layout.logoRegion, layout.photoRegion]) {
+      requireThat(!(r.x < b.x + b.width && r.x + r.width > b.x && r.y < b.y + b.height && r.y + r.height > b.y), 'Final text overlaps the logo or photograph');
+    }
+  }
   if (item.geography.mode === 'verified-republic-location') requireThat(layout.photoSha256 === item.geography.photoSha256, 'Photo does not match geographic evidence');
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'tss-ocr-'));
   try {
@@ -67,8 +83,31 @@ export async function inspectVideo(item, buffer) {
     requireThat(item.review.fullVideoInspected && item.review.videoRightsVerified && item.review.inspectedFrameTimes.length >= 3 && item.review.inspectedFrameTimes.every(t => Number.isFinite(t) && t >= 0 && t < duration), 'Full-video review missing');
     const evidence = await videoEvidenceAtFile(file, info);
     requireThat(item.asset.pixelHash === evidence.pixelHash && JSON.stringify(item.asset.videoVisual) === JSON.stringify(evidence.videoVisual), 'Video duplicate evidence does not match actual decoded frames');
-    return { width: v.width, height: v.height, duration, codec: v.codec_name, fullDecodePassed: true, pixelHash: evidence.pixelHash, checkedDuplicateFrames: evidence.videoVisual.frames.length };
+    const sceneChecks = item.creative?.designVersion === 2 ? await inspectEncodedScenes(item, file, duration) : null;
+    return { width: v.width, height: v.height, duration, codec: v.codec_name, fullDecodePassed: true, pixelHash: evidence.pixelHash, checkedDuplicateFrames: evidence.videoVisual.frames.length, sceneChecks };
   } finally { await fs.rm(dir, { recursive: true, force: true }); }
+}
+async function inspectEncodedScenes(item, file, duration) {
+  const scenes = item.creative.scenes, assets = item.asset.sceneAssets, seconds = item.creative.sceneDurationSeconds;
+  requireThat(Array.isArray(scenes) && scenes.length >= 1 && scenes.length <= 6 && assets?.length === scenes.length && Number.isFinite(seconds) && seconds >= 3 && Math.abs(scenes.length * seconds - duration) < 0.05, 'Reel scene evidence or timing is incomplete');
+  const references = [];
+  for (let i = 0; i < scenes.length; i++) {
+    const scene = structuredClone(item); scene.creative.text = scenes[i]; scene.asset = assets[i];
+    const bytes = await fs.readFile(scene.asset.path);
+    await inspectRenderedImage(scene, bytes);
+    references.push(bytes);
+    const actual = execFileSync('ffmpeg', ['-v', 'error', '-ss', String((i + 0.5) * seconds), '-i', file, '-frames:v', '1', '-f', 'image2pipe', '-vcodec', 'png', '-'], { timeout: 10000, maxBuffer: 16 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
+    await verifyPublishedImage(bytes, actual, 9 / 16);
+    // OCR the actual encoded video frame, retaining the inspected scene layout.
+    scene.asset = { ...scene.asset, sha256: sha256(actual), pixelHash: await imageFingerprint(actual), visualSignature: await visualSignature(actual) };
+    await inspectRenderedImage(scene, actual);
+  }
+  const times = [...new Set([0.1, ...Array.from({ length: Math.floor(duration) }, (_, i) => i + 0.1).filter(t => t < duration - 0.1), ...scenes.slice(1).flatMap((_, i) => [(i + 1) * seconds - 0.1, (i + 1) * seconds + 0.1]), duration - 0.2])];
+  for (const t of times) {
+    const frame = execFileSync('ffmpeg', ['-v', 'error', '-ss', String(t), '-i', file, '-frames:v', '1', '-f', 'image2pipe', '-vcodec', 'png', '-'], { timeout: 10000, maxBuffer: 16 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
+    await verifyPublishedImage(references[Math.min(scenes.length - 1, Math.floor(t / seconds))], frame, 9 / 16);
+  }
+  return { ocrCheckedScenes: scenes.length, checkedFrames: times.length, transitionsAndEndingChecked: true };
 }
 export async function verifyPublishedImage(reference, actual, expectedRatio) {
   const m = await sharp(actual).metadata();

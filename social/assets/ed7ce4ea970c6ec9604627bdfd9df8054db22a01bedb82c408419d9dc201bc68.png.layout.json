@@ -1,0 +1,124 @@
+{
+  "designVersion": 2,
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 763,
+      "y": 168,
+      "width": 245,
+      "height": 24,
+      "size": 24
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 771,
+      "y": 208,
+      "width": 237,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "RELOCATION / HOUSING",
+      "x": 72,
+      "y": 82,
+      "width": 265,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "CYPRUS HOUSING. THE",
+      "x": 72,
+      "y": 242,
+      "width": 802,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "HOUSEHOLD VIEW.",
+      "x": 72,
+      "y": 316,
+      "width": 649,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "11% vs 19%",
+      "x": 72,
+      "y": 412,
+      "width": 447,
+      "height": 52,
+      "size": 68
+    },
+    {
+      "text": "Income spent on housing, 2024. Cyprus vs EU average.",
+      "x": 72,
+      "y": 512,
+      "width": 779,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "Would your own relocation budget match?",
+      "x": 97,
+      "y": 572,
+      "width": 626,
+      "height": 26,
+      "size": 26
+    },
+    {
+      "text": "PETRA TOU ROMIOU / CYPRUS",
+      "x": 72,
+      "y": 1193,
+      "width": 334,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "Eurostat | Housing in Europe | 2024 data",
+      "x": 72,
+      "y": 1232,
+      "width": 360,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 72,
+      "y": 1270,
+      "width": 310,
+      "height": 14,
+      "size": 20
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 774,
+    "y": 64,
+    "width": 230,
+    "height": 88
+  },
+  "photoSha256": "71c16cfb45d2b453ab0f88d87d131d5218e345ab77cca71cfb8d871138a8f7c5",
+  "palette": {
+    "cream": "#faf8f3",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "sky": "#e9f1f7"
+  },
+  "photoRegion": {
+    "x": 72,
+    "y": 720,
+    "width": 936,
+    "height": 455
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 64,
+    "bottom": 1298
+  }
+}

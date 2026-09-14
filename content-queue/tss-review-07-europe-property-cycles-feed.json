@@ -1,0 +1,80 @@
+{
+  "qaVersion": 2,
+  "id": "tss-review-07-europe-property-cycles-feed",
+  "status": "draft",
+  "reviewBatch": "2026-09-initial",
+  "reviewNumber": 7,
+  "topic": "Portugal versus Finland: different European residential price cycles",
+  "topicKey": "europe-property-cycles-portugal-finland-q1",
+  "headline": "EU PROPERTY. DIFFERENT CYCLES.",
+  "creativeKey": "europe-property-cycles-portugal-finland-q1-landmark-v2-feed",
+  "format": "feed",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "publishAt": "2026-09-15T09:15:00+03:00",
+  "caption": "Europe is not one property cycle.\n\nEurostat reports house prices up 17.8% in Portugal and down 2.0% in Finland in Q1 2026 versus Q1 2025. These are nominal transaction-price changes, not rental yields or absolute property prices.\n\nWhich market and asset would you study further before buying?\n\nSource: Eurostat: house price index, 2 July 2026.\nhttps://ec.europa.eu/eurostat/statistics-explained/index.php?title=Housing_price_statistics_-_house_price_index\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
+  "creative": {
+    "designVersion": 2,
+    "format": "feed",
+    "template": "insight-data",
+    "photoKey": "petra-tou-romiou",
+    "text": {
+      "category": "PROPERTY / EUROPE",
+      "headline": "EU PROPERTY. DIFFERENT CYCLES.",
+      "highlight": "+17.8% vs -2.0%",
+      "body": "Portugal vs Finland: house prices, Q1 2026 compared with Q1 2025.",
+      "question": "Would you buy on momentum alone?",
+      "location": "PETRA TOU ROMIOU / CYPRUS",
+      "source": "Eurostat | house price index | Q1 2026"
+    },
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "Eurostat HPI: Portugal +17.8% and Finland -2.0%, Q1 2026 year-on-year; nominal residential transaction prices.",
+        "sourceIds": [
+          "eurostat-hpi"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "eurostat-hpi",
+        "title": "Eurostat: house price index, 2 July 2026",
+        "url": "https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Housing_price_statistics_-_house_price_index",
+        "expectedText": "Portugal (+17.8%)",
+        "reviewNote": "Nominal residential transaction-price changes, Q1 2026 vs Q1 2025; not yields or absolute prices.",
+        "sourceType": "official-statistics",
+        "checkedAt": "2026-09-14T12:20:37.319301Z",
+        "validUntil": "2026-09-21T12:20:37.319301Z",
+        "additionalEvidence": [
+          "Finland (-2.0%)",
+          "Q1 2026, compared with the same quarter of 2025"
+        ]
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Petra tou Romiou, Cyprus",
+    "photoSha256": "71c16cfb45d2b453ab0f88d87d131d5218e345ab77cca71cfb8d871138a8f7c5",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Petra_Tou_Romiou_(October_2006).jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "asset": {
+    "path": "social/assets/a8634b8623e9334c0ed2801f50cacc4cfc17a697c41642bc140baf330c6a41d2.png",
+    "sha256": "a8634b8623e9334c0ed2801f50cacc4cfc17a697c41642bc140baf330c6a41d2",
+    "pixelHash": "36aea04952672f097d6f8a7e95bbe6d65451ad452fdc4f36f18dc5dc79b95b76",
+    "visualSignature": "rgb32:+vjz+vjz+/n0/Pr0/Pr0+/jz/Pn0/Pr0/Pn0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz//78///////7///9///+///9/fv2+vfz+vjz+vjz+ffy8fHu7u/s7u/s9PPw8vLu7vDt8PHt+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz+vjz+/jz+Pbypa20ipWgmbK5pqmynqKslqGq19nZ/vv2+ffy+vjz+Pfy4OTj2N7e2+Dg5unn3+Pi2d7e3uLi8vHt8/Lu8/Lu8/Lu8/Lu8/Lu8/Lu8/Lu9PPv+vjz+vjz+vjz+ffy///5wMLGXlpugtHVVsPJbIeWTl1yp6+2///6+Pbx+vjz+vjz9vTw9fTw9vTw9PPv9PPv9vTw9fTv8vHt8fHt8vHt8fHt8vHt8vHt8vHt8/Lu8vLu+Pby+Pfy+Pby+Pby+vjz4ePhoaqyubm+fKixnrrAg4yZrLS7///5+Pby+vjz+vjz/v35/fz3+/n1/fz4/v77/f34/v34/v35/v77/v35/v76/v35//75//75+/n0/fz3/vz3/f35/fz4///78vPv5ebl6+zr5Obk7+vp6Ofm5ujn6uvp+vjz+vjz+/n09vXwy8/R1NfY5ufl2Nvbv8XJztLT1djY0dTWwsjLztPUyMzPy8/SyM3P09fX9/Xx2dvb1tnZz9PUzdHTx83Pz9TVvcXKyM3QyM7Qxs7RwsnM0NXW8vLv+vjz+vjz/fr17u7qn6mynKewwsjNwcjMm6avmKStoKqznaiwl6KsmKOti5ijn6qyvcTHoKuz5ufkqrO6kp6oi5ejtLzBnaiwnKavkJynjJikm6avipejo6y00tbW//74+Pfy+vjz+/n09vTwwcfKw8nLrbW7xMvN1dnZxcvOrre9y8/R///79/by+fjz+fjz/Pn0+fj09vXx9vXw9vXx+fjz/Pv2/Pr2+Pby+vnz9/bx+Pby+Pfz+vfz+/n0+ffz+vjz+vjz+/n09fPvu8HGzM/St73DwsXJsrm/rrW8r7S7tbq/7ezq/fv1/Pn0+/n0+vjz/Pn0+/r1+/r1//z2/vv2+/jz+ffy+/n0+vjz+/jz+/n0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+/n09vbz8vXw6/Pw1ubk7fLv5/Dr1ufk5O7q+Pfy9PXx7/Pu9fXw/fr05u7q5O3p7/Lu1+bj1+bj8vTv+/jz+ffz+ffy+vfy+vjz+ffy+fjz+vjz+vjz+vjz+vjz+fjz/Pn0u9jXy+DeosvLstTT0ePgk8XElcXFnMnJ1+fjwNvZl8bGqtDP9vbxq9DPr9LRstTTkcPDpMzMrtLR//v1+vjz+/n0+/nz+/n0+/n0+/n0+vjz+vjz+vjz+vjz+vjz+ffy8fLu9PTw7/Ht8/Tw9PTw6+7q9vXx8fLu7/Ht8/Pv7/Lt7fDs9fTw7fDt8fLu8PHu8fLu9PTv7PDs9vTw9/Xx9vTw9vXw9PTv9vXw9vXx+vjz+vjz+vjz+vjz+/nz9/Xx19na1djY09XW4uPi5ebk3+Df2t3c2tzc6Ojl293c4ODg4OHg293d5OPi4uPh4+Pi3N7d19ra5+fl3N7e2Nvb3d/e4OLh2Nvb4uPh4OLg+ffy+vjz+vjz+vjz+vjz+vfy5OTi3uDf8vLu/vz3/Pv1/Pv3/Pr1/Pr1/fv2/Pv1/fv2/Pr2/fz2+/v1/Pv1/fz3/fz2+vjz+ffy+ffy+PXx+ffy+ffy+ffy+vjz+ffy+vjz+vjz+vjz+vjz/Pn08PTv3Obkys3Qyc7Q0tXX09fX09bX0dXW19ra2Nvb0dXWy9DSz9PVyM7Q0tbW1NfYyM7P0tXX9fTw+vnz+ffz+vjz+vjz+fjz+vjz+vjz+vjz+fjz+fjz+vjz+vjz/Pn08/Xw6/Dr8vDs8fDr8O/r8fDr8/Pt8fDs8O/r9fPu8/Hs8fDs8/Ht8fDr8/Lt8/Lt8vDr9PLt+/jy/Pnz/Pnz/Pnz/Pnz+/nz+/nz+/nz/Pnz+/nz+/nz+vjz+vjz+vjz+vj0+ff1+fj1+fj1+Pj1+Pj1+Pj0+fj1+fj19fb09/j1+fn19/f19vf19vf1+fj19ff19Pb18vTz8vTz8vTz8fPz8vTz8/Tz9PTz9PTz8vPz9PTz9fXz+vjz+vjz+/jz+PbzsM77nsb9rM78qs38qc38rs/8rND8q9D8vtr80Ob8tdb8p878o838qM/8rtH8osv8n8r8ncj9oMn9ocn9n8f9nsb9osb9ocT9oMP9psf8nsD8rsj7+/nz+vjz+/nz9vXznsH5kbv7ncL8lb38nsP8nMT9qs39rc/8yOD8xt/9pMz9mMX9osv9o8v9pMv9psz9m8T9nMT9lsH+lcD+kb7+lL/+k77+l7/9o8b+s879f63+kLj8/Pnz+vjz+/nz9vXzl7j3gKv7ha/8ga7+h7L/irT/kbn/k7v/j7r/jrr/jrr/iLb/iLb/i7f/j7r/jbj/i7f/kLv/ibj/jLr/kr7+qMj+n8L+qsf9scv9psL7fav7h7L6/Pnz+vjz+/nz9fTxW4LLM2fFPnDLPnLPQHXSQ3nXRHzaRX3dR4DgSYPjSoTlTofnTYfpTonrT4rtT4zxUo7yVpDyW5PzV5DyXpX2ZJj2YJb1YZf2YJb1X5b2Vo/0c6H1/frz+vjz+/n09fTwZYWhPWiNR3CVR3CWSXKXS3OZTXSaT3WcUnedU3efVHaeU3egVHijUnOfVnelWnOZUHCfUHOmUXSpeI+zaH2iTG6mUHOsTXCqTnGrTW2nRGeka4Ox/fr0+fjz+/n09/Xwm5ykhIaPi42WjI6YjZCajpCbj5CakJGbkZKekpKckpGbkpKclJOdjo2XmZahlYaCh3+JlZGhmpOdtqOSoox4cWdompadlpCUiX9+fmthdWRVj39w+/n0+vjz+/n09/Xwm5uhgoSNioyWi4yWi42YjI6ajo+cj5CfkJCfkJCdkZCekZCfj4+fkJCjjo+mjY2mjo2okI2lkYygjoSUjoWTg3yMi4SUkImbi4SUiYCMh3yEmouN+/n0+vjz+/n09/XwnpmchoKFjYmMjYqRjouSj4yUkYyWko2VlI6WlI+YlI6YlY6YlY2XkoqVkYqYkIiWj4aSjoWSjoWSjoaUjYSSjoWUi4KTiH6QhX6Rg3ySeHKMjIig/Pr1+vjz+/n09/Xwn5qViIJ7j4mEkIuIkYyLk4yJlI2MlY2MlY6NlY2Nlo6Olo2Olo6Plo+Ulo+Vl46UloyRlYyUlYyVlIqVlImSkoiRkIaSjYOQioGQhX2Ne3OJj4qf/Pr1+vjz+/n09/TvnZSMhHx0ioR9ioN8ioN9i4R/jIV/jYV+kIeAkYmDkImGkYmFkoiFk4mIk4mIlImNlIqPlImNk4aLkoaMkYaLj4SKjYGJiX6Ih3yIhHmFeW59jYOS/Pr1+vjz+/n09/XwqaGbk4yGl5GJlJCKlpKOmJSSnJeUnZeUnZaToJeTo5qXo5mVo5iUo5eUo5eWopeVo5eUoZWWoJaYn5WYn5SWnZOVnJKVmpCUlo6Xk4yYjYWSopum/Pr0+vjz+vjz+Pby5ejp4ebm5+vq6Ovq4ebm3OPj6ezq7e/t3+Xl4ebm9vbx/Pr0+/nz+/nz+/n0+/n0/Pn0/Pn0/Pr0/Pr0/Pn0/Pn0/Pn0/Pr0/Pr1/Pr1/fr1/Pr1+vjz+vjz+vjz+Pby4uTj3ODf3uLh3uLh3+Pi4uTj297e4uXk4uTj4+bl9vXx+/jz+vjz+vjz+vjz+vjz9vXx9fXx9fXx9fXx9fXx9fXx9fXx9fXx9fXx9fXw9fXw9vXw+vjz+vjz+vjz+ffz4OLh19ra19ra293d3N7d3N7d19ra3+Hg2tzc7u3q/Pr1+ffz+vjz+vjz+vjz+vjz8vTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8vTv+vjz+vjz+vjz+vjz/Pv1/fv2/fz2/fv2/fr1+/r1/fv1/Pv1/fv1/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz",
+    "layoutSha256": "5bb0f332837f2020888d7c9ea4475647d49fdd8ebf5f1863e3b25851b61f917d",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
+}

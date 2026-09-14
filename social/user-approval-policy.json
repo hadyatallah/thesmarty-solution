@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "requiredCount": 10,
+  "approver": "Hady",
+  "firstPostIds": [
+    "tss-review-01-vat-cyprus-ireland-feed",
+    "tss-review-02-property-transfer-fees-feed",
+    "tss-review-03-housing-income-share-feed",
+    "tss-review-04-investor-brief-feed",
+    "tss-review-05-british-emigration-feed",
+    "tss-review-06-ireland-tax-residency-feed",
+    "tss-review-07-europe-property-cycles-feed",
+    "tss-review-08-europe-living-costs-story",
+    "tss-review-09-property-title-checks-story",
+    "tss-review-10-cyprus-relocation-priorities-reel"
+  ],
+  "approvals": {},
+  "note": "Record explicit user approval only after the final asset, caption and sources are presented. QA approval is separate. Later posts become eligible for automation only after all ten approvals exist; existing live-format verification and scheduler gates still apply."
+}

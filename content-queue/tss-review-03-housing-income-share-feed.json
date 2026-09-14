@@ -1,0 +1,79 @@
+{
+  "qaVersion": 2,
+  "id": "tss-review-03-housing-income-share-feed",
+  "status": "draft",
+  "reviewBatch": "2026-09-initial",
+  "reviewNumber": 3,
+  "topic": "Housing costs as a share of household income: Cyprus versus EU",
+  "topicKey": "household-housing-income-share-cyprus-eu",
+  "headline": "CYPRUS HOUSING. THE HOUSEHOLD VIEW.",
+  "creativeKey": "household-housing-income-share-cyprus-eu-landmark-v2-feed",
+  "format": "feed",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "publishAt": "2026-09-15T09:15:00+03:00",
+  "caption": "Eurostat reports that housing took 11% of household disposable income in Cyprus in 2024, compared with 19% across the EU.\n\nThis describes existing households. It is not a rent quote for a newcomer or a city-level property-price comparison.\n\nWhat would housing take from your own monthly budget?\n\nSource: Eurostat: Housing in Europe, 2025 edition.\nhttps://ec.europa.eu/eurostat/web/interactive-publications/housing-2025\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
+  "creative": {
+    "designVersion": 2,
+    "format": "feed",
+    "template": "insight-data",
+    "photoKey": "petra-tou-romiou",
+    "text": {
+      "category": "RELOCATION / HOUSING",
+      "headline": "CYPRUS HOUSING. THE HOUSEHOLD VIEW.",
+      "highlight": "11% vs 19%",
+      "body": "Income spent on housing, 2024. Cyprus vs EU average.",
+      "question": "Would your own relocation budget match?",
+      "location": "PETRA TOU ROMIOU / CYPRUS",
+      "source": "Eurostat | Housing in Europe | 2024 data"
+    },
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "In 2024, housing costs represented 11% of household disposable income in Cyprus and 19% in the EU.",
+        "sourceIds": [
+          "eurostat-housing"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "eurostat-housing",
+        "title": "Eurostat: Housing in Europe, 2025 edition",
+        "url": "https://ec.europa.eu/eurostat/web/interactive-publications/housing-2025",
+        "expectedText": "while Cyprus (11%) had the lowest share",
+        "reviewNote": "2024 household income shares, not new-renter costs or property prices.",
+        "sourceType": "official-statistics",
+        "checkedAt": "2026-09-14T12:20:37.319301Z",
+        "validUntil": "2026-09-21T12:20:37.319301Z",
+        "additionalEvidence": [
+          "EU households spent 19% of their disposable income on housing"
+        ]
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Petra tou Romiou, Cyprus",
+    "photoSha256": "71c16cfb45d2b453ab0f88d87d131d5218e345ab77cca71cfb8d871138a8f7c5",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Petra_Tou_Romiou_(October_2006).jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "asset": {
+    "path": "social/assets/ed7ce4ea970c6ec9604627bdfd9df8054db22a01bedb82c408419d9dc201bc68.png",
+    "sha256": "ed7ce4ea970c6ec9604627bdfd9df8054db22a01bedb82c408419d9dc201bc68",
+    "pixelHash": "a044f5bdf946c52fc517cbee75498feb1b7282080d9d4bebef634323d9adbe63",
+    "visualSignature": "rgb32:+vjz+vjz/Pn0/Pn0/Pn0/Pr0+/n0/Pn0/Pr0/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz//78///////7///9///+///9/fv2+vfz+vjz+vjz+ffy8PDt8fHu8PDt7/Dt9PTw8vHu7+/s8PHt+vn0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz+vjz+/jz+Pbypa20ipWgmbK5pqmynqKslqGq19nZ/vv2+ffy+vjz+Pfy3uLi3ODh3eHh2t/g4+Xk3uLi2d7f2+Dg8vLu8/Lu8/Lu8/Lu8/Lu8/Lu8/Lu9PPv+vjz+vjz+vjz+ffy///5wMLGXlpugtHVVsPJbIeWTl1yp6+2///6+Pbx+vjz+vjz9vTw9fPv9fPv9fTv8/Pu9fTv9vTw9fPv8/Lu8vHu8vHt8vHt8/Lu8vHt8fHt8/Lu+Pfy+Pfy+ffy+vjz+vjz4uPioaqyubm+famyoLvBhI2arLS7///5+Pby+vjz+vjz/vz3/vz3//74/v76/v76/Pv3/Pv3/v75/Pr1/v35/v34/v34/Pv3/fz5/v34/vz4/f34/v34/Pr1/Pr09fTw5Obl7e7r4+Xj6ubk4uHg4eTj6+zq+vjz+vjz+vjz+ffy1tnZ1tnZztLUxMnNw8jM2Nrb297dys7Q7e3p1djZ1NfX0tXW293d0tbX0tXW0tXW0dXW0dTV4+Xj+/n0xMrNyM7Ryc/Sys/S6Ozq8vPv8vPv7u/s+vjz+vjz+/n08/Lutr7CxsvOoq22r7i/k5+qoqy1pa+3maWu3ODhoKu0mqWvpK62nqixm6avprC4l6OtjpqlnqmxvsXK9fTws7vApa62h5SgnKaw+vfy+/nz+vjz+/nz+vjz+vjz+/n09fPvt77Dtr3Dt7/DwsnNusLHusLFrLW8v8XJtb3CtLzBv8XJyc7RsrrA3+Hgtr7Csbi+uL/EsLi+rba89fTv/Pr0+/n0+vjz9/bx+ffz+ffz+vjz+ffz+vjz+vjz/Pr08/HurbS7q7O6sLe9q7K5q7S7pq+3nKavrra8qLC4rLO6rLO6vMDFsri+4ePiqLC4qrO6pK21prC3oqu07ezp/fv1+fjz+fjz+/n0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz6PLu7PTx5e/r4u7r+fn1+/v28/fz+vv2+fv35e/s3+zp1eXi7PPu+/r2/v35/fz4/Pv3/v35/fz4+ffy+ffz+ffy+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjzocrKq9DPr9LRnsnJx97cz+LflcXFpc3M4evnnMnJi7/AnsrJp87N1eXi//r1+Pfy+fjz+ffy+vjz+/n0+vjz+/n0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy7vDs7O/s8fHt9PTw7O/r8/Lu7fDs6+/r9PTw7e/s8/Pv9/Xx7e/r7/Ht9/Xx9fTw9/Xx9vXx8/Lu9/Xx9/Xx9/Xx9/Xw+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy5+bl4+Ti5ebk5ebl3+Df6Ojm5+fl5ufl4+Xj4OLh5ufl5ebl29zc8O/s4uPh4uPi5+jm6Onm5ebj4+Tj3+Hg2t3c19ra9fTw+/n0+vjz+vjz+vjz+vjz+vjz/Pn08vTw3ubkzdDS0NTV1tna1dnZ3d/f2Nrb1tnZ2t3c0dXW09bX0dTV2dvb2Nvbys7Q0tbX293c0NPU0dXW6uro+/nz+Pbx+Pbx+ffy+vjz+vjz+vjz+vjz+vjz+vjz/Pn08vTv5+3q6uro5ufl6enn6Onn7Ozp6+vp6+vo7e3q5+jm6Onn5+jm6+vp6uvo3+Dg5ufl7e7q5ufl5+jm9fPv+/n0+vjz+vjz+fjz+fjz+fjz+fjz+fjz+vjz+vjz+vjz+vj0/Pr1/vz1/vz1/fv1/vv1/fv0/vv1/vv1/fv1/vv1/vz1/vz1/fv1/vv1/v32/vz1/fv0/vz1/vz1/fr0/Pnz/Pnz+/nz+/nz/Pnz/Pnz+/nz+/nz+vjz+vjz+vjz+vjz9vXz9vXz9fXz9fXz9fXz9vbz9fXz9vbz8/Tz9fXz9vbz9PXz8/Xz9PXz9vXz8vTz8vTz8vTz8fTz8vTz8fPz8vTz8/Tz9PTz9PTz8vPz9PTz9fXz+vjz+vjz+vjz+Pbzsc77nsb9rM79qs39qs39rtD9rND9q9D9vtr80Ob8tdb8p878pM39qM/9rtH8osv9n8r9ncj9oMn9ocn9n8f9nsb9osb9ocT9oMP9psf8nsD8rsj7+/nz+vjz+/nz9vXznsH5kbv7ncL8lb38nsP8nMT9qs39rc/8yOD8xt/9pMz9mMX9osv9o8v9pMv9psz9m8T9nMT9lsH+lcD+kb7+lL/+k77+l7/9o8b+s879f63+kLj8/Pnz+vjz+/nz9vXzl7j3gKv7ha/8ga7+h7L/irT/kbn/k7v/j7r/jrr/jrr/iLb/iLb/i7f/j7r/jbj/i7f/kLv/ibj/jLr/kr7+qMj+n8L+qsf9scv9psL7fav7h7L6/Pnz+vjz+/nz9fTxW4LLM2fFPnDLPnLPQHXSQ3nXRHzaRX3dR4DgSYPjSoTlTofnTYfpTonrT4rtT4zxUo7yVpDyW5PzV5DyXpX2ZJj2YJb1YZf2YJb1X5b2Vo/0c6H1/frz+vjz+/n09fTwZYWhPWiNR3CVR3CWSXKXS3OZTXSaT3WcUnedU3efVHaeU3egVHijUnOfVnelWnOZUHCfUHOmUXSpeI+zaH2iTG6mUHOsTXCqTnGrTW2nRGeka4Ox/fr0+fjz+/n09/Xwm5ykhIaPi42WjI6YjZCajpCbj5CakJGbkZKekpKckpGbkpKclJOdjo2XmZahlYaCh3+JlZGhmpOdtqOSoox4cWdompadlpCUiX9+fmthdWRVj39w+/n0+vjz+/n09/Xwm5uhgoSNioyWi4yWi42YjI6ajo+cj5CfkJCfkJCdkZCekZCfj4+fkJCjjo+mjY2mjo2okI2lkYygjoSUjoWTg3yMi4SUkImbi4SUiYCMh3yEmouN+/n0+vjz+/n09/XwnpmchoKFjYmMjYqRjouSj4yUkYyWko2VlI6WlI+YlI6YlY6YlY2XkoqVkYqYkIiWj4aSjoWSjoWSjoaUjYSSjoWUi4KTiH6QhX6Rg3ySeHKMjIig/Pr1+vjz+/n09/Xwn5qViIJ7j4mEkIuIkYyLk4yJlI2MlY2MlY6NlY2Nlo6Olo2Olo6Plo+Ulo+Vl46UloyRlYyUlYyVlIqVlImSkoiRkIaSjYOQioGQhX2Ne3OJj4qf/Pr1+vjz+/n09/TvnZSMhHx0ioR9ioN7ioN9i4R/jIV/jYV+kIeAkYmEkImGkYmFkoiFk4mIk4mIlImNlIqPlImNk4aLkoaMkYaLj4SKjYGJiX6Ih3yIhHmFeW59jYOS/Pr1+vjz+/n09/XwqaGbk4yGl5GJlJCKlZKOl5SSnJiUnZeUnZaToJeTo5qXo5mVo5iUo5eUo5eWopeVo5eUoZWWoJaYn5WYn5SWnZOVnJKVmpCUlo6Xk4yYjYWSopum/Pr0+vjz+vjz+Pby5ejp4ebm5+vq5+vq4ebm3OPj6ezr7e/t3+Tl4ebm9vXx/Pn0+/nz+/nz+/n0+/n0/Pn0/Pn0/Pr0/Pr0/Pn0/Pn0/Pn0/Pr0/Pr1/Pr1/fr1/Pr1+vjz+vjz+vjz+Pby4uTj3ODf3uHg3uHh3uLh4ePj3ODg4eTj4OPi5Ofl7e/s+vjz+vjz+vjz+vjz+vjz9vXx9fXx9fXx9fXx9fXx9fXx9fXx9fXx9fXx9fXw9fXw9vXw+vjz+vjz+vjz+ffz4OLh19ra19ra293d3N7d3N7d19ra3uDf2tzc7u3q+/r1+ffz+vjz+vjz+vjz+vjz8vTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8vTv+vjz+vjz+vjz+vjz/Pv1/fv2/fz2/fv1/fr1+/r1/fv2/Pv1/fv1/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz",
+    "layoutSha256": "c9b323f082c5432d9adf0874a75e5511238340c9543ef666308504709f6802da",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
+}

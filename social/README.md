@@ -3,7 +3,38 @@
 This extends the existing Instagram publisher, Meta app, repository and Vercel
 deployment. Metricool remains connected and is not called to publish.
 
-## Current rollout
+## Current rollout and first ten reviews
+
+Hady's confirmed brief is investors, entrepreneurs and people relocating:
+Cyprus property, taxes, buying costs, business and evidence-based comparisons
+with European countries. Use about 80% useful content and 20% TSS promotion.
+No speculative forecasts or unsupported explanations for people moving.
+
+The initial batch has seven dedicated feed posts, two dedicated Stories and a
+15-second three-scene Reel. The source of truth is
+`social/review-batches/2026-09-initial/index.json`, which references the exact
+queue files, exported previews, captions and sources. Final quality review sets
+`awaiting_user_approval`, never `approved`. The GitHub workflow checks these
+review assets without sending a live request or reserving them in history.
+
+ChatGPT's **TSS Post Review** task checks hourly in Asia/Nicosia and notifies
+Hady here when new final posts or revisions are ready. The notification task
+does not publish, approve content or activate publishing schedules.
+
+Before any of the first ten posts publishes, Hady must explicitly approve its
+number/content. Record approvedBy, approvedAt, contentSha256 calculated with
+`userApprovalBinding(item)`, and a reference to the actual user authorization
+in `social/user-approval-policy.json`. Never infer approval from passing QA.
+The runner and all live endpoint actions enforce this policy. New posts beyond
+the ten still require user approval until all ten initial approvals are recorded.
+An edited asset, caption, claim or creative invalidates content approval.
+Scheduling and check-time changes preserve that content approval, while the
+technical QA seal must be recalculated after fresh inspection.
+
+After content approval, set the queue status to approved and arrange the
+controlled live tests. The three-per-day publisher stays off until the existing
+dual-platform test and each enabled format's actual published result have been
+inspected. The target is quality-controlled publication, not filling every slot.
 
 The three existing Instagram publication records stay unchanged. They are
 imported into durable history alongside recent Instagram content. The old
@@ -22,7 +53,7 @@ Page credentials were absent. No new live publication or schedule was activated.
 Authenticated Meta inspection confirmed the existing app ID `1707395857227784`
 (The Smarty Solution Publisher). Its Manage Pages use case already has
 `pages_show_list` ready for testing. `pages_manage_posts` and
-`pages_read_engagement` currently show **Add**. The posting permission includes
+`pages_read_engagement` initially showed **Add**. The posting permission includes
 creating, editing and deleting Page posts; the read permission includes Page
 content, follower data and insights. Meta's confirmation for
 `pages_read_engagement` also adds it to the existing **Manage messaging & content
@@ -30,13 +61,16 @@ on Instagram** use case. A fresh reopening of Manage Pages confirmed that
 `pages_manage_posts`, `pages_read_engagement` and `pages_show_list` all show
 **Ready for testing**, despite generic errors shown during the saves. The app's
 Required actions screen reports no current required actions. A Page token must
-now be created for the correct TSS Page, stored in the existing Vercel project's
-Production environment, and deployed. Actual Page identity must pass the
+be created for the correct TSS Page, stored in the existing Vercel project's
+Production environment, and deployed. Hady subsequently reported completing
+this step; use the next protected API inspection to confirm the deployed
+credentials rather than restarting setup. Actual Page identity must pass the
 protected API inspection before the controlled dual-platform test verifies real
 publishing access. Scheduled publishing stays disabled until that test is
 inspected and verified.
 
-Only the `controlledPublicationId` may publish while the scheduler is disabled.
+Only the `controlledPublicationId` may publish while the scheduler is disabled,
+and it remains subject to explicit initial-post user approval.
 That test requires an approved **feed** export and both correct TSS accounts.
 Missing Facebook credentials block both platforms before any container creation.
 After the live photos and captions pass API checks, inspect the downloaded
@@ -151,10 +185,11 @@ The correct original logo is pinned by SHA-256. Fonts are fixed. Copy is measure
 at the actual font size, never silently truncated. There is no fallback photo
 panel. A missing or failed photograph stops rendering.
 
-The photo catalog starts empty. Each photo must be registered by exact file hash
+The photo catalog contains five reviewed real Cyprus locations. Each additional
+photo must be registered by exact file hash
 after checking the real location, Republic-controlled geography and licensing.
 An AI location label or an allowed city name alone cannot approve imagery.
-The `place-opportunity` template refuses unregistered photos.
+The v2 landmark renderer refuses unregistered photos for every template.
 
 ## Duplicate protection and recovery
 

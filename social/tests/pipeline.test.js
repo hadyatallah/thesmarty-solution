@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import sharp from 'sharp';
 import { renderCreative } from '../lib/render.js';
-import { ACCOUNT, CHECKS, LOGO_SHA, binding, checkDuplicates, imageFingerprint, schedulerProof, sha256, sign, validateImage, validateManifest, verifySignature, visualSignature } from '../lib/qa.js';
+import { ACCOUNT, CHECKS, LOGO_SHA, binding, checkDuplicates, checkSources, imageFingerprint, schedulerProof, sha256, sign, validateImage, validateManifest, verifySignature, visualSignature } from '../lib/qa.js';
 import { verifyPublishedImage } from '../lib/export-qa.js';
 import handler from '../../api/publish-instagram.js';
 
@@ -75,6 +75,16 @@ test('transport signatures reject altered content', () => {
   const payload = { action: 'prepare', item: { caption: 'approved' } }, key = 'test-only-key';
   const signature = sign(payload, key); assert.equal(verifySignature(payload, signature, key), true);
   payload.item.caption = 'changed'; assert.equal(verifySignature(payload, signature, key), false);
+});
+test('a comparison stops passing when either country fact changes in the checked source', async () => {
+  const oldFetch = globalThis.fetch;
+  const item = { facts: { sources: [{ id: 'vat-comparison', url: 'https://example.com/official-rates', expectedText: 'CY Cyprus 19', additionalEvidence: ['IE Ireland 23'] }] } };
+  try {
+    globalThis.fetch = async () => new Response('<table><tr>CY Cyprus 19</tr><tr>IE Ireland 23</tr></table>');
+    await checkSources(item);
+    globalThis.fetch = async () => new Response('<table><tr>CY Cyprus 19</tr><tr>IE Ireland 24</tr></table>');
+    await assert.rejects(checkSources(item), /evidence no longer found/);
+  } finally { globalThis.fetch = oldFetch; }
 });
 test('legacy API calls cannot reach Meta even with an authorized publisher key', async () => {
   const original = process.env.TSS_PUBLISHER_KEY; process.env.TSS_PUBLISHER_KEY = 'test-only-key';

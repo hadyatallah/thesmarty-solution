@@ -1,0 +1,80 @@
+{
+  "qaVersion": 2,
+  "id": "tss-review-06-ireland-tax-residency-feed",
+  "status": "draft",
+  "reviewBatch": "2026-09-initial",
+  "reviewNumber": 6,
+  "topic": "Irish tax residence: one-year and two-year day counts",
+  "topicKey": "ireland-tax-residence-183-280-day-counts",
+  "headline": "IRELAND: 183 DAYS ISN'T THE ONLY TEST.",
+  "creativeKey": "ireland-tax-residence-183-280-day-counts-landmark-v2-feed",
+  "format": "feed",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "publishAt": "2026-09-15T09:15:00+03:00",
+  "caption": "Irish Revenue sets two presence tests: 183 days or more in a tax year, or 280 days or more across the current and preceding tax years together.\n\nRevenue also states that you will not be resident if you are there for 30 days or less in a tax year. A tax year runs from 1 January to 31 December.\n\nThese are residence tests, not a calculation of all tax liabilities. Check the full rules before planning a move.\n\nSource: Irish Revenue: residence for tax purposes.\nhttps://www.revenue.ie/en/jobs-and-pensions/tax-residence/resident-for-tax-purposes.aspx\n\nPhoto: Paphos Castle, Cyprus, Bukvoed, CC BY 4.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Cyprus-Paphos-Castle-0957.jpg\nhttps://creativecommons.org/licenses/by/4.0\n\n#Cyprus #Relocation #Tax #Ireland #TheSmartySolution",
+  "creative": {
+    "designVersion": 2,
+    "format": "feed",
+    "template": "insight-data",
+    "photoKey": "paphos-castle",
+    "text": {
+      "category": "TAX / RELOCATION",
+      "headline": "IRELAND: 183 DAYS ISN'T THE ONLY TEST.",
+      "highlight": "183 OR 280",
+      "body": "183+ days in one tax year, or 280+ across the current and preceding tax years.",
+      "question": "The 30-day exception matters. See caption.",
+      "location": "PAPHOS CASTLE / CYPRUS",
+      "source": "Irish Revenue | checked 14 Sep 2026"
+    },
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "Irish residence presence tests are 183+ days in a tax year or 280+ across the current and preceding years, subject to the 30-day exception; the tax year is January to December.",
+        "sourceIds": [
+          "revenue-residence"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "revenue-residence",
+        "title": "Irish Revenue: residence for tax purposes",
+        "url": "https://www.revenue.ie/en/jobs-and-pensions/tax-residence/resident-for-tax-purposes.aspx",
+        "expectedText": "280 days or more in total",
+        "reviewNote": "Include the current plus preceding year and the 30-day exception; not a liability calculation.",
+        "sourceType": "tax-authority",
+        "checkedAt": "2026-09-14T12:20:37.319301Z",
+        "validUntil": "2026-09-21T12:20:37.319301Z",
+        "additionalEvidence": [
+          "183 days or more in a tax year",
+          "30 days or less in a tax year"
+        ]
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Paphos Castle, Cyprus",
+    "photoSha256": "560965147a1c035ae48c9155079dfe8b8f8ae8a5a1fe9a2ad5f7435a3c809c6f",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Cyprus-Paphos-Castle-0957.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "asset": {
+    "path": "social/assets/c90724bf0ff9cd9c26aa2bfbeb4e9bbbf727de40c7003245b3854de21ead05b0.png",
+    "sha256": "c90724bf0ff9cd9c26aa2bfbeb4e9bbbf727de40c7003245b3854de21ead05b0",
+    "pixelHash": "145f3393cb5aa03d8de93e2876094ede11ae49510869042943de56f947f55ec6",
+    "visualSignature": "rgb32:+vjz+vjz/Pr0+/nz/Pn0/Pn0/Pr0/Pr0+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz//78///////7///9///+///9/fv2+vfz+vjz+vjz+vfz8PDt8/Tv8PDu8fHu8PDt7/Dt+Pfz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz+vjz+/jz+Pbypa20ipWgmbK5pqmynqKslqGq19nZ/vv2+ffy+vjz+vjz3+Pj4+bl3eLh3OHh3OHh2t/g7O3q9PPv8/Lu8/Lu8/Lu8/Lu8/Lu8/Lu8/Lu9PPv+vjz+vjz+vjz+ffy///5wMLGXlpugtHVVsPJbIeWTl1yp6+2///6+Pbx+vjz+vjz9vXw9PPv9PPv9fTw9vTw9vTw8/Lu8vHt8vHt8/Lu8/Hu8vHt8vHt8vHt8vHu8vHu+Pby+ffy+Pfy+Pbx+/nz4uPhoaqyurm+fKixnrq/hIyZrLS7///5+Pby+vjz+vjz/fv4/v35/v35/Pv3+/n0/fz3/vz4/v35//75/Pr1/fv2/fz4/v35/v34/Pr2/v34/fz3/f33/vz3///68PDs4+Xk6uzr4+Xk7ero6ejm4+bl6uvp+vjz+vjz+/nz9/bx09fXyM3Qys/R2Nvb7e7q1tra1tnay9DS0tXW+Pby5+jl2Nvb0dTV1NfY6uvozdHT3d/f1dnZ1tnZztLU7+/szNHUx83Qz9XWzdTWvcXJ4uTj8vLv+vjz+vjz/fr18fDsoay1kp6plqGrqrS8qrO5laGslKCrjpynmKSt4uTk1NfYnaixn6qyqrS72dzdnaiwjJmlipijqLG4naew19ran6qynKevgZCcv8XIusDF5ubk//33+ffz+vjz+vjz+/n0ucDFtb3CsrrAsrrA3d/esrrAr7i+qLG4wsjKvMPG4ePiq7W7qbO5vcTHvsTItLzB+ffy9fTw+vn1+ffy9/bx+vfz9/Xx9/by+fj0/Pr0+vjz+ffz+vjz+vjz+ffy/fv1ztDSt7zCpq62qbC44eLhsbi+sLa8naWvsLe+wcTI9vTwx8rMo6uzrba8tb3CvcPH9vTw/Pn0+ffy+/jz+vjz+vjz+/n0+vnz+vj0+vjz+vjz+vjz+vjz+vjz+vjz+Pfy5/Ds6fLt4e/r4e3p9vfy4Ozp4O3q3u7q9/fz4u3p2+nl4O3q5fDr/Pr1/vz4/Pr3+ffy+ffy+vjy+ffz+vjz+vjz+ffz+ffy+fjz+ffz+vjz+vjz+vjz+vjz+vjz+vjzoMrKkMLDkMHCmcfH1OXikcLDgbq8h72/5e7qmsfHg7y9gLq8jMDB+Pfy+vjz+ffz+/n0+/jz+/jz+/n0+vjz+/n0+/n0+/jz+/n0+vjz+vjz+vjz+vjz+vjz+vjz+ffz7/Ht7/Ht8/Tv8vPv+Pfy8PLu9fTw9fXw9PTw7/Lu8vPu8vTv8fLu9PPv9vXw+ffy9vTw9/bx9vTw9/Xx+Pbx9vTw9vTw9/Xw9/bx+vjz+vjz+vjz+vjz+vjz+/nz9vXx2tvb2dvb4OLh0dTV293d4uLh293d19nZ3uDf5uXk2tvb7Ovo4+Ti1tnZ4eLh4+Ti3N7d3+Hg3t/e4OLg5OXj3N7d4eLh3uDf4uPi+ffy+vjz+vjz+vjz+vjz+vjz+Pbx4eHg4uTi4OLh2dvc5OXj5ujl4uPi4OLh8fHu/vz3+/n0/fz2/fv3/fv2/Pv1/fv1+/n0/fv2/fz3/Pv1+ffy+vjy+ffz+Pfy+ffz+vjz+vjz+vjz+vjz+vjz/Pn08PPv3efk0NPU1dnZ0NPVyM3Q2dvb09bYztLUx8zPzdLT19rays/Ryc7Q1tna2dvby8/R3+DfxsvNxsvO2tzc+/jz+fjz+ffz+ffz+ffz+ffz+ffz+ffz+vjz+vjz/Pn08/Xw7fHs9fPu9PPu9PLt8vDs8vDs9fPu8vDs7+/r9PPu9fTv8/Ht8/Lt9vTt9vTv8vHu9vXx7e3q8vDs9/Xv/fr0/fr0/fr0/fr0/fr0/fr0/fr0/Pr0+vjz+vjz+vjz+/jz9fTx8vLx8/Pw8/Px8/Px8/Px8vPx8/Px8/Tx8/Px8/Lw8/Pw8/Px7fL08vPw+PPt9/Tt+vfw8vPy8PP07/Ly8PDv8PDv7/Dv7/Dv7/Du7/Du8fHv+vjz+vjz+/nz9vXxgqC7YomuaI6xZ46xZo6yZY+yZY+0ZI+0Y460Yo60X422YY64YIy1doufmpOGq5h9noxwfHBcjYV1XnCEZ2lqXX2hTXerTneoTHamTHSlRmyeZoWs/Pr0+vjz+/n09vTxdJOsUXqcWYCgWYCgWYGhWIKjWIOkWYOmWYOmU4GoY4Oegn93Y2Jhg2tSooRej3VVi3BRf2NFiWtHgGZFfmdIRWmPOWeaPWSUOmOTN2KSLVmLU3Wc/fr0+fjz+/n09vXwg5alZH2SbIWcbIabaoSZa4WabIWbcIidbYeeZoajeoWQlnJPimhLl3RSoHpUlnRRl3ZUmnpYknNRkG9KiG9SVG+OSm2US2uPSmmORWmNO2CGXXqY/fr0+vjz+/n09fTwb3yiSl2PWFxkW2eEYHGbX3GfanqhW22haXigZHSdaWl5n3dYnnZWpHpUmHFMjWtJlXFNjmtIjmtIjWpEfWRJP1d7OlZ/OVV9NFN7NFJ7K0lzUGmK/fv1+vjz/Pnz9PPxW2ymLT18UExFPz89NkJtMz92UVd7Mz92MTVVIiZJMSgvoXpYjGZKk21MoHlTf14/jmdEhmE/hmNBf189gWhKZ2ZlWVpeVFZaTFJYTlNaQ0lQWF1n/fr1+vjz+/n09/TvnpF+Z2BTjIdzraiTb3drTVNJJh8aHRMRFAsLCggHNikcrotnjnNbeF1IlnRVlnthiW5WgmxVfmpTkH5mkYJnl4lqjYBjiX1fhHpdbmVOdGpNm5N4/fv3+ffy+/n19vPtcmhfmZF6t62Q2cao0sm4lqWZSlFMUkc/gHNjj39tmoJsqZR6rZyGqZiBqpiDr6CKo5WBnpF7jX9qj4JtkYdxjoNqjINqh31ibWVQRkM4RT0sW1VK/fv3+ffy+/n09/XvtKqUq55/uq2N0b6Yz76i18WvuLCcpZ2HwqiKq5F0qo9ysJt/qZN1tJ17qZd6r5l4oIxvl4RoeWxZfnJef3Ridm5geHFinJJ3m5F0oZp+kYlpf3di+vj0+vjz+/n09vTvqaCNkYVrvKyI1cOgxreaw7KV38emvLWeYlxQnYJo38Okx6uN17qUvKJ/qJFxqZBtaFlETkc8Y1hLc2hYTElCi4Bqlo12kot1gnheenVjnph6p6CD/fv2+ffy+vj0+fbwuKmJmYdjsZ51uKZ9wa+Lz72d38ik0riQTEM6inJZ3MKh2r2Z4sSdup59qI9vXVVKFhgcCgwOIB8eKykoIiMmU09Hr6J/XllIJCMhLiwoKCgnd3Ro//74+ffy+vj0+Pbx0MGfuKeBw7WPvKqDva6O2cqw3sqo0LybhnVhcmJSpo1xu6OFxqyIs5x9sZ2DaGJbQEFBS0tIUlJRT09OWFhVS0xOmpWCv7WUV1VOT0xLS0pHfXpy/vv2+ffy+vjz+ffy4ebm3ePk5uno5+vq4ebm6uzr6uzr3uPk5+vq+/r29vXw9fPv+Pbx/Pr2/Pr1/fv1/fv1//z3/vz2/vz2/vv2/vz2+/n1/fv3//75//z2/vz2/fv1+vjz+vjz+vjz+Pfy4uXj3eDg29/e3+Li4uTj3+Lh4OLh4OPj3eDg5efm/Pr1+/n0+/nz+ffy+vjz+ffy9fXx9PXw9fXw9fXw9fXw9fXw9fXw9PTv9PTw9PXw9PXw9vXw+vjz+vjz+vjz+ffy4eLh19ra19na293d3N7d3N7d19ra3+Hf2dzb7u3q/Pr1+ffz+vjz+vjz+vjz+vjz8vTv8fTv8fTv8fTv8fTv8fTv8fTv8vTv8fTv8fTv8fTv8vTv+vjz+vjz+vjz+vjz/Pv1/fv1/fz2/fv2/fr1/Pr1/fv1/Pr1/fv1/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz",
+    "layoutSha256": "bf6012b747c03096e8e0a6595666b48239867706bd7892caaeb57c094260b2ca",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
+}

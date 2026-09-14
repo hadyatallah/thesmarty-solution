@@ -1,0 +1,76 @@
+{
+  "qaVersion": 2,
+  "id": "tss-review-04-investor-brief-feed",
+  "status": "draft",
+  "reviewBatch": "2026-09-initial",
+  "reviewNumber": 4,
+  "topic": "TSS: prepare a clear investor brief before introductions",
+  "topicKey": "tss-investor-brief-objective-budget-timeframe",
+  "headline": "BETTER BRIEFS. BETTER CONVERSATIONS.",
+  "creativeKey": "tss-investor-brief-objective-budget-timeframe-landmark-v2-feed",
+  "format": "feed",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "publishAt": "2026-09-15T09:15:00+03:00",
+  "caption": "Looking at a Cyprus property or business opportunity? Start with a clear brief: your objective, budget, timeframe and the questions you need answered.\n\nThe Smarty Solution works on investor connections and the presentation of selected business, property and development opportunities.\n\nTell us what you are looking for so the conversation can start with a clear purpose.\n\nSource: The Smarty Solution: current services.\nhttps://www.thesmartysolution.com/\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
+  "creative": {
+    "designVersion": 2,
+    "format": "feed",
+    "template": "place-opportunity",
+    "photoKey": "lefkara",
+    "text": {
+      "category": "TSS / INVESTOR CONVERSATIONS",
+      "headline": "BETTER BRIEFS. BETTER CONVERSATIONS.",
+      "highlight": "START WITH THE BRIEF.",
+      "body": "Your objective. Your budget. Your timeframe. Start a focused conversation with TSS.",
+      "question": "What are you looking for in Cyprus?",
+      "location": "PANO LEFKARA / CYPRUS",
+      "source": "The Smarty Solution | investor connections"
+    },
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "promotion",
+    "claims": [
+      {
+        "text": "TSS offers investor connections and presentation of selected business, property and development opportunities.",
+        "sourceIds": [
+          "tss-website"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "tss-website",
+        "title": "The Smarty Solution: current services",
+        "url": "https://www.thesmartysolution.com/",
+        "expectedText": "Investor connections",
+        "reviewNote": "Use existing commercial-introduction and opportunity services; no tax or legal advisory claims.",
+        "sourceType": "company-website",
+        "checkedAt": "2026-09-14T12:20:37.319301Z",
+        "validUntil": "2026-09-21T12:20:37.319301Z"
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Pano Lefkara, Cyprus",
+    "photoSha256": "5336ef1793e4772c1a32d9a1f2776b062203bcb8be0851b5e5f88b2538e981d4",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:2022_03_Pano_Lefkara_1.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "asset": {
+    "path": "social/assets/30da50b01a7641b4a47910d4a01dbdced404c213ddbec9655d7a2d087c553850.png",
+    "sha256": "30da50b01a7641b4a47910d4a01dbdced404c213ddbec9655d7a2d087c553850",
+    "pixelHash": "edffb597fbbb8de3218dd8554254332b053b2bc2f03eb45a143eee2ec13e4a17",
+    "visualSignature": "rgb32:+vjz+vjz/Pr0+/nz+/n0/Pr1/Pr0+/n0/Pr0/Pn0/Pr0/Pn0/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz//78///////7///9///+///9/fv2+vfz+vjz+vjz+vjz8fDt9PTw8fHu7u/s7/Dt8/Lu7/Dt7/Dt7+/s8PDt7/Dt+Pfy/Pn0+/n0+/n0+/n0+vjz+vjz+vjz+/jz+Pbypa20ipWgmbK5pqmynqKslqGq19nZ/vv2+ffy+vjz+fjy4uXk5efl3uLi2+Dg3ODh4eTk2d7f2+Dg2d7f3eLh2d/f7e7r9PPv8/Lu8/Lu9PPv+vjz+vjz+vjz+ffy///5wMLGXlpugtHVVsPJbIeWTl1yp6+2///6+Pbx+vjz+vjz9fTw8/Lu9fPv9fTv9fPv9PPv9fTv9vTw9vXw9fPv9vTw8/Lu8fDt8fHt8fHt8/Lu+vjz+Pfy+Pbx+Pfy+fjz4uPhoamxubm+fKixoLvBhI2arLS7///5+Pby+vjz+vjz/v35/v35/v34//35//75/v35/v35/fv3/Pr2/v76/v35/fz4/v76/v35/v75/fz3+ffy/f34/f34///59PPw5efl7O3r4+bk8ezp4uHg4eTj6+zq+vjz+vjz+/nz9/Xwy8/Ry8/Ryc3PxMnNw8nLyc7QxcrN2dvb4+Tix8zOyc3Q2NvayM3PzNDRyc7Q2dzb//74ztLUzdHTzdHTxsvOvMXJv8bKxcvOwcnN8/Tw8vPv7u/s+vjz+vjz/Pr08vHtkJyniJaiuMDGyc7Rv8bKpa+3kp+rtr7Eyc7SgY+bm6avoau0kZ6prba9tLzDq7S8/Pz5lqOue4qYq7S6uL/EwcbJmqWujZqknKav9PPv/Pn0+vjz+vjz+vjz+/n09vTwwMbJvsXJsrvAr7e9t7/DusHFrLW7s7zBsLi+xcvOucDFrLW7s7zBs7zBtr7DqbO6sLi/19ra/Pr1+Pby+vjz+vnz+Pby9/bx+Pjz9/Xx+vjz+ffz+vjz+vjz+/n09fTvv8LHvMDFsbe+pq62qrG5uL3CpKy0p7C4sbe+qrG4qK+3ub7DwsbKpa21rLO6qrG5p6+3wcTJ/vv1/Pr1/vv2/vv2/fv2/fv2//z2/vz3+vjz+vjz+vjz+vjz+vjz+/n03evn2unl2erm6PPv4O7q1unl2Onl8/fz4e7q3+zo4/Ds1efk3u3o7PPu6vLv1unm4e3p2ujl2Obj7vLt0OPf1eXi3Onl2Ofk1OXizeLf9vfy+/jz+vjz+vjz+/jz+PfylMTEpczMnsnJf7q7h76+h76/r9LR6O/rebe4gLq8qM7OocvLjcHCps3N4+zpmMbGk8TEere5pc3N0+XiZ66whr2+kcPEgry9j8LDksPD6O/q/fn0+ffy+vjz+vjz+/jz8fLu9fXw9fTw7/Lt8/Pv9vXx9vbx+fby8fTw8vPv9PTv9fXw9PPv9fTw9vTw8/Lv9PPv8fLu8/Pv9PPv8PLt9fTw8fLt8fPu8fLv9fbx9vfx+vjz+vjz+vjz+vjz+vnz2tzc29zc2dzbztHT2Nra3d/e3t/e1dfY293d2Nra1NfX5ebk3d/e4uPh4eLh293c2tzc3N7d6enm297d4uLh5eXj4OHg4eHg29zc7u3q/fr1+ffz+vjz+vjz+vjz+vjz5+bl4uTi4+Tj3uDg3eDe6uro3d/f6enn4OLg7e3q/vz3/Pv1+vn1/fv2/vz3/fv2+/r1+Pbx+ffy+ffy+Pfy+ffy+ffz9/fy+Pfy+fjz+vjz+vjz+vjz+vjz/Pn08PTv3ebjyMvPyc7Q19ra19ra1djY19ra09bXyc7Qys/Qz9TV09fX3t/e0NTVztLUzdHT4ePh/fv1+Pfy+vjz+fjz+vjz+vjz+vjz+vjz+ffy+ffy+ffy+vjz+vjz/Pn08/Xw6/Ds8vDt7+/s9PLv8/Lu8PDs9fTx8fHt8fHu7+/t8PDt9PTv9/bx8O7q7u3p9PLu9/Tv/fnz/Pjy/Pnz/Pn0/Pn1+/r1/Pr1/Pr1/Pr1/fv2/fv2+vjz+vjz+vjz+/nz+Pby+Pbx/Pr0+Pby9PLt9vPu9PLs+/r29/Xu9vTs8vDq9vPu8vDr9fXy9fb09PXz8/Xz8vPx8/b18vXz9PTx9PPu9PLr8/Dr8O/r8fDr7+3p8O7p+vjz+vjz+vjz+PbxyMzOvsPGqrC2hoqRvcC+l5qYS0ZBiIF3kohuQjsqa2ZcgIGDYFBPc6HOfrrxeLDjeK/iebTrhLHfdYSWeJOoiIV8qJp/hH1yUFRcXmBmOjo3TEtG/fv3+vjz+vjz+Pbxt77Cg4uVaXF9m6Clv8LCjpSZZ2luYGJkfoB+VVlfOjYuSlBQPEZRUHqkaazpZ63saLDxY6rpaqnjgYWBlI57oZR5g3hiaGJZLjM5MjEwKBINNiwp/fz2+vjz+/n09/bxeoGKX2dzkpifvMHDpKmuVVtmQERKREhMP0NIQkZKS0hBTUc1NTUYX19ZlpiRdnZ1Z4iqbbTya7LyjZuao5V4qpx8dWxZW1ZSNTo6Oz47JRkVOC8s/vz3+vfy/Pr08/LtlJmflp+nrrW6q7K1WmBsQUZQJScoIiIiKywsMjMzTExISEU+Ly4WamZOv7GRi2pHSDIsb67mbbX1eLLjh6e7mJJ8bWRTV1RROjxBQ0VJLSggVEk+/vz3+ffy+/jz9/XxvMHGqLC3kZuiXWNtS09bUVVfUlVZUVFOR0ZDNzYzMC8sMDEwQkE2XldGuauKkXVZVklHcajWe8D5ecL+dY2hintiZV9SUVBNPD9GP0FJT0EyeGlV/Pr2+vjz+vjz9/XxwsXDnKSmV19rSk5aT1NeUFNcVVZbWllXXVtVY19Yenlyq6SSppJro5Fwr5x4kXNXPzExcX2Iibnhi8v/icHsjI+FX1ZHQj06PUNMNzxHZlhCmYZm+/n2+vjz+vjz+ffxrrKvXWVuV15qWF5oUldgVFpiVFdaU1FPXVlTYl1Ul5WNqqSTn45utJ96r5htrIxqYEQ+eH6NpM/po9z/odX2jpSOZFhIS0hEPEBGMjhBaFlAn4to+vj1+vjz/Pr18/HrZ2twVF1sXWRvV19oV19mVl1mXGJsVlZVJCEdNTQxnpuRcXBnQUNFa2tniX5nrZFtj2ZQgnl6eY+bsc7boLi/gH5zamJUT05NRUlSPUNPVE1BcGZI+vn1+vjz/Pr19PLsVFRPUVhiZW14XWRuW2JrV11maHJ/SkpKFxIMEhAQc3JxdXRwSkxOT1Vdb3Fth25Ni3VheXJoOkFMkqCuiYiBcWxhfntyaW93YGl5WmR6Y2JfamJF+fj0+vjz+/n19fPuTUlAMDAvYGl0V19pVVplTlNfX2l3RUdIGRgUEwwLbm5urKylkpSUg4SFgYiOhX15bVhGZG10anZ/Z3F5mo9xeW1TdHJsb3N6ZW+AXWuCT0tJYlhB+vn1+vjz+/n09vTvcm9oSkdBeX6Gd36Gcnd9b3R6dn6JZmdnR0ZCRT47k5OSvr65ra6sbWdjiIqMj4iGh3hseoWQbXqCmJiVrKaKgHZbbmhkXVlZg4yZgYydU1VbVVFM/fz3+vjz+vjz+ffy4ufn5Ono5+rp4ebl3+Xk7/Du5+ro3+Tk9PXx//33+ffz+vjz+ffy9fPu/Pnz+/nz/fv2/fr0+vjz/Pn0+fj0+/v3/Pn0+fbx/Pr1/fr1/vv2/Pr2+vjz+vjz+vjz+ffy5OXk3eDg29/f3eHh3eHg4+Xk3uHh4OPi4uTj5ejm7O7r8vHu+/nz+/n0+vjz+vjz9fXw9fXw9fbx9fbx9fbx9PXw9fXw9vbx9fXw9fXw9fXw9vXw+vjz+vjz+vjz+ffz4eLh19ra19ra293d3N7d3N7d19ra3+Hg2tzc7e3q/Pr1+ffz+vjz+vjz+vjz+vjz8vTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8vTv+vjz+vjz+vjz+vjz/Pv1/fv1/fz2/fv1/fr1/Pr1/fv2/Pv1/fv1/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz",
+    "layoutSha256": "fe87aa3aaddb3ac897db76a298f856679c99d134e340730fae6c748613ab72e9",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "designVersion": 2,
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 763,
+      "y": 168,
+      "width": 245,
+      "height": 24,
+      "size": 24
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 771,
+      "y": 208,
+      "width": 237,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "PROPERTY / EUROPE",
+      "x": 72,
+      "y": 82,
+      "width": 229,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "EU PROPERTY. DIFFERENT",
+      "x": 72,
+      "y": 242,
+      "width": 894,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "CYCLES.",
+      "x": 72,
+      "y": 316,
+      "width": 277,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "+17.8% vs -2.0%",
+      "x": 72,
+      "y": 412,
+      "width": 631,
+      "height": 52,
+      "size": 68
+    },
+    {
+      "text": "Portugal vs Finland: house prices, Q1 2026 compared with Q1",
+      "x": 72,
+      "y": 512,
+      "width": 867,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "2025.",
+      "x": 72,
+      "y": 550,
+      "width": 76,
+      "height": 21,
+      "size": 28
+    },
+    {
+      "text": "Would you buy on momentum alone?",
+      "x": 97,
+      "y": 610,
+      "width": 547,
+      "height": 26,
+      "size": 26
+    },
+    {
+      "text": "PETRA TOU ROMIOU / CYPRUS",
+      "x": 72,
+      "y": 1193,
+      "width": 334,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "Eurostat | house price index | Q1 2026",
+      "x": 72,
+      "y": 1232,
+      "width": 342,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 72,
+      "y": 1270,
+      "width": 310,
+      "height": 14,
+      "size": 20
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 774,
+    "y": 64,
+    "width": 230,
+    "height": 88
+  },
+  "photoSha256": "71c16cfb45d2b453ab0f88d87d131d5218e345ab77cca71cfb8d871138a8f7c5",
+  "palette": {
+    "cream": "#faf8f3",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "sky": "#e9f1f7"
+  },
+  "photoRegion": {
+    "x": 72,
+    "y": 720,
+    "width": 936,
+    "height": 455
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 64,
+    "bottom": 1298
+  }
+}

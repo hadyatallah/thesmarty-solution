@@ -1,0 +1,78 @@
+{
+  "qaVersion": 2,
+  "id": "tss-review-08-europe-living-costs-story",
+  "status": "draft",
+  "reviewBatch": "2026-09-initial",
+  "reviewNumber": 8,
+  "topic": "European consumption price levels: Denmark versus Bulgaria",
+  "topicKey": "europe-living-costs-denmark-bulgaria-ppp",
+  "headline": "EUROPE ISN'T ONE COST OF LIVING.",
+  "creativeKey": "europe-living-costs-denmark-bulgaria-ppp-landmark-v2-story",
+  "format": "story",
+  "platforms": [
+    "instagram"
+  ],
+  "publishAt": "2026-09-15T09:15:00+03:00",
+  "caption": "Compare your own monthly basket before relocating. Europe is not one cost-of-living market.",
+  "creative": {
+    "designVersion": 2,
+    "format": "story",
+    "template": "insight-data",
+    "photoKey": "lefkara",
+    "text": {
+      "category": "RELOCATION / LIVING COSTS",
+      "headline": "EUROPE ISN'T ONE COST OF LIVING.",
+      "highlight": "140 vs 63",
+      "body": "Denmark vs Bulgaria, 2025. Consumer price level index. EU average = 100.",
+      "question": "What would your own monthly basket cost?",
+      "location": "PANO LEFKARA / CYPRUS",
+      "source": "Eurostat | consumer price levels | 2025"
+    },
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "Denmark's 2025 consumer prices were 40% above the EU average and Bulgaria's 37% below: indices 140 and 63, EU=100.",
+        "sourceIds": [
+          "eurostat-ppp"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "eurostat-ppp",
+        "title": "Eurostat: household consumption price levels, 18 June 2026",
+        "url": "https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20260618-2",
+        "expectedText": "Denmark (140% of the EU average)",
+        "reviewNote": "2025 national household consumption price levels, EU=100. Not adjusted for income or wage levels.",
+        "sourceType": "official-statistics",
+        "checkedAt": "2026-09-14T12:20:37.319301Z",
+        "validUntil": "2026-09-21T12:20:37.319301Z",
+        "additionalEvidence": [
+          "Bulgaria (63%)"
+        ]
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Pano Lefkara, Cyprus",
+    "photoSha256": "5336ef1793e4772c1a32d9a1f2776b062203bcb8be0851b5e5f88b2538e981d4",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:2022_03_Pano_Lefkara_1.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "asset": {
+    "path": "social/assets/0c984d780f7bac51968f5a9c9f15d0af6afa7c43419a450505b641cea65f5169.png",
+    "sha256": "0c984d780f7bac51968f5a9c9f15d0af6afa7c43419a450505b641cea65f5169",
+    "pixelHash": "ca9a173fd686df7e29a7a909045ca5f3651c7cd022fbe07dfea81a56f3288ae0",
+    "visualSignature": "rgb32:+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+Pbx9/Xx9/by9/bx9/bx9/Xx+Pfy+vjz+vjz+vjz+vjz+/n0+/n0/Pn0/Pn0+/n0+/nz/Pn0+/nz+/n0+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz/v76///9//75///5///8///9/Pv2+vfz+vjz+vjz+ffz8/Pv9PPv8/Pv8/Pv9vXx9fTw8/Pv9fXx8/Pv9/Xx+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz+vjz+vjz+ffyvcPHqK+2tMnMusTHubrAqbG43uDf/fv1+ffy+vjz+ffy4+Xk4eTj4uXk3+Pi5ujm5Obk3+Li5Ofl4uXk6ero8vHt8fDs8vHt8fDs8vHt8vHt9/by+Pby+Pby+Pfy//32xcrMYGt+kMjMXrW9c5GeXmt+p7C3///5+Pbx+vjz+vj0/f35/fv4/fv4/v76//34/v35/v35/v35+/n1/Pv3/f33/fz4/Pr1/vv4+vj0/v34/v36/v36/f35/fv2+Pf06+zp2t3c3NfXydTW0dvbwsbK09fX/fr1+ffy+/n09PPvx8zO0tbXyc3QwsfLy8/RyM3QxMrNxMrN7O3q0NTVyc3QwcbK2NrbyMzP6Oflyc7QwcbKwMbJwcbK6OjmzdHTv8XKvsXJv8jLvsTI3d7e+Pjz8fHu+vjz+vjz/Pn08vHupK62pa+2oauzs7vAsbm/o621r7i+naewxszPrba8rLW8vMLH1tna2Nvb6ernxMjMvMLGuL/EucDE5OXjzdHTys7QxMnMwcbKys7Q7u7q/vv1+/nz+vjz+vjz+/nz9/bxysvOtLrB29vd5efoxMnMxcnNxsnNsbrBsba9vMDF2tvd/Pz5/fz3/Pv3+/n1/v75/v36/v36/v36+/r2/v34/v35/v35/v35/fz5+/n0+vjz+vjz+vjz+vjz+vjz+/n0x9/c0+Xju9rYutfW5ezp1ufjzOLf8PXwwt/bxN3bxNza+/jz+fjz+vjz+/n0+ffy+ffy+ffy+ffy+/jz+vjz+vjz+vjz+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+PfyyN3by97cutbVxNva6+/rzN/cxNrZ3+flxdvaxNvZy97c9/Xx9PPu8/Ht8/Lu8/Pv9PPv8/Lu9fPv8/Lu9fPv9PPv8vLu9vXw9PLu+Pfx+vjz+vjz+vjz+vjz+vjz+Pby5OHh4uDf4d/f6ebl6Ojm3t/e5OPi6Ofm8vDt8/Dt6ejm7+/s7+7r6Ojm6ern7Ozp7Ozp6Ojm7u3q6enn6Onm5+fl4uPh7u7q5ebk9fPv+/n0+vjz+vjz+vjz+/jz9fXx4ebk1djY09fX4ePh4OHg19ra5Obk6enn7Ozp5OXj7O3q5ufk4+Tj5ufl6+vo5OXj4+Ti7Ozp6Ojm5+jl/Pr0/Pr1/fv1+/n0/fr1+vjz+vjz+vjz+vjz+vjz+/n08/Xw6/Ds6+ro6enn7+7r6Onm6+vo7Ozp5+jl7u7q6Ojm7u3q6Ojm6Ojm5ufl6+vp5ebk6Ojl7e3q6enn6+vo+vjy+ffz+ffy+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+/n0/fr1/Pr1/Pn0/fr1/Pr1/Pr0/fv1/Pr0/fr1/Pr0/fv1/Pv1/fv1/Pr1/fv2/fv1/Pr0/fr1/Pr1+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy+ffy+Pbx+ffy+ffy+ffy+Pby9/Xw+Pby+Pbx+Pfy+Pfy+Pby+Pfy+Pfz+Pfz+Pfy+Pfz+Pfy+ffx+vfy+vjy+ffy+ffy+ffy+Pfx+fbx+Pbx+vjz+vjz+vjz+vjz+/n0/fv2///5/fv2+/n0/fr1//34///7/fz2//74/v34/fz3//33//v0//rx//rx//ry//vz//v0/v36/Pv4/Pr2/vz4/v34///6///6///7/v76+vjz+vjz+vjz+ffy2tzbyczOrrO3pair1NXTubq4hYOAnJiSr6qce3hxjYmAmJqdh3+Ck7bXnM77m8r0m8ftmsXtosLinqOqoq+1rqidurCdop2Uen2BgYKCbmplenhz/Pr1+vjz+/jz9/bxk5qhZ3B8dn2IqrC0sre5bHN6TFBVTVBTWl5fRUlPOzYvR0c9MTcuUGZ7d569Z46wYJvRYavtZKnpg4iDmI50opV2d2xWWlRNJy0wLS0rHAkGLCQk/fz3+vfy+/n09fPvj5SbjJSdrrW6q7G1ZWt1Q0hULjAzKywtKy0uMjMzRkZBPTkxKyoSZV1GvKqIimpJU0dGcrTub7f3fLDajZ+mnJJ4bmVWWVZTPD5CRUdKLykiUkc+/vz3+ffy+/jz9/Xxw8fJq7S3e4SNUlhjSk5aUVReVFZbVlVSUVBLSkhDTEtGY2JabWVPem9XtqiFkHJXSjw6cZi3f73wfsb/eJ/AiH9uYlxPS0hFPUFKPEBJWkw6h3Zd/Pr2+vjz+vjz+Pbxs7azbnV8UlplUlhjUldgU1hgVFVaV1VTXltVZmFZlpWNsauZppNwsp56r5lwp4hoVTs2dnmEnsjlndf+ntX5kJeQYVZGRkE9Oz9FMTdAZlg/nYlm+vn1+vjz/Pr19PHsZmlsVV5tYml1XGNsWmFpWWBoYWhyVFRTJCEcLy4slJKKb21lQEFDZ2dmhHtnpYhjkm9ahHx5aXyKrsjXna+1f310c2xfWVtcTVNdR0xbXlhOdGpM+fj0+vjz/Pr19PPtRkI7MzU3W2RwUlpkUFZhSE5ZXGV1PT4/CgcDBQUGZWZmkZGLb3FzX2NobXN3e2xdcVxJYmVlR1Fcb3qGioFqamBLb2xlYmdwXGd6VWN8TUtKWlA2+vn1+vjz+/n09/XwmJqVgoJ/oKarm6KomJ6jn6KnnqWskZWWioqHj4mFvLq429rU0tHOubWwvL6+vry7sqierrW5sLe5vb250sy3t6+cqqejqKals7e9sLa+mZiZn5uU/Pr1+vjz+vjz+ffz+fr5+vz7+vv4+fr39/n2+vv5+fr3+Pr5/P38/f79/Pz5/v34//75///9//77//76///////9///8///9///9///////+///+///7///8/////v79+vjz+vjz+vjz+ffy4uTi2dzb293d3uDf3+Df3uDf293d4eLh293c6urm+Pbx+Pbx+Pbx9/Xw9/Xx9/Xw8vLt8fLu8PLt8fPu8vPu8PHt8PHt8PHt8fLu8fLu8PHs8fHt+vjz+vjz+vjz+vjz9PPv8vHt8vHt8/Lu8/Lu8/Lu8vHt9PPv8/Lu+PXx+/jz+vjz+vjz+vjz+vjz+vjz+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+vjz+vjz+vjz+vjz+/n0/Pr0/Pr0/Pr0/Pn0/Pn0/Pr0+/n0/Pr0+/nz+vjz+vjz+vjz+vjz+vjz+vjz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz",
+    "layoutSha256": "c0afc8aa8fd02492b34046d991a65c0cdbcbf40e1cb3ccd287dcdea0c52ab2ec",
+    "width": 1080,
+    "height": 1920,
+    "originFormat": "story",
+    "commit": null
+  }
+}

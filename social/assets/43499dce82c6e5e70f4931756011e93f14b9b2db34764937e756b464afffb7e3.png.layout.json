@@ -1,0 +1,132 @@
+{
+  "designVersion": 2,
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 763,
+      "y": 168,
+      "width": 245,
+      "height": 24,
+      "size": 24
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 771,
+      "y": 208,
+      "width": 237,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "PROPERTY / BUYING COSTS",
+      "x": 72,
+      "y": 82,
+      "width": 304,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "A PROPERTY PRICE ISN'T",
+      "x": 72,
+      "y": 242,
+      "width": 864,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "THE FULL COST.",
+      "x": 72,
+      "y": 316,
+      "width": 547,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "CHECK TRANSFER FEES",
+      "x": 72,
+      "y": 412,
+      "width": 884,
+      "height": 52,
+      "size": 68
+    },
+    {
+      "text": "Cyprus: VAT and transfer fees interact. The exact transaction",
+      "x": 72,
+      "y": 512,
+      "width": 859,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "matters.",
+      "x": 72,
+      "y": 550,
+      "width": 114,
+      "height": 20,
+      "size": 28
+    },
+    {
+      "text": "Do you compare the total acquisition cost?",
+      "x": 97,
+      "y": 610,
+      "width": 628,
+      "height": 26,
+      "size": 26
+    },
+    {
+      "text": "LARNACA CASTLE / CYPRUS",
+      "x": 72,
+      "y": 1193,
+      "width": 305,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "Cyprus DLS | checked 14 Sep 2026",
+      "x": 72,
+      "y": 1232,
+      "width": 311,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 72,
+      "y": 1270,
+      "width": 310,
+      "height": 14,
+      "size": 20
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 774,
+    "y": 64,
+    "width": 230,
+    "height": 88
+  },
+  "photoSha256": "c6a4caacaaf97e1a5277d7b26d285e56f149d32da590cf93623c783482b11bcc",
+  "palette": {
+    "cream": "#faf8f3",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "sky": "#e9f1f7"
+  },
+  "photoRegion": {
+    "x": 72,
+    "y": 720,
+    "width": 936,
+    "height": 455
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 64,
+    "bottom": 1298
+  }
+}

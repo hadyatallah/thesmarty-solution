@@ -1,10 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, imageFingerprint, immutableAssetUrl, normalize, requireThat, schedulerProof, sha256, sign, validateManifest, visualSignature } from '../lib/qa.js';
+import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, enforceUserApproval, imageFingerprint, immutableAssetUrl, normalize, requireThat, schedulerProof, sha256, sign, validateManifest, visualSignature } from '../lib/qa.js';
 import { analyzeVideo, inspectExport, verifyPublishedImage, verifyPublishedVideo } from '../lib/export-qa.js';
 import { Ledger } from '../lib/ledger.js';
 
 const config = JSON.parse(await fs.readFile('social/publishing-config.json', 'utf8'));
+const approvalPolicy = JSON.parse(await fs.readFile('social/user-approval-policy.json', 'utf8'));
 const report = { qaVersion: QA_VERSION, checkedAt: new Date().toISOString(), schedulerEnabled: config.schedulerEnabled, secretReferences: { TSS_PUBLISHER_KEY: Boolean(process.env.TSS_PUBLISHER_KEY), GITHUB_TOKEN: Boolean(process.env.GITHUB_TOKEN) }, qa: [], published: [] };
 await fs.mkdir('social-results', { recursive: true });
 const localDay = date => new Intl.DateTimeFormat('en-CA', { timeZone: config.timezone }).format(date);
@@ -61,6 +62,7 @@ try {
   }
   report.accounts = { instagram: inspection.instagram, facebook: inspection.facebook, facebookConfigured: inspection.facebookConfigured };
   report.serverEnvironmentReferences = inspection.environmentReferences;
+  report.userApprovalPolicy = inspection.userApprovalPolicy;
   report.recentInstagram = inspection.recent.map(m => ({ id: String(m.id), caption: m.caption || '', timestamp: m.timestamp, format: m.media_type, permalink: m.permalink }));
   await fs.writeFile('social-results/recent-instagram.json', JSON.stringify(report.recentInstagram, null, 2) + '\n');
   const queueFiles = (await fs.readdir('content-queue')).filter(f => f.endsWith('.json')).sort();
@@ -151,6 +153,7 @@ try {
       if (isControlled && config.verifiedLivePublication) schedulerProof(config, history.items);
       if (!isControlled && !config.schedulerEnabled) continue;
       if (Date.parse(item.publishAt) > now) continue;
+      enforceUserApproval(item, approvalPolicy, now);
       if (!isControlled) {
         requireThat(config.approvedFormats.includes(item.format), 'Format has not passed a controlled live verification');
         requireThat(localDay(new Date(item.publishAt)) === day && now - Date.parse(item.publishAt) < 4 * 3600000, 'Stale post will not be published as backlog');
@@ -203,6 +206,7 @@ try {
   const summary = [`TSS social QA v${QA_VERSION}`, `Scheduler enabled: ${report.schedulerEnabled}`, `Facebook configured: ${report.accounts?.facebookConfigured ?? 'not checked'}`, `Published: ${report.published.length}`, ...report.qa.map(q => `${q.id}: ${q.passed ? 'QA passed' : q.blocked}`), ...(report.error ? [report.error] : [])].join('\n');
   console.log(summary);
   if (report.serverEnvironmentReferences) console.log('Server variable references (presence only): ' + JSON.stringify(report.serverEnvironmentReferences));
+  if (report.userApprovalPolicy) console.log('User approval policy: ' + JSON.stringify(report.userApprovalPolicy));
   if (process.env.GITHUB_STEP_SUMMARY) await fs.appendFile(process.env.GITHUB_STEP_SUMMARY, summary + '\n');
   if (report.blocked) process.exitCode = 1;
 }

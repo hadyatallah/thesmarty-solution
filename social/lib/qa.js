@@ -21,6 +21,21 @@ export function cleanText(value) {
 export function binding(item) {
   return sha256(JSON.stringify({ id: item.id, topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, format: item.format, platforms: item.platforms, publishAt: item.publishAt, asset: item.asset, creative: item.creative, facts: item.facts, geography: item.geography, deliberateUpdate: item.deliberateUpdate, qaOnly: item.qaOnly === true }));
 }
+// A scheduling or freshness-only change does not ask the user to approve the same
+// content again. Any change to the actual creative, claims or caption does.
+export function userApprovalBinding(item) {
+  return sha256(JSON.stringify({ id: item.id, topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, format: item.format, platforms: item.platforms, caption: item.caption, assetSha256: item.asset?.sha256, creative: item.creative, claims: item.facts?.claims, sources: item.facts?.sources?.map(({ id, url, expectedText, additionalEvidence, reviewNote }) => ({ id, url, expectedText, additionalEvidence, reviewNote })), geography: item.geography }));
+}
+export function enforceUserApproval(item, policy, now = Date.now()) {
+  requireThat(policy?.version === 1 && policy.requiredCount === 10 && policy.firstPostIds?.length === 10 && new Set(policy.firstPostIds).size === 10 && policy.approver, 'Missing or invalid ten-post user approval policy');
+  const validApproval = a => a?.approvedBy === policy.approver && SHA.test(a.contentSha256 || '') && validTime(a.approvedAt) && Date.parse(a.approvedAt) <= now + 60000 && a.authorizationReference?.length >= 12;
+  const approval = policy.approvals?.[item.id];
+  if (policy.firstPostIds.includes(item.id) || !policy.firstPostIds.every(id => validApproval(policy.approvals?.[id]))) {
+    requireThat(validApproval(approval), 'Explicit user approval required before publication');
+    requireThat(approval.contentSha256 === userApprovalBinding(item), 'Content changed after user approval; review the revision');
+  }
+  return true;
+}
 // Caption is bound separately as well as in the transport signature.
 export function sign(payload, key) { return crypto.createHmac('sha256', key).update(JSON.stringify(payload)).digest('hex'); }
 export function verifySignature(payload, signature, key) {
@@ -61,6 +76,7 @@ export function validateManifest(item, now = Date.now()) {
   for (const source of item.facts.sources) {
     const u = new URL(source.url);
     requireThat(u.protocol === 'https:' && source.expectedText?.length >= 12 && source.reviewNote?.trim(), 'Source needs HTTPS, evidence excerpt and review note');
+    requireThat(source.additionalEvidence === undefined || (Array.isArray(source.additionalEvidence) && source.additionalEvidence.every(t => typeof t === 'string' && t.length >= 12)), 'Invalid additional fact evidence');
     requireThat(validTime(source.checkedAt) && validTime(source.validUntil) && Date.parse(source.checkedAt) <= now + 60000 && Date.parse(source.validUntil) > now, 'Expired or invalid source check');
   }
   requireThat(['no-location-imagery', 'verified-republic-location'].includes(item.geography?.mode), 'Geographic review required');
@@ -135,10 +151,25 @@ export function checkDuplicates(item, history, now = Date.now()) {
 }
 export async function checkSources(item) {
   for (const s of item.facts.sources) {
-    const response = await fetch(s.url, { redirect: 'error', signal: AbortSignal.timeout(15000) });
-    requireThat(response.ok, `Source unavailable: ${s.id}`);
-    const text = (await response.text()).replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ');
-    requireThat(normalize(text).includes(normalize(s.expectedText)), `Verified evidence no longer found: ${s.id}`);
+    let html;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const response = await fetch(s.url, { redirect: 'error', signal: AbortSignal.timeout(15000) });
+        if (!response.ok) {
+          if (attempt === 0 && (response.status === 429 || response.status >= 500)) { await new Promise(resolve => setTimeout(resolve, 500)); continue; }
+          throw new Error(`Source unavailable: ${s.id}`);
+        }
+        html = await response.text(); break;
+      } catch (error) {
+        if (attempt === 1 || error.message?.startsWith('Source unavailable:')) throw new Error(`Source unavailable: ${s.id}`);
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+    }
+    requireThat(typeof html === 'string', `Source unavailable: ${s.id}`);
+    const text = html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ');
+    for (const evidence of [s.expectedText, ...(s.additionalEvidence || [])]) {
+      requireThat(normalize(text).includes(normalize(evidence)), `Verified evidence no longer found: ${s.id}`);
+    }
   }
 }
 export function schedulerProof(config, history) {
