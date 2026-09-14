@@ -65,10 +65,10 @@ test('renderer rejects long copy, missing/unverified photos, placeholders and br
   c.text.headline = 'LARNACA'; c.template = 'place-opportunity'; await assert.rejects(renderCreative(c), /no approved/);
   c.photoKey = 'unverified-cyprus-label'; await assert.rejects(renderCreative(c), /geographic QA/);
 });
-test('reference photo editorial renders a verified image-led JPEG feed', async () => {
+test('reference integrated editorial renders a verified image-led JPEG feed without cards', async () => {
   const c = {
     designVersion: 2,
-    visualStyle: 'reference-photo-editorial',
+    visualStyle: 'reference-integrated-editorial',
     assetFormat: 'jpg',
     format: 'feed',
     template: 'question-debate',
@@ -76,7 +76,8 @@ test('reference photo editorial renders a verified image-led JPEG feed', async (
     logoSha256: LOGO_SHA,
     text: {
       category: 'UNPOPULAR OPINION / CYPRUS PROPERTY',
-      headline: 'WOULD YOUR PROPERTY PLAN WORK WITHOUT PEAK SEASON?',
+      headline: 'WOULD YOUR PROPERTY PLAN WORK WITHOUT',
+      highlight: 'PEAK SEASON?',
       body: 'Test the quiet months. Lower the occupancy assumption. Keep the costs that continue all year.',
       question: 'WHAT WOULD YOU STRESS-TEST FIRST?',
       location: 'PANO LEFKARA / CYPRUS',
@@ -86,7 +87,7 @@ test('reference photo editorial renders a verified image-led JPEG feed', async (
   const { buffer, layout } = await renderCreative(c), metadata = await sharp(buffer).metadata();
   assert.equal(metadata.format, 'jpeg');
   assert.deepEqual([metadata.width, metadata.height], [1080, 1350]);
-  assert.equal(layout.visualStyle, 'reference-photo-editorial');
+  assert.equal(layout.visualStyle, 'reference-integrated-editorial');
   assert.match(layout.photoSha256, /^[a-f0-9]{64}$/);
   assert.equal(layout.logoSha256, LOGO_SHA);
 });

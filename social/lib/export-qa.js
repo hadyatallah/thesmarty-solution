@@ -43,7 +43,12 @@ export async function inspectRenderedImage(item, buffer) {
   const layout = JSON.parse(layoutBytes);
   requireThat(layout.format === item.format && layout.width === item.asset.width && layout.height === item.asset.height && layout.logoSha256 === item.creative.logoSha256, 'Incorrect layout evidence');
   const expectedText = item.creative.designVersion === 2
-    ? ['The Smarty Solution', 'Connect · Develop · Invest', ...Object.values(item.creative.text), 'THESMARTYSOLUTION.COM']
+    ? [
+        'The Smarty Solution',
+        ...(item.creative.visualStyle === 'reference-integrated-editorial' ? [] : ['Connect · Develop · Invest']),
+        ...Object.values(item.creative.text),
+        'THESMARTYSOLUTION.COM'
+      ]
     : [...Object.values(item.creative.text), 'CONNECT · DEVELOP · INVEST', 'THE SMARTY SOLUTION'];
   requireThat(layout.designVersion === item.creative.designVersion, 'Incorrect design version evidence');
   requireThat(normalize(layout.textRegions.map(r => r.text).join(' ')) === normalize(expectedText.filter(Boolean).join(' ')), 'Creative text is missing from the final layout');

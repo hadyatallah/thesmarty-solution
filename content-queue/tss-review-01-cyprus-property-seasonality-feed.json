@@ -4,13 +4,13 @@
   "status": "awaiting_user_approval",
   "reviewBatch": "2026-09-initial",
   "reviewNumber": 1,
-  "revision": 2,
+  "revision": 3,
   "replaces": "tss-review-01-vat-cyprus-ireland-feed",
-  "revisionReason": "Replaced after user review because the VAT comparison could be confused with an earlier corporation-tax post and the layout did not match the approved image-led references.",
+  "revisionReason": "Revision 3 removes the rounded text panels rejected by the user and integrates the typography directly into the full-frame landmark composition.",
   "topic": "Stress-testing a Cyprus property plan beyond peak season",
   "topicKey": "cyprus-property-seasonality-stress-test",
   "headline": "WOULD YOUR PROPERTY PLAN WORK WITHOUT PEAK SEASON?",
-  "creativeKey": "cyprus-property-seasonality-lefkara-reference-photo-v1-feed",
+  "creativeKey": "cyprus-property-seasonality-lefkara-integrated-v2-feed",
   "format": "feed",
   "platforms": [
     "instagram",
@@ -20,14 +20,15 @@
   "caption": "If a Cyprus property plan relies on short-term rental income, test it without peak-season assumptions.\n\nRun the numbers for quieter months, lower occupancy and costs that continue regardless of bookings. This is a stress test, not a forecast.\n\nWhich assumption would you test first?\n\nPhoto: Pano Lefkara, Cyprus, Qasinka, CC0.\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
   "creative": {
     "designVersion": 2,
-    "visualStyle": "reference-photo-editorial",
+    "visualStyle": "reference-integrated-editorial",
     "assetFormat": "jpg",
     "format": "feed",
     "template": "question-debate",
     "photoKey": "lefkara",
     "text": {
       "category": "UNPOPULAR OPINION / CYPRUS PROPERTY",
-      "headline": "WOULD YOUR PROPERTY PLAN WORK WITHOUT PEAK SEASON?",
+      "headline": "WOULD YOUR PROPERTY PLAN WORK WITHOUT",
+      "highlight": "PEAK SEASON?",
       "body": "Test the quiet months. Lower the occupancy assumption. Keep the costs that continue all year.",
       "question": "WHAT WOULD YOU STRESS-TEST FIRST?",
       "location": "PANO LEFKARA / CYPRUS",
@@ -49,20 +50,20 @@
     "reviewNote": "Real photograph visually checked against Pano Lefkara in the Republic-controlled area. It illustrates the location and is not a current property listing."
   },
   "asset": {
-    "path": "social/assets/96d8dd9d1779ba59d0fb82a3e49317923683afd7d5b7b9ff9477b6d2d1e1d09d.jpg",
-    "sha256": "96d8dd9d1779ba59d0fb82a3e49317923683afd7d5b7b9ff9477b6d2d1e1d09d",
-    "pixelHash": "773b2aed46633d1f7c90e87b46dd310ae4ce7ce206a07a3bc8061650fff8ef07",
-    "visualSignature": "rgb32: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4+Lf29za7uvm9/Tt8/Do/fv1trCkPzgfHyAir6+ttb3BrrS5v8PGl6Gqkp2m3N3bnKaulqCppKyzi5ehm6Wtsbi94+TggI6aqrK4qLC2nqevlqCpnKWulJ+pn6ixys3O//30+fbv9/Tt9vPs9PHq/vv1ubSoOjUeGhkXpaKcxsvOpKyysbi9t7zArbS5397csri8tLq+tLq+ub7Btbu/s7q/r7a7r7a7ys3O9fHr7erl6unk6Ofi5+bi7Ovm9vLr9fLr9fPs9fLr9fLr9PHq/fv1u7KlRj4pHh4aoZ+ZxsvPpa2zp7C2pKyznqev4uHeoKiwo6yyo6yzqLC2oquyq7O4n6mwqK+11dfV/vry+vbv/Pfw/Pjx/fny/Pjx/fjw+vbu+PXt+vfv+fbv9PHq///4npqVFxURIiIeo6Gb//336+rk7Ovl8vDq7+3o5+bi8O7o6+nk6ejj9PLs8O3o7uzn8vDq7Orl6+nl4+Le4eDd4+Pf5eTi4uLf5OPf3N3a4+Pf6efj3N3b5ePg9PHq///5lJORAwMGJCUip6Wg4+TiztDP0tTT0dPSy87OztDQ19fWyszNy87O2NjW0tPTz9HR0NLR4+Lf6ujj5uTg5OLf6efj6efj5+Xh6Ofi5ePf6uji7evl5OPg5+bh9PHq///4lZSUAAACISUkoaGc//z28O3o9PLs8vHr8/Hr8/Hr9fLs8O/p8vDq8vDq9/bw8/Lt8fDq/Pny/fry/frz//vz+vfw+Pbv+fbv+fbv+/jx+ffw+Pbv+ffv9/Tt8vDp///4mZmZAAACHSMlpaOf7/v5wdjcvcnRwtDWxNHXvMrSw8/WytfcwtDWx9Tau8nQv8zUx9PavcvSxtTavcvTu8nR2+bq5/Lz5fDx5fDy5fDy5vDy5vDy5fDx5fDx5O3v///4nZ2eAAMJFxwdo6Gc8vv40OHj3OTm3Obn3efo2uTm2+Tm3ufp3ebo3ufp2+Tn2uPm3+fp2+Tm3+jq3OXo3OXn5e7v6PDx6PDw6PDw6PDw6PDw6PDx6fHx6PDx5+7u//73n6CiAAYLMj1KqKqr///49vLr+fXt+fXt+fXt+fXt+fXt+PXt9/Ts+fXu+vfw+vfv+vfv+/bv+vbv+/jx+/jw9/Ts9fLr9vPr9fLr9vPr9vLr9vLr9/Ts9fLs9PHq//71pKapBA0TPkxisLS47O3p1dnZ3+Hf2Nzb3uHf5OTh2t7c4OLf8/Dp9fPs9vPs9vPs9vPs9vPs9vTt9vPs9vPs9vPt8/Hq8e/o8u/p8e/p8e/p8u/p8vDp8vDp8O7o//31oqSmFBgjNkVas7a5+/rz4+Xi6Onl6Onl6uvm7Ovo7Ozo5+jl7u7p+fbv+PXu+vfw/Pny/Pny/Pny/Pny/Pnx+/fv9fPs19nX1NXV1tjW2tvZ2NnY2NrY2tvZ19jX//32oaOiERYgNUVZjZOb7erj5OLd5ePd5ePd5OHc5OHc6OXg8O7o8u/p9vLs9vPs7+zl5ePd5OLd4+Lc4+Lc5OHc4+Ld4+Ld4+Hb4+Hc5OLd5OLd4+Hc5ePe5OHb5ePe7erkf4GDGiIvPkxfN0VXPEVSPUVPOkFKNT1FLzY+LzU7WV1foqWhmZuXfIB+ZmprQEVLKzM8KzI8KTA6KC87LjhGMDxLLDdFJzA9LThGMDxLLDdGMTtLOUVSKzE5Nj5JP0lWMThCNDpG",
-    "layoutSha256": "d6eaed6b72fc6b2d3990394f48eedd0ce35bc6678b177704bebe7184c22721e7",
+    "path": "social/assets/dc0aef0c0095314ae8c26d1a7e655b9157e51d561887a1c23d3a28d8feb779cb.jpg",
+    "sha256": "dc0aef0c0095314ae8c26d1a7e655b9157e51d561887a1c23d3a28d8feb779cb",
+    "pixelHash": "7a8c0e8814f8b8cc87d1f01521ef08e002f7845994e7e44f8f30500c30c74557",
+    "visualSignature": "rgb32:2MzB1ce53tfO4d7Y3dbO2NHL1NPS1dHQ1M/JycK7xbuyy8fD0d3r0Nzq0Nvoz9voz9vn0Nzn0d3p0t3oy8nFzMnCz8zF0c3G0s7F29fM3NLH39TI3dbMxcO+y8rG2tnWu6+ku6ufpp+bpqKenJiVs7Kxq7C1oaWsnaGmoKCgqKCZrJ+VtLa6vdPrvM/lu8/ku8/ju8/kvNDlv9Pnt7q6t7OsvbmywLyzxL+2h4uPeZeaf46RfYGIpKKfpKCbtLOwpaKhwruz1M7Hxb21tKuj1NHNycrLoaGopKSpp6SioJqTjoJ6lYZ8oKu5qsnpqMLgp8PgqMPgqcPfrcrpo6uxopyUqqefq6eftK+ke3x/WX+DWYGGS1NiiImGkI6KgoF9xsfJx8jG1dPO1tPN3NvW5ubh293aoqCjpZ2ZoJ6hmpSPgnp0dmZcf3FojabClbzlkrTak7XclbfcmL7mk6a4kY6Gko+JlJCJl5KJl5KKm4p9o5WGc3R0dHRzeHh4Xl1cv8DDv8DBwcHAwMC80M/Mzs/NiomLeHNzq6CWlZSXh4OEhn56Y1hSa089cV9UfJ/Hf6zcf6jXgarYhbHfgqnQYWFkcWFXcGBXgnhwZmFgin1phHxwUVRYXF5hWltfODc2qq2xr7O2srW4sLGyycrJxcbFaGZoRz48qqScinxwZFxbeHZ1aWJda3WBaH6baZbJap3WapzSbJ7TcabebJXAWlNSaWFea2NecWljaWFYg3Fba2NZNTlARklOPD1BEA8PpKeso6arqayxqKyvxMfHvsHAZWBjTUE+kn5wgWVSVz4sYF1ik5CMgKjOYKLlYpnVYJbQX5bQYpjQZp7Yap3QaGpocW5nendvg35xfXRjg3BXWlVQKS85P0FIKCktAAAAqayxpaitp6uvqKywxMfIwMPCWlZaQjYtalA7VDovWkIwODEurqulhKjMXZjTYZjSX5bQXpXOYZfQZJvVaqLcZ3B0bWNSc21bdm5cc2hTinddVFFPKy86QkNHISIkAAAArrK1rLC0rrG1rLCyzM/Ptrm5ZGJjPDcxkYV4i4J0a1tFSkA5fnlzhKnKb6ribqDUbJ7Sa53QbJ/Sb6DUdKzkdYOLc2hVeXFhgXlpgnVhkoNsX1xcQEJJVVVXNDM0ERAQt7u+uLu9uLu9ury+tba3oqKigH99XVhWtq6mnJWHbmtaYlxVhIB7eYiae5i3ha/ahK7Ygq3Wg63Xha7YiLXjjaS5jIuBkZCHko1/nJB6opWDdHFwXl9mcG9yUk5MPTs4xMbHxsfIu73AnqGlrKyszMzIl5eUcm5poZyTpZ2NenNldG9omJaQjoqLgnJtk7XWmr/il7rdlrrcl7rdmb/knbHKj5agmKm3mpiSr6WTrKSVhYSDdXd8gYGCaWhjXl1YyszMu72+qKqsuLm60dHP0NDNtLW0qaimnZ2ctbOvqaqtlZOPlZKMnaCilJmforbKrc3nrMrlrMvnqsfhqsnmrsXYurSnwrywyMCxurOksauhm5iViouKj4qFjYB7fnd1u7y9tbW3wsLC1dXT2dnWy8vLsLGxtLSztbWzr6+tra2sqqikq6ehqaaYp6WZtLKvx8jEwcLBvMXMvtPmvdPpv9Tly8m/0cm61c29xsCzt7KssK2poaKeqaeho5qVmZKPy8rI2NjV4uDd5uPf3tvYyMfFwL27trKtt7Ovurezvru3ycXAz8rCyMO5wbyv1c/F5d7R2tDCxLaszdTa0eHu0N/r1dzf2Nza3NjO1c/EyMW/xsO+vr25wsG8u7iyu7av6ejk6Ofj2d7b1dzZy9DOyc/MzdHOx87KxMvHzc/Kw8nEvsbCw8jEv8bCwsnCys/I5eLZ5uDW2dDI2tva3uju3ubs3ufv3uDh4t7W39vS2NXP2NXQ1NDN19PP19HK2dLK6+nk6unlxtnWt87Lu87Lu8/MvNDNw9HOz9jS09jR0tnSzdXP1NrU0tvUz9jQ0NjQ8e3h9evf5d3V5+Xi7/Lz7/P27/T36+zq7ebd6OTb2dbQ3dnU2NXS2tfS4NrR49vS8O3m6Ofho6+0lqWrmKetnKuwmqiuxsfHq66y0tDMr7K1rbCzvsDCuru8urq519LMrrGzp6uvra+xpqyxo6uyq7fBrbnDrLnDr7e8xcXD493W39zW3NrW3tvX5eHX6ePY6+nj6ejioqqwm6Orq7G2pqyynKSsrbO4mKGn09PPrrO3pKyxrLO3lJ6lq7G1ysvItbm5mKGmqq2woKetrbW7qrW9oa23tL7Et73Ay8zJ6ebe4+Da4d/a4d/a6OTb6uXb6efh3d3amqSsrLK3sLa7jJiinKWtv8PFkpqjkZmik5ujk52lkZuk0M/NpKqwkZuko6muqq6ymJ+lnaOqnqeun6mxq7W77/Dr9vPq8ezj5+Te6Obg5uTf5eTf6ubf6OXb6+jh5uXhydHRu8bIv8fIw8nLxcrL293bvMPEwcjGt8C/x8rKwMfI0tfTxs3Lv8XH0NXSyNDMyszL0NHPycvKxsrL3+Dd7+zm7Oni7+vk7uvl7evm6+rl7Ovm7evk6+fe8Ozk5unjkMLCjMDAn8nIir+/fbm5xtvYwtrWir69k8PBkcLAmMjGlMPCoMrIi8HAgry7qM3L5+vk/fbw+PXu+fXv9/Tt9fLq8+/o9PDp9PHs8/Dq8fDq8e/p8e3n8Ozl8+/o7ezl4ebi3uXizd3a2OLfz93a5Ojk3+XhzNrXytrV2uTe1+Le0uDd1eHd1uDc1uHe4ufj7erl8u7p8O7p8O7p8O7o8u/o8e7n8O7n7+zn8e/q7+3p8fDr8u/p8u7n8/Dp9PHq1dXU1NTU29jX29rY1NTU2dnX19bW1tTT2tfV4+Dd19bV4+De4d/d4N3a4+De3NvZ1NXU3t7c3N3b2drZ1tfW1tfW397a4ODd0NLR3d3a19nY7ezo9PHq8e7n9PHq9PDp5OLf3d7b4eLd29zZ5eXi3d7b39/c3t/b39/b397c3d7c9PLs+/jx9fLq9/Tu9/Ps9/Ps9vPs9vPt9vPs9vPs+PTt9/Pr9/Ps9/Tt9PHq9/Tu9fLs8/Dq8u/o9/Ls5+vl1uDcy8zNyc3N0dPSxsnK0dPS1NXUzdDQ1NXTxcjKys3O0tTUzc/Q09PTyszNy83O6efi+PTt9fPs9vPs9vPs+PXu9/Tu9vPs9fLr8/Dq9fHr9PLs9PHr8u/o9fLr7u7n6Ovl8u/p8O7o8e/p8O7o8O7o8e7o8e/p8O7o8O7o8vDq9fLs8/Hq8u/o8u/p8+/p9vLr9/Ps9/Tt+PXu9vPs9fLr9fLr9vLs9vLr9PHq9fPs9fPs9fLs8/Dp9fLr9fLr9/Ps9vPs9vPs9vPs9vPs9/Ts9fLr9fLr9fLr9/Tt+fbv+fbv+PXu9vLr9/Ts+PXu+fbu+PXu9/Tt9vPs9fLr9PHr9PHr9fLs9/Tt9fLr9vPs9vPs9vPs9PHq9vPs9vPs+PXu+PTu+PTu+PTu9/Ps9/Tt+PXt9vPs9PHq9vPs+PXu9/Tt9/Tt9/Tt9/Tt+PXu9/Xu9vPs9fLr9fLr9PHr9PHq9PHr9PLr9vPs9PHr9fLs9fLs9vPt9PHr9/Tt9vPt5ufj5ufj5ubi4uPg6url6enl4uPh7Ovn9fLr9PLr9vPs9fPs9fPs9vPt9vPt9vPt9vPt9fPt9PHq9PLr+PXu+PXt+PTt+PXt+PXu+PXt+PXu+fbv9/Tt9fLr9/Tt9fPs3uHf3ODf3+Lg29/e4ePh5Obj3ODf4+Xj8/Hs+vfv+PXv+fbv+fbv+fbv+fbv+fbv+fbv9/Tt+PXt7uzn19jX2tvZ2tvZ29za4ODd2tvZ3t/c3d7c9/Tt9vPs9/Tt9/Tt9fPs9PLs9PHs9fLs9PLr9PHs9vTu9fLt9vTt+fbv+fbv+fbv+PXv9/Tt9/Tu9/Tu9/Tt9/Tt9/Tt8/Dq5+bi5+bi6Ofj6Ofj6+rl6Ojj6unk6ujj9/Tt9vPt+PXu+PXu+PXu+PXt+PXu+PXu+PTt9/Tt+fXu+/fw+vfv+fbv+fbv+PXu9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt+PXu+/fw+vfv+vfv+vfv+vfw+vfv+/fw+vfv9/Tu+PXu",
+    "layoutSha256": "6155a64a2da64433b84a80b2407ab0935b7123baeeabf740665073cc575e89d9",
     "width": 1080,
     "height": 1350,
     "originFormat": "feed",
-    "commit": "4704ef514753af3b343be39b1563038083cb1c0f"
+    "commit": "cfd030124d0b698f4741c7db03d97c6349eeab52"
   },
   "review": {
     "reviewer": "Codex final-export editorial review",
-    "reviewedAt": "2026-09-14T21:21:54.998Z",
-    "assetSha256": "96d8dd9d1779ba59d0fb82a3e49317923683afd7d5b7b9ff9477b6d2d1e1d09d",
+    "reviewedAt": "2026-09-14T21:38:24.073Z",
+    "assetSha256": "dc0aef0c0095314ae8c26d1a7e655b9157e51d561887a1c23d3a28d8feb779cb",
     "captionSha256": "6d5d42c2431ff58f6f68e04e3fa5cac0ed06787534a3daf5bc6a6a8a15e5749a",
     "checks": {
       "dimensions": true,
@@ -83,7 +84,7 @@
       "hashtagLimit": true,
       "finalExportInspected": true
     },
-    "notes": "Revision 2 replaces the rejected VAT comparison. The actual image-led export was visually inspected, OCR checked and verified against the approved Pano Lefkara photograph and original TSS logo. The copy is explicitly editorial and makes no numeric, tax-rate or forecast claim. User approval is still absent.",
-    "boundSha256": "27a88153ca5b93bdf9f663cf0f90b97c2f37585f60f20e43f80e6006f3ec4222"
+    "notes": "Revision 3 removes the rejected card layout and uses a full-frame, verified Pano Lefkara photograph with typography integrated through a borderless tonal fade. The actual JPEG was visually inspected and OCR checked. The copy makes no numeric tax, return or occupancy forecast claim. User approval is still absent.",
+    "boundSha256": "307fd36ae29f5d7ef8e1030b2d7d20771c1ed03c6d9d4d295a7b5880af0a9734"
   }
 }
