@@ -14,6 +14,9 @@ for (const file of (await fs.readdir('social/qa-samples')).filter(f => f.endsWit
   requireThat(item.qaOnly === true && item.review?.boundSha256 === binding(item), 'Samples must be inspected and permanently QA-only');
   // Retain the original inspection date. Never refresh a review automatically.
   if (Date.now() - Date.parse(item.review.reviewedAt) > 7 * 86400000) { results.push({ id: item.id, skipped: 'Original sample review expired' }); continue; }
+  if (history.items.some(old => old.assetSha256 === item.asset.sha256 || old.pixelHash === item.asset.pixelHash || old.creativeKey === item.creativeKey)) {
+    results.push({ id: item.id, skipped: 'Sample creative is already reserved or published; live duplicate protection remains in force' }); continue;
+  }
   validateManifest(item);
   checkDuplicates(item, history.items);
   await checkSources(item);
