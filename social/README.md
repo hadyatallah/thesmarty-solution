@@ -36,6 +36,13 @@ controlled live tests. The three-per-day publisher stays off until the existing
 dual-platform test and each enabled format's actual published result have been
 inspected. The target is quality-controlled publication, not filling every slot.
 
+The first-batch commit passed all 19 fail-closed tests in GitHub Actions, but
+the protected Meta account inspection rejected credentials/permissions. Its run
+is `34844492005` and published zero new posts. Review-asset verification now
+runs independently of that connection check. The live publisher remains
+blocked; read only safe error codes to identify the affected account before
+changing credentials. No Meta app setup is restarted.
+
 The three existing Instagram publication records stay unchanged. They are
 imported into durable history alongside recent Instagram content. The old
 15-minute publishing trigger is removed. Publishing is disabled by default.

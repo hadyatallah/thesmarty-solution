@@ -58,6 +58,7 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
         run: node social/scripts/check-samples.js
       - name: Verify final posts awaiting user approval without publishing
+        if: ${{ !cancelled() }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_SHA: ${{ github.sha }}

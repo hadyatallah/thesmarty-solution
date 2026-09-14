@@ -1,0 +1,276 @@
+{
+  "version": 1,
+  "id": "2026-09-initial",
+  "status": "awaiting_user_approval",
+  "requiredReviewer": "Hady",
+  "createdAt": "2026-09-14T12:40:04.768Z",
+  "usefulPosts": 8,
+  "promotionalPosts": 2,
+  "historyRecordsChecked": 20,
+  "published": false,
+  "schedulerEnabled": false,
+  "posts": [
+    {
+      "number": 1,
+      "id": "tss-review-01-vat-cyprus-ireland-feed",
+      "status": "awaiting_user_approval",
+      "manifestPath": "content-queue/tss-review-01-vat-cyprus-ireland-feed.json",
+      "format": "feed",
+      "platforms": [
+        "instagram",
+        "facebook"
+      ],
+      "headline": "CYPRUS VS IRELAND. COMPARE THE SAME TAX.",
+      "caption": "Comparing Cyprus and Ireland? Compare the same tax.\n\nStandard VAT is 19% in Cyprus and 23% in Ireland. These are VAT rates, not corporation tax rates. The applicable VAT rate can vary by product or service.\n\nWhich business cost would you compare first?\n\nSource: European Commission: national VAT rates.\nhttps://europa.eu/youreurope/business/finance-and-tax/vat/vat-rules-rates/index_en.htm\n\nPhoto: Paphos Castle, Cyprus, Bukvoed, CC BY 4.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Cyprus-Paphos-Castle-0957.jpg\nhttps://creativecommons.org/licenses/by/4.0\n\n#Cyprus #CyprusBusiness #Ireland #VAT #TheSmartySolution",
+      "contentSha256": "ac99c1cf5fa93d04abdd8432158e6a4109593318df0b9c1e237d3378de970c3e",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/d73035a02f34d47835fd3edf1d13a58b093a9c06164ba0a84c2d567440538f1a.png",
+      "videoUrl": null,
+      "sources": [
+        {
+          "title": "European Commission: national VAT rates",
+          "url": "https://europa.eu/youreurope/business/finance-and-tax/vat/vat-rules-rates/index_en.htm",
+          "reviewNote": "Standard VAT only; do not infer corporation tax or transaction-specific VAT.",
+          "checkedAt": "2026-09-14T12:20:37.319301Z",
+          "validUntil": "2026-09-21T12:20:37.319301Z"
+        }
+      ],
+      "reviewedAt": "2026-09-14T12:40:04.755Z"
+    },
+    {
+      "number": 2,
+      "id": "tss-review-02-property-transfer-fees-feed",
+      "status": "awaiting_user_approval",
+      "manifestPath": "content-queue/tss-review-02-property-transfer-fees-feed.json",
+      "format": "feed",
+      "platforms": [
+        "instagram",
+        "facebook"
+      ],
+      "headline": "A PROPERTY PRICE ISN'T THE FULL COST.",
+      "caption": "Before comparing Cyprus properties, compare the full acquisition cost.\n\nDLS says no transfer fee is collected when VAT is charged on the same transaction for the same property, subject to its stated conditions. Where transfer fees are charged, a 50% discount applies, with exceptions.\n\nHave the exact property and transaction checked before budgeting.\n\nSource: Cyprus DLS: sale and exchange.\nhttps://portal.dls.moi.gov.cy/en/application_forms/polisi-antallagi/\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
+      "contentSha256": "61f49cc5773dc823b30e23b454a28f8dffec5141f7cc6b41185e7a2d28473aa9",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/43499dce82c6e5e70f4931756011e93f14b9b2db34764937e756b464afffb7e3.png",
+      "videoUrl": null,
+      "sources": [
+        {
+          "title": "Cyprus DLS: sale and exchange",
+          "url": "https://portal.dls.moi.gov.cy/en/application_forms/polisi-antallagi/",
+          "reviewNote": "Same-transaction VAT waiver and fee reductions have exceptions. No personal fee quote.",
+          "checkedAt": "2026-09-14T12:20:37.319301Z",
+          "validUntil": "2026-09-21T12:20:37.319301Z"
+        }
+      ],
+      "reviewedAt": "2026-09-14T12:40:04.760Z"
+    },
+    {
+      "number": 3,
+      "id": "tss-review-03-housing-income-share-feed",
+      "status": "awaiting_user_approval",
+      "manifestPath": "content-queue/tss-review-03-housing-income-share-feed.json",
+      "format": "feed",
+      "platforms": [
+        "instagram",
+        "facebook"
+      ],
+      "headline": "CYPRUS HOUSING. THE HOUSEHOLD VIEW.",
+      "caption": "Eurostat reports that housing took 11% of household disposable income in Cyprus in 2024, compared with 19% across the EU.\n\nThis describes existing households. It is not a rent quote for a newcomer or a city-level property-price comparison.\n\nWhat would housing take from your own monthly budget?\n\nSource: Eurostat: Housing in Europe, 2025 edition.\nhttps://ec.europa.eu/eurostat/web/interactive-publications/housing-2025\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
+      "contentSha256": "57a5636caf65b8dac9fa37a90e36cd53356359fbbb4f7fcb39d1fdd23a18cb15",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/ed7ce4ea970c6ec9604627bdfd9df8054db22a01bedb82c408419d9dc201bc68.png",
+      "videoUrl": null,
+      "sources": [
+        {
+          "title": "Eurostat: Housing in Europe, 2025 edition",
+          "url": "https://ec.europa.eu/eurostat/web/interactive-publications/housing-2025",
+          "reviewNote": "2024 household income shares, not new-renter costs or property prices.",
+          "checkedAt": "2026-09-14T12:20:37.319301Z",
+          "validUntil": "2026-09-21T12:20:37.319301Z"
+        }
+      ],
+      "reviewedAt": "2026-09-14T12:40:04.761Z"
+    },
+    {
+      "number": 4,
+      "id": "tss-review-04-investor-brief-feed",
+      "status": "awaiting_user_approval",
+      "manifestPath": "content-queue/tss-review-04-investor-brief-feed.json",
+      "format": "feed",
+      "platforms": [
+        "instagram",
+        "facebook"
+      ],
+      "headline": "BETTER BRIEFS. BETTER CONVERSATIONS.",
+      "caption": "Looking at a Cyprus property or business opportunity? Start with a clear brief: your objective, budget, timeframe and the questions you need answered.\n\nThe Smarty Solution works on investor connections and the presentation of selected business, property and development opportunities.\n\nTell us what you are looking for so the conversation can start with a clear purpose.\n\nSource: The Smarty Solution: current services.\nhttps://www.thesmartysolution.com/\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
+      "contentSha256": "7623f20d3a912fb7d02547aaa96015b85a94d5d2da0f8bf1a14e2e7aa97a1126",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/30da50b01a7641b4a47910d4a01dbdced404c213ddbec9655d7a2d087c553850.png",
+      "videoUrl": null,
+      "sources": [
+        {
+          "title": "The Smarty Solution: current services",
+          "url": "https://www.thesmartysolution.com/",
+          "reviewNote": "Use existing commercial-introduction and opportunity services; no tax or legal advisory claims.",
+          "checkedAt": "2026-09-14T12:20:37.319301Z",
+          "validUntil": "2026-09-21T12:20:37.319301Z"
+        }
+      ],
+      "reviewedAt": "2026-09-14T12:40:04.762Z"
+    },
+    {
+      "number": 5,
+      "id": "tss-review-05-british-emigration-feed",
+      "status": "awaiting_user_approval",
+      "manifestPath": "content-queue/tss-review-05-british-emigration-feed.json",
+      "format": "feed",
+      "platforms": [
+        "instagram",
+        "facebook"
+      ],
+      "headline": "A UK TAX EXODUS? WHAT THE DATA SAY.",
+      "caption": "ONS estimates 246,000 British nationals left the UK long-term in 2025, versus 257,000 in 2024. The 2025 figure is provisional.\n\nThese counts do not establish that tax caused the departures. Motives need separate evidence.\n\nWhich relocation question would you want properly researched?\n\nSource: ONS: UK emigration explained, 21 May 2026.\nhttps://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/ukemigrationexplainedwhatweknowaboutbritsmovingabroad/2026-05-21\n\nPhoto: Finikoudes, Larnaca, Cyprus, Georgy Papantoniou, CC BY 3.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Finikoudes_by_Georgy_-_panoramio.jpg\nhttps://creativecommons.org/licenses/by/3.0\n\n#Cyprus #Relocation #UnitedKingdom #Migration #TheSmartySolution",
+      "contentSha256": "25c52a333c6149bfcb6bde79eefb90aa05be3542bee1bcdeadfd776a178da6ae",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/5a738140a3391931dd6c1a12325592cbb4a826f181894cb403bafb54f7782e05.png",
+      "videoUrl": null,
+      "sources": [
+        {
+          "title": "ONS: UK emigration explained, 21 May 2026",
+          "url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/ukemigrationexplainedwhatweknowaboutbritsmovingabroad/2026-05-21",
+          "reviewNote": "Provisional 2025 long-term emigration; no proof of tax motives.",
+          "checkedAt": "2026-09-14T12:20:37.319301Z",
+          "validUntil": "2026-09-21T12:20:37.319301Z"
+        }
+      ],
+      "reviewedAt": "2026-09-14T12:40:04.763Z"
+    },
+    {
+      "number": 6,
+      "id": "tss-review-06-ireland-tax-residency-feed",
+      "status": "awaiting_user_approval",
+      "manifestPath": "content-queue/tss-review-06-ireland-tax-residency-feed.json",
+      "format": "feed",
+      "platforms": [
+        "instagram",
+        "facebook"
+      ],
+      "headline": "IRELAND: 183 DAYS ISN'T THE ONLY TEST.",
+      "caption": "Irish Revenue sets two presence tests: 183 days or more in a tax year, or 280 days or more across the current and preceding tax years together.\n\nRevenue also states that you will not be resident if you are there for 30 days or less in a tax year. A tax year runs from 1 January to 31 December.\n\nThese are residence tests, not a calculation of all tax liabilities. Check the full rules before planning a move.\n\nSource: Irish Revenue: residence for tax purposes.\nhttps://www.revenue.ie/en/jobs-and-pensions/tax-residence/resident-for-tax-purposes.aspx\n\nPhoto: Paphos Castle, Cyprus, Bukvoed, CC BY 4.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Cyprus-Paphos-Castle-0957.jpg\nhttps://creativecommons.org/licenses/by/4.0\n\n#Cyprus #Relocation #Tax #Ireland #TheSmartySolution",
+      "contentSha256": "ebf8050530b8aff96d2742670e2adcf1e537d180a254eb629ed556dd25d8009a",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/c90724bf0ff9cd9c26aa2bfbeb4e9bbbf727de40c7003245b3854de21ead05b0.png",
+      "videoUrl": null,
+      "sources": [
+        {
+          "title": "Irish Revenue: residence for tax purposes",
+          "url": "https://www.revenue.ie/en/jobs-and-pensions/tax-residence/resident-for-tax-purposes.aspx",
+          "reviewNote": "Include the current plus preceding year and the 30-day exception; not a liability calculation.",
+          "checkedAt": "2026-09-14T12:20:37.319301Z",
+          "validUntil": "2026-09-21T12:20:37.319301Z"
+        }
+      ],
+      "reviewedAt": "2026-09-14T12:40:04.763Z"
+    },
+    {
+      "number": 7,
+      "id": "tss-review-07-europe-property-cycles-feed",
+      "status": "awaiting_user_approval",
+      "manifestPath": "content-queue/tss-review-07-europe-property-cycles-feed.json",
+      "format": "feed",
+      "platforms": [
+        "instagram",
+        "facebook"
+      ],
+      "headline": "EU PROPERTY. DIFFERENT CYCLES.",
+      "caption": "Europe is not one property cycle.\n\nEurostat reports house prices up 17.8% in Portugal and down 2.0% in Finland in Q1 2026 versus Q1 2025. These are nominal transaction-price changes, not rental yields or absolute property prices.\n\nWhich market and asset would you study further before buying?\n\nSource: Eurostat: house price index, 2 July 2026.\nhttps://ec.europa.eu/eurostat/statistics-explained/index.php?title=Housing_price_statistics_-_house_price_index\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
+      "contentSha256": "116798c00722d7a33b4b3e84655d11102ea6af9fb6b9bb910b934df36e5bcf63",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/a8634b8623e9334c0ed2801f50cacc4cfc17a697c41642bc140baf330c6a41d2.png",
+      "videoUrl": null,
+      "sources": [
+        {
+          "title": "Eurostat: house price index, 2 July 2026",
+          "url": "https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Housing_price_statistics_-_house_price_index",
+          "reviewNote": "Nominal residential transaction-price changes, Q1 2026 vs Q1 2025; not yields or absolute prices.",
+          "checkedAt": "2026-09-14T12:20:37.319301Z",
+          "validUntil": "2026-09-21T12:20:37.319301Z"
+        }
+      ],
+      "reviewedAt": "2026-09-14T12:40:04.764Z"
+    },
+    {
+      "number": 8,
+      "id": "tss-review-08-europe-living-costs-story",
+      "status": "awaiting_user_approval",
+      "manifestPath": "content-queue/tss-review-08-europe-living-costs-story.json",
+      "format": "story",
+      "platforms": [
+        "instagram"
+      ],
+      "headline": "EUROPE ISN'T ONE COST OF LIVING.",
+      "caption": "Compare your own monthly basket before relocating. Europe is not one cost-of-living market.",
+      "contentSha256": "35199305dfd9998b89f66c89747682335dce027f00aa50b1fc07d6f3db9f9309",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/0c984d780f7bac51968f5a9c9f15d0af6afa7c43419a450505b641cea65f5169.png",
+      "videoUrl": null,
+      "sources": [
+        {
+          "title": "Eurostat: household consumption price levels, 18 June 2026",
+          "url": "https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20260618-2",
+          "reviewNote": "2025 national household consumption price levels, EU=100. Not adjusted for income or wage levels.",
+          "checkedAt": "2026-09-14T12:20:37.319301Z",
+          "validUntil": "2026-09-21T12:20:37.319301Z"
+        }
+      ],
+      "reviewedAt": "2026-09-14T12:40:04.765Z"
+    },
+    {
+      "number": 9,
+      "id": "tss-review-09-property-title-checks-story",
+      "status": "awaiting_user_approval",
+      "manifestPath": "content-queue/tss-review-09-property-title-checks-story.json",
+      "format": "story",
+      "platforms": [
+        "instagram"
+      ],
+      "headline": "BUYING IN CYPRUS? CHECK BEFORE SIGNING.",
+      "caption": "Before buying, ask an independent lawyer to check title, charges and permits. General information.",
+      "contentSha256": "cb45e8123c8df7b54168b7261e54fe30fa75385a585b2d909ca8526608ca1664",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/17c2fcf3f028a094440d930c80b537a54ffed64555d2f877d9d0f50d615b6330.png",
+      "videoUrl": null,
+      "sources": [
+        {
+          "title": "UK FCDO: Cyprus buying property, updated 2019",
+          "url": "https://www.gov.uk/guidance/how-to-property-in-cyprus",
+          "reviewNote": "General due-diligence checklist only. Do not draw current liability or procedural claims from older guidance.",
+          "checkedAt": "2026-09-14T12:20:37.319301Z",
+          "validUntil": "2026-09-21T12:20:37.319301Z"
+        }
+      ],
+      "reviewedAt": "2026-09-14T12:40:04.766Z"
+    },
+    {
+      "number": 10,
+      "id": "tss-review-10-cyprus-relocation-priorities-reel",
+      "status": "awaiting_user_approval",
+      "manifestPath": "content-queue/tss-review-10-cyprus-relocation-priorities-reel.json",
+      "format": "reel",
+      "platforms": [
+        "instagram"
+      ],
+      "headline": "Planning a Cyprus move? Start with priorities.",
+      "caption": "Planning a Cyprus move? Tell us which question should come next: property buying, tax residency or business setup.\n\nThe Smarty Solution shares evidence and selected Cyprus business and property opportunities. Your questions can help shape the next topic.\n\n#Cyprus #Relocation #CyprusProperty #CyprusBusiness #TheSmartySolution",
+      "contentSha256": "5fab97d942bc00639982a648d73b4c96c0764d65573dc513434e8684cfe4b7b9",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/40378c0fbc85df59b0c5ed88924147139b62b5ff42c2e8df31cc7d590326627e.png",
+      "videoUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/9d0aeada0485e14aff187c72009418c865aaee59e7243d9dd4e017be84cc9c22.mp4",
+      "scenePreviewUrls": [
+        "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/40378c0fbc85df59b0c5ed88924147139b62b5ff42c2e8df31cc7d590326627e.png",
+        "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/0d092b51e9766216bee35a52fca838c2557b455a7138f370a75252e503e1a0e9.png",
+        "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/13beff64e96e99ed2db545367c77cc7616f02bf2d7414babb65fbfefffcf1ca3.png"
+      ],
+      "sources": [
+        {
+          "title": "The Smarty Solution: current services",
+          "url": "https://www.thesmartysolution.com/",
+          "reviewNote": "Use existing commercial-introduction and opportunity services; no tax or legal advisory claims.",
+          "checkedAt": "2026-09-14T12:20:37.319301Z",
+          "validUntil": "2026-09-21T12:20:37.319301Z"
+        }
+      ],
+      "reviewedAt": "2026-09-14T12:40:04.767Z"
+    }
+  ]
+}

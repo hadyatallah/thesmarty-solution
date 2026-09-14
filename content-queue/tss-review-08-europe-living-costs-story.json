@@ -1,7 +1,7 @@
 {
   "qaVersion": 2,
   "id": "tss-review-08-europe-living-costs-story",
-  "status": "draft",
+  "status": "awaiting_user_approval",
   "reviewBatch": "2026-09-initial",
   "reviewNumber": 8,
   "topic": "European consumption price levels: Denmark versus Bulgaria",
@@ -73,6 +73,33 @@
     "width": 1080,
     "height": 1920,
     "originFormat": "story",
-    "commit": null
+    "commit": "77d7375d3cdcef299b760918ff146b3a073ccfcb"
+  },
+  "review": {
+    "reviewer": "Codex final-export editorial review",
+    "reviewedAt": "2026-09-14T12:40:04.765Z",
+    "assetSha256": "0c984d780f7bac51968f5a9c9f15d0af6afa7c43419a450505b641cea65f5169",
+    "captionSha256": "f532d50b5fc7c82a1256cdef923bae561c4b3ce2610d73384a0cefff72ab0db3",
+    "checks": {
+      "dimensions": true,
+      "imageLoaded": true,
+      "noPlaceholders": true,
+      "noBlankPanels": true,
+      "readableText": true,
+      "validCharacters": true,
+      "noClippedText": true,
+      "correctLogo": true,
+      "brandPalette": true,
+      "safeMargins": true,
+      "visualHierarchy": true,
+      "factsVerified": true,
+      "sourcesChecked": true,
+      "geographyVerified": true,
+      "duplicatesChecked": true,
+      "hashtagLimit": true,
+      "finalExportInspected": true
+    },
+    "notes": "Actual final files visually inspected; actual text-region OCR, source semantics and comparison values verified; Republic-controlled photo and licence checked; recent history and within-batch duplicates checked. User approval is separate and still absent.",
+    "boundSha256": "ace57399bdd451a7c115f21b2483ed32df596d7527bf4adeafb878ac4407b44f"
   }
 }

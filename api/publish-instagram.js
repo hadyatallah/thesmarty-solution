@@ -17,7 +17,7 @@ async function graph(host, route, token, method = 'GET', params = {}) {
   const data = await response.json().catch(() => ({}));
   if (!response.ok || data.error) {
     const e = new Error('Meta request failed');
-    e.safeMeta = { code: data.error?.code, subcode: data.error?.error_subcode, type: data.error?.type };
+    e.safeMeta = { platform: host === 'graph.facebook.com' ? 'facebook' : 'instagram', code: data.error?.code, subcode: data.error?.error_subcode, type: data.error?.type };
     throw e;
   }
   return data;

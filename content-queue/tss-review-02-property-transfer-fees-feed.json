@@ -1,7 +1,7 @@
 {
   "qaVersion": 2,
   "id": "tss-review-02-property-transfer-fees-feed",
-  "status": "draft",
+  "status": "awaiting_user_approval",
   "reviewBatch": "2026-09-initial",
   "reviewNumber": 2,
   "topic": "Cyprus acquisition costs: transfer fee and VAT interaction",
@@ -74,6 +74,33 @@
     "width": 1080,
     "height": 1350,
     "originFormat": "feed",
-    "commit": null
+    "commit": "77d7375d3cdcef299b760918ff146b3a073ccfcb"
+  },
+  "review": {
+    "reviewer": "Codex final-export editorial review",
+    "reviewedAt": "2026-09-14T12:40:04.760Z",
+    "assetSha256": "43499dce82c6e5e70f4931756011e93f14b9b2db34764937e756b464afffb7e3",
+    "captionSha256": "c1b56465ea2ad1ab51221970c46901d2af923b19032f04b20ee61a3a379180da",
+    "checks": {
+      "dimensions": true,
+      "imageLoaded": true,
+      "noPlaceholders": true,
+      "noBlankPanels": true,
+      "readableText": true,
+      "validCharacters": true,
+      "noClippedText": true,
+      "correctLogo": true,
+      "brandPalette": true,
+      "safeMargins": true,
+      "visualHierarchy": true,
+      "factsVerified": true,
+      "sourcesChecked": true,
+      "geographyVerified": true,
+      "duplicatesChecked": true,
+      "hashtagLimit": true,
+      "finalExportInspected": true
+    },
+    "notes": "Actual final files visually inspected; actual text-region OCR, source semantics and comparison values verified; Republic-controlled photo and licence checked; recent history and within-batch duplicates checked. User approval is separate and still absent.",
+    "boundSha256": "9ba27db4a3017045b6bb59861dcc06f535e5faea1200da90c03541e82c0f534f"
   }
 }

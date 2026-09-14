@@ -1,7 +1,7 @@
 {
   "qaVersion": 2,
   "id": "tss-review-06-ireland-tax-residency-feed",
-  "status": "draft",
+  "status": "awaiting_user_approval",
   "reviewBatch": "2026-09-initial",
   "reviewNumber": 6,
   "topic": "Irish tax residence: one-year and two-year day counts",
@@ -75,6 +75,33 @@
     "width": 1080,
     "height": 1350,
     "originFormat": "feed",
-    "commit": null
+    "commit": "77d7375d3cdcef299b760918ff146b3a073ccfcb"
+  },
+  "review": {
+    "reviewer": "Codex final-export editorial review",
+    "reviewedAt": "2026-09-14T12:40:04.763Z",
+    "assetSha256": "c90724bf0ff9cd9c26aa2bfbeb4e9bbbf727de40c7003245b3854de21ead05b0",
+    "captionSha256": "ca7dcfaca828b9ada25fd66843c23feff57cc18a2e002f2d623c9fec9c0a0b46",
+    "checks": {
+      "dimensions": true,
+      "imageLoaded": true,
+      "noPlaceholders": true,
+      "noBlankPanels": true,
+      "readableText": true,
+      "validCharacters": true,
+      "noClippedText": true,
+      "correctLogo": true,
+      "brandPalette": true,
+      "safeMargins": true,
+      "visualHierarchy": true,
+      "factsVerified": true,
+      "sourcesChecked": true,
+      "geographyVerified": true,
+      "duplicatesChecked": true,
+      "hashtagLimit": true,
+      "finalExportInspected": true
+    },
+    "notes": "Actual final files visually inspected; actual text-region OCR, source semantics and comparison values verified; Republic-controlled photo and licence checked; recent history and within-batch duplicates checked. User approval is separate and still absent.",
+    "boundSha256": "5f7eb3b78caa9a7f5ba98df9ed4a9a60fe06f2c0b985915c6590a46a810e2053"
   }
 }

@@ -200,13 +200,14 @@ try {
     if (sent >= config.maxPostsPerRun) break;
   }
 } catch (error) {
-  report.blocked = true; report.error = error.message;
+  report.blocked = true; report.error = error.message; report.meta = error.safeMeta || null;
 } finally {
   await fs.writeFile('social-results/report.json', JSON.stringify(report, null, 2) + '\n');
   const summary = [`TSS social QA v${QA_VERSION}`, `Scheduler enabled: ${report.schedulerEnabled}`, `Facebook configured: ${report.accounts?.facebookConfigured ?? 'not checked'}`, `Published: ${report.published.length}`, ...report.qa.map(q => `${q.id}: ${q.passed ? 'QA passed' : q.blocked}`), ...(report.error ? [report.error] : [])].join('\n');
   console.log(summary);
   if (report.serverEnvironmentReferences) console.log('Server variable references (presence only): ' + JSON.stringify(report.serverEnvironmentReferences));
   if (report.userApprovalPolicy) console.log('User approval policy: ' + JSON.stringify(report.userApprovalPolicy));
+  if (report.meta) console.log('Meta error codes (no credentials): ' + JSON.stringify(report.meta));
   if (process.env.GITHUB_STEP_SUMMARY) await fs.appendFile(process.env.GITHUB_STEP_SUMMARY, summary + '\n');
   if (report.blocked) process.exitCode = 1;
 }

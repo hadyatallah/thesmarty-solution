@@ -1,7 +1,7 @@
 {
   "qaVersion": 2,
   "id": "tss-review-09-property-title-checks-story",
-  "status": "draft",
+  "status": "awaiting_user_approval",
   "reviewBatch": "2026-09-initial",
   "reviewNumber": 9,
   "topic": "Cyprus property due diligence: independent document checks",
@@ -73,6 +73,33 @@
     "width": 1080,
     "height": 1920,
     "originFormat": "story",
-    "commit": null
+    "commit": "77d7375d3cdcef299b760918ff146b3a073ccfcb"
+  },
+  "review": {
+    "reviewer": "Codex final-export editorial review",
+    "reviewedAt": "2026-09-14T12:40:04.766Z",
+    "assetSha256": "17c2fcf3f028a094440d930c80b537a54ffed64555d2f877d9d0f50d615b6330",
+    "captionSha256": "799f19f5f1cb82dde2a54e8a19ae80c1f26dc100993ff867a1eb0e53df831ba5",
+    "checks": {
+      "dimensions": true,
+      "imageLoaded": true,
+      "noPlaceholders": true,
+      "noBlankPanels": true,
+      "readableText": true,
+      "validCharacters": true,
+      "noClippedText": true,
+      "correctLogo": true,
+      "brandPalette": true,
+      "safeMargins": true,
+      "visualHierarchy": true,
+      "factsVerified": true,
+      "sourcesChecked": true,
+      "geographyVerified": true,
+      "duplicatesChecked": true,
+      "hashtagLimit": true,
+      "finalExportInspected": true
+    },
+    "notes": "Actual final files visually inspected; actual text-region OCR, source semantics and comparison values verified; Republic-controlled photo and licence checked; recent history and within-batch duplicates checked. User approval is separate and still absent.",
+    "boundSha256": "73388d22040a6592b282cebce449d32178dce95061ee379239188de5febf516c"
   }
 }

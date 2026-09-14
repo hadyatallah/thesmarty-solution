@@ -1,7 +1,7 @@
 {
   "qaVersion": 2,
   "id": "tss-review-10-cyprus-relocation-priorities-reel",
-  "status": "draft",
+  "status": "awaiting_user_approval",
   "reviewBatch": "2026-09-initial",
   "reviewNumber": 10,
   "topic": "TSS audience research: Cyprus relocation priorities",
@@ -120,7 +120,7 @@
     "width": 1080,
     "height": 1920,
     "originFormat": "reel",
-    "commit": null,
+    "commit": "77d7375d3cdcef299b760918ff146b3a073ccfcb",
     "sceneAssets": [
       {
         "path": "social/assets/40378c0fbc85df59b0c5ed88924147139b62b5ff42c2e8df31cc7d590326627e.png",
@@ -131,7 +131,7 @@
         "width": 1080,
         "height": 1920,
         "originFormat": "reel",
-        "commit": null
+        "commit": "77d7375d3cdcef299b760918ff146b3a073ccfcb"
       },
       {
         "path": "social/assets/0d092b51e9766216bee35a52fca838c2557b455a7138f370a75252e503e1a0e9.png",
@@ -142,7 +142,7 @@
         "width": 1080,
         "height": 1920,
         "originFormat": "reel",
-        "commit": null
+        "commit": "77d7375d3cdcef299b760918ff146b3a073ccfcb"
       },
       {
         "path": "social/assets/13beff64e96e99ed2db545367c77cc7616f02bf2d7414babb65fbfefffcf1ca3.png",
@@ -153,8 +153,50 @@
         "width": 1080,
         "height": 1920,
         "originFormat": "reel",
-        "commit": null
+        "commit": "77d7375d3cdcef299b760918ff146b3a073ccfcb"
       }
     ]
+  },
+  "review": {
+    "reviewer": "Codex final-export editorial review",
+    "reviewedAt": "2026-09-14T12:40:04.767Z",
+    "assetSha256": "9d0aeada0485e14aff187c72009418c865aaee59e7243d9dd4e017be84cc9c22",
+    "captionSha256": "6fe430502420deb84626f241f562bf656cd017d289af2446ff013f5100d93245",
+    "checks": {
+      "dimensions": true,
+      "imageLoaded": true,
+      "noPlaceholders": true,
+      "noBlankPanels": true,
+      "readableText": true,
+      "validCharacters": true,
+      "noClippedText": true,
+      "correctLogo": true,
+      "brandPalette": true,
+      "safeMargins": true,
+      "visualHierarchy": true,
+      "factsVerified": true,
+      "sourcesChecked": true,
+      "geographyVerified": true,
+      "duplicatesChecked": true,
+      "hashtagLimit": true,
+      "finalExportInspected": true
+    },
+    "notes": "Actual final files visually inspected; actual text-region OCR, source semantics and comparison values verified; Republic-controlled photo and licence checked; recent history and within-batch duplicates checked. User approval is separate and still absent.",
+    "fullVideoInspected": true,
+    "videoRightsVerified": true,
+    "inspectedFrameTimes": [
+      0.1,
+      4.9,
+      5.1,
+      9.9,
+      10.1,
+      14.8
+    ],
+    "sceneChecks": {
+      "ocrCheckedScenes": 3,
+      "checkedFrames": 18,
+      "transitionsAndEndingChecked": true
+    },
+    "boundSha256": "fdce367629230b59aea7f889753b7265095b255318ea09ec4511fe8ff6025b49"
   }
 }
