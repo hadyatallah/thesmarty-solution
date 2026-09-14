@@ -5,6 +5,7 @@
     "readable": false,
     "error": "Meta rejected the request. Check credentials, permissions and account status.",
     "meta": {
+      "platform": "instagram",
       "code": 100,
       "subcode": 33,
       "type": "IGApiException"
@@ -16,6 +17,7 @@
     "readable": false,
     "error": "Meta rejected the request. Check credentials, permissions and account status.",
     "meta": {
+      "platform": "instagram",
       "code": 100,
       "subcode": 33,
       "type": "IGApiException"
@@ -27,6 +29,7 @@
     "readable": false,
     "error": "Meta rejected the request. Check credentials, permissions and account status.",
     "meta": {
+      "platform": "instagram",
       "code": 100,
       "subcode": 33,
       "type": "IGApiException"
