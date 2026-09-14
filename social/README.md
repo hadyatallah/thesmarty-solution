@@ -19,6 +19,14 @@ serve as live-verification proof. Read-only results are retained at
 `tss-social-state: social/legacy-publication-checks.json`. Facebook production
 Page credentials were absent. No new live publication or schedule was activated.
 
+Authenticated Meta inspection confirmed the existing app ID `1707395857227784`
+(The Smarty Solution Publisher). Its Manage Pages use case already has
+`pages_show_list` ready for testing. `pages_manage_posts` and
+`pages_read_engagement` currently show **Add**. The posting permission includes
+creating, editing and deleting Page posts; the read permission includes Page
+content, follower data and insights. These required scopes and a securely stored
+Page token must be in place before the controlled dual-platform test.
+
 Only the `controlledPublicationId` may publish while the scheduler is disabled.
 That test requires an approved **feed** export and both correct TSS accounts.
 Missing Facebook credentials block both platforms before any container creation.
