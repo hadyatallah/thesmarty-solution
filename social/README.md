@@ -9,6 +9,16 @@ The three existing Instagram publication records stay unchanged. They are
 imported into durable history alongside recent Instagram content. The old
 15-minute publishing trigger is removed. Publishing is disabled by default.
 
+Initial inspection on 14 September 2026 verified the Instagram credentials and
+17 retrievable current posts (16 images and one video), now fingerprinted.
+The three earlier queue publication IDs returned Meta error 100/subcode 33 when
+queried individually. Their existing metadata is preserved; the current API
+cannot confirm their published assets or determine why they are unavailable.
+They must remain part of the manual creative/source duplicate review, and cannot
+serve as live-verification proof. Read-only results are retained at
+`tss-social-state: social/legacy-publication-checks.json`. Facebook production
+Page credentials were absent. No new live publication or schedule was activated.
+
 Only the `controlledPublicationId` may publish while the scheduler is disabled.
 That test requires an approved **feed** export and both correct TSS accounts.
 Missing Facebook credentials block both platforms before any container creation.
