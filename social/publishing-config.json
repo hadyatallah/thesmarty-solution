@@ -1,0 +1,14 @@
+{
+  "qaVersion": 2,
+  "schedulerEnabled": false,
+  "timezone": "Asia/Nicosia",
+  "slots": ["09:15", "14:15", "19:15"],
+  "maxPostsPerDay": 3,
+  "maxPostsPerRun": 1,
+  "maxDirectPromotionShare": 0.25,
+  "approvedFormats": [],
+  "controlledPublicationId": null,
+  "verifiedLivePublication": null,
+  "stateBranch": "tss-social-state",
+  "publisherUrl": "https://thesmarty-solution-agent.vercel.app/api/publish-instagram"
+}

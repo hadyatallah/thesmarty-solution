@@ -1,177 +1,133 @@
-const GRAPH_VERSION = process.env.META_GRAPH_VERSION || 'v25.0';
-const GRAPH_BASE = `https://graph.instagram.com/${GRAPH_VERSION}`;
+import { ACCOUNT, QA_VERSION, immutableAssetUrl, requireThat, sha256, sign, validateImage, validateManifest, verifySignature, checkSources } from '../social/lib/qa.js';
 
-function send(res, status, body) {
-  res.status(status).json(body);
-}
-
-function countHashtags(text = '') {
-  return (text.match(/(^|\s)#[\p{L}\p{N}_]+/gu) || []).length;
-}
-
-function isHttpsUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === 'https:';
-  } catch {
-    return false;
-  }
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function makeMetaError(data, status) {
-  const error = new Error(data?.error?.message || `Meta API request failed (${status})`);
-  error.meta = data?.error || data;
-  error.status = status;
-  return error;
-}
-
-async function metaPost(path, token, params) {
-  const body = new URLSearchParams(params);
-  const response = await fetch(`${GRAPH_BASE}${path}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body,
-  });
-
+const VERSION = process.env.META_GRAPH_VERSION || 'v25.0';
+const credentials = () => ({
+  ig: process.env.INSTAGRAM_ACCESS_TOKEN,
+  igId: process.env.INSTAGRAM_USER_ID,
+  fb: process.env.FACEBOOK_PAGE_ACCESS_TOKEN || process.env.FACEBOOK_PAGE_TOKEN,
+  fbId: process.env.FACEBOOK_PAGE_ID,
+});
+async function graph(host, route, token, method = 'GET', params = {}) {
+  const url = new URL(`https://${host}/${VERSION}${route}`);
+  const options = { method, headers: { Authorization: `Bearer ${token}` }, redirect: 'error', signal: AbortSignal.timeout(20000) };
+  if (method === 'GET') for (const [key, value] of Object.entries(params)) url.searchParams.set(key, value);
+  else { options.headers['Content-Type'] = 'application/x-www-form-urlencoded'; options.body = new URLSearchParams(params); }
+  const response = await fetch(url, options);
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw makeMetaError(data, response.status);
+  if (!response.ok || data.error) {
+    const e = new Error('Meta request failed');
+    e.safeMeta = { code: data.error?.code, subcode: data.error?.error_subcode, type: data.error?.type };
+    throw e;
+  }
   return data;
 }
-
-async function metaGet(path, token, params = {}) {
-  const url = new URL(`${GRAPH_BASE}${path}`);
-  for (const [key, value] of Object.entries(params)) {
-    url.searchParams.set(key, value);
+async function identities(c, needFacebook = false) {
+  requireThat(c.ig && c.igId === ACCOUNT.instagramId, 'Instagram credentials missing or wrong account identifier');
+  const ig = await graph('graph.instagram.com', `/${c.igId}`, c.ig, 'GET', { fields: 'id,username' });
+  requireThat(String(ig.id) === ACCOUNT.instagramId && ig.username === ACCOUNT.username, 'Unexpected Instagram account');
+  let fb = null;
+  if (c.fb && c.fbId) {
+    requireThat(c.fbId === ACCOUNT.facebookId, 'Unexpected Facebook Page identifier');
+    fb = await graph('graph.facebook.com', `/${c.fbId}`, c.fb, 'GET', { fields: 'id,name' });
+    requireThat(String(fb.id) === ACCOUNT.facebookId && fb.name === ACCOUNT.facebookName, 'Unexpected Facebook Page');
   }
-
-  const response = await fetch(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw makeMetaError(data, response.status);
-  return data;
+  requireThat(!needFacebook || fb, 'Facebook Page publishing credentials are not configured');
+  return { instagram: ig, facebook: fb, facebookConfigured: Boolean(fb) };
 }
-
-async function waitForContainer(containerId, token) {
-  const maxAttempts = 12;
-  const delayMs = 1500;
-
-  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
-    const status = await metaGet(`/${containerId}`, token, {
-      fields: 'status_code,status',
-    });
-
-    if (status.status_code === 'FINISHED') return status;
-
-    if (status.status_code === 'ERROR' || status.status_code === 'EXPIRED') {
-      const error = new Error(`Instagram media processing failed: ${status.status || status.status_code}`);
-      error.meta = status;
-      error.status = 422;
-      throw error;
-    }
-
-    if (attempt < maxAttempts) await sleep(delayMs);
+async function inspect(c) {
+  const accounts = await identities(c);
+  const recent = [];
+  let after;
+  for (let page = 0; page < 3; page++) {
+    const data = await graph('graph.instagram.com', `/${c.igId}/media`, c.ig, 'GET', { fields: 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp', limit: '100', ...(after ? { after } : {}) });
+    recent.push(...(data.data || []));
+    after = data.paging?.cursors?.after;
+    if (!data.paging?.next || !after || recent.some(p => Date.parse(p.timestamp) < Date.now() - 30 * 86400000)) break;
+    requireThat(page < 2, 'Recent content history could not be fully checked');
   }
-
-  const error = new Error('Instagram media is still processing. Please retry in a moment.');
-  error.status = 503;
-  throw error;
+  return { ...accounts, recent, qaVersion: QA_VERSION };
 }
-
+async function validate(item, c) {
+  validateManifest(item);
+  const accounts = await identities(c, item.platforms.includes('facebook'));
+  const response = await fetch(immutableAssetUrl(item.asset), { redirect: 'error', signal: AbortSignal.timeout(20000) });
+  requireThat(response.ok, 'Inspected export is not publicly available');
+  const bytes = Buffer.from(await response.arrayBuffer());
+  if (item.format === 'reel') {
+    const q = item.asset.videoQA;
+    requireThat(bytes.length <= 32 * 1024 * 1024 && bytes.toString('ascii', 4, 8) === 'ftyp' && sha256(bytes) === item.asset.sha256, 'Inspected MP4 export changed or failed to load');
+    requireThat(q?.sha256 === item.asset.sha256 && q.width === 1080 && q.height === 1920 && q.codec === 'h264' && q.pixelFormat === 'yuv420p' && q.duration >= 6 && q.duration <= 60 && q.fullDecodePassed === true, 'Signed Reel decode evidence missing');
+  } else {
+    requireThat((response.headers.get('content-type') || '').startsWith('image/'), 'Inspected image failed to load');
+    await validateImage(bytes, item);
+  }
+  await checkSources(item);
+  return accounts;
+}
+async function ready(containerId, token) {
+  for (let i = 0; i < 12; i++) {
+    const status = await graph('graph.instagram.com', `/${containerId}`, token, 'GET', { fields: 'status_code,status' });
+    if (status.status_code === 'FINISHED') return status.status_code;
+    requireThat(!['ERROR', 'EXPIRED', 'PUBLISHED'].includes(status.status_code), 'Container is failed, expired or already published');
+    if (i < 11) await new Promise(resolve => setTimeout(resolve, 1500));
+  }
+  throw new Error('Container did not finish. No publication attempted');
+}
+function numeric(value) { requireThat(typeof value === 'string' && /^\d+(?:_\d+)?$/.test(value), 'Invalid Meta identifier'); return value; }
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return send(res, 405, { ok: false, error: 'Method not allowed' });
-  }
-
-  const publisherKey = process.env.TSS_PUBLISHER_KEY;
-  const providedKey = req.headers['x-tss-publisher-key'];
-  if (!publisherKey || !providedKey || providedKey !== publisherKey) {
-    return send(res, 401, { ok: false, error: 'Unauthorized' });
-  }
-
-  const accessToken = process.env.INSTAGRAM_ACCESS_TOKEN;
-  const instagramUserId = process.env.INSTAGRAM_USER_ID;
-  if (!accessToken || !instagramUserId) {
-    return send(res, 503, {
-      ok: false,
-      error: 'Publisher is not configured. Missing Instagram environment variables.',
-    });
-  }
-
-  const { imageUrl, caption = '', dryRun = false } = req.body || {};
-
-  if (!isHttpsUrl(imageUrl)) {
-    return send(res, 400, { ok: false, error: 'imageUrl must be a public HTTPS URL.' });
-  }
-
-  if (typeof caption !== 'string' || caption.length > 2200) {
-    return send(res, 400, { ok: false, error: 'Caption must be 2,200 characters or fewer.' });
-  }
-
-  const hashtagCount = countHashtags(caption);
-  if (hashtagCount > 5) {
-    return send(res, 400, {
-      ok: false,
-      error: `TSS publishing rule: maximum 5 hashtags. Received ${hashtagCount}.`,
-    });
-  }
-
-  if (dryRun === true) {
-    return send(res, 200, {
-      ok: true,
-      dryRun: true,
-      validated: {
-        imageUrl,
-        captionLength: caption.length,
-        hashtagCount,
-        instagramUserId,
-      },
-    });
-  }
-
+  res.setHeader('Cache-Control', 'no-store');
+  if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).json({ ok: false, error: 'Method not allowed' }); }
+  const key = process.env.TSS_PUBLISHER_KEY;
+  if (!key || req.headers['x-tss-publisher-key'] !== key) return res.status(401).json({ ok: false, error: 'Unauthorized' });
+  const { payload, signature } = req.body || {};
+  const c = credentials();
   try {
-    const container = await metaPost(`/${instagramUserId}/media`, accessToken, {
-      image_url: imageUrl,
-      caption,
-    });
-
-    if (!container.id) {
-      throw new Error('Meta did not return a media container ID.');
+    if (req.body?.action === 'inspect') return res.status(200).json({ ok: true, ...await inspect(c) });
+    if (req.body?.action === 'verifyInstagram') {
+      const id = numeric(req.body.mediaId);
+      await identities(c);
+      const media = await graph('graph.instagram.com', `/${id}`, c.ig, 'GET', { fields: 'id,caption,media_type,media_url,permalink,timestamp' });
+      return res.status(200).json({ ok: true, media });
     }
-
-    const processing = await waitForContainer(container.id, accessToken);
-
-    const published = await metaPost(`/${instagramUserId}/media_publish`, accessToken, {
-      creation_id: container.id,
-    });
-
-    return send(res, 200, {
-      ok: true,
-      containerId: container.id,
-      processingStatus: processing.status_code,
-      mediaId: published.id || null,
-      hashtagCount,
-    });
+    if (req.body?.action === 'verifyFacebook') {
+      const id = numeric(req.body.postId);
+      await identities(c, true);
+      const media = await graph('graph.facebook.com', `/${id}`, c.fb, 'GET', { fields: 'id,message,permalink_url,attachments{media}' });
+      return res.status(200).json({ ok: true, media });
+    }
+    requireThat(verifySignature(payload, signature, key), 'Signed QA manifest required. Legacy direct publish requests are blocked');
+    const { item, action } = payload;
+    requireThat(['dryRun', 'prepare', 'publishInstagram', 'publishFacebook'].includes(action), 'Invalid publishing action');
+    const accounts = await validate(item, c);
+    if (action === 'dryRun') return res.status(200).json({ ok: true, dryRun: true, qaVersion: QA_VERSION, accounts, assetSha256: item.asset.sha256 });
+    if (action === 'prepare') {
+      requireThat(item.platforms.includes('instagram'), 'Instagram not requested');
+      const params = item.format === 'reel'
+        ? { video_url: immutableAssetUrl(item.asset), media_type: 'REELS', caption: item.caption }
+        : { image_url: immutableAssetUrl(item.asset), ...(item.format === 'story' ? { media_type: 'STORIES' } : { caption: item.caption, alt_text: item.headline }) };
+      const container = await graph('graph.instagram.com', `/${c.igId}/media`, c.ig, 'POST', params);
+      requireThat(container.id, 'No media container returned');
+      const ticket = sign({ id: item.id, assetSha256: item.asset.sha256, containerId: container.id, format: item.format }, key);
+      // Return immediately so the runner checkpoints this ID before any publish call.
+      return res.status(200).json({ ok: true, containerId: container.id, ticket });
+    }
+    if (action === 'publishInstagram') {
+      const containerId = numeric(payload.containerId);
+      requireThat(payload.ticket === sign({ id: item.id, assetSha256: item.asset.sha256, containerId, format: item.format }, key), 'Container is not bound to this inspected asset');
+      await ready(containerId, c.ig);
+      const data = await graph('graph.instagram.com', `/${c.igId}/media_publish`, c.ig, 'POST', { creation_id: containerId });
+      requireThat(data.id, 'No Instagram media identifier returned');
+      return res.status(200).json({ ok: true, mediaId: data.id });
+    }
+    if (action === 'publishFacebook') {
+      requireThat(item.format === 'feed' && item.platforms.includes('facebook'), 'Only explicit Facebook feed photos are enabled');
+      const data = await graph('graph.facebook.com', `/${c.fbId}/photos`, c.fb, 'POST', { url: immutableAssetUrl(item.asset), caption: item.caption, published: 'true' });
+      requireThat(data.post_id && data.id, 'No Facebook post identifier returned');
+      return res.status(200).json({ ok: true, postId: data.post_id, photoId: data.id });
+    }
   } catch (error) {
-    console.error('Instagram publishing failed', {
-      message: error.message,
-      status: error.status,
-      meta: error.meta,
-    });
-
-    return send(res, error.status === 503 ? 503 : 502, {
-      ok: false,
-      error: error.message || 'Instagram publishing failed.',
-      meta: error.meta || undefined,
-    });
+    // No tokens, raw Graph errors, request bodies or image URLs in logs or responses.
+    console.error('TSS publishing blocked', { qaVersion: QA_VERSION, meta: error.safeMeta || null });
+    return res.status(422).json({ ok: false, error: error.safeMeta ? 'Meta rejected the request. Check credentials, permissions and account status.' : error.message, meta: error.safeMeta });
   }
 }

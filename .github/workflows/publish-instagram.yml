@@ -1,16 +1,19 @@
 name: Publish TSS Instagram Queue
+run-name: TSS social QA and controlled publishing
 
 on:
   push:
     branches: [main]
     paths:
-      - 'content-queue/**.json'
-      - 'social/design-system.json'
+      - 'content-queue/**'
+      - 'social/**'
+      - 'api/publish-instagram.js'
       - 'api/social-creative.js'
-  schedule:
-    - cron: '*/15 * * * *'
+      - '.github/workflows/publish-instagram.yml'
+      - 'package-lock.json'
   workflow_dispatch:
 
+# A Cyprus-time schedule is added only after the dual-platform live result is inspected.
 permissions:
   contents: write
 
@@ -21,180 +24,38 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Checkout
+      - name: Checkout the current main branch
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-
-      - name: Process publishing queue
+          ref: main
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Test fail-closed publishing gates
+        run: node --test social/tests/*.test.js
+      - name: Install final-export verification tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-eng ffmpeg
+      - name: Inspect accounts, history and the final publishing queue
         env:
           TSS_PUBLISHER_KEY: ${{ secrets.TSS_PUBLISHER_KEY }}
-          TSS_PUBLISHER_URL: https://thesmarty-solution-agent.vercel.app/api/publish-instagram
-        run: |
-          node <<'NODE'
-          import fs from 'node:fs';
-          import path from 'node:path';
-
-          const dir = 'content-queue';
-          if (!fs.existsSync(dir)) process.exit(0);
-
-          const design = JSON.parse(fs.readFileSync('social/design-system.json', 'utf8'));
-          const allowedTemplates = new Set(design.feed.templates || []);
-          const now = Date.now();
-          const duplicateWindowMs = (design.publishing.duplicateWindowDays || 30) * 86400000;
-          const files = fs.readdirSync(dir).filter(f => f.endsWith('.json')).sort();
-          const all = files.map(file => ({ file, full: path.join(dir, file), item: JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) }));
-          const recentPublished = all
-            .map(x => x.item)
-            .filter(x => x.status === 'published' && x.publishedAt && (now - Date.parse(x.publishedAt)) <= duplicateWindowMs);
-
-          let changed = false;
-          let failures = 0;
-
-          const normalize = value => String(value || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
-          const tokens = value => new Set(normalize(value).split(' ').filter(Boolean));
-          const similarity = (a, b) => {
-            const A = tokens(a), B = tokens(b);
-            if (!A.size || !B.size) return 0;
-            let intersection = 0;
-            for (const t of A) if (B.has(t)) intersection++;
-            const union = new Set([...A, ...B]).size;
-            return union ? intersection / union : 0;
-          };
-          const hashtagCount = caption => (String(caption || '').match(/(^|\s)#[\p{L}\p{N}_]+/gu) || []).length;
-
-          function reject(record, reason) {
-            record.item.status = 'rejected';
-            record.item.lastError = reason;
-            record.item.updatedAt = new Date().toISOString();
-            record.item.qa = { passed: false, reason, checkedAt: new Date().toISOString(), designSystemVersion: design.version };
-            fs.writeFileSync(record.full, JSON.stringify(record.item, null, 2) + '\n');
-            changed = true;
-            failures++;
-            console.error(`Rejected ${record.file}: ${reason}`);
-          }
-
-          for (const record of all) {
-            const item = record.item;
-            if (item.status !== 'approved') continue;
-            if (item.platform && item.platform !== 'instagram') continue;
-            if (item.format && item.format !== 'feed') continue;
-
-            const publishAt = item.publishAt ? Date.parse(item.publishAt) : 0;
-            if (Number.isFinite(publishAt) && publishAt > now) continue;
-
-            if (!item.imageUrl || !item.caption) {
-              reject(record, 'Missing imageUrl or caption');
-              continue;
-            }
-            if (item.designSystemVersion !== design.version) {
-              reject(record, `Design system version must be ${design.version}`);
-              continue;
-            }
-            if (item.width !== design.feed.width || item.height !== design.feed.height) {
-              reject(record, `Feed creative must be ${design.feed.width}x${design.feed.height}`);
-              continue;
-            }
-            if (!allowedTemplates.has(item.template)) {
-              reject(record, 'Unapproved TSS template');
-              continue;
-            }
-            if (design.feed.plainFullFramePhotoAllowed === false && !String(item.imageUrl).startsWith('https://thesmarty-solution-agent.vercel.app/api/social-creative')) {
-              reject(record, 'Feed creative must use the TSS branded creative renderer');
-              continue;
-            }
-            if (hashtagCount(item.caption) > design.publishing.maxHashtags) {
-              reject(record, `Caption exceeds ${design.publishing.maxHashtags} hashtags`);
-              continue;
-            }
-            if (!item.headline || !item.topicKey || !item.creativeKey) {
-              reject(record, 'headline, topicKey and creativeKey are required for duplicate protection');
-              continue;
-            }
-
-            const duplicate = recentPublished.find(old => {
-              if (old.id === item.id) return false;
-              if (old.creativeKey && old.creativeKey === item.creativeKey) return true;
-              if (old.topicKey && old.topicKey === item.topicKey) return true;
-              if (old.headline && normalize(old.headline) === normalize(item.headline)) return true;
-              if (old.headline && similarity(old.headline, item.headline) >= 0.72) return true;
-              if (old.imageUrl && old.imageUrl === item.imageUrl) return true;
-              return false;
-            });
-
-            if (duplicate) {
-              reject(record, `Duplicate protection: too similar to ${duplicate.id}`);
-              continue;
-            }
-
-            item.qa = {
-              passed: true,
-              checkedAt: new Date().toISOString(),
-              designSystemVersion: design.version,
-              dimensions: `${item.width}x${item.height}`,
-              template: item.template,
-              duplicateWindowDays: design.publishing.duplicateWindowDays,
-              hashtagCount: hashtagCount(item.caption)
-            };
-            fs.writeFileSync(record.full, JSON.stringify(item, null, 2) + '\n');
-            changed = true;
-
-            if (!process.env.TSS_PUBLISHER_KEY) {
-              console.error('Missing GitHub Actions secret TSS_PUBLISHER_KEY');
-              process.exit(2);
-            }
-
-            const response = await fetch(process.env.TSS_PUBLISHER_URL, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'x-tss-publisher-key': process.env.TSS_PUBLISHER_KEY,
-              },
-              body: JSON.stringify({ imageUrl: item.imageUrl, caption: item.caption, dryRun: false }),
-            });
-
-            const data = await response.json().catch(() => ({}));
-            item.attempts = (item.attempts || 0) + 1;
-            item.updatedAt = new Date().toISOString();
-
-            if (response.ok && data.ok) {
-              item.status = 'published';
-              item.publishedAt = new Date().toISOString();
-              item.containerId = data.containerId || null;
-              item.mediaId = data.mediaId || null;
-              item.processingStatus = data.processingStatus || null;
-              item.lastError = null;
-              console.log(`Published ${record.file}: ${item.mediaId || 'no media id'}`);
-              recentPublished.push(item);
-            } else {
-              item.status = 'approved';
-              item.lastError = data.error || `HTTP ${response.status}`;
-              item.lastMeta = data.meta || null;
-              failures++;
-              console.error(`Failed ${record.file}:`, item.lastError);
-            }
-
-            fs.writeFileSync(record.full, JSON.stringify(item, null, 2) + '\n');
-          }
-
-          if (changed) fs.writeFileSync('.queue-changed', '1');
-          if (failures) console.error(`${failures} queue item(s) did not publish.`);
-          NODE
-
-      - name: Save publishing results
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: node social/scripts/process-queue.js
+      - name: Retain QA and actual published asset evidence
         if: always()
-        run: |
-          if [ ! -f .queue-changed ]; then
-            echo 'No queue changes.'
-            exit 0
-          fi
-          git config user.name 'TSS Publisher Bot'
-          git config user.email 'actions@users.noreply.github.com'
-          git add content-queue/*.json
-          if git diff --cached --quiet; then
-            echo 'Nothing to commit.'
-            exit 0
-          fi
-          git commit -m 'Update Instagram publishing queue [skip ci]'
-          git push
+        uses: actions/upload-artifact@v4
+        with:
+          name: tss-social-qa-${{ github.run_id }}
+          path: social-results/
+          if-no-files-found: ignore
+          retention-days: 30

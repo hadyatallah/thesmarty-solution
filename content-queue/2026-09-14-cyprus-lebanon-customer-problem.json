@@ -1,0 +1,45 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-14-cyprus-lebanon-customer-problem",
+  "status": "draft",
+  "topic": "Cross-border customer problem validation",
+  "topicKey": "cyprus-lebanon-customer-problem-validation",
+  "headline": "Unpopular opinion: a connection isn't a business model",
+  "creativeKey": "cyprus-lebanon-customer-problem-editorial-v2",
+  "format": "feed",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "publishAt": "2026-09-14T12:15:00+03:00",
+  "caption": "Unpopular opinion: a connection isn't a business model.\n\nKnowing the right people can open a door. A business still needs a customer with a problem worth solving.\n\nFor a Cyprus-Lebanon opportunity, we'd start with three questions.\n\nWho would pay for it?\nWhat makes the offer useful in both markets?\nWhat would stop it from working?\n\nValidate demand, check the rules and build a practical route to market before chasing a bigger network.\n\nWhat customer problem would you solve across Cyprus and Lebanon?\n\n#Cyprus #Lebanon #CyprusBusiness #BusinessDevelopment #TheSmartySolution",
+  "creative": {
+    "format": "feed",
+    "template": "question-debate",
+    "text": {
+      "category": "CYPRUS / LEBANON",
+      "headline": "UNPOPULAR OPINION: A CONNECTION ISN'T A BUSINESS MODEL.",
+      "body": "Start with a customer problem. Validate demand. Build a route to market.",
+      "question": "What problem would you solve across Cyprus and Lebanon?"
+    },
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "editorial-opinion",
+    "claims": [],
+    "sources": []
+  },
+  "geography": {
+    "mode": "no-location-imagery"
+  },
+  "asset": {
+    "path": "social/assets/5413e51ee50cf445f2457094375c0a09a89cacea7129e51553dd8fda5c0ea8df.png",
+    "sha256": "5413e51ee50cf445f2457094375c0a09a89cacea7129e51553dd8fda5c0ea8df",
+    "pixelHash": "c8c1d6447bef336f2851a7c437df3d60e3c8b38f5feb2a4108cba18eca827028",
+    "layoutSha256": "db80ee64382f10e003d1773bf378682587bd11e88e80636e1a61a7eb8b352672",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
+}
