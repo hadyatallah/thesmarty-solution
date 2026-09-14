@@ -31,9 +31,10 @@ on Instagram** use case. A fresh reopening of Manage Pages confirmed that
 **Ready for testing**, despite generic errors shown during the saves. The app's
 Required actions screen reports no current required actions. A Page token must
 now be created for the correct TSS Page, stored in the existing Vercel project's
-Production environment, and deployed. Actual Page identity and publishing access
-must pass the protected API inspection before the controlled dual-platform test.
-Publishing and scheduling stay disabled until that test is inspected and verified.
+Production environment, and deployed. Actual Page identity must pass the
+protected API inspection before the controlled dual-platform test verifies real
+publishing access. Scheduled publishing stays disabled until that test is
+inspected and verified.
 
 Only the `controlledPublicationId` may publish while the scheduler is disabled.
 That test requires an approved **feed** export and both correct TSS accounts.
