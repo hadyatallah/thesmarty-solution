@@ -53,6 +53,12 @@ The inspection response reports configuration and confirms account identity. It
 never returns tokens. App review, verification, access level and token expiry
 are determined from the actual account/API response, not assumed from app setup.
 
+The inspected files in `social/qa-samples` are permanently marked `qaOnly`.
+The workflow checks their real export, OCR, immutable hosting and a signed
+Instagram API dry run. All live API actions reject these samples. They never
+enter the publishing queue or content-history reservations. Expired sample
+reviews are skipped, without fabricating a new inspection date.
+
 GitHub uses its short-lived built-in `GITHUB_TOKEN` to write history to
 `tss-social-state: social/history.json`. No new personal GitHub token is needed.
 No model API calls, Meta ad calls or paid publishing service are added. The
@@ -121,6 +127,11 @@ History contains date, topic, headline, creative identifier, actual asset and
 decoded-pixel fingerprints, format, platforms, container IDs and publication IDs.
 Exact creative/asset reuse is permanently blocked. Topic/headline similarity is
 checked for 30 days. Dates appended to a topic key do not evade this check.
+Actual historical Instagram images are downloaded once and fingerprinted. A
+small decoded RGB signature also catches identical images after ordinary JPEG
+compression or resizing. A failed historical download blocks publishing until
+the recent visual history can be checked. This image comparison is conservative;
+similar-looking graphics can require a new visual before they pass.
 A deliberate update needs its prior record, reason, new angle and visual change.
 Recent Instagram posts are imported before every approval/publishing run and
 stored at `tss-social-state: social/recent-instagram.json`. The three-day slot

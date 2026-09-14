@@ -103,6 +103,7 @@ export default async function handler(req, res) {
     requireThat(verifySignature(payload, signature, key), 'Signed QA manifest required. Legacy direct publish requests are blocked');
     const { item, action } = payload;
     requireThat(['dryRun', 'prepare', 'publishInstagram', 'publishFacebook'].includes(action), 'Invalid publishing action');
+    if (action !== 'dryRun') requireThat(item?.qaOnly !== true, 'QA-only assets cannot be published');
     const accounts = await validate(item, c);
     if (action === 'dryRun') return res.status(200).json({ ok: true, dryRun: true, qaVersion: QA_VERSION, accounts, assetSha256: item.asset.sha256 });
     if (action === 'prepare') {

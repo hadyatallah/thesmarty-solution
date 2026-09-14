@@ -51,6 +51,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_SHA: ${{ github.sha }}
         run: node social/scripts/process-queue.js
+      - name: Check inspected QA samples without publishing
+        env:
+          TSS_PUBLISHER_KEY: ${{ secrets.TSS_PUBLISHER_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_SHA: ${{ github.sha }}
+        run: node social/scripts/check-samples.js
       - name: Retain QA and actual published asset evidence
         if: always()
         uses: actions/upload-artifact@v4

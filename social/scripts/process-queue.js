@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, immutableAssetUrl, normalize, requireThat, schedulerProof, sha256, sign, validateManifest } from '../lib/qa.js';
+import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, imageFingerprint, immutableAssetUrl, normalize, requireThat, schedulerProof, sha256, sign, validateManifest, visualSignature } from '../lib/qa.js';
 import { inspectExport, verifyPublishedImage, verifyPublishedVideo } from '../lib/export-qa.js';
 import { Ledger } from '../lib/ledger.js';
 
@@ -70,7 +70,21 @@ try {
     const hook = (m.caption || '').split('\n').find(l => l.trim()) || 'Previous Instagram creative';
     history.items.push({ id: `instagram-${m.id}`, date: m.timestamp, topic: hook, topicKey: normalize(hook), headline: hook, creativeKey: `instagram-${m.id}`, format: m.media_type === 'VIDEO' ? 'reel' : 'feed', platform: 'instagram', phase: 'legacy_published', instagram: { mediaId: String(m.id), permalink: m.permalink } }); imported++;
   }
-  if (imported) await ledger.save('Import recent Instagram content for duplicate protection');
+  let fingerprinted = 0;
+  // Inspect actual historical media, never its mutable source/generation URL.
+  for (const m of inspection.recent) {
+    if (!['IMAGE', 'CAROUSEL_ALBUM'].includes(m.media_type)) continue;
+    const old = history.items.find(i => i.instagram?.mediaId === String(m.id));
+    requireThat(old, 'Recent Instagram creative is missing from durable history');
+    if (old.visualSignature) continue;
+    requireThat(m.media_url, 'Actual historical image is unavailable for duplicate review');
+    const actual = await download(m.media_url);
+    old.publishedAssetSha256 = sha256(actual);
+    old.pixelHash = await imageFingerprint(actual);
+    old.visualSignature = await visualSignature(actual);
+    fingerprinted++;
+  }
+  if (imported || fingerprinted) await ledger.save('Import and fingerprint actual Instagram creatives for duplicate protection');
   report.historyCount = history.items.length;
   const now = Date.now(), day = localDay(new Date(now));
   const due = queue.filter(i => i.status === 'approved').sort((a, b) => Date.parse(a.publishAt) - Date.parse(b.publishAt));
@@ -108,7 +122,7 @@ try {
       const editorial = history.items.filter(i => !i.phase.startsWith('legacy') && now - Date.parse(i.date) < 30 * 86400000);
       const promotionShare = (editorial.filter(i => i.classification === 'promotion').length + (item.facts.classification === 'promotion' ? 1 : 0)) / (editorial.length + 1);
       requireThat(item.facts.classification !== 'promotion' || promotionShare <= config.maxDirectPromotionShare, 'Direct promotion would exceed 25% of content');
-      const record = { id: item.id, date: new Date().toISOString(), topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, assetSha256: item.asset.sha256, pixelHash: item.asset.pixelHash, format: item.format, platform: item.platforms.join('+'), classification: item.facts.classification, phase: 'reserved', qaBoundSha256: item.review.boundSha256, instagram: null, facebook: null };
+      const record = { id: item.id, date: new Date().toISOString(), topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, assetSha256: item.asset.sha256, pixelHash: item.asset.pixelHash, visualSignature: item.asset.visualSignature, format: item.format, platform: item.platforms.join('+'), classification: item.facts.classification, phase: 'reserved', qaBoundSha256: item.review.boundSha256, instagram: null, facebook: null };
       history.items.push(record);
       // Every side effect has a durable checkpoint first. Failed saves stop the call.
       await ledger.save(`Reserve inspected social creative ${item.id}`);

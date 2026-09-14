@@ -19,7 +19,7 @@ export function cleanText(value) {
   return value;
 }
 export function binding(item) {
-  return sha256(JSON.stringify({ id: item.id, topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, format: item.format, platforms: item.platforms, publishAt: item.publishAt, asset: item.asset, creative: item.creative, facts: item.facts, geography: item.geography, deliberateUpdate: item.deliberateUpdate }));
+  return sha256(JSON.stringify({ id: item.id, topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, format: item.format, platforms: item.platforms, publishAt: item.publishAt, asset: item.asset, creative: item.creative, facts: item.facts, geography: item.geography, deliberateUpdate: item.deliberateUpdate, qaOnly: item.qaOnly === true }));
 }
 // Caption is bound separately as well as in the transport signature.
 export function sign(payload, key) { return crypto.createHmac('sha256', key).update(JSON.stringify(payload)).digest('hex'); }
@@ -46,6 +46,7 @@ export function validateManifest(item, now = Date.now()) {
   requireThat(hashtagCount(item.caption) <= 5, 'Maximum five hashtags');
   const [width, height] = FORMATS[item.format];
   requireThat(item.asset?.width === width && item.asset?.height === height && SHA.test(item.asset.sha256 || '') && SHA.test(item.asset.pixelHash || ''), 'Invalid asset dimensions or fingerprints');
+  if (item.format !== 'reel') requireThat(/^rgb32:[A-Za-z0-9+/]{4096}$/.test(item.asset.visualSignature || ''), 'Final image needs visual duplicate evidence');
   immutableAssetUrl(item.asset);
   requireThat(item.asset.originFormat === item.format && item.creative?.format === item.format, 'Dedicated creatives required for each format');
   requireThat(item.creative?.logoSha256 === LOGO_SHA && ['insight-data', 'question-debate', 'place-opportunity'].includes(item.creative.template), 'Incorrect logo or unapproved template');
@@ -77,6 +78,19 @@ export function validateManifest(item, now = Date.now()) {
 export async function imageFingerprint(buffer) {
   return sha256(await sharp(buffer).rotate().resize(64, 64, { fit: 'fill' }).removeAlpha().raw().toBuffer());
 }
+export async function visualSignature(buffer) {
+  const rgb = await sharp(buffer).rotate().toColourspace('srgb').resize(32, 32, { fit: 'fill' }).removeAlpha().raw().toBuffer();
+  requireThat(rgb.length === 32 * 32 * 3, 'Invalid visual duplicate evidence');
+  return `rgb32:${rgb.toString('base64')}`;
+}
+export function sameVisual(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string' || !a.startsWith('rgb32:') || !b.startsWith('rgb32:')) return false;
+  const A = Buffer.from(a.slice(6), 'base64'), B = Buffer.from(b.slice(6), 'base64');
+  requireThat(A.length === 3072 && B.length === 3072, 'Invalid visual duplicate evidence');
+  let difference = 0, changed = 0;
+  for (let i = 0; i < A.length; i++) { const d = Math.abs(A[i] - B[i]); difference += d; if (d > 12) changed++; }
+  return difference / A.length <= 2 && changed / A.length <= 0.06;
+}
 export async function validateImage(buffer, item) {
   requireThat(buffer.length > 1000 && buffer.length <= 8 * 1024 * 1024, 'Image is empty or exceeds the 8 MiB policy limit');
   const image = sharp(buffer, { failOn: 'warning', limitInputPixels: 1080 * 1920 * 2 });
@@ -87,6 +101,7 @@ export async function validateImage(buffer, item) {
   const stats = await image.stats();
   requireThat(stats.isOpaque && stats.entropy > 0.2 && stats.channels.some(c => c.stdev > 8), 'Blank or transparent export');
   requireThat(sha256(buffer) === item.asset.sha256 && await imageFingerprint(buffer) === item.asset.pixelHash, 'Export differs from the inspected asset');
+  requireThat(await visualSignature(buffer) === item.asset.visualSignature, 'Visual duplicate evidence does not match the export');
   return { width: m.width, height: m.height, format: m.format, sha256: item.asset.sha256 };
 }
 function similarity(a, b) {
@@ -97,7 +112,7 @@ function similarity(a, b) {
 const topic = value => normalize(value).replace(/\b(?:19|20)\d{2}\b|\b\d{1,2}\b/g, '').replace(/\s+/g, ' ').trim();
 export function checkDuplicates(item, history, now = Date.now()) {
   for (const old of history) {
-    const exact = old.creativeKey === item.creativeKey || old.assetSha256 === item.asset.sha256 || old.pixelHash === item.asset.pixelHash || old.id === item.id;
+    const exact = old.creativeKey === item.creativeKey || old.assetSha256 === item.asset.sha256 || old.pixelHash === item.asset.pixelHash || old.id === item.id || sameVisual(old.visualSignature, item.asset.visualSignature);
     requireThat(!exact, `Creative already used or reserved: ${old.id}`);
     const date = Date.parse(old.date || old.publishedAt || old.reservedAt);
     requireThat(Number.isFinite(date), 'Invalid history date blocks publishing');

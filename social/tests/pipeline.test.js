@@ -2,14 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import sharp from 'sharp';
 import { renderCreative } from '../lib/render.js';
-import { ACCOUNT, CHECKS, LOGO_SHA, binding, checkDuplicates, imageFingerprint, schedulerProof, sha256, sign, validateImage, validateManifest, verifySignature } from '../lib/qa.js';
+import { ACCOUNT, CHECKS, LOGO_SHA, binding, checkDuplicates, imageFingerprint, schedulerProof, sha256, sign, validateImage, validateManifest, verifySignature, visualSignature } from '../lib/qa.js';
 import { verifyPublishedImage } from '../lib/export-qa.js';
 import handler from '../../api/publish-instagram.js';
 
 const creative = format => ({ format, template: 'question-debate', logoSha256: LOGO_SHA, text: { category: 'CYPRUS / LEBANON', headline: "A CONNECTION ISN'T A BUSINESS MODEL.", body: 'Start with a customer problem. Validate demand. Build a route to market.', question: 'What problem would you solve across Cyprus and Lebanon?' } });
 async function fixture(format = 'feed') {
   const { buffer, layout } = await renderCreative(creative(format)), hash = sha256(buffer);
-  const i = { qaVersion: 2, id: 'test-cyprus-lebanon-connections', status: 'approved', topic: 'Cross-border customer problem validation', topicKey: 'cyprus-lebanon-customer-validation', headline: creative(format).text.headline, creativeKey: 'connections-customer-validation', format, platforms: ['instagram'], publishAt: new Date().toISOString(), caption: format === 'story' ? 'What customer problem would you solve across Cyprus and Lebanon?' : 'A connection is only the start. What customer problem would you solve? #Cyprus #Lebanon', creative: creative(format), asset: { width: layout.width, height: layout.height, sha256: hash, pixelHash: await imageFingerprint(buffer), originFormat: format, path: `social/assets/${hash}.png`, commit: 'a'.repeat(40) }, facts: { classification: 'editorial-opinion', claims: [], sources: [] }, geography: { mode: 'no-location-imagery' } };
+  const i = { qaVersion: 2, id: 'test-cyprus-lebanon-connections', status: 'approved', topic: 'Cross-border customer problem validation', topicKey: 'cyprus-lebanon-customer-validation', headline: creative(format).text.headline, creativeKey: 'connections-customer-validation', format, platforms: ['instagram'], publishAt: new Date().toISOString(), caption: format === 'story' ? 'What customer problem would you solve across Cyprus and Lebanon?' : 'A connection is only the start. What customer problem would you solve? #Cyprus #Lebanon', creative: creative(format), asset: { width: layout.width, height: layout.height, sha256: hash, pixelHash: await imageFingerprint(buffer), visualSignature: await visualSignature(buffer), originFormat: format, path: `social/assets/${hash}.png`, commit: 'a'.repeat(40) }, facts: { classification: 'editorial-opinion', claims: [], sources: [] }, geography: { mode: 'no-location-imagery' } };
   approve(i); return { i, buffer };
 }
 function approve(i) { i.review = { reviewer: 'Test QA', reviewedAt: new Date().toISOString(), boundSha256: binding(i), captionSha256: sha256(i.caption), assetSha256: i.asset.sha256, checks: Object.fromEntries(CHECKS.map(k => [k, true])) }; }
@@ -48,6 +48,16 @@ test('an identical creative stays blocked after 30 days and topic dates cannot d
   assert.throws(() => checkDuplicates(i, [{ id: 'old', date: new Date(Date.now() - 90 * 86400000).toISOString(), assetSha256: i.asset.sha256 }]), /already used/);
   assert.throws(() => checkDuplicates(i, [{ id: 'old', date: new Date().toISOString(), topicKey: 'cyprus-lebanon-customer-validation-2026-09-13', headline: 'Different hook', topic: 'Different' }]), /30 days/);
 });
+test('actual historical JPEG fingerprints block a recompressed creative with a different name and hook', async () => {
+  const { i, buffer } = await fixture();
+  const actual = await sharp(buffer).resize(864, 1080).jpeg({ quality: 75 }).toBuffer();
+  const old = { id: 'historical', date: new Date(Date.now() - 90 * 86400000).toISOString(), headline: 'Old hook', creativeKey: 'older-name', visualSignature: await visualSignature(actual) };
+  assert.throws(() => checkDuplicates(i, [old]), /already used/);
+  const changed = creative('feed'); changed.text.headline = 'WHAT WOULD A SMALL PILOT PROVE?'; changed.text.body = 'Test the offer before expanding. Ask customers what they would pay for.';
+  const different = await renderCreative(changed);
+  i.asset.visualSignature = await visualSignature(different.buffer);
+  checkDuplicates(i, [old]);
+});
 test('renderer rejects long copy, missing/unverified photos, placeholders and broken characters', async () => {
   const c = creative('feed'); c.text.headline = 'investment '.repeat(100); await assert.rejects(renderCreative(c), /too long/);
   c.text.headline = 'TITLE □'; await assert.rejects(renderCreative(c), /Corrupted/);
@@ -72,6 +82,18 @@ test('legacy API calls cannot reach Meta even with an authorized publisher key',
   try { await handler({ method: 'POST', headers: { 'x-tss-publisher-key': 'test-only-key' }, body: { imageUrl: 'https://example.com/image.png', caption: 'test' } }, { setHeader() {}, status(s) { status = s; return this; }, json(d) { response = d; } }); }
   finally { if (original === undefined) delete process.env.TSS_PUBLISHER_KEY; else process.env.TSS_PUBLISHER_KEY = original; }
   assert.equal(status, 422); assert.match(response.error, /Signed QA manifest/);
+});
+test('an inspected QA-only sample cannot become a live container or publication', async () => {
+  const { i } = await fixture(); i.qaOnly = true; approve(i);
+  const old = process.env.TSS_PUBLISHER_KEY; process.env.TSS_PUBLISHER_KEY = 'test-only-key';
+  try {
+    for (const action of ['prepare', 'publishInstagram', 'publishFacebook']) {
+      let status, response;
+      const payload = { action, item: i };
+      await handler({ method: 'POST', headers: { 'x-tss-publisher-key': 'test-only-key' }, body: { payload, signature: sign(payload, 'test-only-key') } }, { setHeader() {}, status(s) { status = s; return this; }, json(d) { response = d; } });
+      assert.equal(status, 422); assert.match(response.error, /QA-only assets/);
+    }
+  } finally { if (old === undefined) delete process.env.TSS_PUBLISHER_KEY; else process.env.TSS_PUBLISHER_KEY = old; }
 });
 test('missing Facebook credentials prevent any Meta publish/container side effect on both accounts', async () => {
   const { i } = await fixture(); i.platforms = ['instagram', 'facebook']; approve(i);
