@@ -14,7 +14,11 @@ async function call(body) {
   requireThat(config.publisherUrl === 'https://thesmarty-solution-agent.vercel.app/api/publish-instagram', 'Unexpected publisher destination');
   const response = await fetch(config.publisherUrl, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-tss-publisher-key': process.env.TSS_PUBLISHER_KEY }, body: JSON.stringify(body), redirect: 'error', signal: AbortSignal.timeout(55000) });
   const data = await response.json().catch(() => ({}));
-  requireThat(response.ok && data.ok, data.error || `Publisher rejected request: HTTP ${response.status}`);
+  if (!(response.ok && data.ok)) {
+    const error = new Error(data.error || `Publisher rejected request: HTTP ${response.status}`);
+    error.safeMeta = data.meta;
+    throw error;
+  }
   return data;
 }
 const operation = (action, item, extra = {}) => { const payload = { action, item, ...extra }; return call({ payload, signature: sign(payload, process.env.TSS_PUBLISHER_KEY) }); };
@@ -97,6 +101,29 @@ try {
     fingerprinted++;
   }
   if (imported || fingerprinted) await ledger.save('Import and fingerprint actual Instagram creatives for duplicate protection');
+  report.legacyPublicationChecks = [];
+  let recovered = 0;
+  for (const old of history.items.filter(i => i.phase.startsWith('legacy') && !i.visualSignature && !i.videoVisual && i.instagram?.mediaId)) {
+    try {
+      const result = await call({ action: 'verifyInstagram', mediaId: old.instagram.mediaId });
+      const m = result.media;
+      requireThat(m.media_url, 'Earlier published asset is no longer retrievable');
+      const actual = await download(m.media_url, m.media_type === 'VIDEO');
+      old.publishedAssetSha256 = sha256(actual);
+      if (m.media_type === 'VIDEO') {
+        const evidence = await analyzeVideo(actual); old.pixelHash = evidence.pixelHash; old.videoVisual = evidence.videoVisual;
+      } else { old.pixelHash = await imageFingerprint(actual); old.visualSignature = await visualSignature(actual); }
+      old.instagram.permalink = m.permalink;
+      old.archiveEvidencePath = `social/legacy-published-assets/${sha256(actual)}.${m.media_type === 'VIDEO' ? 'mp4' : 'jpg'}`;
+      await ledger.writeFile(old.archiveEvidencePath, actual, `Archive actual earlier Instagram publication ${old.id}`);
+      report.legacyPublicationChecks.push({ id: old.id, mediaId: old.instagram.mediaId, readable: true, permalink: m.permalink, archiveEvidencePath: old.archiveEvidencePath });
+      recovered++;
+    } catch (error) {
+      report.legacyPublicationChecks.push({ id: old.id, mediaId: old.instagram.mediaId, readable: false, error: error.message, meta: error.safeMeta });
+    }
+  }
+  if (recovered) await ledger.save('Recover actual earlier Instagram publication fingerprints');
+  await ledger.writeFile('social/legacy-publication-checks.json', JSON.stringify(report.legacyPublicationChecks, null, 2) + '\n', 'Record read-only verification of earlier publisher media IDs');
   report.historyCount = history.items.length;
   const now = Date.now(), day = localDay(new Date(now));
   const due = queue.filter(i => i.status === 'approved').sort((a, b) => Date.parse(a.publishAt) - Date.parse(b.publishAt));
