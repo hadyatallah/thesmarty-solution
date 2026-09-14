@@ -26,10 +26,13 @@ Authenticated Meta inspection confirmed the existing app ID `1707395857227784`
 creating, editing and deleting Page posts; the read permission includes Page
 content, follower data and insights. Meta's confirmation for
 `pages_read_engagement` also adds it to the existing **Manage messaging & content
-on Instagram** use case. Neither scope is confirmed enabled yet: the posting
-save returned a generic Meta error, and the shared read-scope confirmation is
-pending. These required scopes and a securely stored Page token must be in place
-before the controlled dual-platform test.
+on Instagram** use case. Neither scope is confirmed enabled yet: both the
+posting save and the confirmed shared read-scope save returned Meta's
+"Sorry something went wrong, please try again later" error. The app's Required
+actions screen reports no current required actions. The permission saves need
+completion in Meta, followed by a Page token stored in the existing Vercel
+project's Production environment and a redeployment. These prerequisites block
+the controlled dual-platform test; publishing and scheduling stay disabled.
 
 Only the `controlledPublicationId` may publish while the scheduler is disabled.
 That test requires an approved **feed** export and both correct TSS accounts.
