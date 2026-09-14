@@ -24,8 +24,12 @@ Authenticated Meta inspection confirmed the existing app ID `1707395857227784`
 `pages_show_list` ready for testing. `pages_manage_posts` and
 `pages_read_engagement` currently show **Add**. The posting permission includes
 creating, editing and deleting Page posts; the read permission includes Page
-content, follower data and insights. These required scopes and a securely stored
-Page token must be in place before the controlled dual-platform test.
+content, follower data and insights. Meta's confirmation for
+`pages_read_engagement` also adds it to the existing **Manage messaging & content
+on Instagram** use case. Neither scope is confirmed enabled yet: the posting
+save returned a generic Meta error, and the shared read-scope confirmation is
+pending. These required scopes and a securely stored Page token must be in place
+before the controlled dual-platform test.
 
 Only the `controlledPublicationId` may publish while the scheduler is disabled.
 That test requires an approved **feed** export and both correct TSS accounts.
