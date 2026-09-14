@@ -1,0 +1,51 @@
+{
+  "version": 2,
+  "items": [
+    {
+      "id": "2026-09-14-cheapest-property-debate",
+      "date": "2026-09-13T22:47:22.193Z",
+      "topic": "Property investment quality versus entry price",
+      "topicKey": "cyprus-property-entry-price-vs-quality-2026-09-14",
+      "headline": "The cheapest property is not always the best investment",
+      "creativeKey": "tss-v1-debate-cyprus-property-entry-price-2026-09-14",
+      "format": "feed",
+      "platform": "instagram",
+      "phase": "legacy_published",
+      "instagram": {
+        "mediaId": "18024840431699383"
+      },
+      "legacyImageUrl": "https://thesmarty-solution-agent.vercel.app/api/social-creative?template=question-debate&category=SMARTY+DEBATE+%2F+CYPRUS+PROPERTY&headline=THE+CHEAPEST+PROPERTY&subheadline=ISN%27T+ALWAYS+THE+BEST+INVESTMENT&body=Entry+price+matters.+So+do+demand%2C+location%2C+liquidity+and+the+exit+strategy+behind+the+purchase.&callout=WOULD+YOU+PAY+MORE+FOR+A+STRONGER+INVESTMENT+CASE%3F&location=CYPRUS&credit=The+Smarty+Solution+%C2%B7+Investment+discussion"
+    },
+    {
+      "id": "2026-09-14-larnaca-connectivity",
+      "date": "2026-09-13T22:29:50.905Z",
+      "topic": "Larnaca connectivity and logistics",
+      "topicKey": "larnaca-connectivity-logistics-2026",
+      "headline": "Larnaca's next investment story may be bigger than property",
+      "creativeKey": "tss-v1-place-larnaca-connectivity-logistics-2026-09-14",
+      "format": "feed",
+      "platform": "instagram",
+      "phase": "legacy_published",
+      "instagram": {
+        "mediaId": "17960737947219567"
+      },
+      "legacyImageUrl": "https://thesmarty-solution-agent.vercel.app/api/social-creative?template=place-opportunity&category=SMARTY+INSIGHT+%2F+LARNACA&headline=LARNACA%27S+NEXT+INVESTMENT+STORY&subheadline=MAY+BE+BIGGER+THAN+PROPERTY&body=Cyprus+is+advancing+special+supply+and+storage+zones+at+Larnaca+Airport+while+the+port+and+marina+development+roadmap+is+moving+forward.&callout=COULD+CONNECTIVITY+BECOME+LARNACA%27S+BIGGEST+ADVANTAGE%3F&location=LARNACA%2C+CYPRUS&credit=Photo%3A+A.Savin%2C+Wikipedia+%C2%B7+Source%3A+Gov.cy%2C+2026&photo=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F1%2F1c%2FLarnaca_01-2017_img02_StLazarus_Church.jpg"
+    },
+    {
+      "id": "2026-09-14-larnaca-investor-attention",
+      "date": "2026-09-13T22:17:48.655Z",
+      "topic": "Larnaca investor attention",
+      "topicKey": "larnaca-general-investor-attention",
+      "headline": "Is Larnaca still being underestimated?",
+      "creativeKey": "legacy-larnaca-finikoudes-fullframe-2026-09-14",
+      "format": "feed",
+      "platform": "instagram",
+      "phase": "legacy_published",
+      "instagram": {
+        "mediaId": "18112361699157883"
+      },
+      "legacyImageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/97/Larnaca_01-2017_img27_Finikoudes.jpg"
+    }
+  ],
+  "qaFailures": {}
+}
