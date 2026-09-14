@@ -23,8 +23,10 @@ async function graph(host, route, token, method = 'GET', params = {}) {
 }
 async function identities(c, needFacebook = false) {
   requireThat(c.ig && c.igId === ACCOUNT.instagramId, 'Instagram credentials missing or wrong account identifier');
-  const ig = await graph('graph.instagram.com', `/${c.igId}`, c.ig, 'GET', { fields: 'id,username' });
-  requireThat(String(ig.id) === ACCOUNT.instagramId && ig.username === ACCOUNT.username, 'Unexpected Instagram account');
+  const ig = await graph('graph.instagram.com', `/${c.igId}`, c.ig, 'GET', { fields: 'id,user_id,username' });
+  const matches = { id: String(ig.id) === ACCOUNT.instagramId, userId: String(ig.user_id) === ACCOUNT.instagramId, username: ig.username === ACCOUNT.username };
+  requireThat((matches.id || matches.userId) && matches.username, `Unexpected Instagram account (idMatch=${matches.id}, userIdMatch=${matches.userId}, usernameMatch=${matches.username})`);
+  ig.id = String(ig.user_id || ig.id);
   let fb = null;
   if (c.fb && c.fbId) {
     requireThat(c.fbId === ACCOUNT.facebookId, 'Unexpected Facebook Page identifier');
