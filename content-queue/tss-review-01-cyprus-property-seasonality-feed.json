@@ -1,0 +1,89 @@
+{
+  "qaVersion": 2,
+  "id": "tss-review-01-cyprus-property-seasonality-feed",
+  "status": "awaiting_user_approval",
+  "reviewBatch": "2026-09-initial",
+  "reviewNumber": 1,
+  "revision": 2,
+  "replaces": "tss-review-01-vat-cyprus-ireland-feed",
+  "revisionReason": "Replaced after user review because the VAT comparison could be confused with an earlier corporation-tax post and the layout did not match the approved image-led references.",
+  "topic": "Stress-testing a Cyprus property plan beyond peak season",
+  "topicKey": "cyprus-property-seasonality-stress-test",
+  "headline": "WOULD YOUR PROPERTY PLAN WORK WITHOUT PEAK SEASON?",
+  "creativeKey": "cyprus-property-seasonality-lefkara-reference-photo-v1-feed",
+  "format": "feed",
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
+  "publishAt": "2026-09-15T09:15:00+03:00",
+  "caption": "If a Cyprus property plan relies on short-term rental income, test it without peak-season assumptions.\n\nRun the numbers for quieter months, lower occupancy and costs that continue regardless of bookings. This is a stress test, not a forecast.\n\nWhich assumption would you test first?\n\nPhoto: Pano Lefkara, Cyprus, Qasinka, CC0.\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
+  "creative": {
+    "designVersion": 2,
+    "visualStyle": "reference-photo-editorial",
+    "assetFormat": "jpg",
+    "format": "feed",
+    "template": "question-debate",
+    "photoKey": "lefkara",
+    "text": {
+      "category": "UNPOPULAR OPINION / CYPRUS PROPERTY",
+      "headline": "WOULD YOUR PROPERTY PLAN WORK WITHOUT PEAK SEASON?",
+      "body": "Test the quiet months. Lower the occupancy assumption. Keep the costs that continue all year.",
+      "question": "WHAT WOULD YOU STRESS-TEST FIRST?",
+      "location": "PANO LEFKARA / CYPRUS",
+      "source": "EDITORIAL VIEW / NOT A FORECAST"
+    },
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "editorial-opinion",
+    "claims": [],
+    "sources": []
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Pano Lefkara, Cyprus",
+    "photoSha256": "5336ef1793e4772c1a32d9a1f2776b062203bcb8be0851b5e5f88b2538e981d4",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:2022_03_Pano_Lefkara_1.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against Pano Lefkara in the Republic-controlled area. It illustrates the location and is not a current property listing."
+  },
+  "asset": {
+    "path": "social/assets/96d8dd9d1779ba59d0fb82a3e49317923683afd7d5b7b9ff9477b6d2d1e1d09d.jpg",
+    "sha256": "96d8dd9d1779ba59d0fb82a3e49317923683afd7d5b7b9ff9477b6d2d1e1d09d",
+    "pixelHash": "773b2aed46633d1f7c90e87b46dd310ae4ce7ce206a07a3bc8061650fff8ef07",
+    "visualSignature": "rgb32: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4+Lf29za7uvm9/Tt8/Do/fv1trCkPzgfHyAir6+ttb3BrrS5v8PGl6Gqkp2m3N3bnKaulqCppKyzi5ehm6Wtsbi94+TggI6aqrK4qLC2nqevlqCpnKWulJ+pn6ixys3O//30+fbv9/Tt9vPs9PHq/vv1ubSoOjUeGhkXpaKcxsvOpKyysbi9t7zArbS5397csri8tLq+tLq+ub7Btbu/s7q/r7a7r7a7ys3O9fHr7erl6unk6Ofi5+bi7Ovm9vLr9fLr9fPs9fLr9fLr9PHq/fv1u7KlRj4pHh4aoZ+ZxsvPpa2zp7C2pKyznqev4uHeoKiwo6yyo6yzqLC2oquyq7O4n6mwqK+11dfV/vry+vbv/Pfw/Pjx/fny/Pjx/fjw+vbu+PXt+vfv+fbv9PHq///4npqVFxURIiIeo6Gb//336+rk7Ovl8vDq7+3o5+bi8O7o6+nk6ejj9PLs8O3o7uzn8vDq7Orl6+nl4+Le4eDd4+Pf5eTi4uLf5OPf3N3a4+Pf6efj3N3b5ePg9PHq///5lJORAwMGJCUip6Wg4+TiztDP0tTT0dPSy87OztDQ19fWyszNy87O2NjW0tPTz9HR0NLR4+Lf6ujj5uTg5OLf6efj6efj5+Xh6Ofi5ePf6uji7evl5OPg5+bh9PHq///4lZSUAAACISUkoaGc//z28O3o9PLs8vHr8/Hr8/Hr9fLs8O/p8vDq8vDq9/bw8/Lt8fDq/Pny/fry/frz//vz+vfw+Pbv+fbv+fbv+/jx+ffw+Pbv+ffv9/Tt8vDp///4mZmZAAACHSMlpaOf7/v5wdjcvcnRwtDWxNHXvMrSw8/WytfcwtDWx9Tau8nQv8zUx9PavcvSxtTavcvTu8nR2+bq5/Lz5fDx5fDy5fDy5vDy5vDy5fDx5fDx5O3v///4nZ2eAAMJFxwdo6Gc8vv40OHj3OTm3Obn3efo2uTm2+Tm3ufp3ebo3ufp2+Tn2uPm3+fp2+Tm3+jq3OXo3OXn5e7v6PDx6PDw6PDw6PDw6PDw6PDx6fHx6PDx5+7u//73n6CiAAYLMj1KqKqr///49vLr+fXt+fXt+fXt+fXt+fXt+PXt9/Ts+fXu+vfw+vfv+vfv+/bv+vbv+/jx+/jw9/Ts9fLr9vPr9fLr9vPr9vLr9vLr9/Ts9fLs9PHq//71pKapBA0TPkxisLS47O3p1dnZ3+Hf2Nzb3uHf5OTh2t7c4OLf8/Dp9fPs9vPs9vPs9vPs9vPs9vTt9vPs9vPs9vPt8/Hq8e/o8u/p8e/p8e/p8u/p8vDp8vDp8O7o//31oqSmFBgjNkVas7a5+/rz4+Xi6Onl6Onl6uvm7Ovo7Ozo5+jl7u7p+fbv+PXu+vfw/Pny/Pny/Pny/Pny/Pnx+/fv9fPs19nX1NXV1tjW2tvZ2NnY2NrY2tvZ19jX//32oaOiERYgNUVZjZOb7erj5OLd5ePd5ePd5OHc5OHc6OXg8O7o8u/p9vLs9vPs7+zl5ePd5OLd4+Lc4+Lc5OHc4+Ld4+Ld4+Hb4+Hc5OLd5OLd4+Hc5ePe5OHb5ePe7erkf4GDGiIvPkxfN0VXPEVSPUVPOkFKNT1FLzY+LzU7WV1foqWhmZuXfIB+ZmprQEVLKzM8KzI8KTA6KC87LjhGMDxLLDdFJzA9LThGMDxLLDdGMTtLOUVSKzE5Nj5JP0lWMThCNDpG",
+    "layoutSha256": "d6eaed6b72fc6b2d3990394f48eedd0ce35bc6678b177704bebe7184c22721e7",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": "4704ef514753af3b343be39b1563038083cb1c0f"
+  },
+  "review": {
+    "reviewer": "Codex final-export editorial review",
+    "reviewedAt": "2026-09-14T21:21:54.998Z",
+    "assetSha256": "96d8dd9d1779ba59d0fb82a3e49317923683afd7d5b7b9ff9477b6d2d1e1d09d",
+    "captionSha256": "6d5d42c2431ff58f6f68e04e3fa5cac0ed06787534a3daf5bc6a6a8a15e5749a",
+    "checks": {
+      "dimensions": true,
+      "imageLoaded": true,
+      "noPlaceholders": true,
+      "noBlankPanels": true,
+      "readableText": true,
+      "validCharacters": true,
+      "noClippedText": true,
+      "correctLogo": true,
+      "brandPalette": true,
+      "safeMargins": true,
+      "visualHierarchy": true,
+      "factsVerified": true,
+      "sourcesChecked": true,
+      "geographyVerified": true,
+      "duplicatesChecked": true,
+      "hashtagLimit": true,
+      "finalExportInspected": true
+    },
+    "notes": "Revision 2 replaces the rejected VAT comparison. The actual image-led export was visually inspected, OCR checked and verified against the approved Pano Lefkara photograph and original TSS logo. The copy is explicitly editorial and makes no numeric, tax-rate or forecast claim. User approval is still absent.",
+    "boundSha256": "27a88153ca5b93bdf9f663cf0f90b97c2f37585f60f20e43f80e6006f3ec4222"
+  }
+}

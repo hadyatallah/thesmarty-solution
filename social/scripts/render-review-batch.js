@@ -4,11 +4,16 @@ import { renderCreative } from '../lib/render.js';
 import { imageFingerprint, sha256, visualSignature } from '../lib/qa.js';
 import { analyzeVideo } from '../lib/export-qa.js';
 
-const files = (await fs.readdir('content-queue')).filter(f => f.startsWith('tss-review-') && f.endsWith('.json')).sort();
+const requested = process.argv.slice(2);
+const files = (await fs.readdir('content-queue'))
+  .filter(f => f.startsWith('tss-review-') && f.endsWith('.json'))
+  .filter(f => requested.length === 0 || requested.includes(f))
+  .sort();
+if (requested.length && files.length !== requested.length) throw new Error('One or more requested review manifests were not found');
 await fs.mkdir('social/assets', { recursive: true });
 await fs.mkdir('social-results/reel-scenes', { recursive: true });
 async function saveFrame(creative) {
-  const { buffer, layout } = await renderCreative(creative), hash = sha256(buffer), path = `social/assets/${hash}.png`;
+  const { buffer, layout } = await renderCreative(creative), hash = sha256(buffer), extension = creative.assetFormat === 'jpg' ? 'jpg' : 'png', path = `social/assets/${hash}.${extension}`;
   const layoutText = JSON.stringify(layout, null, 2) + '\n';
   await fs.writeFile(path, buffer); await fs.writeFile(`${path}.layout.json`, layoutText);
   return { path, sha256: hash, pixelHash: await imageFingerprint(buffer), visualSignature: await visualSignature(buffer), layoutSha256: sha256(layoutText), width: layout.width, height: layout.height, originFormat: creative.format, commit: null };

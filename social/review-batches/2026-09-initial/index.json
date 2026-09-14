@@ -12,29 +12,30 @@
   "posts": [
     {
       "number": 1,
-      "id": "tss-review-01-vat-cyprus-ireland-feed",
+      "revision": 2,
+      "replaces": "tss-review-01-vat-cyprus-ireland-feed",
+      "id": "tss-review-01-cyprus-property-seasonality-feed",
       "status": "awaiting_user_approval",
-      "manifestPath": "content-queue/tss-review-01-vat-cyprus-ireland-feed.json",
+      "manifestPath": "content-queue/tss-review-01-cyprus-property-seasonality-feed.json",
       "format": "feed",
       "platforms": [
         "instagram",
         "facebook"
       ],
-      "headline": "CYPRUS VS IRELAND. COMPARE THE SAME TAX.",
-      "caption": "Comparing Cyprus and Ireland? Compare the same tax.\n\nStandard VAT is 19% in Cyprus and 23% in Ireland. These are VAT rates, not corporation tax rates. The applicable VAT rate can vary by product or service.\n\nWhich business cost would you compare first?\n\nSource: European Commission: national VAT rates.\nhttps://europa.eu/youreurope/business/finance-and-tax/vat/vat-rules-rates/index_en.htm\n\nPhoto: Paphos Castle, Cyprus, Bukvoed, CC BY 4.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Cyprus-Paphos-Castle-0957.jpg\nhttps://creativecommons.org/licenses/by/4.0\n\n#Cyprus #CyprusBusiness #Ireland #VAT #TheSmartySolution",
-      "contentSha256": "ac99c1cf5fa93d04abdd8432158e6a4109593318df0b9c1e237d3378de970c3e",
-      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/d73035a02f34d47835fd3edf1d13a58b093a9c06164ba0a84c2d567440538f1a.png",
+      "headline": "WOULD YOUR PROPERTY PLAN WORK WITHOUT PEAK SEASON?",
+      "caption": "If a Cyprus property plan relies on short-term rental income, test it without peak-season assumptions.\n\nRun the numbers for quieter months, lower occupancy and costs that continue regardless of bookings. This is a stress test, not a forecast.\n\nWhich assumption would you test first?\n\nPhoto: Pano Lefkara, Cyprus, Qasinka, CC0.\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
+      "contentSha256": "638f9632fed04af5a7148d97fb09e3069b092b6e20d3f4e27d5aee5bb8d4e3cd",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/4704ef514753af3b343be39b1563038083cb1c0f/social/assets/96d8dd9d1779ba59d0fb82a3e49317923683afd7d5b7b9ff9477b6d2d1e1d09d.jpg",
       "videoUrl": null,
       "sources": [
         {
-          "title": "European Commission: national VAT rates",
-          "url": "https://europa.eu/youreurope/business/finance-and-tax/vat/vat-rules-rates/index_en.htm",
-          "reviewNote": "Standard VAT only; do not infer corporation tax or transaction-specific VAT.",
-          "checkedAt": "2026-09-14T12:20:37.319301Z",
-          "validUntil": "2026-09-21T12:20:37.319301Z"
+          "title": "Pano Lefkara photograph and licence",
+          "url": "https://commons.wikimedia.org/wiki/File:2022_03_Pano_Lefkara_1.jpg",
+          "reviewNote": "Verified real photograph of Pano Lefkara in the Republic-controlled area, released under CC0.",
+          "checkedAt": "2026-09-14T12:20:00Z"
         }
       ],
-      "reviewedAt": "2026-09-14T12:40:04.755Z"
+      "reviewedAt": "2026-09-14T21:21:54.998Z"
     },
     {
       "number": 2,
