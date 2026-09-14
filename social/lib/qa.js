@@ -117,3 +117,15 @@ export async function checkSources(item) {
     requireThat(normalize(text).includes(normalize(s.expectedText)), `Verified evidence no longer found: ${s.id}`);
   }
 }
+export function schedulerProof(config, history) {
+  const first = history.find(i => i.id === config.verifiedLivePublication);
+  requireThat(first?.phase === 'verified' && first.format === 'feed' && first.instagram?.mediaId && first.facebook?.postId, 'Scheduler needs a verified dual-platform feed test');
+  for (const p of ['instagram', 'facebook']) {
+    requireThat(first.publishedReview?.[p]?.passed === true && first.publishedReview[p].reviewer && first.publishedReview[p].assetSha256 === first.verification?.[p]?.sha256, 'Actual live images need inspection before scheduling');
+  }
+  for (const format of config.approvedFormats) {
+    const proof = history.find(i => i.id === config.formatVerifications?.[format]);
+    requireThat(proof?.phase === 'verified' && proof.format === format && proof.publishedReview?.instagram?.passed === true, `No controlled live verification for ${format}`);
+  }
+  return first;
+}

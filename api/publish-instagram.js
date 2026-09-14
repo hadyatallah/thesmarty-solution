@@ -4,8 +4,8 @@ const VERSION = process.env.META_GRAPH_VERSION || 'v25.0';
 const credentials = () => ({
   ig: process.env.INSTAGRAM_ACCESS_TOKEN,
   igId: process.env.INSTAGRAM_USER_ID,
-  fb: process.env.FACEBOOK_PAGE_ACCESS_TOKEN || process.env.FACEBOOK_PAGE_TOKEN,
-  fbId: process.env.FACEBOOK_PAGE_ID,
+  fb: process.env.FACEBOOK_PAGE_ACCESS_TOKEN || process.env.FACEBOOK_PAGE_TOKEN || process.env.META_PAGE_ACCESS_TOKEN || process.env.FB_PAGE_ACCESS_TOKEN,
+  fbId: process.env.FACEBOOK_PAGE_ID || process.env.META_PAGE_ID || process.env.FB_PAGE_ID || ACCOUNT.facebookId,
 });
 async function graph(host, route, token, method = 'GET', params = {}) {
   const url = new URL(`https://${host}/${VERSION}${route}`);
@@ -30,7 +30,8 @@ async function identities(c, needFacebook = false) {
   let fb = null;
   if (c.fb && c.fbId) {
     requireThat(c.fbId === ACCOUNT.facebookId, 'Unexpected Facebook Page identifier');
-    fb = await graph('graph.facebook.com', `/${c.fbId}`, c.fb, 'GET', { fields: 'id,name' });
+    // A Page token must identify this Page via /me, not merely read a public Page.
+    fb = await graph('graph.facebook.com', '/me', c.fb, 'GET', { fields: 'id,name' });
     requireThat(String(fb.id) === ACCOUNT.facebookId && fb.name === ACCOUNT.facebookName, 'Unexpected Facebook Page');
   }
   requireThat(!needFacebook || fb, 'Facebook Page publishing credentials are not configured');
@@ -47,7 +48,9 @@ async function inspect(c) {
     if (!data.paging?.next || !after || recent.some(p => Date.parse(p.timestamp) < Date.now() - 30 * 86400000)) break;
     requireThat(page < 2, 'Recent content history could not be fully checked');
   }
-  return { ...accounts, recent, qaVersion: QA_VERSION };
+  const keys = ['TSS_PUBLISHER_KEY', 'INSTAGRAM_ACCESS_TOKEN', 'INSTAGRAM_USER_ID', 'FACEBOOK_PAGE_ACCESS_TOKEN', 'FACEBOOK_PAGE_TOKEN', 'META_PAGE_ACCESS_TOKEN', 'FB_PAGE_ACCESS_TOKEN', 'FACEBOOK_PAGE_ID', 'META_PAGE_ID', 'FB_PAGE_ID', 'FACEBOOK_USER_ACCESS_TOKEN', 'FACEBOOK_ACCESS_TOKEN', 'META_USER_ACCESS_TOKEN'];
+  const environmentReferences = Object.fromEntries(keys.map(name => [name, Boolean(process.env[name])]));
+  return { ...accounts, recent, qaVersion: QA_VERSION, environmentReferences };
 }
 async function validate(item, c) {
   validateManifest(item);

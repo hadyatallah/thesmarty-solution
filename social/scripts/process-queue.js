@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, immutableAssetUrl, normalize, requireThat, sha256, sign, validateManifest } from '../lib/qa.js';
-import { inspectExport, verifyPublishedImage } from '../lib/export-qa.js';
+import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, immutableAssetUrl, normalize, requireThat, schedulerProof, sha256, sign, validateManifest } from '../lib/qa.js';
+import { inspectExport, verifyPublishedImage, verifyPublishedVideo } from '../lib/export-qa.js';
 import { Ledger } from '../lib/ledger.js';
 
 const config = JSON.parse(await fs.readFile('social/publishing-config.json', 'utf8'));
@@ -25,7 +25,7 @@ async function download(url, video = false) {
   requireThat(response.ok && (video || (response.headers.get('content-type') || '').startsWith('image/')), 'Media failed to load');
   return Buffer.from(await response.arrayBuffer());
 }
-async function verify(item, record, reference) {
+async function verify(item, record, reference, ledger, controlled) {
   const checks = {};
   for (const platform of item.platforms) {
     const result = await call(platform === 'instagram' ? { action: 'verifyInstagram', mediaId: record.instagram.mediaId } : { action: 'verifyFacebook', postId: record.facebook.postId });
@@ -36,10 +36,13 @@ async function verify(item, record, reference) {
     const actual = await download(url, item.format === 'reel');
     const file = `social-results/${item.id}-${platform}.${item.format === 'reel' ? 'mp4' : 'png'}`;
     await fs.writeFile(file, actual);
-    // Meta transcodes Reels. Keep them disabled in the scheduler until a dedicated
-    // published-video comparison and live review have passed.
-    requireThat(item.format !== 'reel', 'Published Reel requires full-video comparison and live review before scheduler use');
-    checks[platform] = { ...await verifyPublishedImage(reference, actual, item.asset.width / item.asset.height), id: String(m.id), permalink: platform === 'instagram' ? m.permalink : m.permalink_url, downloadedAsset: file };
+    const validation = item.format === 'reel' ? await verifyPublishedVideo(reference, actual, item) : await verifyPublishedImage(reference, actual, item.asset.width / item.asset.height);
+    checks[platform] = { ...validation, id: String(m.id), sha256: sha256(actual), permalink: platform === 'instagram' ? m.permalink : m.permalink_url, downloadedAsset: file };
+    if (controlled) {
+      const evidencePath = `social/published-assets/${sha256(actual)}.${item.format === 'reel' ? 'mp4' : 'jpg'}`;
+      checks[platform].evidenceCommit = await ledger.writeFile(evidencePath, actual, `Save actual ${platform} controlled-test asset`);
+      checks[platform].evidencePath = evidencePath;
+    }
   }
   return checks;
 }
@@ -51,6 +54,7 @@ try {
     catch (error) { if (attempt === 5) throw error; await delay(5000); }
   }
   report.accounts = { instagram: inspection.instagram, facebook: inspection.facebook, facebookConfigured: inspection.facebookConfigured };
+  report.serverEnvironmentReferences = inspection.environmentReferences;
   report.recentInstagram = inspection.recent.map(m => ({ id: String(m.id), caption: m.caption || '', timestamp: m.timestamp, format: m.media_type, permalink: m.permalink }));
   await fs.writeFile('social-results/recent-instagram.json', JSON.stringify(report.recentInstagram, null, 2) + '\n');
   const queueFiles = (await fs.readdir('content-queue')).filter(f => f.endsWith('.json')).sort();
@@ -58,6 +62,7 @@ try {
   const seeds = queue.filter(i => i.status === 'published').map(i => ({ id: i.id, date: i.publishedAt, topic: i.topic, topicKey: i.topicKey, headline: i.headline, creativeKey: i.creativeKey, format: i.format, platform: 'instagram', phase: 'legacy_published', instagram: { mediaId: i.mediaId }, legacyImageUrl: i.imageUrl }));
   const ledger = new Ledger(process.env.GITHUB_TOKEN, config.stateBranch, process.env.GITHUB_SHA);
   const history = await ledger.load(seeds);
+  await ledger.writeFile('social/recent-instagram.json', JSON.stringify(report.recentInstagram, null, 2) + '\n', 'Save recent Instagram content for editorial duplicate review');
   const recentIds = new Set(history.items.map(i => i.instagram?.mediaId));
   let imported = 0;
   for (const m of inspection.recent) {
@@ -71,9 +76,7 @@ try {
   const due = queue.filter(i => i.status === 'approved').sort((a, b) => Date.parse(a.publishAt) - Date.parse(b.publishAt));
   const controlled = config.controlledPublicationId;
   if (config.schedulerEnabled) {
-    const proof = history.items.find(i => i.id === config.verifiedLivePublication);
-    requireThat(proof?.phase === 'verified' && proof.publishedReview?.instagram && proof.publishedReview?.facebook, 'Scheduler needs a fully inspected live Instagram/Facebook publication');
-    requireThat(proof.instagram?.mediaId && proof.facebook?.postId, 'Live publication identifiers missing');
+    schedulerProof(config, history.items);
   }
   let sent = 0;
   for (const item of due) {
@@ -91,15 +94,17 @@ try {
       await operation('dryRun', item);
       report.qa.push({ id: item.id, passed: true, validation });
       const isControlled = controlled === item.id;
-      if (isControlled) requireThat(item.format === 'feed' && item.platforms.includes('instagram') && item.platforms.includes('facebook'), 'Controlled test must publish a feed image to both TSS accounts');
+      if (isControlled && !config.verifiedLivePublication) requireThat(item.format === 'feed' && item.platforms.includes('instagram') && item.platforms.includes('facebook'), 'First controlled test must publish a feed image to both TSS accounts');
+      if (isControlled && config.verifiedLivePublication) schedulerProof(config, history.items);
       if (!isControlled && !config.schedulerEnabled) continue;
       if (Date.parse(item.publishAt) > now) continue;
       if (!isControlled) {
         requireThat(config.approvedFormats.includes(item.format), 'Format has not passed a controlled live verification');
         requireThat(localDay(new Date(item.publishAt)) === day && now - Date.parse(item.publishAt) < 4 * 3600000, 'Stale post will not be published as backlog');
       }
-      const today = history.items.filter(i => !i.phase.startsWith('legacy') && localDay(new Date(i.date)) === day);
-      requireThat(today.length < config.maxPostsPerDay && sent < config.maxPostsPerRun, 'Daily/run publishing cap reached');
+      const today = history.items.filter(i => localDay(new Date(i.date)) === day);
+      requireThat((isControlled || today.length < config.maxPostsPerDay) && sent < config.maxPostsPerRun, 'Daily/run publishing cap reached');
+      requireThat(isControlled || today.filter(i => i.format === item.format).length < config.maxPerFormatPerDay[item.format], 'Daily format cap reached');
       const editorial = history.items.filter(i => !i.phase.startsWith('legacy') && now - Date.parse(i.date) < 30 * 86400000);
       const promotionShare = (editorial.filter(i => i.classification === 'promotion').length + (item.facts.classification === 'promotion' ? 1 : 0)) / (editorial.length + 1);
       requireThat(item.facts.classification !== 'promotion' || promotionShare <= config.maxDirectPromotionShare, 'Direct promotion would exceed 25% of content');
@@ -123,7 +128,7 @@ try {
           const result = await operation('publishFacebook', item);
           record.facebook = { postId: result.postId, photoId: result.photoId }; record.phase = 'published'; await ledger.save(`Save Facebook publication ${item.id}`);
         }
-        record.verification = await verify(item, record, reference);
+        record.verification = await verify(item, record, reference, ledger, isControlled);
         record.phase = 'awaiting_published_visual_review'; await ledger.save(`Save actual published asset checks ${item.id}`);
         report.published.push({ id: item.id, verification: record.verification, requiresFinalPublishedVisualReview: true });
         sent++;
@@ -144,6 +149,7 @@ try {
   await fs.writeFile('social-results/report.json', JSON.stringify(report, null, 2) + '\n');
   const summary = [`TSS social QA v${QA_VERSION}`, `Scheduler enabled: ${report.schedulerEnabled}`, `Facebook configured: ${report.accounts?.facebookConfigured ?? 'not checked'}`, `Published: ${report.published.length}`, ...report.qa.map(q => `${q.id}: ${q.passed ? 'QA passed' : q.blocked}`), ...(report.error ? [report.error] : [])].join('\n');
   console.log(summary);
+  if (report.serverEnvironmentReferences) console.log('Server variable references (presence only): ' + JSON.stringify(report.serverEnvironmentReferences));
   if (process.env.GITHUB_STEP_SUMMARY) await fs.appendFile(process.env.GITHUB_STEP_SUMMARY, summary + '\n');
   if (report.blocked) process.exitCode = 1;
 }

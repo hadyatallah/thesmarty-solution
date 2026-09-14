@@ -14,9 +14,9 @@ That test requires an approved **feed** export and both correct TSS accounts.
 Missing Facebook credentials block both platforms before any container creation.
 After the live photos and captions pass API checks, inspect the downloaded
 Instagram and Facebook files in the `tss-social-qa` workflow artifact. Mark that
-history record `verified` with `publishedReview.instagram` and
-`publishedReview.facebook`, reviewer and timestamp. Only then set
-`verifiedLivePublication`, `approvedFormats`, and `schedulerEnabled` and add:
+history record `verified` with per-platform `publishedReview` objects containing
+passed, reviewer, timestamp and the SHA-256 of each actual downloaded asset. Only then set
+`verifiedLivePublication`, `formatVerifications`, `approvedFormats`, and `schedulerEnabled` and add:
 
 ```yaml
 schedule:
@@ -24,7 +24,9 @@ schedule:
     timezone: 'Asia/Nicosia'
 ```
 
-The runner allows one content item per run and at most three per Cyprus day.
+The runner allows one content item per run and at most three per Cyprus day,
+with at most one feed, one Story and one Reel. A controlled rollout test is a
+single explicit exception to daily caps. Existing posts count toward normal caps.
 A post from an earlier day, or more than four hours late, is not published as
 backlog. Only formats with a controlled live verification can be scheduled.
 These are target slots, not guaranteed delivery times. GitHub may delay or drop
@@ -41,8 +43,9 @@ Existing Vercel variables remain server-side:
 
 Facebook requires separate existing-app Page credentials in Vercel production:
 
-- `FACEBOOK_PAGE_ACCESS_TOKEN` (or the alias `FACEBOOK_PAGE_TOKEN`)
-- `FACEBOOK_PAGE_ID` = `177672945439622`
+- `FACEBOOK_PAGE_ACCESS_TOKEN` (also accepts `FACEBOOK_PAGE_TOKEN`,
+  `META_PAGE_ACCESS_TOKEN` or `FB_PAGE_ACCESS_TOKEN`)
+- `FACEBOOK_PAGE_ID` = `177672945439622`, optional because the target is pinned
 
 Use the existing Meta app and a Page token with Page publishing/read permissions.
 Store credentials in the platform's secure environment editor, never in chat.
@@ -99,7 +102,7 @@ Mutable renderer URLs and legacy `imageUrl` direct requests cannot publish.
 - Reel: dedicated 1080x1920 H.264/yuv420p MP4, 6-60 seconds by TSS policy. Full
   decode, full-video inspection, sampled-frame review and rights checks are
   required. The scheduler blocks Reels until published-video comparison is
-  implemented and its own controlled live result is inspected.
+  passed and its own controlled live result is inspected.
 - Facebook's enabled adapter publishes feed photos only. Facebook Stories/Reels
   fail closed until their own adapters and live verifications are completed.
 
@@ -119,7 +122,10 @@ decoded-pixel fingerprints, format, platforms, container IDs and publication IDs
 Exact creative/asset reuse is permanently blocked. Topic/headline similarity is
 checked for 30 days. Dates appended to a topic key do not evade this check.
 A deliberate update needs its prior record, reason, new angle and visual change.
-Recent Instagram posts are imported before every approval/publishing run.
+Recent Instagram posts are imported before every approval/publishing run and
+stored at `tss-social-state: social/recent-instagram.json`. The three-day slot
+plan alone cannot approve a format. `formatVerifications` must point to a
+verified, inspected live record for each scheduled format.
 
 The runner saves a durable reservation **before** container creation, then saves
 the container ID and a checkpoint before each publishing call. Any save conflict
@@ -128,7 +134,9 @@ quarantined. They are never automatically retried. An uncertain result may have
 published successfully. Check the actual account and known container/publication
 IDs before any manual recovery. Do not delete reservations to force retries.
 
-QA artifacts include actual downloaded published images and crop/visual-content
+Controlled live test assets are also stored on the history branch by file hash
+so an editor can inspect the exact API-published photos without relying on an
+expiring artifact download. QA artifacts include actual published images and crop/visual-content
 comparisons. Bad final comparisons block rollout and the record is quarantined.
 Source and credential errors fail the GitHub job. Nothing reports a successful
 live publication merely because an API request returned HTTP 200.

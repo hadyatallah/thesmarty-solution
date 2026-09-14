@@ -39,12 +39,12 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
-      - name: Test fail-closed publishing gates
-        run: node --test social/tests/*.test.js
       - name: Install final-export verification tools
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq tesseract-ocr tesseract-ocr-eng ffmpeg
+      - name: Test fail-closed publishing gates
+        run: node --test social/tests/*.test.js
       - name: Inspect accounts, history and the final publishing queue
         env:
           TSS_PUBLISHER_KEY: ${{ secrets.TSS_PUBLISHER_KEY }}

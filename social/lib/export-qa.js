@@ -54,3 +54,27 @@ export async function verifyPublishedImage(reference, actual, expectedRatio) {
   requireThat(difference < 12, 'Published image differs materially from the inspected export');
   return { width: m.width, height: m.height, meanPixelDifference: Number(difference.toFixed(3)) };
 }
+export async function verifyPublishedVideo(reference, actual, item) {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'tss-published-video-'));
+  try {
+    const files = [path.join(dir, 'approved.mp4'), path.join(dir, 'published.mp4')];
+    await fs.writeFile(files[0], reference); await fs.writeFile(files[1], actual);
+    const info = files.map(file => JSON.parse(execFileSync('ffprobe', ['-v', 'error', '-show_streams', '-show_format', '-of', 'json', file], { encoding: 'utf8', timeout: 20000, stdio: ['ignore', 'pipe', 'ignore'] })));
+    const v = info[1].streams.find(s => s.codec_type === 'video'), duration = Number(info[1].format.duration), expected = Number(info[0].format.duration);
+    requireThat(v?.width >= 540 && Math.abs(v.width / v.height - 9 / 16) < 0.01 && Math.abs(duration - expected) < 0.5, 'Published Reel is cropped, truncated or too small');
+    execFileSync('ffmpeg', ['-v', 'error', '-i', files[1], '-f', 'null', '-'], { timeout: 60000, stdio: ['ignore', 'ignore', 'pipe'] });
+    const frameChecks = [];
+    // Compare every second of the actual transcoded video, including its end.
+    const times = [...new Set([0.1, ...Array.from({ length: Math.floor(expected) }, (_, i) => i + 0.1).filter(t => t < Math.min(expected, duration) - 0.1), Math.min(expected, duration) - 0.2])];
+    for (const t of times) {
+      const frames = [];
+      for (let i = 0; i < 2; i++) {
+        const file = path.join(dir, `frame-${i}.png`);
+        execFileSync('ffmpeg', ['-v', 'error', '-y', '-ss', String(t), '-i', files[i], '-frames:v', '1', file], { timeout: 10000, stdio: ['ignore', 'ignore', 'pipe'] });
+        frames.push(await fs.readFile(file));
+      }
+      frameChecks.push({ time: t, ...await verifyPublishedImage(frames[0], frames[1], 9 / 16) });
+    }
+    return { width: v.width, height: v.height, duration, checkedFrames: frameChecks.length, frameChecks, fullDecodePassed: true };
+  } finally { await fs.rm(dir, { recursive: true, force: true }); }
+}

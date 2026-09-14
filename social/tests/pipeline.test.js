@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import sharp from 'sharp';
 import { renderCreative } from '../lib/render.js';
-import { ACCOUNT, CHECKS, LOGO_SHA, binding, checkDuplicates, imageFingerprint, sha256, sign, validateImage, validateManifest, verifySignature } from '../lib/qa.js';
+import { ACCOUNT, CHECKS, LOGO_SHA, binding, checkDuplicates, imageFingerprint, schedulerProof, sha256, sign, validateImage, validateManifest, verifySignature } from '../lib/qa.js';
 import { verifyPublishedImage } from '../lib/export-qa.js';
 import handler from '../../api/publish-instagram.js';
 
@@ -75,7 +75,7 @@ test('legacy API calls cannot reach Meta even with an authorized publisher key',
 });
 test('missing Facebook credentials prevent any Meta publish/container side effect on both accounts', async () => {
   const { i } = await fixture(); i.platforms = ['instagram', 'facebook']; approve(i);
-  const names = ['TSS_PUBLISHER_KEY', 'INSTAGRAM_ACCESS_TOKEN', 'INSTAGRAM_USER_ID', 'FACEBOOK_PAGE_ACCESS_TOKEN', 'FACEBOOK_PAGE_TOKEN', 'FACEBOOK_PAGE_ID'];
+  const names = ['TSS_PUBLISHER_KEY', 'INSTAGRAM_ACCESS_TOKEN', 'INSTAGRAM_USER_ID', 'FACEBOOK_PAGE_ACCESS_TOKEN', 'FACEBOOK_PAGE_TOKEN', 'META_PAGE_ACCESS_TOKEN', 'FB_PAGE_ACCESS_TOKEN', 'FACEBOOK_PAGE_ID'];
   const old = Object.fromEntries(names.map(n => [n, process.env[n]])), oldFetch = globalThis.fetch;
   let posts = 0, status, output;
   try {
@@ -86,4 +86,12 @@ test('missing Facebook credentials prevent any Meta publish/container side effec
     await handler({ method: 'POST', headers: { 'x-tss-publisher-key': 'test-only-key' }, body: { payload, signature: sign(payload, 'test-only-key') } }, { setHeader() {}, status(s) { status = s; return this; }, json(d) { output = d; } });
   } finally { globalThis.fetch = oldFetch; for (const n of names) { if (old[n] === undefined) delete process.env[n]; else process.env[n] = old[n]; } }
   assert.equal(status, 422); assert.match(output.error, /Facebook.*not configured/); assert.equal(posts, 0);
+});
+test('the scheduler cannot start from booleans or an uninspected second format', () => {
+  const hash = 'a'.repeat(64), proof = { id: 'controlled', format: 'feed', phase: 'verified', instagram: { mediaId: '123' }, facebook: { postId: '456' }, verification: { instagram: { sha256: hash }, facebook: { sha256: hash } }, publishedReview: { instagram: true, facebook: true } };
+  const config = { verifiedLivePublication: 'controlled', approvedFormats: ['feed'], formatVerifications: { feed: 'controlled' } };
+  assert.throws(() => schedulerProof(config, [proof]), /need inspection/);
+  proof.publishedReview = Object.fromEntries(['instagram','facebook'].map(p => [p, { passed: true, reviewer: 'Test QA', assetSha256: hash }]));
+  schedulerProof(config, [proof]);
+  config.approvedFormats.push('story'); assert.throws(() => schedulerProof(config, [proof]), /No controlled live verification for story/);
 });
