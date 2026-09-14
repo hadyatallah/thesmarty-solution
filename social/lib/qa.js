@@ -72,7 +72,11 @@ export function validateManifest(item, now = Date.now()) {
   requireThat(review?.reviewer && validTime(review.reviewedAt) && Date.parse(review.reviewedAt) <= now + 60000 && now - Date.parse(review.reviewedAt) <= 7 * 86400000, 'Missing, future or stale final review');
   requireThat(review.boundSha256 === binding(item) && review.captionSha256 === sha256(item.caption), 'Asset/content changed after inspection');
   requireThat(review.assetSha256 === item.asset.sha256 && CHECKS.every(k => review.checks?.[k] === true), 'Every final-export QA check must pass');
-  if (item.format === 'reel') requireThat(review.fullVideoInspected === true && review.videoRightsVerified === true && review.inspectedFrameTimes?.length >= 3, 'Reel needs full-video and rights review');
+  if (item.format === 'reel') {
+    const v = item.asset.videoVisual;
+    requireThat(v?.method === 'sampled-rgb32-v1' && v.duration >= 6 && v.duration <= 60 && v.frames?.length === 6 && v.frames.every(f => /^rgb32:[A-Za-z0-9+/]{4096}$/.test(f)) && item.asset.pixelHash === sha256(JSON.stringify(v)), 'Reel needs actual decoded-frame duplicate evidence');
+    requireThat(review.fullVideoInspected === true && review.videoRightsVerified === true && review.inspectedFrameTimes?.length >= 3, 'Reel needs full-video and rights review');
+  }
   return item;
 }
 export async function imageFingerprint(buffer) {
@@ -90,6 +94,11 @@ export function sameVisual(a, b) {
   let difference = 0, changed = 0;
   for (let i = 0; i < A.length; i++) { const d = Math.abs(A[i] - B[i]); difference += d; if (d > 12) changed++; }
   return difference / A.length <= 2 && changed / A.length <= 0.06;
+}
+export function sameVideoVisual(a, b) {
+  if (!a || !b) return false;
+  requireThat(a.method === 'sampled-rgb32-v1' && b.method === 'sampled-rgb32-v1' && a.frames?.length === 6 && b.frames?.length === 6, 'Invalid video duplicate evidence');
+  return Math.abs(a.duration - b.duration) < 0.5 && a.frames.every((frame, i) => sameVisual(frame, b.frames[i]));
 }
 export async function validateImage(buffer, item) {
   requireThat(buffer.length > 1000 && buffer.length <= 8 * 1024 * 1024, 'Image is empty or exceeds the 8 MiB policy limit');
@@ -112,7 +121,7 @@ function similarity(a, b) {
 const topic = value => normalize(value).replace(/\b(?:19|20)\d{2}\b|\b\d{1,2}\b/g, '').replace(/\s+/g, ' ').trim();
 export function checkDuplicates(item, history, now = Date.now()) {
   for (const old of history) {
-    const exact = old.creativeKey === item.creativeKey || old.assetSha256 === item.asset.sha256 || old.pixelHash === item.asset.pixelHash || old.id === item.id || sameVisual(old.visualSignature, item.asset.visualSignature);
+    const exact = old.creativeKey === item.creativeKey || old.assetSha256 === item.asset.sha256 || old.pixelHash === item.asset.pixelHash || old.id === item.id || sameVisual(old.visualSignature, item.asset.visualSignature) || sameVideoVisual(old.videoVisual, item.asset.videoVisual);
     requireThat(!exact, `Creative already used or reserved: ${old.id}`);
     const date = Date.parse(old.date || old.publishedAt || old.reservedAt);
     requireThat(Number.isFinite(date), 'Invalid history date blocks publishing');

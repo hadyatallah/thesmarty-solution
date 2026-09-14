@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, imageFingerprint, immutableAssetUrl, normalize, requireThat, schedulerProof, sha256, sign, validateManifest, visualSignature } from '../lib/qa.js';
-import { inspectExport, verifyPublishedImage, verifyPublishedVideo } from '../lib/export-qa.js';
+import { analyzeVideo, inspectExport, verifyPublishedImage, verifyPublishedVideo } from '../lib/export-qa.js';
 import { Ledger } from '../lib/ledger.js';
 
 const config = JSON.parse(await fs.readFile('social/publishing-config.json', 'utf8'));
@@ -23,7 +23,9 @@ async function download(url, video = false) {
   requireThat(u.protocol === 'https:' && !u.username && !u.password, 'Invalid public media URL');
   const response = await fetch(url, { redirect: 'error', signal: AbortSignal.timeout(20000) });
   requireThat(response.ok && (video || (response.headers.get('content-type') || '').startsWith('image/')), 'Media failed to load');
-  return Buffer.from(await response.arrayBuffer());
+  const bytes = Buffer.from(await response.arrayBuffer());
+  requireThat(bytes.length <= (video ? 64 : 16) * 1024 * 1024, 'Media exceeds the inspection download limit');
+  return bytes;
 }
 async function verify(item, record, reference, ledger, controlled) {
   const checks = {};
@@ -73,9 +75,19 @@ try {
   let fingerprinted = 0;
   // Inspect actual historical media, never its mutable source/generation URL.
   for (const m of inspection.recent) {
-    if (!['IMAGE', 'CAROUSEL_ALBUM'].includes(m.media_type)) continue;
     const old = history.items.find(i => i.instagram?.mediaId === String(m.id));
     requireThat(old, 'Recent Instagram creative is missing from durable history');
+    if (m.media_type === 'VIDEO') {
+      if (old.videoVisual) continue;
+      requireThat(m.media_url, 'Actual historical video is unavailable for duplicate review');
+      const actual = await download(m.media_url, true), evidence = await analyzeVideo(actual);
+      old.publishedAssetSha256 = sha256(actual);
+      old.pixelHash = evidence.pixelHash;
+      old.videoVisual = evidence.videoVisual;
+      fingerprinted++;
+      continue;
+    }
+    requireThat(['IMAGE', 'CAROUSEL_ALBUM'].includes(m.media_type), 'Recent media format cannot be checked for duplicates');
     if (old.visualSignature) continue;
     requireThat(m.media_url, 'Actual historical image is unavailable for duplicate review');
     const actual = await download(m.media_url);
@@ -122,7 +134,7 @@ try {
       const editorial = history.items.filter(i => !i.phase.startsWith('legacy') && now - Date.parse(i.date) < 30 * 86400000);
       const promotionShare = (editorial.filter(i => i.classification === 'promotion').length + (item.facts.classification === 'promotion' ? 1 : 0)) / (editorial.length + 1);
       requireThat(item.facts.classification !== 'promotion' || promotionShare <= config.maxDirectPromotionShare, 'Direct promotion would exceed 25% of content');
-      const record = { id: item.id, date: new Date().toISOString(), topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, assetSha256: item.asset.sha256, pixelHash: item.asset.pixelHash, visualSignature: item.asset.visualSignature, format: item.format, platform: item.platforms.join('+'), classification: item.facts.classification, phase: 'reserved', qaBoundSha256: item.review.boundSha256, instagram: null, facebook: null };
+      const record = { id: item.id, date: new Date().toISOString(), topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, assetSha256: item.asset.sha256, pixelHash: item.asset.pixelHash, visualSignature: item.asset.visualSignature, videoVisual: item.asset.videoVisual, format: item.format, platform: item.platforms.join('+'), classification: item.facts.classification, phase: 'reserved', qaBoundSha256: item.review.boundSha256, instagram: null, facebook: null };
       history.items.push(record);
       // Every side effect has a durable checkpoint first. Failed saves stop the call.
       await ledger.save(`Reserve inspected social creative ${item.id}`);

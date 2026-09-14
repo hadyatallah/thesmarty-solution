@@ -78,8 +78,16 @@ and Story images with:
 `node social/scripts/export.js content-queue/FILE.json`
 
 This creates a content-addressed PNG and layout evidence, and resets approval.
+For a dedicated Reel MP4, use:
+
+`node social/scripts/inspect-reel.js content-queue/FILE.json /path/to/dedicated.mp4`
+
+This decodes the complete video, enforces the vertical policy, fingerprints six
+frames and resets approval. It does not approve text, facts, music/footage rights
+or the full-video inspection. Review the actual exported MP4 before approving it.
+
 Commit the asset first. Set `asset.commit` to the immutable 40-character Git
-commit containing it. Inspect the actual PNG, read its caption and compare it
+commit containing it. Inspect the actual file, read its caption and compare it
 with `social-results/recent-instagram.json` from the latest workflow.
 
 Fact-bearing posts need a claim inventory and sources with direct HTTPS URLs,
@@ -132,6 +140,11 @@ small decoded RGB signature also catches identical images after ordinary JPEG
 compression or resizing. A failed historical download blocks publishing until
 the recent visual history can be checked. This image comparison is conservative;
 similar-looking graphics can require a new visual before they pass.
+Historical videos are decoded and fingerprinted at six points across their
+duration. Reel exports must supply matching actual decoded-frame evidence.
+The duplicate check also compares those frames after video recompression; it
+does not rely on the video filename, hook or MP4 bytes alone. Visual similarity
+is a conservative additional gate, not a substitute for editorial duplicate review.
 A deliberate update needs its prior record, reason, new angle and visual change.
 Recent Instagram posts are imported before every approval/publishing run and
 stored at `tss-social-state: social/recent-instagram.json`. The three-day slot

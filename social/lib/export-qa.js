@@ -3,7 +3,31 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import sharp from 'sharp';
-import { normalize, requireThat, sha256, validateImage } from './qa.js';
+import { normalize, requireThat, sha256, validateImage, visualSignature } from './qa.js';
+
+async function videoEvidenceAtFile(file, info) {
+  const v = info.streams.find(s => s.codec_type === 'video'), duration = Number(info.format.duration);
+  requireThat(v && Number.isFinite(duration) && duration >= 1 && duration <= 600, 'Video duplicate history cannot be inspected');
+  const frames = [];
+  for (const t of [Math.min(0.1, duration / 10), duration * 0.2, duration * 0.4, duration * 0.6, duration * 0.8, duration - 0.2]) {
+    const png = execFileSync('ffmpeg', ['-v', 'error', '-ss', String(t), '-i', file, '-frames:v', '1', '-f', 'image2pipe', '-vcodec', 'png', '-'], { timeout: 10000, maxBuffer: 16 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
+    frames.push(await visualSignature(png));
+  }
+  const videoVisual = { method: 'sampled-rgb32-v1', duration: Number(duration.toFixed(3)), frames };
+  return { width: v.width, height: v.height, duration, codec: v.codec_name, pixelFormat: v.pix_fmt, videoVisual, pixelHash: sha256(JSON.stringify(videoVisual)) };
+}
+export async function analyzeVideo(buffer, enforcePublishingPolicy = false) {
+  requireThat(buffer.length > 10000 && buffer.length <= 64 * 1024 * 1024, 'Video is missing or exceeds the inspection limit');
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'tss-video-evidence-'));
+  try {
+    const file = path.join(dir, 'actual.mp4'); await fs.writeFile(file, buffer);
+    const info = JSON.parse(execFileSync('ffprobe', ['-v', 'error', '-show_streams', '-show_format', '-of', 'json', file], { encoding: 'utf8', timeout: 20000, stdio: ['ignore', 'pipe', 'ignore'] }));
+    const v = info.streams.find(s => s.codec_type === 'video'), duration = Number(info.format.duration);
+    if (enforcePublishingPolicy) requireThat(buffer.length <= 32 * 1024 * 1024 && v?.width === 1080 && v?.height === 1920 && v.codec_name === 'h264' && v.pix_fmt === 'yuv420p' && duration >= 6 && duration <= 60 && !(v.tags?.rotate || v.side_data_list?.some(s => s.rotation)), 'Dedicated Reel export must satisfy the 1080x1920 H.264, 6-60 second policy');
+    execFileSync('ffmpeg', ['-v', 'error', '-i', file, '-f', 'null', '-'], { timeout: 60000, stdio: ['ignore', 'ignore', 'pipe'] });
+    return { ...await videoEvidenceAtFile(file, info), fullDecodePassed: true };
+  } finally { await fs.rm(dir, { recursive: true, force: true }); }
+}
 
 export async function inspectExport(item, buffer) {
   if (item.format === 'reel') return inspectVideo(item, buffer);
@@ -41,7 +65,9 @@ export async function inspectVideo(item, buffer) {
     const q = item.asset.videoQA;
     requireThat(q?.sha256 === item.asset.sha256 && q.width === v.width && q.height === v.height && q.codec === v.codec_name && q.pixelFormat === v.pix_fmt && Math.abs(q.duration - duration) < 0.05, 'Video QA evidence does not match actual export');
     requireThat(item.review.fullVideoInspected && item.review.videoRightsVerified && item.review.inspectedFrameTimes.length >= 3 && item.review.inspectedFrameTimes.every(t => Number.isFinite(t) && t >= 0 && t < duration), 'Full-video review missing');
-    return { width: v.width, height: v.height, duration, codec: v.codec_name, fullDecodePassed: true };
+    const evidence = await videoEvidenceAtFile(file, info);
+    requireThat(item.asset.pixelHash === evidence.pixelHash && JSON.stringify(item.asset.videoVisual) === JSON.stringify(evidence.videoVisual), 'Video duplicate evidence does not match actual decoded frames');
+    return { width: v.width, height: v.height, duration, codec: v.codec_name, fullDecodePassed: true, pixelHash: evidence.pixelHash, checkedDuplicateFrames: evidence.videoVisual.frames.length };
   } finally { await fs.rm(dir, { recursive: true, force: true }); }
 }
 export async function verifyPublishedImage(reference, actual, expectedRatio) {
