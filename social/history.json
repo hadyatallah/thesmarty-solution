@@ -462,7 +462,7 @@
       "format": "feed",
       "platform": "instagram+facebook",
       "classification": "factual",
-      "phase": "instagram_published",
+      "phase": "publishing_facebook",
       "qaBoundSha256": "b86446cb137e82fb915a239b8702834cfa6ba7f1295e42569f10e840765820c1",
       "instagram": {
         "containerId": "18115528618819867",
