@@ -531,7 +531,7 @@
       "platform": "instagram+facebook",
       "classification": "factual",
       "editorial": null,
-      "phase": "published",
+      "phase": "awaiting_published_visual_review",
       "qaBoundSha256": "6d597b9b5f369793c10bb9e76cbde8cb20aa5e2ffb1d4ac6e5df5f9570d4e228",
       "instagram": {
         "containerId": "18115693906819867",
@@ -540,6 +540,30 @@
       "facebook": {
         "postId": "177672945439622_122301141914216133",
         "photoId": "122301141896216133"
+      },
+      "verification": {
+        "instagram": {
+          "width": 1080,
+          "height": 1350,
+          "meanPixelDifference": 1.63,
+          "id": "17953623450276650",
+          "sha256": "6f22e604f039169297bdc445ca9e38689bd77bf147b8973ae076fe3a9f585c51",
+          "permalink": "https://www.instagram.com/p/DdU0f_lH8qE/",
+          "downloadedAsset": "social-results/tss-review-03-housing-income-share-feed-instagram.png",
+          "evidenceCommit": "c5faaac056dce966ca27e547fb329278110ecd9e",
+          "evidencePath": "social/published-assets/6f22e604f039169297bdc445ca9e38689bd77bf147b8973ae076fe3a9f585c51.jpg"
+        },
+        "facebook": {
+          "width": 720,
+          "height": 900,
+          "meanPixelDifference": 1.54,
+          "id": "177672945439622_122301141914216133",
+          "sha256": "3e2319062000be94ce5cdc14c7e2741bfa8df8f9d76ac3c3d6bdbb07275e98aa",
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301141914216133",
+          "downloadedAsset": "social-results/tss-review-03-housing-income-share-feed-facebook.png",
+          "evidenceCommit": "08fbaf4aff758c90e6dd56dcbc202a1aef59271c",
+          "evidencePath": "social/published-assets/3e2319062000be94ce5cdc14c7e2741bfa8df8f9d76ac3c3d6bdbb07275e98aa.jpg"
+        }
       }
     }
   ],
