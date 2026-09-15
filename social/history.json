@@ -394,7 +394,7 @@
       "format": "feed",
       "platform": "instagram+facebook",
       "classification": "editorial-opinion",
-      "phase": "published",
+      "phase": "awaiting_published_visual_review",
       "qaBoundSha256": "800381cfb7bf083231ae01343de7237636534b43c8ebcaa5274829899cd78470",
       "instagram": {
         "containerId": "18115457881819867",
@@ -403,6 +403,30 @@
       "facebook": {
         "postId": "177672945439622_122301039968216133",
         "photoId": "122301039944216133"
+      },
+      "verification": {
+        "instagram": {
+          "width": 1080,
+          "height": 1350,
+          "meanPixelDifference": 0,
+          "id": "18494875597102330",
+          "sha256": "1773f78b4a937cb0075fe72f36c4197be67d9aea0c26a4f3c7af455978c9ccf0",
+          "permalink": "https://www.instagram.com/p/DdSuQPjEZPa/",
+          "downloadedAsset": "social-results/tss-review-01-cyprus-property-seasonality-feed-instagram.png",
+          "evidenceCommit": "80943ad1327ad07c4a9062cd39d3c9184dc2d615",
+          "evidencePath": "social/published-assets/1773f78b4a937cb0075fe72f36c4197be67d9aea0c26a4f3c7af455978c9ccf0.jpg"
+        },
+        "facebook": {
+          "width": 720,
+          "height": 900,
+          "meanPixelDifference": 2.157,
+          "id": "177672945439622_122301039968216133",
+          "sha256": "402f5365399a8ba61cf26da6a297cdcc4bb1cee493d0ecadadce16bf25a08b09",
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301039968216133",
+          "downloadedAsset": "social-results/tss-review-01-cyprus-property-seasonality-feed-facebook.png",
+          "evidenceCommit": "3044232c8807ac3bd05314dfc66cd74d8f66cc94",
+          "evidencePath": "social/published-assets/402f5365399a8ba61cf26da6a297cdcc4bb1cee493d0ecadadce16bf25a08b09.jpg"
+        }
       }
     }
   ],
