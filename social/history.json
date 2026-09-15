@@ -394,7 +394,7 @@
       "format": "feed",
       "platform": "instagram+facebook",
       "classification": "editorial-opinion",
-      "phase": "awaiting_published_visual_review",
+      "phase": "verified",
       "qaBoundSha256": "800381cfb7bf083231ae01343de7237636534b43c8ebcaa5274829899cd78470",
       "instagram": {
         "containerId": "18115457881819867",
@@ -426,6 +426,26 @@
           "downloadedAsset": "social-results/tss-review-01-cyprus-property-seasonality-feed-facebook.png",
           "evidenceCommit": "3044232c8807ac3bd05314dfc66cd74d8f66cc94",
           "evidencePath": "social/published-assets/402f5365399a8ba61cf26da6a297cdcc4bb1cee493d0ecadadce16bf25a08b09.jpg"
+        }
+      },
+      "publishedReview": {
+        "instagram": {
+          "passed": true,
+          "reviewer": "Codex actual-live-asset visual review",
+          "reviewedAt": "2026-09-15T03:18:09.579Z",
+          "assetSha256": "1773f78b4a937cb0075fe72f36c4197be67d9aea0c26a4f3c7af455978c9ccf0",
+          "width": 1080,
+          "height": 1350,
+          "note": "Actual Instagram download inspected. Full creative, logo and text are intact, readable and uncropped."
+        },
+        "facebook": {
+          "passed": true,
+          "reviewer": "Codex actual-live-asset visual review",
+          "reviewedAt": "2026-09-15T03:18:09.579Z",
+          "assetSha256": "402f5365399a8ba61cf26da6a297cdcc4bb1cee493d0ecadadce16bf25a08b09",
+          "width": 720,
+          "height": 900,
+          "note": "Actual Facebook download inspected. Platform resizing and compression did not crop or damage the creative."
         }
       }
     }
