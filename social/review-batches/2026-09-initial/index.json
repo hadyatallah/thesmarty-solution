@@ -68,7 +68,7 @@
     {
       "number": 3,
       "id": "tss-review-03-housing-income-share-feed",
-      "status": "awaiting_user_approval",
+      "status": "approved",
       "manifestPath": "content-queue/tss-review-03-housing-income-share-feed.json",
       "format": "feed",
       "platforms": [
