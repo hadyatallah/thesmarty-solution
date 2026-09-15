@@ -1,7 +1,7 @@
 {
   "qaVersion": 2,
   "id": "tss-review-01-cyprus-property-seasonality-feed",
-  "status": "awaiting_user_approval",
+  "status": "approved",
   "reviewBatch": "2026-09-initial",
   "reviewNumber": 1,
   "revision": 3,
@@ -16,7 +16,7 @@
     "instagram",
     "facebook"
   ],
-  "publishAt": "2026-09-15T09:15:00+03:00",
+  "publishAt": "2026-09-14T21:46:15.881Z",
   "caption": "If a Cyprus property plan relies on short-term rental income, test it without peak-season assumptions.\n\nRun the numbers for quieter months, lower occupancy and costs that continue regardless of bookings. This is a stress test, not a forecast.\n\nWhich assumption would you test first?\n\nPhoto: Pano Lefkara, Cyprus, Qasinka, CC0.\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
   "creative": {
     "designVersion": 2,
@@ -84,7 +84,7 @@
       "hashtagLimit": true,
       "finalExportInspected": true
     },
-    "notes": "Revision 3 removes the rejected card layout and uses a full-frame, verified Pano Lefkara photograph with typography integrated through a borderless tonal fade. The actual JPEG was visually inspected and OCR checked. The copy makes no numeric tax, return or occupancy forecast claim. User approval is still absent.",
-    "boundSha256": "307fd36ae29f5d7ef8e1030b2d7d20771c1ed03c6d9d4d295a7b5880af0a9734"
+    "notes": "Revision 3 removes the rejected card layout and uses a full-frame, verified Pano Lefkara photograph with typography integrated through a borderless tonal fade. The actual JPEG was visually inspected and OCR checked. The copy makes no numeric tax, return or occupancy forecast claim. Hady's publication approval is recorded separately in the approval policy.",
+    "boundSha256": "800381cfb7bf083231ae01343de7237636534b43c8ebcaa5274829899cd78470"
   }
 }

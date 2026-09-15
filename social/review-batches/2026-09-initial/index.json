@@ -15,7 +15,7 @@
       "revision": 3,
       "replaces": "tss-review-01-vat-cyprus-ireland-feed",
       "id": "tss-review-01-cyprus-property-seasonality-feed",
-      "status": "awaiting_user_approval",
+      "status": "approved",
       "manifestPath": "content-queue/tss-review-01-cyprus-property-seasonality-feed.json",
       "format": "feed",
       "platforms": [

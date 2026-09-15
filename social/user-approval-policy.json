@@ -14,6 +14,13 @@
     "tss-review-09-property-title-checks-story",
     "tss-review-10-cyprus-relocation-priorities-reel"
   ],
-  "approvals": {},
+  "approvals": {
+    "tss-review-01-cyprus-property-seasonality-feed": {
+      "approvedBy": "Hady",
+      "approvedAt": "2026-09-14T21:46:15.881Z",
+      "contentSha256": "8c817152264dea898e6f16070cd21afbe607eb679f16aeddd4c4b990218b653e",
+      "authorizationReference": "Explicit publication approval in the TSS Work chat"
+    }
+  },
   "note": "Record explicit user approval only after the final asset, caption and sources are presented. QA approval is separate. Later posts become eligible for automation only after all ten approvals exist; existing live-format verification and scheduler gates still apply."
 }

@@ -9,7 +9,7 @@
   "maxDirectPromotionShare": 0.25,
   "approvedFormats": [],
   "formatVerifications": {},
-  "controlledPublicationId": null,
+  "controlledPublicationId": "tss-review-01-cyprus-property-seasonality-feed",
   "verifiedLivePublication": null,
   "stateBranch": "tss-social-state",
   "publisherUrl": "https://thesmarty-solution-agent.vercel.app/api/publish-instagram"
