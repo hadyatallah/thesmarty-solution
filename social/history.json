@@ -462,9 +462,11 @@
       "format": "feed",
       "platform": "instagram+facebook",
       "classification": "factual",
-      "phase": "preparing_instagram",
+      "phase": "prepared",
       "qaBoundSha256": "b86446cb137e82fb915a239b8702834cfa6ba7f1295e42569f10e840765820c1",
-      "instagram": null,
+      "instagram": {
+        "containerId": "18115528618819867"
+      },
       "facebook": null
     }
   ],
