@@ -127,6 +127,40 @@ Read the actual primary sources and maintain claim-to-source evidence with
 direct URLs, scope notes, check dates and expiry. A failed source blocks the
 post. Numbers in a reference design are not automatically verified facts.
 
+## Editorial intelligence layer
+New content after the initial review batch follows
+`social/editorial-intelligence.json` and maps to a decision problem in
+`social/audience-needs.json`. These files turn engagement techniques into TSS
+rules without allowing hype to overrule accuracy.
+
+- Hooks use a direct question, decision risk, myth-versus-fact, evidence
+  comparison or evidence-supported unpopular opinion. They are normally no
+  longer than 12 words.
+- Words such as viral, explosive, guaranteed, risk-free and tax-free are not
+  permitted as promotional claims. A challenging hook still needs accurate
+  context in the creative and caption.
+- Trend content can enter generation only through
+  `social/trend-candidates.json` with a current source review. Social attention
+  is not evidence that a market claim is true.
+- Reels target 15-30 seconds: one short hook, one to three clear beats and one
+  approved CTA. The final MP4 still requires the existing full-video checks.
+- CTAs come from the controlled library and rotate by purpose: comment, save,
+  compare, self-assess or qualified enquiry. Performance can change preferences
+  only through an approved learning in `social/performance-feedback.json` after
+  at least three comparable posts.
+- A researched subject may be repurposed across formats only when the new item
+  has a different hook, audience value, visual and format role. Exact or lightly
+  rewritten reuse remains blocked by the duplicate checks.
+- Social proof fails closed. A result or testimonial needs evidence, permission
+  and confidentiality approval in `social/social-proof-registry.json` before it
+  can be used.
+
+Carousels are an editorial pilot only. Up to four per month may eventually
+replace Feed slots, using four to six slides with one idea per slide. Carousel
+publishing remains disabled until a multi-slide renderer, per-slide QA, Meta
+adapter and controlled live verification are complete. It does not add to the
+44-asset monthly cap.
+
 ## Publishing QA gate
 A post must pass all of the following before it is marked approved:
 - correct dimensions for platform

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "effectiveAt": "2026-09-15T00:00:00+03:00",
+  "grandfatheredContentIds": [
+    "2026-09-14-cheapest-property-debate",
+    "2026-09-14-cyprus-lebanon-customer-problem",
+    "2026-09-14-larnaca-connectivity",
+    "2026-09-14-larnaca-investor-attention",
+    "tss-review-01-cyprus-property-seasonality-feed",
+    "tss-review-02-property-transfer-fees-feed",
+    "tss-review-03-housing-income-share-feed",
+    "tss-review-04-investor-brief-feed",
+    "tss-review-05-british-emigration-feed",
+    "tss-review-06-ireland-tax-residency-feed",
+    "tss-review-07-europe-property-cycles-feed",
+    "tss-review-08-europe-living-costs-story",
+    "tss-review-09-property-title-checks-story",
+    "tss-review-10-cyprus-relocation-priorities-reel",
+    "qa-cyprus-lebanon-customer-problem-feed"
+  ]
+}

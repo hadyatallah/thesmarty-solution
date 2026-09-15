@@ -49,6 +49,11 @@ test('strategy cannot approve or activate publishing', () => {
   assert.equal(plan.controls.requireControlledLiveVerificationPerFormat, true);
   assert.equal(plan.controls.publishFewerWhenQaFails, true);
   assert.equal(plan.controls.backfillMissedSlots, false);
+  assert.equal(plan.controls.requireAudienceDecisionMappingForNewContent, true);
+  assert.equal(plan.controls.requireSourceReviewedTrendCandidates, true);
+  assert.equal(plan.controls.allowAutomaticTrendClaims, false);
+  assert.equal(plan.controls.requirePermissionForSocialProof, true);
+  assert.equal(plan.controls.carouselPublishingEnabled, false);
 });
 
 test('publishing caps match the approved monthly plan', () => {
@@ -59,4 +64,6 @@ test('publishing caps match the approved monthly plan', () => {
   for (const format of formats) {
     assert.equal(config.monthlyPlan.formatCaps[format], plan.formats[format].monthlyTarget);
   }
+  assert.equal(config.editorialPolicy.requireMetadataForNonGrandfatheredQueueItems, true);
+  assert.equal(config.editorialPolicy.carouselPublishingEnabled, false);
 });

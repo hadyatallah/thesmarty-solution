@@ -135,10 +135,29 @@ publishing layer is designed for existing free GitHub/Meta infrastructure.
 ## Generate, export and inspect
 
 `node social/scripts/generate-drafts.js YYYY-MM-DD` creates up to three curated
-drafts, with a dedicated Story layout among feed drafts. The bank is deliberately
-finite. Exhausted or repeated topics produce fewer drafts. It does not invent
-current market facts, generate footage or approve its own images. Fresh editorial
-angles and verified source material must replenish the bank.
+Feed, Story and Reel drafts. Every new draft maps to an approved audience
+decision need, hook type, content objective and CTA. The selector rotates CTA
+usage and underused audience needs. It still produces fewer drafts when the
+reviewed bank is exhausted or topics already exist.
+
+The generation inputs are fail-closed:
+
+- `social/audience-needs.json` defines investor, entrepreneur and relocator
+  decision problems. These are editorial directions, not claims about everyone.
+- `social/editorial-intelligence.json` controls hooks, CTAs, repurposing,
+  social proof, trends, carousels and performance learning.
+- `social/trend-candidates.json` accepts only current, source-reviewed trend
+  briefs using primary, official-statistics or original-study evidence.
+- `social/social-proof-registry.json` is empty by default. Results and
+  testimonials remain blocked without evidence, permission and confidentiality
+  review.
+- `social/performance-feedback.json` influences selection only through explicit
+  approved learnings after a minimum of three comparable posts.
+
+The original queue items are listed in `social/editorial-adoption-policy.json`
+so the new layer does not invalidate the first review batch. Any later queue ID
+must carry the new editorial metadata. The generator never invents current
+market facts, generates final footage or approves its own output.
 
 Set an explicit `publishAt` with the correct Asia/Nicosia UTC offset. Export feed
 and Story images with:
@@ -153,6 +172,14 @@ For a dedicated Reel MP4, use:
 This decodes the complete video, enforces the vertical policy, fingerprints six
 frames and resets approval. It does not approve text, facts, music/footage rights
 or the full-video inspection. Review the actual exported MP4 before approving it.
+
+Related subjects can be repurposed only by naming the source post and recording
+the new angle, audience value and visual difference. The new format and hook
+must differ, while exact creative and asset reuse remains permanently blocked.
+Carousel concepts may be prepared as four-to-six-slide editorial outlines, but
+carousel publication is disabled until per-slide rendering, QA, a Meta adapter
+and a controlled live test are completed. A future carousel replaces a Feed
+slot and does not increase the 44-asset monthly limit.
 
 Commit the asset first. Set `asset.commit` to the immutable 40-character Git
 commit containing it. Inspect the actual file, read its caption and compare it

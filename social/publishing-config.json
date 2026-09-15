@@ -26,6 +26,17 @@
     },
     "promotionCap": 8
   },
+  "editorialPolicy": {
+    "version": 1,
+    "intelligencePath": "social/editorial-intelligence.json",
+    "audienceNeedsPath": "social/audience-needs.json",
+    "adoptionPolicyPath": "social/editorial-adoption-policy.json",
+    "trendCandidatesPath": "social/trend-candidates.json",
+    "socialProofRegistryPath": "social/social-proof-registry.json",
+    "performanceFeedbackPath": "social/performance-feedback.json",
+    "requireMetadataForNonGrandfatheredQueueItems": true,
+    "carouselPublishingEnabled": false
+  },
   "maxDirectPromotionShare": 0.25,
   "approvedFormats": [
     "feed"

@@ -79,6 +79,15 @@
     "story": "One timely fact or question with visible source date and a dedicated vertical design.",
     "reel": "A 15 to 30 second vertical explanation using one question, up to three verified points and a concise conclusion or CTA."
   },
+  "editorialMethods": {
+    "audienceDecisionNeeds": "Every new content item maps to at least one approved investor, entrepreneur or relocator decision problem.",
+    "hooks": "Short direct questions, decision risks, evidence comparisons, myth-versus-fact or evidence-supported unpopular opinions. No viral promises or unsupported certainty.",
+    "trends": "Only reviewed, current candidates backed by primary, official or original-study evidence.",
+    "repurposing": "Allowed across genuinely different formats when hook, audience value, visual and format role are materially different.",
+    "socialProof": "Blocked unless evidence, permission and confidentiality review are recorded.",
+    "performance": "CTA and hook preferences may change only after at least three comparable posts and an approved performance learning.",
+    "carousels": "Editorial pilot of up to four assets replacing Feed slots, but publishing remains disabled until carousel QA, adapter and live verification are complete."
+  },
   "controls": {
     "schedulerEnabledByThisFile": false,
     "strategyApprovalIsNotPostApproval": true,
@@ -91,6 +100,11 @@
     "allowFeedReuseForVertical": false,
     "maxHashtags": 5,
     "duplicateWindowDays": 30,
-    "occupiedCyprusImageryAllowed": false
+    "occupiedCyprusImageryAllowed": false,
+    "requireAudienceDecisionMappingForNewContent": true,
+    "requireSourceReviewedTrendCandidates": true,
+    "allowAutomaticTrendClaims": false,
+    "requirePermissionForSocialProof": true,
+    "carouselPublishingEnabled": false
   }
 }

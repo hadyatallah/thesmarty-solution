@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import sharp from 'sharp';
+import { repurposeAllowsSimilarity } from './editorial.js';
 
 export const QA_VERSION = 2;
 export const ACCOUNT = Object.freeze({ instagramId: '17841424595983267', username: 'thesmartysolution', facebookId: '177672945439622', facebookName: 'The Smarty Solution' });
@@ -19,12 +20,12 @@ export function cleanText(value) {
   return value;
 }
 export function binding(item) {
-  return sha256(JSON.stringify({ id: item.id, topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, format: item.format, platforms: item.platforms, publishAt: item.publishAt, asset: item.asset, creative: item.creative, facts: item.facts, geography: item.geography, deliberateUpdate: item.deliberateUpdate, qaOnly: item.qaOnly === true }));
+  return sha256(JSON.stringify({ id: item.id, topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, format: item.format, platforms: item.platforms, publishAt: item.publishAt, asset: item.asset, creative: item.creative, facts: item.facts, geography: item.geography, editorial: item.editorial, deliberateUpdate: item.deliberateUpdate, qaOnly: item.qaOnly === true }));
 }
 // A scheduling or freshness-only change does not ask the user to approve the same
 // content again. Any change to the actual creative, claims or caption does.
 export function userApprovalBinding(item) {
-  return sha256(JSON.stringify({ id: item.id, topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, format: item.format, platforms: item.platforms, caption: item.caption, assetSha256: item.asset?.sha256, creative: item.creative, claims: item.facts?.claims, sources: item.facts?.sources?.map(({ id, url, expectedText, additionalEvidence, reviewNote }) => ({ id, url, expectedText, additionalEvidence, reviewNote })), geography: item.geography }));
+  return sha256(JSON.stringify({ id: item.id, topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, format: item.format, platforms: item.platforms, caption: item.caption, assetSha256: item.asset?.sha256, creative: item.creative, claims: item.facts?.claims, sources: item.facts?.sources?.map(({ id, url, expectedText, additionalEvidence, reviewNote, authorityType }) => ({ id, url, expectedText, additionalEvidence, reviewNote, authorityType })), geography: item.geography, editorial: item.editorial }));
 }
 export function enforceUserApproval(item, policy, now = Date.now()) {
   requireThat(policy?.version === 1 && policy.requiredCount === 10 && policy.firstPostIds?.length === 10 && new Set(policy.firstPostIds).size === 10 && policy.approver, 'Missing or invalid ten-post user approval policy');
@@ -95,6 +96,7 @@ export function validateManifest(item, now = Date.now()) {
   }
   return item;
 }
+
 export async function imageFingerprint(buffer) {
   return sha256(await sharp(buffer).rotate().resize(64, 64, { fit: 'fill' }).removeAlpha().raw().toBuffer());
 }
@@ -145,7 +147,9 @@ export function checkDuplicates(item, history, now = Date.now()) {
     const similar = topic(old.topicKey) === topic(item.topicKey) || normalize(old.headline) === normalize(item.headline) || similarity(old.headline, item.headline) >= 0.68 || similarity(old.topic, item.topic) >= 0.8;
     if (similar) {
       const update = item.deliberateUpdate;
-      requireThat(update?.of === old.id && update.reason?.trim() && update.newAngle?.trim() && update.visualDifference?.trim(), `Topic/headline too similar within 30 days: ${old.id}`);
+      const validUpdate = update?.of === old.id && update.reason?.trim() && update.newAngle?.trim() && update.visualDifference?.trim();
+      const validRepurpose = repurposeAllowsSimilarity(item, old);
+      requireThat(validUpdate || validRepurpose, `Topic/headline too similar within 30 days: ${old.id}`);
     }
   }
 }

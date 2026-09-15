@@ -1,5 +1,10 @@
 import { ACCOUNT, QA_VERSION, enforceUserApproval, immutableAssetUrl, requireThat, sha256, sign, validateImage, validateManifest, verifySignature, checkSources } from '../social/lib/qa.js';
+import { enforceEditorialPolicy } from '../social/lib/editorial.js';
 import approvalPolicy from '../social/user-approval-policy.json' with { type: 'json' };
+import editorialIntelligence from '../social/editorial-intelligence.json' with { type: 'json' };
+import audienceNeeds from '../social/audience-needs.json' with { type: 'json' };
+import proofRegistry from '../social/social-proof-registry.json' with { type: 'json' };
+import editorialPolicy from '../social/editorial-adoption-policy.json' with { type: 'json' };
 
 const VERSION = process.env.META_GRAPH_VERSION || 'v25.0';
 const credentials = () => ({
@@ -54,6 +59,7 @@ async function inspect(c) {
   return { ...accounts, recent, qaVersion: QA_VERSION, environmentReferences, userApprovalPolicy: { requiredCount: approvalPolicy.requiredCount, recordedCount: approvalPolicy.firstPostIds.filter(id => approvalPolicy.approvals[id]).length } };
 }
 async function validate(item, c) {
+  enforceEditorialPolicy(item, editorialIntelligence, audienceNeeds, editorialPolicy, proofRegistry);
   validateManifest(item);
   const accounts = await identities(c, item.platforms.includes('facebook'));
   const response = await fetch(immutableAssetUrl(item.asset), { redirect: 'error', signal: AbortSignal.timeout(20000) });

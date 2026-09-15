@@ -3,9 +3,16 @@ import path from 'node:path';
 import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, enforceUserApproval, imageFingerprint, immutableAssetUrl, normalize, requireThat, schedulerProof, sha256, sign, validateManifest, visualSignature } from '../lib/qa.js';
 import { analyzeVideo, inspectExport, verifyPublishedImage, verifyPublishedVideo } from '../lib/export-qa.js';
 import { Ledger } from '../lib/ledger.js';
+import { enforceEditorialPolicy } from '../lib/editorial.js';
 
-const config = JSON.parse(await fs.readFile('social/publishing-config.json', 'utf8'));
-const approvalPolicy = JSON.parse(await fs.readFile('social/user-approval-policy.json', 'utf8'));
+const [config, approvalPolicy, editorialIntelligence, audienceNeeds, editorialPolicy, proofRegistry] = await Promise.all([
+  fs.readFile('social/publishing-config.json', 'utf8').then(JSON.parse),
+  fs.readFile('social/user-approval-policy.json', 'utf8').then(JSON.parse),
+  fs.readFile('social/editorial-intelligence.json', 'utf8').then(JSON.parse),
+  fs.readFile('social/audience-needs.json', 'utf8').then(JSON.parse),
+  fs.readFile('social/editorial-adoption-policy.json', 'utf8').then(JSON.parse),
+  fs.readFile('social/social-proof-registry.json', 'utf8').then(JSON.parse)
+]);
 const report = { qaVersion: QA_VERSION, checkedAt: new Date().toISOString(), schedulerEnabled: config.schedulerEnabled, secretReferences: { TSS_PUBLISHER_KEY: Boolean(process.env.TSS_PUBLISHER_KEY), GITHUB_TOKEN: Boolean(process.env.GITHUB_TOKEN) }, qa: [], published: [] };
 await fs.mkdir('social-results', { recursive: true });
 const localDay = date => new Intl.DateTimeFormat('en-CA', { timeZone: config.timezone }).format(date);
@@ -137,6 +144,7 @@ try {
   for (const item of due) {
     if (history.items.some(i => i.id === item.id)) { report.qa.push({ id: item.id, blocked: 'Already used or reserved. No automatic retry.' }); continue; }
     try {
+      enforceEditorialPolicy(item, editorialIntelligence, audienceNeeds, editorialPolicy, proofRegistry, now);
       validateManifest(item, now);
       checkDuplicates(item, history.items, now);
       await checkSources(item);
@@ -168,7 +176,7 @@ try {
       const editorial = history.items.filter(i => !i.phase.startsWith('legacy') && now - Date.parse(i.date) < 30 * 86400000);
       const promotionShare = (editorial.filter(i => i.classification === 'promotion').length + (item.facts.classification === 'promotion' ? 1 : 0)) / (editorial.length + 1);
       requireThat(item.facts.classification !== 'promotion' || promotionShare <= config.maxDirectPromotionShare, 'Direct promotion would exceed 25% of content');
-      const record = { id: item.id, date: new Date().toISOString(), topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, assetSha256: item.asset.sha256, pixelHash: item.asset.pixelHash, visualSignature: item.asset.visualSignature, videoVisual: item.asset.videoVisual, format: item.format, platform: item.platforms.join('+'), classification: item.facts.classification, phase: 'reserved', qaBoundSha256: item.review.boundSha256, instagram: null, facebook: null };
+      const record = { id: item.id, date: new Date().toISOString(), topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, assetSha256: item.asset.sha256, pixelHash: item.asset.pixelHash, visualSignature: item.asset.visualSignature, videoVisual: item.asset.videoVisual, format: item.format, platform: item.platforms.join('+'), classification: item.facts.classification, editorial: item.editorial ? { version: item.editorial.version, audienceNeedIds: item.editorial.audienceNeedIds, pillar: item.editorial.pillar, hookType: item.editorial.hook?.type, objective: item.editorial.objective, ctaId: item.editorial.cta?.id, contentFamilyId: item.editorial.contentFamilyId, editorialType: item.editorial.editorialType, repurposeSourceId: item.editorial.repurpose?.sourceId || null } : null, phase: 'reserved', qaBoundSha256: item.review.boundSha256, instagram: null, facebook: null };
       history.items.push(record);
       // Every side effect has a durable checkpoint first. Failed saves stop the call.
       await ledger.save(`Reserve inspected social creative ${item.id}`);
