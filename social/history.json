@@ -531,7 +531,7 @@
       "platform": "instagram+facebook",
       "classification": "factual",
       "editorial": null,
-      "phase": "awaiting_published_visual_review",
+      "phase": "verified",
       "qaBoundSha256": "6d597b9b5f369793c10bb9e76cbde8cb20aa5e2ffb1d4ac6e5df5f9570d4e228",
       "instagram": {
         "containerId": "18115693906819867",
@@ -563,6 +563,26 @@
           "downloadedAsset": "social-results/tss-review-03-housing-income-share-feed-facebook.png",
           "evidenceCommit": "08fbaf4aff758c90e6dd56dcbc202a1aef59271c",
           "evidencePath": "social/published-assets/3e2319062000be94ce5cdc14c7e2741bfa8df8f9d76ac3c3d6bdbb07275e98aa.jpg"
+        }
+      },
+      "publishedReview": {
+        "instagram": {
+          "passed": true,
+          "reviewer": "Codex actual-live-asset visual review",
+          "reviewedAt": "2026-09-15T22:50:47.204Z",
+          "assetSha256": "6f22e604f039169297bdc445ca9e38689bd77bf147b8973ae076fe3a9f585c51",
+          "width": 1080,
+          "height": 1350,
+          "note": "Actual Instagram download inspected. The full creative, TSS logo, text and Petra tou Romiou image are intact, readable and uncropped."
+        },
+        "facebook": {
+          "passed": true,
+          "reviewer": "Codex actual-live-asset visual review",
+          "reviewedAt": "2026-09-15T22:50:47.204Z",
+          "assetSha256": "3e2319062000be94ce5cdc14c7e2741bfa8df8f9d76ac3c3d6bdbb07275e98aa",
+          "width": 720,
+          "height": 900,
+          "note": "Actual Facebook download inspected. Platform resizing and compression did not crop or damage the creative."
         }
       }
     }
