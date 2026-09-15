@@ -91,6 +91,38 @@ test('reference integrated editorial renders a verified image-led JPEG feed with
   assert.match(layout.photoSha256, /^[a-f0-9]{64}$/);
   assert.equal(layout.logoSha256, LOGO_SHA);
 });
+test('reference data editorial renders the selected TSS data and landmark composition', async () => {
+  const c = {
+    designVersion: 2,
+    visualStyle: 'reference-data-editorial',
+    assetFormat: 'jpg',
+    format: 'feed',
+    template: 'insight-data',
+    photoKey: 'larnaca-castle',
+    logoSha256: LOGO_SHA,
+    text: {
+      category: 'PROPERTY / BUYING COSTS',
+      headline: "A PROPERTY PRICE ISN'T THE FULL COST.",
+      metric: '50%',
+      metricLabel: 'TRANSFER-FEE DISCOUNT',
+      body: 'Where transfer fees are charged, subject to the stated exceptions.',
+      fact1Label: 'VAT CHARGED',
+      fact1Body: 'No transfer fee for the same transaction under the stated conditions.',
+      fact2Label: 'FEE CHARGED',
+      fact2Body: 'A 50% discount applies, with exceptions.',
+      question: 'CHECK THE EXACT TRANSACTION BEFORE YOU BUDGET.',
+      location: 'LARNACA CASTLE / CYPRUS',
+      source: 'Cyprus DLS'
+    }
+  };
+  const { buffer, layout } = await renderCreative(c), metadata = await sharp(buffer).metadata();
+  assert.equal(metadata.format, 'jpeg');
+  assert.deepEqual([metadata.width, metadata.height], [1080, 1350]);
+  assert.equal(layout.visualStyle, 'reference-data-editorial');
+  assert.deepEqual(layout.photoRegion, { x: 0, y: 820, width: 1080, height: 330 });
+  assert.match(layout.photoSha256, /^[a-f0-9]{64}$/);
+  assert.equal(layout.logoSha256, LOGO_SHA);
+});
 test('published-image check accepts compression and rejects cropping or a different final creative', async () => {
   const { buffer } = await fixture();
   await verifyPublishedImage(buffer, await sharp(buffer).jpeg({ quality: 85 }).toBuffer(), 4 / 5);

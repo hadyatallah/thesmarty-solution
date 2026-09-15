@@ -42,13 +42,23 @@ export async function inspectRenderedImage(item, buffer) {
   requireThat(sha256(layoutBytes) === item.asset.layoutSha256, 'Layout evidence changed');
   const layout = JSON.parse(layoutBytes);
   requireThat(layout.format === item.format && layout.width === item.asset.width && layout.height === item.asset.height && layout.logoSha256 === item.creative.logoSha256, 'Incorrect layout evidence');
+  const creativeText = Object.values(item.creative.text);
   const expectedText = item.creative.designVersion === 2
-    ? [
-        'The Smarty Solution',
-        ...(item.creative.visualStyle === 'reference-integrated-editorial' ? [] : ['Connect · Develop · Invest']),
-        ...Object.values(item.creative.text),
-        'THESMARTYSOLUTION.COM'
-      ]
+    ? item.creative.visualStyle === 'reference-data-editorial'
+      ? [
+          creativeText[0],
+          'The Smarty Solution',
+          'Connect · Develop · Invest',
+          ...creativeText.slice(1),
+          'CONNECT · DEVELOP · INVEST',
+          'THESMARTYSOLUTION.COM'
+        ]
+      : [
+          'The Smarty Solution',
+          ...(item.creative.visualStyle === 'reference-integrated-editorial' ? [] : ['Connect · Develop · Invest']),
+          ...creativeText,
+          'THESMARTYSOLUTION.COM'
+        ]
     : [...Object.values(item.creative.text), 'CONNECT · DEVELOP · INVEST', 'THE SMARTY SOLUTION'];
   requireThat(layout.designVersion === item.creative.designVersion, 'Incorrect design version evidence');
   requireThat(normalize(layout.textRegions.map(r => r.text).join(' ')) === normalize(expectedText.filter(Boolean).join(' ')), 'Creative text is missing from the final layout');
@@ -66,7 +76,13 @@ export async function inspectRenderedImage(item, buffer) {
       requireThat(r.x >= a.left && r.y >= a.top && r.x + r.width <= a.right && r.y + r.height <= a.bottom, 'Text outside format safe margins');
       const file = path.join(dir, `${i}.png`);
       // Padding lets OCR read glyphs at their actual exported bounds.
-      await sharp(buffer).extract({ left: r.x, top: r.y, width: r.width, height: r.height }).extend({ top: 12, bottom: 12, left: 12, right: 12, background: '#f6f1e8' }).resize({ width: (r.width + 24) * 2 }).png().toFile(file);
+      const inverse = r.inverse === true, padding = inverse ? 18 : 12, scale = inverse ? 3 : 2;
+      await sharp(buffer)
+        .extract({ left: r.x, top: r.y, width: r.width, height: r.height })
+        .extend({ top: padding, bottom: padding, left: padding, right: padding, background: inverse ? '#04182b' : '#f6f1e8' })
+        .resize({ width: (r.width + padding * 2) * scale })
+        .png()
+        .toFile(file);
       const output = execFileSync('tesseract', [file, 'stdout', '--psm', '7', '-l', 'eng'], { encoding: 'utf8', timeout: 10000, stdio: ['ignore', 'pipe', 'ignore'] });
       requireThat(normalize(output) === normalize(r.text), `Export text could not be verified by OCR in region ${i}`);
     }

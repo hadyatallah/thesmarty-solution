@@ -27,6 +27,11 @@ Every TSS post should be recognisable as part of the same editorial publication 
 6. Supporting copy kept short
 7. Lower real-photo panel, location label, concise source line and `THESMARTYSOLUTION.COM` footer
 
+For feed Insight / Data posts, the user-selected GDP composition is the master:
+the real photograph runs full-width through the lower section, while the light
+upper section contains the headline, dominant verified figure and compact facts.
+Do not place the photograph inside an inset card or add rounded information boxes.
+
 ## Template family
 Only these three template families are permitted. Each format is composed separately.
 

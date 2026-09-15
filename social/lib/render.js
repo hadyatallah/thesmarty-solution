@@ -29,6 +29,7 @@ async function wrap(text, size, bold, width, maxLines) {
   return lines;
 }
 export async function renderCreative(input) {
+  if (input.designVersion === 2 && input.visualStyle === 'reference-data-editorial') return renderReferenceDataEditorial(input);
   if (input.designVersion === 2 && input.visualStyle === 'reference-integrated-editorial') return renderReferenceIntegratedEditorial(input);
   if (input.designVersion === 2) return renderLandmarkCreative(input);
   const format = input.format;
@@ -94,6 +95,116 @@ export async function renderCreative(input) {
   }
   const buffer = await sharp({ create: { width, height, channels: 3, background: C.cream } }).composite(layers).png().toBuffer();
   return { buffer, layout: { format, width, height, textRegions: regions, logoSha256: LOGO_SHA, photoSha256, palette: C, safeArea: { left: 72, right: 1008, top, bottom } } };
+}
+
+// Data-led feed layout based on the approved TSS GDP reference. The upper
+// section carries one clear figure and short supporting facts. Verified real
+// photography runs full-width across the lower section, without UI cards.
+async function renderReferenceDataEditorial(input) {
+  requireThat(input.format === 'feed', 'Reference data editorial is currently approved for feed only');
+  requireThat(input.template === 'insight-data', 'Reference data editorial requires the insight/data template');
+  const width = 1080, height = 1350, top = 48, bottom = 1320;
+  const colors = { ...C, cream: '#fbfaf6', white: '#ffffff' }, layers = [], regions = [];
+  function svgLayer(svg, x = 0, y = 0) {
+    layers.push({ input: Buffer.from(svg), left: x, top: y });
+  }
+  async function block(text, x, y, size, lineHeight, maxLines, color = C.navy, bold = true, w = 936) {
+    const lines = await wrap(text, size, bold, w, maxLines);
+    for (let i = 0; i < lines.length; i++) {
+      const r = await textImage(lines[i], size, bold, color), yy = y + i * lineHeight;
+      requireThat(x >= 48 && x + r.info.width <= 1032 && yy >= top && yy + r.info.height <= bottom, 'Text outside safe margins');
+      layers.push({ input: r.data, left: x, top: yy });
+      regions.push({ text: lines[i], x, y: yy, width: r.info.width, height: r.info.height, size, inverse: color === colors.white });
+    }
+    return y + lines.length * lineHeight;
+  }
+
+  const catalog = JSON.parse(await fs.readFile(path.join(ROOT, 'photo-catalog.json'), 'utf8')), p = catalog.photos[input.photoKey];
+  requireThat(p?.approved === true && p.republicControlled === true && p.evidenceUrl && p.reviewNote && p.licence && p.licenceUrl, 'Photograph lacks geographic or rights QA');
+  requireThat(/^[a-zA-Z0-9._/-]+$/.test(p.path) && !p.path.includes('..'), 'Invalid photo path');
+  const photo = await fs.readFile(path.join(ROOT, '..', p.path)), photoSha256 = sha256(photo);
+  requireThat(photoSha256 === p.sha256, 'Approved photograph changed');
+  const oriented = sharp(photo, { failOn: 'warning' }).rotate(), stats = await oriented.stats();
+  requireThat(stats.entropy > 1 && stats.channels.some(c => c.stdev > 12), 'Blank or failed photograph');
+  const photoTop = 820;
+  const background = await oriented.resize(width, height - photoTop, { fit: 'cover', position: p.cropPosition || 'centre' }).modulate({ brightness: 0.94, saturation: 0.92 }).jpeg({ quality: 90 }).toBuffer();
+  layers.push({ input: background, left: 0, top: photoTop });
+  svgLayer(`<svg width="1080" height="310" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="shade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#082746" stop-opacity="0.08"/><stop offset="0.38" stop-color="#082746" stop-opacity="0.48"/><stop offset="1" stop-color="#04182b" stop-opacity="0.96"/></linearGradient></defs><rect width="1080" height="310" fill="url(#shade)"/><rect y="110" width="1080" height="200" fill="#04182b" fill-opacity="0.9"/></svg>`, 0, 1040);
+
+  const logo = await fs.readFile(path.join(ROOT, '..', 'logo-mark.png'));
+  requireThat(sha256(logo) === LOGO_SHA, 'Logo bytes do not match the approved TSS mark');
+  const logoImage = await sharp(logo).trim().resize({ width: 180 }).png().toBuffer({ resolveWithObject: true });
+  const logoRegion = { x: 832, y: 46, width: logoImage.info.width, height: logoImage.info.height };
+  layers.push({ input: logoImage.data, left: logoRegion.x, top: logoRegion.y });
+
+  const t = input.text || {};
+  await block(t.category, 60, 62, 20, 27, 1, C.slate, true, 470);
+  svgLayer(`<svg width="246" height="2" xmlns="http://www.w3.org/2000/svg"><rect width="246" height="2" fill="${C.navy}"/></svg>`, 314, 76);
+  const name = await textImage('The Smarty Solution', 21, false, C.navy);
+  const tagline = await textImage('Connect · Develop · Invest', 15, false, C.slate);
+  const nameX = 1012 - name.info.width, taglineX = 1012 - tagline.info.width;
+  layers.push({ input: name.data, left: nameX, top: 124 });
+  regions.push({ text: 'The Smarty Solution', x: nameX, y: 124, width: name.info.width, height: name.info.height, size: 21 });
+  layers.push({ input: tagline.data, left: taglineX, top: 158 });
+  regions.push({ text: 'Connect · Develop · Invest', x: taglineX, y: 158, width: tagline.info.width, height: tagline.info.height, size: 15 });
+
+  let y = await block(t.headline, 60, 162, 52, 60, 3, C.navy, true, 530);
+  y += 12;
+  y = await block(t.metric, 60, y, 112, 120, 1, C.teal, true, 520);
+  y = await block(t.metricLabel, 60, y - 4, 21, 28, 2, C.navy, true, 500);
+  y += 18;
+  await block(t.body, 60, y, 23, 32, 3, C.navy, false, 500);
+
+  async function fact(icon, label, body, y0) {
+    const symbol = icon === 'receipt'
+      ? '<path d="M24 16h26v40l-5-4-4 4-4-4-4 4-4-4-5 4z" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><path d="M30 27h14M30 36h14" stroke="#fff" stroke-width="4" stroke-linecap="round"/>'
+      : '<circle cx="27" cy="27" r="6" fill="#fff"/><circle cx="45" cy="45" r="6" fill="#fff"/><path d="M25 49L47 23" stroke="#fff" stroke-width="5" stroke-linecap="round"/>';
+    svgLayer(`<svg width="72" height="72" xmlns="http://www.w3.org/2000/svg"><circle cx="36" cy="36" r="35" fill="${C.navy}"/>${symbol}</svg>`, 614, y0);
+    await block(label, 714, y0 + 3, 21, 28, 1, C.navy, true, 300);
+    await block(body, 714, y0 + 34, 18, 25, 4, C.navy, false, 300);
+  }
+  await fact('receipt', t.fact1Label, t.fact1Body, 272);
+  await fact('percent', t.fact2Label, t.fact2Body, 474);
+
+  svgLayer(`<svg width="7" height="38" xmlns="http://www.w3.org/2000/svg"><rect width="7" height="38" rx="3.5" fill="${C.teal}"/></svg>`, 60, 733);
+  await block(t.question, 84, 736, 20, 27, 1, C.navy, true, 920);
+
+  await block(t.location, 60, 1190, 20, 27, 1, colors.white, true, 470);
+  await block(t.source, 60, 1260, 16, 22, 1, colors.white, false, 540);
+  const footerTagline = await textImage('CONNECT · DEVELOP · INVEST', 17, false, colors.white);
+  const footerSite = await textImage('THESMARTYSOLUTION.COM', 18, true, colors.white);
+  const footerTaglineX = 1020 - footerTagline.info.width, footerSiteX = 1020 - footerSite.info.width;
+  layers.push({ input: footerTagline.data, left: footerTaglineX, top: 1190 });
+  regions.push({ text: 'CONNECT · DEVELOP · INVEST', x: footerTaglineX, y: 1190, width: footerTagline.info.width, height: footerTagline.info.height, size: 17, inverse: true });
+  layers.push({ input: footerSite.data, left: footerSiteX, top: 1261 });
+  regions.push({ text: 'THESMARTYSOLUTION.COM', x: footerSiteX, y: 1261, width: footerSite.info.width, height: footerSite.info.height, size: 18, inverse: true });
+
+  for (let i = 0; i < regions.length; i++) for (let j = i + 1; j < regions.length; j++) {
+    const a = regions[i], b = regions[j];
+    requireThat(!(a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y), 'Text regions overlap');
+  }
+  for (const r of regions) requireThat(!(r.x < logoRegion.x + logoRegion.width && r.x + r.width > logoRegion.x && r.y < logoRegion.y + logoRegion.height && r.y + r.height > logoRegion.y), 'Text overlaps the TSS logo');
+  const buffer = await sharp({ create: { width, height, channels: 3, background: colors.cream } })
+    .composite(layers)
+    .jpeg({ quality: 90, chromaSubsampling: '4:4:4', mozjpeg: true })
+    .toBuffer();
+  return {
+    buffer,
+    layout: {
+      designVersion: 2,
+      visualStyle: input.visualStyle,
+      format: input.format,
+      width,
+      height,
+      textRegions: regions,
+      logoSha256: LOGO_SHA,
+      logoRegion,
+      photoSha256,
+      palette: colors,
+      photoRegion: { x: 0, y: photoTop, width, height: 330 },
+      safeArea: { left: 48, right: 1032, top, bottom }
+    }
+  };
 }
 
 // Image-led editorial layout based on the approved September 2026 references.
