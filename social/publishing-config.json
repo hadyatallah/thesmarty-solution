@@ -18,7 +18,13 @@
     "path": "social/monthly-content-plan.json",
     "contentAssetTarget": 44,
     "platformPublicationTargetWithCurrentAdapters": 60,
-    "calendarMonthCap": 44
+    "calendarMonthCap": 44,
+    "formatCaps": {
+      "feed": 16,
+      "story": 20,
+      "reel": 8
+    },
+    "promotionCap": 8
   },
   "maxDirectPromotionShare": 0.25,
   "approvedFormats": [
