@@ -462,7 +462,7 @@
       "format": "feed",
       "platform": "instagram+facebook",
       "classification": "factual",
-      "phase": "published",
+      "phase": "awaiting_published_visual_review",
       "qaBoundSha256": "b86446cb137e82fb915a239b8702834cfa6ba7f1295e42569f10e840765820c1",
       "instagram": {
         "containerId": "18115528618819867",
@@ -471,6 +471,30 @@
       "facebook": {
         "postId": "177672945439622_122301078188216133",
         "photoId": "122301078164216133"
+      },
+      "verification": {
+        "instagram": {
+          "width": 1080,
+          "height": 1350,
+          "meanPixelDifference": 0,
+          "id": "18122682412899827",
+          "sha256": "0a324629bb961b5a22410073470122fa053c9da22c16fbab6f906b02139a3a29",
+          "permalink": "https://www.instagram.com/p/DdTcuzokQfm/",
+          "downloadedAsset": "social-results/tss-review-02-property-transfer-fees-feed-instagram.png",
+          "evidenceCommit": "a1f00f68f20fecb94da1703d865745dda485d7d2",
+          "evidencePath": "social/published-assets/0a324629bb961b5a22410073470122fa053c9da22c16fbab6f906b02139a3a29.jpg"
+        },
+        "facebook": {
+          "width": 720,
+          "height": 900,
+          "meanPixelDifference": 2.147,
+          "id": "177672945439622_122301078188216133",
+          "sha256": "6e06fa7db3824e110a8c573656cd614753621900529f229419089c6148fbc2d7",
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301078188216133",
+          "downloadedAsset": "social-results/tss-review-02-property-transfer-fees-feed-facebook.png",
+          "evidenceCommit": "741de2f5c261d7479adb485bf83cee84ca3ff0c6",
+          "evidencePath": "social/published-assets/6e06fa7db3824e110a8c573656cd614753621900529f229419089c6148fbc2d7.jpg"
+        }
       }
     }
   ],
