@@ -25,7 +25,7 @@
       "approvedBy": "Hady",
       "approvedAt": "2026-09-15T04:42:26.551Z",
       "contentSha256": "1ee1541dbccb8ad2f39a4d893446d147a0666132578a2efb0359bbd4085457c6",
-      "authorizationReference": "Explicit approval of Post 2 Revision 2 in the TSS Work chat. No publication authorization."
+      "authorizationReference": "Explicit publication approval for Post 2 Revision 2 in the TSS Work chat."
     }
   },
   "note": "Record explicit user approval only after the final asset, caption and sources are presented. QA approval is separate. Later posts become eligible for automation only after all ten approvals exist; existing live-format verification and scheduler gates still apply."

@@ -21,7 +21,7 @@
   "formatVerifications": {
     "feed": "tss-review-01-cyprus-property-seasonality-feed"
   },
-  "controlledPublicationId": "tss-review-01-cyprus-property-seasonality-feed",
+  "controlledPublicationId": "tss-review-02-property-transfer-fees-feed",
   "verifiedLivePublication": "tss-review-01-cyprus-property-seasonality-feed",
   "stateBranch": "tss-social-state",
   "publisherUrl": "https://thesmarty-solution-agent.vercel.app/api/publish-instagram"
