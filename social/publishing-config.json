@@ -14,6 +14,12 @@
     "story": 1,
     "reel": 1
   },
+  "monthlyPlan": {
+    "path": "social/monthly-content-plan.json",
+    "contentAssetTarget": 44,
+    "platformPublicationTargetWithCurrentAdapters": 60,
+    "calendarMonthCap": 44
+  },
   "maxDirectPromotionShare": 0.25,
   "approvedFormats": [
     "feed"
