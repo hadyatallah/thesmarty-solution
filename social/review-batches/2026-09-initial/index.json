@@ -39,8 +39,10 @@
     },
     {
       "number": 2,
+      "revision": 2,
+      "revisionReason": "Redesigned to match the user-selected TSS data-editorial system with a light information area, one dominant verified figure, concise supporting facts and full-width landmark photography.",
       "id": "tss-review-02-property-transfer-fees-feed",
-      "status": "awaiting_user_approval",
+      "status": "approved",
       "manifestPath": "content-queue/tss-review-02-property-transfer-fees-feed.json",
       "format": "feed",
       "platforms": [
@@ -49,19 +51,19 @@
       ],
       "headline": "A PROPERTY PRICE ISN'T THE FULL COST.",
       "caption": "Before comparing Cyprus properties, compare the full acquisition cost.\n\nDLS says no transfer fee is collected when VAT is charged on the same transaction for the same property, subject to its stated conditions. Where transfer fees are charged, a 50% discount applies, with exceptions.\n\nHave the exact property and transaction checked before budgeting.\n\nSource: Cyprus DLS: sale and exchange.\nhttps://portal.dls.moi.gov.cy/en/application_forms/polisi-antallagi/\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
-      "contentSha256": "61f49cc5773dc823b30e23b454a28f8dffec5141f7cc6b41185e7a2d28473aa9",
-      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/43499dce82c6e5e70f4931756011e93f14b9b2db34764937e756b464afffb7e3.png",
+      "contentSha256": "1ee1541dbccb8ad2f39a4d893446d147a0666132578a2efb0359bbd4085457c6",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/483046d3233e1be863525ed1383695115f9e8051/social/assets/ad76947e91dd1607f8c29aadaa3f9e86b65b518e3f01a5372167ca40e6274f1a.jpg",
       "videoUrl": null,
       "sources": [
         {
           "title": "Cyprus DLS: sale and exchange",
           "url": "https://portal.dls.moi.gov.cy/en/application_forms/polisi-antallagi/",
           "reviewNote": "Same-transaction VAT waiver and fee reductions have exceptions. No personal fee quote.",
-          "checkedAt": "2026-09-14T12:20:37.319301Z",
-          "validUntil": "2026-09-21T12:20:37.319301Z"
+          "checkedAt": "2026-09-15T04:42:26.551Z",
+          "validUntil": "2026-09-22T04:42:26.552Z"
         }
       ],
-      "reviewedAt": "2026-09-14T12:40:04.760Z"
+      "reviewedAt": "2026-09-15T04:42:26.551Z"
     },
     {
       "number": 3,
