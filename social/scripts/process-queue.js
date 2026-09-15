@@ -127,7 +127,7 @@ try {
   if (recovered) await ledger.save('Recover actual earlier Instagram publication fingerprints');
   await ledger.writeFile('social/legacy-publication-checks.json', JSON.stringify(report.legacyPublicationChecks, null, 2) + '\n', 'Record read-only verification of earlier publisher media IDs');
   report.historyCount = history.items.length;
-  const now = Date.now(), day = localDay(new Date(now));
+  const now = Date.now(), day = localDay(new Date(now)), month = day.slice(0, 7);
   const due = queue.filter(i => i.status === 'approved').sort((a, b) => Date.parse(a.publishAt) - Date.parse(b.publishAt));
   const controlled = config.controlledPublicationId;
   if (config.schedulerEnabled) {
@@ -159,6 +159,10 @@ try {
         requireThat(localDay(new Date(item.publishAt)) === day && now - Date.parse(item.publishAt) < 4 * 3600000, 'Stale post will not be published as backlog');
       }
       const today = history.items.filter(i => localDay(new Date(i.date)) === day);
+      const thisMonth = history.items.filter(i => !(i.phase || '').startsWith('legacy') && localDay(new Date(i.date)).slice(0, 7) === month);
+      requireThat(isControlled || thisMonth.length < config.monthlyPlan.calendarMonthCap, 'Monthly content asset cap reached');
+      requireThat(isControlled || thisMonth.filter(i => i.format === item.format).length < config.monthlyPlan.formatCaps[item.format], 'Monthly format cap reached');
+      requireThat(isControlled || item.facts.classification !== 'promotion' || thisMonth.filter(i => i.classification === 'promotion').length < config.monthlyPlan.promotionCap, 'Monthly direct-promotion cap reached');
       requireThat((isControlled || today.length < config.maxPostsPerDay) && sent < config.maxPostsPerRun, 'Daily/run publishing cap reached');
       requireThat(isControlled || today.filter(i => i.format === item.format).length < config.maxPerFormatPerDay[item.format], 'Daily format cap reached');
       const editorial = history.items.filter(i => !i.phase.startsWith('legacy') && now - Date.parse(i.date) < 30 * 86400000);
