@@ -2,15 +2,27 @@
   "qaVersion": 2,
   "schedulerEnabled": false,
   "timezone": "Asia/Nicosia",
-  "slots": ["09:15", "14:15", "19:15"],
+  "slots": [
+    "09:15",
+    "14:15",
+    "19:15"
+  ],
   "maxPostsPerDay": 3,
   "maxPostsPerRun": 1,
-  "maxPerFormatPerDay": {"feed": 1, "story": 1, "reel": 1},
+  "maxPerFormatPerDay": {
+    "feed": 1,
+    "story": 1,
+    "reel": 1
+  },
   "maxDirectPromotionShare": 0.25,
-  "approvedFormats": [],
-  "formatVerifications": {},
+  "approvedFormats": [
+    "feed"
+  ],
+  "formatVerifications": {
+    "feed": "tss-review-01-cyprus-property-seasonality-feed"
+  },
   "controlledPublicationId": "tss-review-01-cyprus-property-seasonality-feed",
-  "verifiedLivePublication": null,
+  "verifiedLivePublication": "tss-review-01-cyprus-property-seasonality-feed",
   "stateBranch": "tss-social-state",
   "publisherUrl": "https://thesmarty-solution-agent.vercel.app/api/publish-instagram"
 }
