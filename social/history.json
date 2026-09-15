@@ -531,7 +531,7 @@
       "platform": "instagram+facebook",
       "classification": "factual",
       "editorial": null,
-      "phase": "instagram_published",
+      "phase": "publishing_facebook",
       "qaBoundSha256": "6d597b9b5f369793c10bb9e76cbde8cb20aa5e2ffb1d4ac6e5df5f9570d4e228",
       "instagram": {
         "containerId": "18115693906819867",
