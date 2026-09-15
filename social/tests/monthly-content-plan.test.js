@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 
 const plan = JSON.parse(await fs.readFile('social/monthly-content-plan.json', 'utf8'));
+const config = JSON.parse(await fs.readFile('social/publishing-config.json', 'utf8'));
 const formats = ['feed', 'story', 'reel'];
 
 test('monthly content plan totals are internally consistent', () => {
@@ -48,4 +49,14 @@ test('strategy cannot approve or activate publishing', () => {
   assert.equal(plan.controls.requireControlledLiveVerificationPerFormat, true);
   assert.equal(plan.controls.publishFewerWhenQaFails, true);
   assert.equal(plan.controls.backfillMissedSlots, false);
+});
+
+test('publishing caps match the approved monthly plan', () => {
+  assert.equal(config.schedulerEnabled, false);
+  assert.equal(config.monthlyPlan.path, 'social/monthly-content-plan.json');
+  assert.equal(config.monthlyPlan.calendarMonthCap, plan.targets.contentAssets);
+  assert.equal(config.monthlyPlan.promotionCap, plan.targets.tssPromotionalAssets);
+  for (const format of formats) {
+    assert.equal(config.monthlyPlan.formatCaps[format], plan.formats[format].monthlyTarget);
+  }
 });
