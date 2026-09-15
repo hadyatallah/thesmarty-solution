@@ -394,7 +394,7 @@
       "format": "feed",
       "platform": "instagram+facebook",
       "classification": "editorial-opinion",
-      "phase": "prepared",
+      "phase": "publishing_instagram",
       "qaBoundSha256": "800381cfb7bf083231ae01343de7237636534b43c8ebcaa5274829899cd78470",
       "instagram": {
         "containerId": "18115457881819867"
