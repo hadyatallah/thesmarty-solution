@@ -15,7 +15,7 @@
     "instagram",
     "facebook"
   ],
-  "publishAt": "2026-09-15T09:15:00+03:00",
+  "publishAt": "2026-09-15T07:55:00+03:00",
   "caption": "Before comparing Cyprus properties, compare the full acquisition cost.\n\nDLS says no transfer fee is collected when VAT is charged on the same transaction for the same property, subject to its stated conditions. Where transfer fees are charged, a 50% discount applies, with exceptions.\n\nHave the exact property and transaction checked before budgeting.\n\nSource: Cyprus DLS: sale and exchange.\nhttps://portal.dls.moi.gov.cy/en/application_forms/polisi-antallagi/\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
   "creative": {
     "designVersion": 2,
@@ -110,6 +110,6 @@
       "finalExportInspected": true
     },
     "notes": "The exact Revision 2 JPEG was inspected at 1080x1350. OCR matched all 22 expected text regions, the approved TSS logo and navy/teal identity are present, the Larnaca Castle photograph is integrated full-width, and the Cyprus DLS claim and exceptions were checked against the official source.",
-    "boundSha256": "7e597e60539c1507038843703820dab47b9df79c0bf70dc0b32e24c1d22036db"
+    "boundSha256": "b86446cb137e82fb915a239b8702834cfa6ba7f1295e42569f10e840765820c1"
   }
 }
