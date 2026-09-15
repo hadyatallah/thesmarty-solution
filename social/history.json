@@ -462,13 +462,16 @@
       "format": "feed",
       "platform": "instagram+facebook",
       "classification": "factual",
-      "phase": "publishing_facebook",
+      "phase": "published",
       "qaBoundSha256": "b86446cb137e82fb915a239b8702834cfa6ba7f1295e42569f10e840765820c1",
       "instagram": {
         "containerId": "18115528618819867",
         "mediaId": "18122682412899827"
       },
-      "facebook": null
+      "facebook": {
+        "postId": "177672945439622_122301078188216133",
+        "photoId": "122301078164216133"
+      }
     }
   ],
   "qaFailures": {}
