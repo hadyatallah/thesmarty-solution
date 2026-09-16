@@ -1,7 +1,7 @@
 {
   "qaVersion": 2,
   "id": "tss-review-05-british-emigration-feed",
-  "status": "awaiting_user_approval",
+  "status": "approved",
   "reviewBatch": "2026-09-initial",
   "reviewNumber": 5,
   "revision": 2,
@@ -15,7 +15,7 @@
     "instagram",
     "facebook"
   ],
-  "publishAt": "2026-09-15T09:15:00+03:00",
+  "publishAt": "2026-09-16T14:05:29+03:00",
   "caption": "ONS estimates 246,000 British nationals left the UK long-term in the year ending December 2025, slightly fewer than the 257,000 estimated for the previous year. ONS says British emigration has been broadly stable in recent years, and the 2025 estimate is provisional.\n\nThese figures count long-term moves. They do not identify individual motives or prove that tax caused the departures.\n\nWhat evidence would you verify before making a relocation decision?\n\nSource: ONS: UK emigration explained, 21 May 2026.\nhttps://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/ukemigrationexplainedwhatweknowaboutbritsmovingabroad/2026-05-21\n\nPhoto: Finikoudes, Larnaca, Cyprus, Georgy Papantoniou, CC BY 3.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Finikoudes_by_Georgy_-_panoramio.jpg\nhttps://creativecommons.org/licenses/by/3.0\n\n#Cyprus #Relocation #UnitedKingdom #Migration #TheSmartySolution",
   "creative": {
     "designVersion": 2,
@@ -90,7 +90,7 @@
   },
   "review": {
     "reviewer": "Codex final-export editorial review",
-    "reviewedAt": "2026-09-16T10:58:28.108Z",
+    "reviewedAt": "2026-09-16T11:05:30.000Z",
     "assetSha256": "59a53c5892cffd828e04bcbc36aab46d0abc2dbb7f2c1f4808c73fe64d836379",
     "captionSha256": "a53720abb5fc5d6482817994605225dea7d9f788f3d0b271aa06e2c374f404e3",
     "checks": {
@@ -112,7 +112,7 @@
       "hashtagLimit": true,
       "finalExportInspected": true
     },
-    "notes": "The exact Revision 2 JPEG was inspected at 1080x1350. OCR matched all 21 visible text regions. The approved TSS logo, navy/teal identity, soft cream-to-photo transition and verified Finikoudes photograph are intact. The ONS source was rechecked on 16 September 2026: 246,000 is provisional for the year ending December 2025, the recent level is broadly stable, and the figures do not prove individual motives or tax causation.",
-    "boundSha256": "21c252369e99b39f67b6ac3f4d210ecc9a8523a987631746456f08e86b736467"
+    "notes": "Hady explicitly approved and instructed publication of the exact Revision 2 JPEG and caption to Instagram and Facebook. The 1080x1350 export passed OCR across all 21 visible text regions. The approved TSS logo, navy/teal identity, soft cream-to-photo transition, ONS claim scope and verified Finikoudes photograph remain unchanged.",
+    "boundSha256": "15c55c98ce2c2a0d4bb33958dc5d22b7512a099cf2159d07d8b3c08b3e7ca50c"
   }
 }

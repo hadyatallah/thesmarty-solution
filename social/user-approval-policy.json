@@ -38,6 +38,12 @@
       "approvedAt": "2026-09-16T06:56:22.866Z",
       "contentSha256": "4d3fbd1c1cc90f712dfd5e64b8e0d2c59afaf27462a471cf14f59ca7d4cb98e9",
       "authorizationReference": "Explicit approval for Post 4 Revision 3 on Instagram and Facebook in the TSS Work chat."
+    },
+    "tss-review-05-british-emigration-feed": {
+      "approvedBy": "Hady",
+      "approvedAt": "2026-09-16T11:05:30.000Z",
+      "contentSha256": "cda7e8eea41c00f3bfbaddceadfd988565c2f07a3d50c72fea1676b3b827ae0e",
+      "authorizationReference": "Explicit instruction to publish Post 5 Revision 2 to Instagram and Facebook in the TSS Work chat."
     }
   },
   "note": "Record explicit user approval only after the final asset, caption and sources are presented. QA approval is separate. Later posts become eligible for automation only after all ten approvals exist; existing live-format verification and scheduler gates still apply."

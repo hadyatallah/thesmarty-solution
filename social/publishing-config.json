@@ -44,7 +44,7 @@
   "formatVerifications": {
     "feed": "tss-review-01-cyprus-property-seasonality-feed"
   },
-  "controlledPublicationId": "tss-review-04-investor-brief-feed",
+  "controlledPublicationId": "tss-review-05-british-emigration-feed",
   "verifiedLivePublication": "tss-review-01-cyprus-property-seasonality-feed",
   "stateBranch": "tss-social-state",
   "publisherUrl": "https://thesmarty-solution-agent.vercel.app/api/publish-instagram"

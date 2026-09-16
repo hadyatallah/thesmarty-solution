@@ -131,7 +131,7 @@
       "revision": 2,
       "revisionReason": "Redesigned in the approved TSS data-editorial system with a soft cream-to-photograph transition. The misleading tax-exodus framing was removed to match the ONS finding that recent British emigration was broadly stable.",
       "id": "tss-review-05-british-emigration-feed",
-      "status": "awaiting_user_approval",
+      "status": "approved",
       "manifestPath": "content-queue/tss-review-05-british-emigration-feed.json",
       "format": "feed",
       "platforms": [
