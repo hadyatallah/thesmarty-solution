@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, enforceUserApproval, imageFingerprint, immutableAssetUrl, normalize, requireThat, schedulerProof, sha256, sign, validateManifest, visualSignature } from '../lib/qa.js';
+import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, enforceUserApproval, facebookCompletionEligible, imageFingerprint, immutableAssetUrl, normalize, requireThat, schedulerProof, sha256, sign, validateManifest, visualSignature } from '../lib/qa.js';
 import { analyzeVideo, inspectExport, verifyPublishedImage, verifyPublishedVideo } from '../lib/export-qa.js';
 import { Ledger } from '../lib/ledger.js';
 import { enforceEditorialPolicy } from '../lib/editorial.js';
@@ -142,11 +142,13 @@ try {
   }
   let sent = 0;
   for (const item of due) {
-    if (history.items.some(i => i.id === item.id)) { report.qa.push({ id: item.id, blocked: 'Already used or reserved. No automatic retry.' }); continue; }
+    const existing = history.items.find(i => i.id === item.id);
+    const completingFacebook = facebookCompletionEligible(item, existing, controlled);
+    if (existing && !completingFacebook) { report.qa.push({ id: item.id, blocked: 'Already used or reserved. No automatic retry.' }); continue; }
     try {
       enforceEditorialPolicy(item, editorialIntelligence, audienceNeeds, editorialPolicy, proofRegistry, now);
       validateManifest(item, now);
-      checkDuplicates(item, history.items, now);
+      checkDuplicates(item, completingFacebook ? history.items.filter(i => i.id !== item.id) : history.items, now);
       await checkSources(item);
       const reference = await fs.readFile(item.asset.path);
       const validation = await inspectExport(item, reference);
@@ -159,6 +161,28 @@ try {
       const isControlled = controlled === item.id;
       if (isControlled && !config.verifiedLivePublication) requireThat(item.format === 'feed' && item.platforms.includes('instagram') && item.platforms.includes('facebook'), 'First controlled test must publish a feed image to both TSS accounts');
       if (isControlled && config.verifiedLivePublication) schedulerProof(config, history.items);
+      if (completingFacebook) {
+        enforceUserApproval(item, approvalPolicy, now);
+        requireThat(sent < config.maxPostsPerRun, 'Daily/run publishing cap reached');
+        const record = existing;
+        record.qaBoundSha256 = item.review.boundSha256;
+        record.phase = 'publishing_facebook'; await ledger.save(`Checkpoint Facebook completion ${item.id}`);
+        try {
+          const result = await operation('publishFacebook', item);
+          record.facebook = { postId: result.postId, photoId: result.photoId };
+          record.platform = item.platforms.join('+');
+          record.phase = 'published'; await ledger.save(`Save Facebook completion ${item.id}`);
+          record.verification = await verify(item, record, reference, ledger, isControlled);
+          record.phase = 'awaiting_published_visual_review'; await ledger.save(`Save completed platform asset checks ${item.id}`);
+          report.published.push({ id: item.id, verification: record.verification, completedPlatform: 'facebook', requiresFinalPublishedVisualReview: true });
+          sent++;
+        } catch (error) {
+          record.phase = 'needs_review'; record.lastError = error.message;
+          await ledger.save(`Quarantine uncertain Facebook completion ${item.id}`);
+          throw error;
+        }
+        continue;
+      }
       if (!isControlled && !config.schedulerEnabled) continue;
       if (Date.parse(item.publishAt) > now) continue;
       enforceUserApproval(item, approvalPolicy, now);

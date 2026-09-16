@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import sharp from 'sharp';
 import { renderCreative } from '../lib/render.js';
-import { ACCOUNT, CHECKS, LOGO_SHA, binding, checkDuplicates, checkSources, imageFingerprint, schedulerProof, sha256, sign, validateImage, validateManifest, verifySignature, visualSignature } from '../lib/qa.js';
+import { ACCOUNT, CHECKS, LOGO_SHA, binding, checkDuplicates, checkSources, facebookCompletionEligible, imageFingerprint, schedulerProof, sha256, sign, validateImage, validateManifest, verifySignature, visualSignature } from '../lib/qa.js';
 import { verifyPublishedImage } from '../lib/export-qa.js';
 import handler from '../../api/publish-instagram.js';
 
@@ -215,6 +215,15 @@ test('missing Facebook credentials prevent any Meta publish/container side effec
     await handler({ method: 'POST', headers: { 'x-tss-publisher-key': 'test-only-key' }, body: { payload, signature: sign(payload, 'test-only-key') } }, { setHeader() {}, status(s) { status = s; return this; }, json(d) { output = d; } });
   } finally { globalThis.fetch = oldFetch; for (const n of names) { if (old[n] === undefined) delete process.env[n]; else process.env[n] = old[n]; } }
   assert.equal(status, 422); assert.match(output.error, /Facebook.*not configured/); assert.equal(posts, 0);
+});
+test('Facebook completion is limited to the same controlled Instagram publication', () => {
+  const item = { id: 'controlled-post', status: 'approved', format: 'feed', platforms: ['instagram', 'facebook'], asset: { sha256: 'a'.repeat(64) } };
+  const existing = { id: item.id, platform: 'instagram', assetSha256: item.asset.sha256, phase: 'awaiting_published_visual_review', instagram: { mediaId: '123' }, facebook: null, verification: { instagram: { sha256: 'b'.repeat(64) } } };
+  assert.equal(facebookCompletionEligible(item, existing, item.id), true);
+  assert.equal(facebookCompletionEligible(item, { ...existing, facebook: { postId: '456' } }, item.id), false);
+  assert.equal(facebookCompletionEligible({ ...item, platforms: ['instagram'] }, existing, item.id), false);
+  assert.equal(facebookCompletionEligible({ ...item, asset: { sha256: 'c'.repeat(64) } }, existing, item.id), false);
+  assert.equal(facebookCompletionEligible(item, existing, 'another-post'), false);
 });
 test('the scheduler cannot start from booleans or an uninspected second format', () => {
   const hash = 'a'.repeat(64), proof = { id: 'controlled', format: 'feed', phase: 'verified', instagram: { mediaId: '123' }, facebook: { postId: '456' }, verification: { instagram: { sha256: hash }, facebook: { sha256: hash } }, publishedReview: { instagram: true, facebook: true } };

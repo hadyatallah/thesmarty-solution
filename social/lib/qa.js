@@ -37,6 +37,20 @@ export function enforceUserApproval(item, policy, now = Date.now()) {
   }
   return true;
 }
+// A narrowly scoped recovery path can complete Facebook after an already
+// verified Instagram-only controlled run. It never makes Instagram eligible
+// for a second container or publication call.
+export function facebookCompletionEligible(item, existing, controlledId) {
+  const platforms = item?.platforms || [];
+  return Boolean(
+    existing && item?.id === controlledId && existing.id === item.id &&
+    item.status === 'approved' && item.format === 'feed' &&
+    platforms.length === 2 && platforms.includes('instagram') && platforms.includes('facebook') &&
+    existing.platform === 'instagram' && existing.assetSha256 === item.asset?.sha256 &&
+    existing.instagram?.mediaId && existing.verification?.instagram?.sha256 &&
+    !existing.facebook && existing.phase === 'awaiting_published_visual_review'
+  );
+}
 // Caption is bound separately as well as in the transport signature.
 export function sign(payload, key) { return crypto.createHmac('sha256', key).update(JSON.stringify(payload)).digest('hex'); }
 export function verifySignature(payload, signature, key) {
