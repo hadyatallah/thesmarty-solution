@@ -1,141 +1,139 @@
 {
-  "version": 2,
   "items": [
     {
-      "id": "2026-09-14-cheapest-property-debate",
-      "date": "2026-09-13T22:47:22.193Z",
-      "topic": "Property investment quality versus entry price",
-      "topicKey": "cyprus-property-entry-price-vs-quality-2026-09-14",
-      "headline": "The cheapest property is not always the best investment",
       "creativeKey": "tss-v1-debate-cyprus-property-entry-price-2026-09-14",
+      "date": "2026-09-13T22:47:22.193Z",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "The cheapest property is not always the best investment",
+      "id": "2026-09-14-cheapest-property-debate",
       "instagram": {
         "mediaId": "18024840431699383"
       },
-      "legacyImageUrl": "https://thesmarty-solution-agent.vercel.app/api/social-creative?template=question-debate&category=SMARTY+DEBATE+%2F+CYPRUS+PROPERTY&headline=THE+CHEAPEST+PROPERTY&subheadline=ISN%27T+ALWAYS+THE+BEST+INVESTMENT&body=Entry+price+matters.+So+do+demand%2C+location%2C+liquidity+and+the+exit+strategy+behind+the+purchase.&callout=WOULD+YOU+PAY+MORE+FOR+A+STRONGER+INVESTMENT+CASE%3F&location=CYPRUS&credit=The+Smarty+Solution+%C2%B7+Investment+discussion"
+      "legacyImageUrl": "https://thesmarty-solution-agent.vercel.app/api/social-creative?template=question-debate&category=SMARTY+DEBATE+%2F+CYPRUS+PROPERTY&headline=THE+CHEAPEST+PROPERTY&subheadline=ISN%27T+ALWAYS+THE+BEST+INVESTMENT&body=Entry+price+matters.+So+do+demand%2C+location%2C+liquidity+and+the+exit+strategy+behind+the+purchase.&callout=WOULD+YOU+PAY+MORE+FOR+A+STRONGER+INVESTMENT+CASE%3F&location=CYPRUS&credit=The+Smarty+Solution+%C2%B7+Investment+discussion",
+      "phase": "legacy_published",
+      "platform": "instagram",
+      "topic": "Property investment quality versus entry price",
+      "topicKey": "cyprus-property-entry-price-vs-quality-2026-09-14"
     },
     {
-      "id": "2026-09-14-larnaca-connectivity",
-      "date": "2026-09-13T22:29:50.905Z",
-      "topic": "Larnaca connectivity and logistics",
-      "topicKey": "larnaca-connectivity-logistics-2026",
-      "headline": "Larnaca's next investment story may be bigger than property",
       "creativeKey": "tss-v1-place-larnaca-connectivity-logistics-2026-09-14",
+      "date": "2026-09-13T22:29:50.905Z",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Larnaca's next investment story may be bigger than property",
+      "id": "2026-09-14-larnaca-connectivity",
       "instagram": {
         "mediaId": "17960737947219567"
       },
-      "legacyImageUrl": "https://thesmarty-solution-agent.vercel.app/api/social-creative?template=place-opportunity&category=SMARTY+INSIGHT+%2F+LARNACA&headline=LARNACA%27S+NEXT+INVESTMENT+STORY&subheadline=MAY+BE+BIGGER+THAN+PROPERTY&body=Cyprus+is+advancing+special+supply+and+storage+zones+at+Larnaca+Airport+while+the+port+and+marina+development+roadmap+is+moving+forward.&callout=COULD+CONNECTIVITY+BECOME+LARNACA%27S+BIGGEST+ADVANTAGE%3F&location=LARNACA%2C+CYPRUS&credit=Photo%3A+A.Savin%2C+Wikipedia+%C2%B7+Source%3A+Gov.cy%2C+2026&photo=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F1%2F1c%2FLarnaca_01-2017_img02_StLazarus_Church.jpg"
+      "legacyImageUrl": "https://thesmarty-solution-agent.vercel.app/api/social-creative?template=place-opportunity&category=SMARTY+INSIGHT+%2F+LARNACA&headline=LARNACA%27S+NEXT+INVESTMENT+STORY&subheadline=MAY+BE+BIGGER+THAN+PROPERTY&body=Cyprus+is+advancing+special+supply+and+storage+zones+at+Larnaca+Airport+while+the+port+and+marina+development+roadmap+is+moving+forward.&callout=COULD+CONNECTIVITY+BECOME+LARNACA%27S+BIGGEST+ADVANTAGE%3F&location=LARNACA%2C+CYPRUS&credit=Photo%3A+A.Savin%2C+Wikipedia+%C2%B7+Source%3A+Gov.cy%2C+2026&photo=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2F1%2F1c%2FLarnaca_01-2017_img02_StLazarus_Church.jpg",
+      "phase": "legacy_published",
+      "platform": "instagram",
+      "topic": "Larnaca connectivity and logistics",
+      "topicKey": "larnaca-connectivity-logistics-2026"
     },
     {
-      "id": "2026-09-14-larnaca-investor-attention",
-      "date": "2026-09-13T22:17:48.655Z",
-      "topic": "Larnaca investor attention",
-      "topicKey": "larnaca-general-investor-attention",
-      "headline": "Is Larnaca still being underestimated?",
       "creativeKey": "legacy-larnaca-finikoudes-fullframe-2026-09-14",
+      "date": "2026-09-13T22:17:48.655Z",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Is Larnaca still being underestimated?",
+      "id": "2026-09-14-larnaca-investor-attention",
       "instagram": {
         "mediaId": "18112361699157883"
       },
-      "legacyImageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/97/Larnaca_01-2017_img27_Finikoudes.jpg"
+      "legacyImageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/97/Larnaca_01-2017_img27_Finikoudes.jpg",
+      "phase": "legacy_published",
+      "platform": "instagram",
+      "topic": "Larnaca investor attention",
+      "topicKey": "larnaca-general-investor-attention"
     },
     {
-      "id": "instagram-18097930946069569",
-      "date": "2026-09-13T08:48:51+0000",
-      "topic": "Cyprus is growing. The more interesting question is where that growth is coming from.",
-      "topicKey": "cyprus is growing the more interesting question is where that growth is coming from",
-      "headline": "Cyprus is growing. The more interesting question is where that growth is coming from.",
       "creativeKey": "instagram-18097930946069569",
+      "date": "2026-09-13T08:48:51+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Cyprus is growing. The more interesting question is where that growth is coming from.",
+      "id": "instagram-18097930946069569",
       "instagram": {
         "mediaId": "18097930946069569",
         "permalink": "https://www.instagram.com/p/DdOKypuxkDJ/"
       },
-      "publishedAssetSha256": "b658c65599c964962203055cc9792f99f390ef67c214a8c7e2accf6bfed8ee6f",
+      "phase": "legacy_published",
       "pixelHash": "e975967e356a14aa0cc055070f2ecbd46c0cf37c9fb40d454fa1aad1e9cd37e3",
+      "platform": "instagram",
+      "publishedAssetSha256": "b658c65599c964962203055cc9792f99f390ef67c214a8c7e2accf6bfed8ee6f",
+      "topic": "Cyprus is growing. The more interesting question is where that growth is coming from.",
+      "topicKey": "cyprus is growing the more interesting question is where that growth is coming from",
       "visualSignature": "rgb32:/Pv5/Pv4/Pr4+/v4+/r3+fn2+fn2+Pj19/f29vb29fb19PX28vX28fT18PT17/P17vL26/H06fH05+/05e/z5O/05vD04OrurLjCorvEr9/mtM7VqbW/z9zk3+302eny/fz6+Pj27Ozs6Ojp7e3r7e3r6eno6Onn5Obm7e3s7+/u6uvr6err6Orr6ert6Ors6Ovt8PP07vP17PL17PL17PL16vDz+P7/lJunbZCeZ9DbX6SxVWFzpLC79fv+4uzx/Pv5+/r3/v79/v78/f37//79/f37///9/v79///9/v78+vn3/f37///9+vn29/b09vbz9fX08/X08vX18vT18vT17/Lz19vfx8rRsL/Ho8bOnLzFmqKtqbO94ebq7fP1/Pv5/fz5ub/DtbzBwsbKvcLGsri+oKivrbO5pKyzuL3C297fvMDEnqat4OLg/fz2+Pfz+Pfy+Pf09/j09vby9PXy9PXy6evp6Orp5ebl5uPj6efn5unq6Ors5+vt8fX1///+5ufnZnOCyMnNs7i+ZnKBmpymYWp6b3aFRlJkaHGBi5Kcc3yKUF5vp62y///++/ny//72/Pr0+Pfz/Pv4///8/v35/fz4/vz3/v34+/v2+fn09/b09vf19Pb28vT0/fz4/v36sr7FnKy27u/vzNPWxM/T2ODh0NrdtsHHscDHnqqyytDUpLG5tsLG7vPv7fDs2uPi7/Hu///54OTkZYiZg6Ct6+7s6+vp5ufl+fj0+/n1+fn09fX08/T08vTz//778PPzeqi6VpKoytvgjLTCbqG0XZOpSoegfqu8fqq7Z52yUY6mdaa4XpWqVo6kWZGmYpesjbLB////lau2MGF7TXSNtMPK2djZv8PI4+Tj4uPi3uDh4uTk8PHw9Pb0/v369vf1xNfcrcfQ3ujp0N7iqMPNvNHYwdTauc/WwNTZyNressrSydrewdXayNrdvtPXuc7Tts3U6O7t+/n1j6q2mrO9/Pr17u/s6uvp6uvp6+zp6Oro8fLv9fXy9fXy/v359/bz1tfY4uDg7ezr09TW2NjZ29vd1NbY5ufn4eHh6eno1NXW5eTk/Pv3+/nz/Prz/v32/fz3///5v9LYQYKdTYqi0N7h2dnZzdHTz9LU0dPV1dbX8O/t+/r1+Pfz/fz4+fj01dfa0dbZ1dja2dvc6Ofm8fHu2Nvc0NPW2tvd4eDg5OXk3N3e3t7f0NTW5eTh+vjx9/Tw///6o8HLQYaiQYWfuc/V2tnZwcfLxsvOwsfLxcjM2Nna7e3q9vXx/Pv3/Pv3//35//78//76+fn2wdXaxdjc9/j1///64uvrtM3U4enp6/Dvzt3g+/z41OHh9/bw/Pjz+fj0/Pv4jaOupbfA//769PTw9vby9vXy8vPx9PXz8fLw7O7t8/Xy/Pv3/Pv39PXyjLLA6e/u5+3sgKu7LnWSudHY////ts3UVI6lVY6meqa3Roafi7G+pcPM///49vPu////naWsSFZpXGh4t7vA4+Tjzc/R3Nzd9PPw8PHt7u/t8fPw8vXy/Pv3+/r2j7XCHmSGd6W36vDv0d/hPX6ZnL3J7/Lw5+3tmLrGO36Z2+bniK++SIafgaq51+Hh//rz///6vMDDbHSCXGZ3zdDS5ubm0tXX1tjZ4uPj5ujn4ePj5+no8fLv/fv1/Pv1+Pj0k7fD9Pb02ePlZJisY5itm7zHjrPAlLfEYJarcaK04+rqob/JqMXMRISdu9DW//339PTw9ff0gaWzk7O/+Pn26evr6+3t6+3s6+zr8/Px9vb08vPx8PHw//v1/PjywMTIy8vN3t7dyMrNyMvQ4eTkzs7P2dvayMnMx87R///89vXx9vfx/Pv17vHu+fjz8PHu//35jrG/GmmJIm2MpsLN2dvfvcfQwsvTvsjQxdDY3Oft3urx3Onx//r1//v08u7r6eno8vDs7Ovo9vbw7u7q6uvp/Pv0/Pr0//32/fv0//z1/fv0+vjz+ffy8vLv7O/v6/H1wNbiUo2nXpeuyd3nztvkwdLfvtHeu9Dfts/hu9jsvd3xudvx//nz+vfx7vHt8O/q6ujl6unn8O/q6+nn6enm7Orn7Onm5OPh6ejk7ezo4eHg4OHg8PDu6e3v2ufuzuPw0uf00+fz1Ofzz+Txwt3tvtvtudjttNXsr9Ptq9PtqdLsqdPu//nv9fTu3uXk4+De19jY09PT19fX2trZ0dHS2NjY09TV2djY1dXW0dLU19fY0tPT6unn6u7v5O/03+nv2OLq1d/ny9nkwNXluNPmr8/mqs/pqNDrpM7so9HwqNLvpcvn//nu9/Tr3+bi6OXf19fX19bV1dTU29rY397b3dvY5+Th5eLe3drX1tbT6ebh9e/n8u/r3dbQp5+bysbE3tzc19vh1N7oxtXjvdLkvNXrsMjeobzRo7rMmKSteoaPWGh0//fo+vTo7e3j7+jd5eHY7ebd6uPa5t/X9u3i//ns9evf+PHm/vft/PHm+fDl9u3l8/Ds1bugupJtjXplXl5be3d2k5OWyMjMxcTHkIuJgHNnW1hTS0tGQUE8SkpGbmRR//Pg/fLf/PHg+u7e+u7e9+vd9erc9Onb8+vgzb+ukXtqp5SE28/B4N7d19bX0dri28Op4K952a6AuZp4T0pJSEtOPT49VFNScWtlb3p5foF3cnRuZGRgiHxmlXtMeF8vvMXNsr/KpbjGorrPlrLKja7IgqfDdaDAjq3CiX10eGlhnIt/rpB3aYacSZnMham52qNwpo1xoo1zx6CAknZlS0VBXVVRYlhTTERFR3+bNaPRVp++kpmTpIVbcVcdWEcSn7XImbPHlbLHcYeXcpGoa4yiaJGpe7PTg5+qPT86Z2BUUU5JKiorS2l5Y6zPsZ6CzpZijHhgQEJGiWxbkXJkalxaY1RNW0lAhnFhZl5aiZCSem5ac1wuk3BAm3hNdl1BpbvKnrfLk7LFVnuMW4aeapWubJu2hLHMeqfCKGqDGFhqLmt+ToCUZZ25gqrAbXJtVEc0aFtCFiksPkI8PkZFUWJnbHR2j4yKwbOpv6+pwa6iy7Oc4MSm48Cf5MOg4byToLzNmbC0oLjBmbzSi7fQgbHLfq7HfKvCdqnFSJK1JoSqQZO3ZKXGaarIZKnIYJ26a4WIT3NtLGptS3BpI2hyBWZ4HHSBO4ORWZWneqOzs7W2xrWu18Cy8t7Q0bWdupBnn55og4JNiYlZhZmHepuih6uxe6rBdKnFcqbCSpCxNYisRo6tV5i1YKC8XKC8SZWzSIqhTH2KOmx1QH2KG3aMAXCMAnSVGYqrKZa6PJy+cqTDqa65uqCK1ayGp39NmXU9Y14JfnMXbWYTXWQvaG05c3E1cIFlcJeacJ6rZpiiXIuFSZW2WJq3Yp+4X564VZWvRIecQXqKLGp7LnqPEX6WG4iieqiqdpCTXHqDh5yqtLGww6F9m3JGeVsYRjoNVEUIIi0PIy0HPEAEQUYKMj0PNj4RND4ONUMZUmE3d3IjYmYtXYd1TIyXSpWrRJWvMIWfLX6RJ3yPKoOZR4ycRYifnJuJtIpmUD0ySTQvlXlmtpR4v5lypn9Hd14eY04fXUsbEyEODhsPJC0iGicUERwSFiASGCcWJTEVKTEPICkKMTwPSEsOQlc0R3ZvSnx6S4iPUYmZb5SeeZeafoVtjY17qYtgaFItXUo2YE0thGkyalcwmH4waVUaaVYkhmgzhWkyCBIHGiUUWFxVHyQcKC0oHCIcFyATExwUFh8WDBkOBhIHER8MKzcSKDYaGykTQlA3j5eQn5uQn493WlAmZVosbGQvgXItgGwvZVkaOTkPMjYQPkIMRkgaWVIeT00bREUYCA4HDhYLFBsTFRoVGB0YGR8ZFhoVExgTFx8UFx4VFBgUCREHDRkLDxwMDRoLGCQPPUMqNDsdMjgWJy8PGygJKjMYLjgkLDcfND4rNj8rNEAqIy8gLzkqLjgnDx0MFyQOCRIKCxMKFR4SEBYQGB8VEhwSCxAMChALDRMNDRILERYKAgYCAwkEChMHCBAHFiIMCBQFCRUFDBkGFCAJCxMGChAEERsPERwSERwODhoNEBwOEhwPERwQEhwRDBYLBxAH"
     },
     {
-      "id": "instagram-18091456583546160",
-      "date": "2026-09-10T15:03:40+0000",
-      "topic": "Cyprus has access. Lebanon has entrepreneurial depth.",
-      "topicKey": "cyprus has access lebanon has entrepreneurial depth",
-      "headline": "Cyprus has access. Lebanon has entrepreneurial depth.",
       "creativeKey": "instagram-18091456583546160",
+      "date": "2026-09-10T15:03:40+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Cyprus has access. Lebanon has entrepreneurial depth.",
+      "id": "instagram-18091456583546160",
       "instagram": {
         "mediaId": "18091456583546160",
         "permalink": "https://www.instagram.com/p/DdHHTWNlalx/"
       },
-      "publishedAssetSha256": "637dd7e8e3dbdc46fc2d21b46f4d84e490e6ef61455cd95b66f7e2c9bf5c34d5",
+      "phase": "legacy_published",
       "pixelHash": "a4cb7964ac2acf9344d9511a3dec6cc3b373cf5c405419ce9dab32ccc82ac635",
+      "platform": "instagram",
+      "publishedAssetSha256": "637dd7e8e3dbdc46fc2d21b46f4d84e490e6ef61455cd95b66f7e2c9bf5c34d5",
+      "topic": "Cyprus has access. Lebanon has entrepreneurial depth.",
+      "topicKey": "cyprus has access lebanon has entrepreneurial depth",
       "visualSignature": "rgb32:9fDq9fDq+PPt+fTt+fPt+fTu+fTu+PPt+fTt+fTt+vTu+fTt+fTt+fTt+fTu+fTu+fTu+fTt+fTu+fTt+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+fPt9fDq9fDq9fDq9O/p3NjU1dLP19TQ1dLP1dPP1tTQ1tPP1dPP1NHO1tPP1tPQ1tTP1NHO1NHO1tTP1tTP1tPP1tPP0tHO0dDN0dDN0dDN0dDN0dDN0dDN0dDN0M/M1tXR9PDq9fDq9fDq9PDq3N3c1dfX09bW3N3b29za09XW1djX2dva4+Pf2drZ1dfY1tjY4eDe4uLe19nY1dfX19jY1djY5+Th7enj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7enk9fDq9fDq9fDq9fDq5OTi3uDg3N/e6ejl5OTi3d7e3d/e5eXi7evn4+Ti4uPh3+Df6+nl6unm3+Hf3t/f3+Dg3uDf8O3o9/Hr9vHq9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9fDq9fDq9fDq9fDq/Pbv/vfw/vjx/vnx/fjx/ffv/vjw/Pbv+fPt/ffv/Pbv/vjx+PPs+vTt/ffv/vfw/ffw/vnx+/Xu+/bw9vHr9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHr3tzY29jV2NXT0M7M09HP4t/b2dfU393Y5+Tf3tvY4d7a2NfT6+ji5eLe4N3Z3drX3NrW1dPR29nV1NLQ7Onk+PPt9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/prbCxubq7n6Kln6OmjJKXoKOmkpeatLa2xMTEjZOYlpqejpOY09PPnaGklZqdqKuspqmrkJWYpaiqgYiNwMHA9vHq9fDq9PDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p6efh4d7a3dzY5+Xg5OLd3tzY3dzX29rW393Z6ebh4N7a4uDb3tzY4N7a8O3n8u3o8e3n9PDp8+/p8u7o7+zl8u/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8u3ouru6mJuemJyfi4+TlpqdkpaZj5SXmZyfiY2SxsXDpKaomJuelJibpaip9vHq+fTt+PLs+vTt+/Tt+/Tu+/Tt+vTt9vHq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq1NfXzdHT1djY0NTW2dva09XY0dXX1tjY19vb1tna19va293c0tbX2dra3N/d6efk6ejl297d2Nvb2Nvc2tzd3uDf8Ozn9vHq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8+/pzNPXvsfPzdPXyNDVv8nQwsvRxMzSxc3TxMzSt8LLxc7Sx8/TucTMzdPWt8LLz9TX293dv8nPvMfOzdPWztTXxs7S4eHg+PLr9O/q9fDq9fDq9fDq9fDq9fDq9fDq9fDq+fPs+vTs+fLr+fTs+vPs+vTs+/Xt+fPs+fTs+/Xt+vTs+PLr+vTt+PLs+/Tt+PLr9/Hr+vPs+/Tt+/Tt+fPs+vTs9vHq8/Dq9PDq9PDq9PDq9PDq9fDq9fDq9fDq9fDq8Ozn7uzm7uvn7uzn7uzm7uzn7+3n7uzm7uvn7uzn7+3o7uzn7uzm7+zn7uzn7uzn7uzm7+zn7uzn7uvm7uzm7uzn7+zn7+3n7+3n8O3o8e7p8e7p9fDq9fDq9fDq9fDq/fjx/vny/fny/Pjx/fny+/bw+fTu/Pjx/frz+/bw+vTu/fnz/fny+fPt+/fw/vny/vry+vXv/fjx/vny/fny/vv0/vny/Pfw/fjx+/fv9fDq9fDq9fDq9fDq9fDq9PDqwcHAtLa2s7W2vb6+tre4xsbF19bSwcHBtba3xsbF0M/MtLW2uru73dvXwcLBt7i5r7Cz0dDOvr++tre4u7y8rK6vtLW2wsLBuru7ycjG9vHr9fDq9fDq9fDq9O/p9/Lsvr++s7W2rrGyuLq6s7W1uLq61tTRubq6srS0ycjH0tHOuru7srW10M/MysvItbi3srS1xsbFwsLBtba2tbe3sbK0wMG/ycjGz8/MysrI9vHr9fDq9fDq9fDq9vHr8ezmxsbEoqWon6Klq66uqq2vqKqs2dfUpKepp6mruru7lZmdwcPC0NDOoqaoqKqsmJ2gvr++rK+xqayun6Olo6ao3NvX//rz+vXv+/bv+/bv9fDq9fDq9fDq9fDq9fDq9vDq8e3n8u3o8Ozm8ezn9fDq8e3n9O/p8u3o8+7o7enk8u3o8Ozn9vHq9O/p8u3o7url8+7o9vHq8u7o8e3n8u7o9PDq8+/p9O/p9O/q9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p9fDq9fDq9fDq9fDq9vHr9fDq9vHr9O/p9O/q9fDq9vHr9O/p9O/p9fDq9fDq9fDq9fDq9O/p9O/p9O/p9O/p9fDq9fDq9fDq9fDq9fDq9fDq9/Lr9/Ls9/Lr9/Lr9vHr9vHq9/Lr9/Ls+PLs+PPs9/Ls9fDq+PLs+fPt9/Ls9vHr+PPt+PLs+PLs+PPt9vHr9/Hr+fPs+PPs+PPt9/Ls9fDq9fDq9fDq9fDq9fDq8+/p5OLc5eLd5ePe5OHd6+bi7uvl4eDb5ePe5eLe4d/b5uPd7+vm3dzX393Z5+Tf6+ji3NvW4d7a4uDb4N7a7Ojj5uTf3dvW4N/a4+Dc4+Hc9fDq9fDq9fDq9fDq9vDq8u7o4d/a29nV2djU2tjU19fS6OTg6+fj6+fh6ubh6OXg6+fi8+7p6ebg6OXg7Onk8Ozm5+Tf6OXg6ebg6ubh7+vl7+vl5ePe5eLe6ebi6ufh9fDq9fDq9fDq9fDq9fDq9O/p6ufh5uPe5uPe5uPe393Y6ubh+fTt9/Ls+PLs+PPs9/Ls9fDq+PPs+PLs9/Lr9vHr+PPs+PLs+PLs+PLs9/Hr9vHr+PPt+PPs+PLs9/Ls9fDq9fDq9fDq9fDq9fDq9fDq9/Ls9/Ls+PPs+PLs+fPt9/Ls9O/q9PDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDq9fDq9fDq9fDq9O/q9fDq9fDq9O/p9fDq9fDq9fDq9fDq9fDq9fDq9O/p9O/p9O/p9O/p9O/p9O/p9PDq9PDq9PDq9fDq9fDq9PDq9O/q9fDq9fDq9PDq9PDq9fDq9PDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq+PLs+PLr+PLr+PLs+fPs+fPs+PLr+PLs9/Lr9/Lr+PLr+PLr+PLr+PLr+PPr+fLs+PLs+PLr+fPs9vHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq6Ofj6Ofk6Ojk5eXj5eTj5uXj5ubj5eTj6+nm6ujk6ejk6Ofk5+bj6+rm5uXj5OTi5uXj5+fk5eTi8e3o9vDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHq3+Hf3t/e3+Df2tzc2tzc3d/e2dzc293d5ubi3+Hg3uDf4eHg293c5OTi2tzc1dja3d7e4eLg19rb6unl9vHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq+vTt+vTt+vTt/PXu+/Xu+/Tt+/Xt+/Xt+vPt+fPs+vPs+/Xu+/Xu+fPt+/Tt/Pbu+/Xu+vTt+/Tt+fPt9/Ls9vHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq7enk7enk7Ojj6ubi7enk7enk7enj7ejk6+fi8u3o8Ozm6ufi6+fi7+rl8Ovn6+fi7Ojj7enk8Ovm7Ojj7Ojj8Ovm9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDp09LP0M/NzMzJxsfF0tHO0dDOzs7Lz87Mx8jG6+fh3tzZxMXExcbE1tXS4N7ayMjHy8vJzc3L4+Hcy8vJxcXE29rW9/Ls9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq+PPt+PPt+fTt+vXu+PPt+PTt+fPt+PPt+vTu9vHr9/Ls+vXu+vTu+PPs9/Ls+fTt+PPt+PPt9/Ls+fTu+fTt9/Ls9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq"
     },
     {
-      "id": "instagram-18104451848082032",
-      "date": "2026-09-10T10:02:54+0000",
-      "topic": "If Cyprus tourism demand stays strong, where would you rather place capital?",
-      "topicKey": "if cyprus tourism demand stays strong where would you rather place capital",
-      "headline": "If Cyprus tourism demand stays strong, where would you rather place capital?",
       "creativeKey": "instagram-18104451848082032",
+      "date": "2026-09-10T10:02:54+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "If Cyprus tourism demand stays strong, where would you rather place capital?",
+      "id": "instagram-18104451848082032",
       "instagram": {
         "mediaId": "18104451848082032",
         "permalink": "https://www.instagram.com/p/DdGk4asFbsC/"
       },
-      "publishedAssetSha256": "9693fd2599c12c2d1aa316e46cfab7461ba3f66300754b463b3884bfbfbd6b90",
+      "phase": "legacy_published",
       "pixelHash": "d414326b3bce16d23c13810a4e5e2b1bf2c00016e6f8e2c67000274419e50f38",
+      "platform": "instagram",
+      "publishedAssetSha256": "9693fd2599c12c2d1aa316e46cfab7461ba3f66300754b463b3884bfbfbd6b90",
+      "topic": "If Cyprus tourism demand stays strong, where would you rather place capital?",
+      "topicKey": "if cyprus tourism demand stays strong where would you rather place capital",
       "visualSignature": "rgb32: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"
     },
     {
-      "id": "instagram-17968112850157408",
-      "date": "2026-09-10T07:31:03+0000",
-      "topic": "582,754 tourist arrivals in Cyprus in July 2026.",
-      "topicKey": "582 754 tourist arrivals in cyprus in july 2026",
-      "headline": "582,754 tourist arrivals in Cyprus in July 2026.",
       "creativeKey": "instagram-17968112850157408",
+      "date": "2026-09-10T07:31:03+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "582,754 tourist arrivals in Cyprus in July 2026.",
+      "id": "instagram-17968112850157408",
       "instagram": {
         "mediaId": "17968112850157408",
         "permalink": "https://www.instagram.com/p/DdGTeP0FWLh/"
       },
-      "publishedAssetSha256": "967e1fd8937ade8d4d7f51a15d10abc0256bcc9479d834c29156d1a997249f76",
+      "phase": "legacy_published",
       "pixelHash": "8712e16aeda90bab0b81afb14599f268124cdb33a7ec43ec6a069296b8668bed",
+      "platform": "instagram",
+      "publishedAssetSha256": "967e1fd8937ade8d4d7f51a15d10abc0256bcc9479d834c29156d1a997249f76",
+      "topic": "582,754 tourist arrivals in Cyprus in July 2026.",
+      "topicKey": "582 754 tourist arrivals in cyprus in july 2026",
       "visualSignature": "rgb32:9fDq9fDq+PPt+fTt+fPt+fTu+fTu+fTt+fTu+fTt+fTt+vTu+fTu+fTt+fTu+fTu+fTu+fTt+fPt+fTt+fTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+fPt9fDq9fDq9fDq9O/p3NjU1dLP19TQ1dLO1dPP19TQ1tPP1tTP1tPP1NHO1dLP1tTQ1tPP1dPP1tPP1tPQ1tTP1tPP09HO0dDN0dDN0dDN0dDN0dDN0dDN0dDN0M/M1tXR9PDq9fDq9fDq9PDq3N3c1dfX09bW3d3b29za1NfX2dva1tnY19nZ4uHe3N3b09XW1tjY3t7c2tva1tjY1tjY1dfX5OLf7enk7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7enk9fDq9fDq9fDq9fDq5eXj3+Hg3d/f6+rm5eXj3d/f5eXj4eLh4ePh7Orm6Ojl4uPh4ODg6ejl5eXj4OHg4OLg4OLh8O3o+PPs9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9fDq9fDq9fDq9fDq9/Hr+fLs+vTs9vHq+PLr+PPr+PLr+fPs+PLr9/Hr+PLr+vPs+fPs9/Lr+PLr+fPs+fPs+PLr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDq+PLs9vHr8e3o+fPs9fDq+fPr9O/q8e7o+vXt9PDq9PDq8e3o9vHr9vHr+fPs9O/q8e7p+PLr+vTt9vDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8+/p/PXtxMzSkqe5293d0NTXmKu7vcfO2NvcpbTCtsHK/PXt7uvnvcfPl6q7ztTXpbXCpbbD8u7p5OXimay86Ofk+PLr9O/q9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p+/Ttyc/UlKi5q7nErrzGgpqwl6q68O7npLTBr73H+fPs9O/p4+LghZ2x4uPgsL3Hj6W2vsfOn7G/cY6ozNPW/PXt9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/q+PLr3+HhsL/LuMXPyNDWqbvIvsnRydLXiqO3193dv8vT4OPk09rdxtHW///2z9fbobPCy9PY09jbl6q6ztTX+/Tt9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p+PPsxsbFs7a4wL++zcvJo6eqxMTDwMC/wcHB3NvXmKGnsLS2srO0wcC/wMHAqq2vzc7MzszJ497Z//nw+PLr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p+PPs09HPuru6qauutre4o6Wos7S1rrCyzMvK2tjVp6mqtri3qKqtubq6tre4qKqsu7y8sLGz0M/N+vXv8+7p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p9/Ls1dPRxMTD0tDO5uPe0M/MyMjFy8vI8+/p+vTu/fry/Pjy/fnz+/fx/Pjx/vrz+vXv/Pbv+fTt9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p7Onj7uvl7+vm8ezn7url7+vl7uvl8u7o8+/p8u7o8u7o8u7o8+/o8u7o8u7o8u7o8u7o8+/o9O/p9PDp9O/p9PDp9O/p9O/p9PDp9PDp9PDp9PDp9fDq9fDq9fDq9fDq9vLs9fLs9PHr9fLs9PHr9PHr9PHr9PHr8/Dq9PHr9fLr8/Dq9PHr8/Dq9PHr9PHr9PHr8/Dq8/Dr9PHr9PHr8/Dq9PHr9PHr8u/p8e/p8e/p8e/p9fDq9fDq9fDq9fDq6+fi6eXh7Ojj6ebh7enk7url7unl7Ojj7enk6eXg5+Tf8Ovm6+fi7unk6ubh5+Tf5uLe7+rl7enk6ufh6ubh7+vl6+fi6+fi8+7o9O/p9O/p9fDq9fDq9fDq9vDq9O/psra11dTSvr++r7KzrrGxzM3Kqq2uqayuu7281dTRqq2vxcXDrK+wtri4rK6wsLKztrm52NfTrLCwoKWoqayuubq5n6OmmZ6h8e3n//rz+vXu9fDq9fDq9fDq9fDq9vHrwsLCxMTDr7Gy0M/Mtre4srS1s7W1r7Gxrq+xtri4ysrI4N7ZqKqsqKqssrS0p6msvLy80dDNoqWourq6ra+wvr++t7i4zMvJs7W1t7i5ysnI9O/p9fDq9fDq9O/p9/LsxsbEwsLBsbO0x8fFvL28ubq6vb69tLa2ra6wr7KywsLB0M7Nw8TCycnHx8fFyMjGzMvK4d/bw8PC1dPRysrIzczKysnH6ebh0M/Ny8vJ1dTR9vDr9fDq9fDq9vHq8u7ot7q6uru7rrCxsrW1ury80dDOsbS0rK+wtbe3s7W1rK6wvL297enk//v0+vfw/Pfx+/bw+PPt/vjy+vXv/Pjw/Pbv+/fw9/Ls+/fw/Pfw+vbv9fDq9fDq9fDq9fDq9fDq+vXv+PLs+PPt+PTu+PPt9vLr+PTt+fTu+vbu+vXu+fTt9/Ps9fDq8+7p8+/p8+/p8+/p9O/p8+7o9O/p9O/p8+/p8+/p9fDq9O/p9O/p9O/p9fDq9fDq9fDq9fDq9fDq9PDq9vDq9e/q9vDq9fDp9vHq9fDq9fDq9O/p9O/p9O/p9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8O3o8O3n7ezm7uvm7erm7Orm7+3n7evm8e3o9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8+/p4OLg4OLg1NnaztXX2t3dzdPW1Nna297e6ejl+vTt9/Hr9fDq9fDq9O/q9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vDq8e7o3uDf5OTh1tnb2t3c3N7d8O7o3eDe0tfZ2Nzc2Nzc1tvb7evn+/Xt+PPs9vHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8u7p5OXi5OTi19vc3N/e19vb3uHf297d3N7e4OHg2t3c2d3c4OHf5uXi5OTi8Ozn9vDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vDq8u7o6Ojk5OPh09fZ19rb1Nja0tbY2t3d297d4ePg2dvc19rb09fZ09jZ2Nzc7erm9vHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9/Hr+PLr+vPs+fPs+fPs+vPs+fPs+PPs+PLr+fPs+fTt+vTt+vTt+vPs9vHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p9PDq8+/p9O/p9O/p9O/p9O/p9O/p9O/p9O/q9O/p8+/p9O/p9O/p9fDq9O/q9PDq9fDq9fDq9PDq9PDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHr9vHr9/Ls9/Ls9vHr9vHr9vHr9vHr9/Ls9fDq9vHr+PLs9/Ls9vHr9fDq9/Ls9/Lr9/Hr9vDq9/Ls9/Ls9vHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq7+rl7+rl7unk7ejk7urk7+rl7urk7+rl7Ofj8+7o8ezn6+fi7Ojj7+vl8ezn7Ojj7enk7enk8ezm7ejj7Ojj8Ovm9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDpzs/My8zKx8jGwMK/z8/LzM3KycrIycrHxsfF6+ji3tzZxMXExcbE1tXS4N7ayMjHy8vJzc3L4+Hcy8vJxcXE29rW9/Ls9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDp7evl7erk7+3m7Onk8e/o7erk6+jj6+nj9vHr9/Ls9/Ls+vXu+vTu+PPs9/Ls+fTt+PPt+PPt9/Ls+fTu+fTt9/Ls9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq"
     },
     {
-      "id": "instagram-18163390021474734",
-      "date": "2026-09-09T15:31:50+0000",
-      "topic": "€423.1 million in tourism revenue in June 2026.",
-      "topicKey": "423 1 million in tourism revenue in june 2026",
-      "headline": "€423.1 million in tourism revenue in June 2026.",
       "creativeKey": "instagram-18163390021474734",
+      "date": "2026-09-09T15:31:50+0000",
       "format": "reel",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "€423.1 million in tourism revenue in June 2026.",
+      "id": "instagram-18163390021474734",
       "instagram": {
         "mediaId": "18163390021474734",
         "permalink": "https://www.instagram.com/reel/DdElq0pDm1P/"
       },
-      "publishedAssetSha256": "a6d794629efe1d096df4b8ea9ecb7f59fa5f472e3740c3da74d1b806afc901a3",
+      "phase": "legacy_published",
       "pixelHash": "ef3b1247c6a93f957d397818428580494f7840dd742cc2b12b93895f9005c68d",
+      "platform": "instagram",
+      "publishedAssetSha256": "a6d794629efe1d096df4b8ea9ecb7f59fa5f472e3740c3da74d1b806afc901a3",
+      "topic": "€423.1 million in tourism revenue in June 2026.",
+      "topicKey": "423 1 million in tourism revenue in june 2026",
       "videoVisual": {
-        "method": "sampled-rgb32-v1",
         "duration": 12,
         "frames": [
           "rgb32:9PDo8u7m7Ojh7Onh7Onh6+fg7Ojh7Ojh7Onh7Ojh6+fg7Ojh7ejh7Onh6+jg7Ojh7Ojh7Ojh7Ojh6+fg6+fg6+fg6+fg6+fg6+fg6+fg6+fg6+fg6+fg6ubg8e3m9fHo9fHp6+jhzs3Lzs7Lzs7L0dHNzc3Lzs7Mzs7L0NDN0tHNz87Mz87Lzs7L0dDNzs7Lzs7Lzs7Lzs7M1NPP1dPP1dPP1dPP1dPP1dPP1dPP1dPP1dPP1dPP1NLO7Ojh9vLp9PDo8e7n4eLg4OHf4ODf7evm4OHf4+Pg4eLg6Ojj7+3n4uPg4uPh4eLg6urk4uPg4eLg4ePg4+Ti9/Pr+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs9fHp9PDo9PDo9PDo9vHp9/Lp9/Ho9fDn9vHo9vHo9vLp9fHo9PDo9vHp9/Lo9vHp9fDo9vHp9vHo9vHo9vHo8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n9PDo9PDo9PDo9PDo8u7m8e7n8u/n8/Do8O3m8u7n8u/n8u7n8u/n8u/n8u7n8e7n9PDo8+/n8u7n8e7m8+/o8u7n8u7n8+/o8e7n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo+/Xr/ffs9/Lp9PDo/vjt9/Lp9vHp/Pbs+vXr9vHp/vjt+vXr8+/n8+/n+PTq/Pfs9PDo/Pbs+/bs+PPq/vju9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHoztPVusPL3d/d8e7ms7/H4uLe4eHfvMXMztPV5eTgtsHIy9LT+vXr+PPq1NfYucTL9/LpwMnOxc3R2t3br7vF8u7n9fHo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9/Lp5ubhc5ColKi53uDerrvGa4mksr7I3uDejKK1vMbN7OvllKi4k6e48e3m6ujj3t/edZKr6ejjj6O1iqCzmq27c4+o6ejj9/Lp8/Do9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo1NbVvMTK1tfW5eLdytDR19nXy9DRsLvD2drY0dTUvcTJ09XU19jW0dPT19nYs73F1NfW2tzb5+fi8O7m09fX7+3m9fHo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp8OzkvLy7urm3sK+wrq+uubm3q6ussLGww8G90tHMp6ipurm2ubq5t7q3p6ipu7y6tLOy0c/L//nv9fDo9fHp+vTr9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7+zk1NPPzczKzczJ4t/a0tDNzs3L1tTR9PHp8/Do8e7m8u7n8u7m8+/n8u/n8Ozl8O3m8+/n8+/n8+/o9PDo8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n8e3m8+/n8+/n8+/n8u7m8u7m8+/n9PDo8/Do9PDo9PDo9PDo9PDo9PDo9fHp9fHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n9PDo8+/n8+/n8+/n8+/n8+/o8+/n8+/n8+/n8+/n8+/n8+/n8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9/Pr9/Lq+PTr9/Pq9vLq9/Pr9/Pq+PPr9/Pr9PDo9/Pq+PTs9/Pr9vLp9vLq+PTr+PTr9/Pq9fHp+PTs+PTr9fHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7+vk29nU4N3Y2NbS29jU4d7Z3trW3tzW29nV3tvW8u7m4d7Z1tTQ2dfS5+Te4uDa2dfS2tjT393Y5uPd2NbR2tjS6ufg9vHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7+zk4N3X5OHb39zY4d7Z5eLc39zX4d7Z4d/a4d/a6ufg5OHb3t3X3dvW6ubg7eni6OXe6OXd7Ojh7+vk6eXf5+Xe8Ozl9fDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n9PDo9PDo9PDo9PDo9O/n8+/n8+/n9PDo8+/n8e3m9PDo9PDo8+/o8+/o9fHp9vLq9/Pq9fHp9fHp9/Lq9vLq9fHo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo",
@@ -144,566 +142,588 @@
           "rgb32:9PDo8u7m7Ojh7Ojh7Ojh6+fg7Ojh7Ojh7Ojh7Ojh6+fg7Ojh7Onh7Ojh6+jg7Ojh7Ojh7Ojh7Ojh6+fg6+fg6+fg6+fg6+fg6+fg6+fg6+fg6+fg6+fg6ubg8e3m9fHo9vHp6+jhzc3Lzc3Mzc3L0dDNzc3Lzs7Mzs3L0M/N0dHNzs7Mzs7Lzc3L0NDNzs3Lzc7Lzs3Lzs7M1NLP1dPP1dPP1dPP1dPP1dPP1dPP1dPP1dPP1dPP1NLO7Ojh9vLp9PDo8e7m4uPg4OHg3+Hf7evl4OHf4+Pg4eLg6Ojj7+3n4uPh4uPh4eLg6+rl4uTg4OPg4ePg4+Th9/Pr+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs9fHp9PDo9PDo9PDo9fHo9vHo9fHo9O/n9vHo9fDo9fDo9fDo8+/n9fDo9fHo9fHo9O/n9fHo9vHo9fDo9fHo8u7m8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n9PDo9PDo9PDo9fHo+fXs+fTs+PTr+vXt+PPr+fXt+PTs9fHp+fXs+PTr+PTr+PXs+PTr9vLp9vPq+fXs+PTs+vXs9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7+vk19XR2tjS3NnU1NPP2dfT1NLN2dfT6ufg2NbR3NrV2NbS19XR2tjT5ePd3tvW1dPO3NnU1NLN8e3l9fHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9/Lq6ebfoaSlp6mqq66unaCitbW2nqGjqKut2NbRqausrrCxsbKzoaOmsLGy1NPP0M7LsLKxq6ytmZye6+jh9vLp8+/o9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9/Lq6OXfoaOksbKyo6Wmqq2vnZ+hoaSloqWmo6anoqWno6an0dDMtLS1ubq5sLKzqKqtpaeoqaqsuru66+jh9vLq9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n5eLc6+fg6ebf6OXf5uTd5+Te6ebf6uff5+Td5+Td7eni7Oji7Oni6OXe6ufh5+Te5+Te7+zl8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo+PPr9fHp9vLp9vLq9/Pq9/Lq9vLq9vLq9/Pq9/Pq9vHp9vHp9vLp9/Lq9vLp9/Pq9/Pq9fHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n8e7n9fDp9O/o8+/o8+/o9O/o9O/o8+7o8e7n8e7n8u7o8u7n8u7n8e7n8e7n8e7n8e7n8u7n8u7o8u7o8u7o8u7o8u7o8u7o8u7o8u7o8u7o8u7n8/Do9PDo9PDo8e7n7uvl09bY2Nva1tnY19na2dvb2dvb3N7d7uzl9PDo8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8O3n8e7n9fDo9PDo8u/o8e3n7Onk7evl7evl7uvl7evl7erl7evl8e3m8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8e3n8u/o9PDo9PDo8u/n7+zm6Obi6efj5+bi5ubi5+Xi7Orl9O/o8u7o8u7o8u7o8u7o8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7n8u7o8u7n8u7o8u7n8e7o8u/o9PDo9PDo8u7o7evl1tnZ2Nva1tna1dna2tzc5uXi8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8e3n8e7n9fDo9PDo8+/o8u/n9/Pr9fHq+PTr9vLp9PDp8+/o8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8+/o9PDo9PDo8u7n6+nk0dXX2Nra0dXW5OPf9PDo8u/n8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8/Do8e7n8O7m9fDo9PDo8u/n7+3m7Orl7uvm6unj8O3n9PDp8u7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e7n8e3n8u/n9PDo9PDo8+/o8e7n6Ofi5+bh6+nk6Obi5ubi7+zm9PDo8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8e7n8+7n9PDo9PDo8u7n7Orl19ra19va3N7c2dva2dvb6+nk9fDp8u/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8e3n8e3n9fDo9PDo9PDo9O/o9/Lp9/Lp9vHp9/Lp9/Lp9PDo8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/o8+/n9PDo9PDo9PDo9PDo9PDo8+/n8+/n8/Do8+/n8+/o9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n9PDo8+/n8+/n8+/n8+/n8+/o8+/n8+/n8+/n8+/n8+/n8+/n8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9/Pr9/Lq+PTr9/Pq9/Lq9/Pr9/Pq+PPr9/Pr9PDo9/Pq+PTs9/Pr9vLp9vLq+PTr+PTr9/Lq9fHp+PTs+PTr9fHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7+vk29nU4N3Y2NfS2tjT4d7Z3tvW3tzW29nV3tvW8u3m4N7Z1tPQ2dfT5+Te4+Da2dfS2tjT4N3X5uTd2NfR2dfS6ufg9vHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7+zk4N3Y4+Hb393Y4d7Z5eLc39zX4d/Z4d/a4t/a6ufg5OHb3tzX3drW6ubg7eni6OXe6OTd7Ojh7+vk6eXf5+Xe8Ozl9fHo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n9PDo9PDo9PDo9PDo9O/n8+/n8+/n9PDo8+/n8e7m9PDo9PDo8+/n8+/n9fHp9vLq9vPq9fHp9fHo9/Lq9vLq9fHo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo",
           "rgb32:9PDo8u7m7Ojh7Onh7Onh6+fg7Ojh7Ojh7Onh7Ojh6+fg7Ojh7Ojh7Onh6+jg7Ojh7Ojh7Ojh7Ojh6ufg6ufg6ufg6ufg6ufg6ufg6ufg6ufg6ufg6ufg6ubg8u3m9fHo9fHp6+jhzc3Lzc3Kzc7L0NHNzc3Lzc7Lzc7Lz9DM0dHNzs7Lzs7Lzc7L0NDMzc7Kzc7Lzc7Lzs7L09PP1NPP1NPP1NPP1NPP1NPP1NPP1NPP1NPP1NPP09LO7Ojh9vLp9PDo8e7m4uPg4OHf4OHf7evm4OHf4+Ph4eLg6Ojk7+3n4uPh4uPh4eLg6+rl4uTg4OPg4ePg4+Th9/Pr+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs9fHp9PDo9PDo9PDo9fDn9fDn9PDn9O/n9O/n9PDn9fDn9O/n8u7m9O/n9fDn9fDo8+7n9PDn9PDn9PDn9PDo8e7m8e3l8e3l8u3l8+/n8+/n8+/n8+/n8+/n8+/n8+/n9PDo9PDo9PDo9fHp+fbu+fbu+vfv9/Pr+/jw+vfu+fbt+fXt+/jv+/fu+fbt+PTs/Pnw+fbt+/fu/Pfu+vbu+vfu+/jv+/jw+vbu9O/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9/Lq6OXewcG/v8C+ubm42djTsrS0vr+9xcXBysjFu7u6vLy8x8bD09LOt7e2xMPBu7y7wcG/xMPBwcG/u7u7tre3x8bD9fHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7urj2NbS1tXQzczJ4t/ZysnH0M/L2dfS4N3X0M/L0M/M2tjT29nUx8bE09HO0M7L0M/M2dfS1tXRy8vH0tDN0tDN8+/o9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp/fjv+/fu+/jv+fXs/fnw/Pfu+vbt+fbs+/ju/Pjv+/bt+/bs/Pnv+vft/Pjv/ffu+/fu+vbt/Pjv+/jv+/fu9/Lp9/Lp9vLp9PDo9PDo9PDo9PDo9PDo9PDo9fDo8e3m3d/d4OHe5+Xh5+fi4+Pf7uvk6+nj6unj6ujj5eTg6ujj6+nk7Ork7uvl6efi6+nj5OTg6eji6eji6uji7uvk5OTg5uXh6ujj9PDo9PDo9PDo9PDo9PDo9PDo9fHp7uvlvsbNx87SztPVyM/TyM7S3t/dzdLVx87RztPVxs3RyM/SydDT19rZ19rZytDTxMvRw8rQ0NXWy9HTytDT3N7czdLVzdLVzdLU9PDo9PDo9PDo9PDo9PDo9PDo9fHp7evl0NXW0tbX1tnYztLU5eTh2dvb0NXX0tbYzNLU3N3c4uLg0tbX0tbXx87R3N7d3d7d0tbXyM7S09fX1tnZ0dbX3N7c+/Xr+PPq9PDo9PDo9PDo9PDo9PDo9PDo9vLp6ujjwsnP0NXXy9HUz9TVzdPVyc/T0dXW2tzaxs3Qz9TVztTUzdLWwcnOy9HU1djY8+/n8O3m7uzl8e3m8u/n8e7n8e7n8+/n8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n7erk7uvl7Onk7+zl7evl7Ork7+zl6ejj6Obi7+zl6+rk6+nj7+zm7+zl8e7n9fHo9fDo9fDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9vHp9vHp9vLp9fHo9fHo9vHp9fHp9vLp9vLp9fHp9vHp9vHp9fHo9fHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/o8+/n8+/n8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp+PTs+PTs9/Lq+fXs9/Pr9/Pq+fXs+fXs+PTs+fXs+fXs+fXs+fTr+PTr+fXs+PTr+PPr+PTr+vXt9/Lr8/Do9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7enh2NXR2tjT4uDa09HO3dvW4+Da1dPO19XR2dfS1dTP2dbS1dPP19bR2dfR19XQ3NrU3dvW2tjT0NDL4d/Z9vLq8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7eri2dfS1dLP29jV1NLO2tjT3dvW1tTQ1tXQ1tXQ1dPP09LO1NHO3dvW3NnU09LN19XQ3NrU3NvVzMzI4N7X9/Pq8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp+PTr+fXs+PPr+fXs+PTr+PPq+fTs+fXs+fTs+fXs+fXs+fXs+PPr+PTr+fXs+fTs+PPr+PPr+vbt9/Pr8+/o9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/o8u7n8u7n8u7n8u7m8u7n8u7m8u7n8u7m8u7m8+/n8u7n8u7m8u7m8+/n8u7m8u7m8u7n8u/n8u7m8u7m8+/n8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9/Pr9/Lq+PTr9/Pq9/Lq9/Pr9/Pq+PPr9/Pr9PDo9/Pq+PTs9/Pr9vLp9vLq+PTr+PTr9/Lq9fHp+PTs+PTr9fHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7+vk29nU4N3Y2NfS2tjT4d7Z3tvW3tzW29nV3tvW8u3m4N7Z1tPQ2dfS5+Te4+Da2dfS2tjT4N3X5uTd2NfR2dfS6ufg9vHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7+zk4N3Y5OHb393Y4N7Z5eLc39zX4d/Z4d/a4t/a6+fg5OHb3tzX3drW6ubg7eni6OXe6OTd7Ojh7+vk6eXf5+Xe8Ozl9fHo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n9O/o9O/o9PDo9PDo9O/n8+/n8+/n9PDo8+/n8e7m9PDo9PDo8+/n8+/n9fHp9vLq9vPq9fHp9fHo9/Lq9vLq9fHo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo",
           "rgb32:9PDo8u7m7Ojh7Ojh7Ojh6+fg7Ojh7Ojh7Ojh7Ojh6+fg7Ojh7Onh7Ojh6+jg7Ojh7Ojh7Ojh7Ojh6+fg6+fg6+fg6+fg6+fg6+fg6+fg6+fg6+fg6+fg6ubg8e3m9fHo9vHp6+jhzc3Lzc3Kzc3K0dDNzczLzs3Lzc3L0M/M0tHNzs7Lzs3Lzc3L0NDNzs3Lzc7Lzs3Lzs7L1NLP1dPP1dPP1dPP1dPP1dPP1dPP1dPP1dPP1dPP1NLO7Ojh9vLp9PDo8e3n4uLg4OLf3+He7evm4OHf4+Ph4eLg6Ojk7+3n4uPh4uTh4eLg6+rl4uTh4ePg4ePg4+Th9/Pr+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs+fTs9fHp9PDo9PDo9PDo9fDo9fDn9PDn9O/n9O/n9PDn9fDn9O/n8u7m9O/n9fDn9fDo8+7n9PDn9fDn9PDn9PDo8e7m8e3l8e3l8u3l8+/n8+/n8+/n8+/n8+/n8+/n8+/n9PDo9PDo9PDo9fHp+fbu+ffu+vjv9/Pr/Pjw+vfu+fbt+fXt+/jv+/fv+fbt+PTs/Pnw+fbt+/fu/Pft+vft+vbu+/jv+/jw+vfu9O/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9vLq6OXewcG+v8C9ubm42tfTs7Szvr69xcXCycnFu7u6vLy6x8bD09LOt7e3xMPBvLy6wcC/xMPBwcG/u7u6t7e3xsbD9fHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7uvj2NbR1tTQzczI4t/ZysnG0M7L2dfS393X0M/M0c/M2tjT29nUxsXD0tHNz87L0M7M2NfS1tbQy8vH0tDN0tHN8+/o9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp/fnv+/fv+/jv+fXr/fnw/Pfu+vbt+vbs+/ju/Pju+/bt+/bs/Pnv+vft/fjv/ffu+/fu+vbt/Pnv+/jv+/fu9/Lp9/Lp9vLp9PDo9PDo9PDo9PDo9PDo9PDo9fDo8O3n3d7c4OHe5uXh5+fi4uPf7evk6+nj6ujj6ujj5eTg6ujj6+nk7Orj7uvl6efi6+rj5OTg6uji6eji6unj7evl4+Pg5uXh6ujj9PDo9PDo9PDo9PDo9PDo9PDo9vHp7evlvcbMx87SzdPWydDSyM7S3d/dzdLVx87SztPVxs3SyM/SydDT19rZ19raytDTxMzRw8vQ0NXWy9DTytDT3d7czdLUzNLUzNLU9PDo9PDo9PDo9PDo9PDo9PDo9fHp7evkz9XW0dbX1tnZzdLV5eTh2Nva0NXW0tbXzNLU3N3c4uLf0dXX0tbXxs7R3N7c3d7c0tbXx87R0tfY1tnZ0dbX3N7c+/Xr+PPq9PDo9PDo9PDo9PDo9PDo9PDo9vLp6ujjwcnP0NXWy9HUz9TVzdLVys/T0dXW2dvaxs3Rz9TWz9PVzdLVwMnOy9HT1djY8+/n8O3m7uzl8e3m8u7n8e3m8e7n8+/n8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n7evk7evl7Onk7+zl7evl7erl7+zl6ejj6Obi7+zl7Ork6+nj7+zm7+zl8e7n9fHo9fDo9fHo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9vHp9vHp9vLp9fHo9fHo9vHp9fHp9vLp9vLp9fHp9vHp9vHp9fHo9fHo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/n8+/o8+/n8+/n8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp+PTr+PTs9/Lq+fXs9/Pq9/Lq+fXs+fXs+fTs+fXs+fXs+fXs+PTr+PTr+fXs+PTr+PPr+PTr+vXt9/Lr8/Do9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7eni19XQ2tjT4uDa09LO3dvW5OHb1dPP19XR2dfS1dTQ2dfT1dPO19XR2dfS19XQ3NnU3tvW2tjT0NDL4d/Z9vLq8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7erj2dfT1NPP2tnU09LO2djT3dvW1tTQ1tXQ1tXQ1dPQ1NLO09HO3dvW3NnU09HN1tXQ3NrU3NvWzczI4N7Y9/Lq8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp+PTs+fXs+PPr+vXs+PTr9/Pr+fTs+fXs+fTs+fXs+fXs+fXs+PPr+PTr+fXs+fTs+PPr+PPr+vbt9/Pr8+/o9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/o8u7n8u7n8u7n8u7m8u7n8u7m8u7n8u7m8u7m8+/n8u7n8u7m8u7n8+/n8u7m8u7m8u/n8u/n8u7m8u7m8+/n8+/n9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9/Pr9/Pq+PTr9/Pr9/Lq9/Pr9/Pq+PPr9/Pr9PDo9/Pq+PTs+PPr9vLp9vLq+PPr+PTr9/Pq9fHp+PTr+PTr9fHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7+vk29rU4N3Y2dbS29jT4d7Z3dvW3tzW29nU3dvW8u7m4N7Y1dPP2dfS5+Te4t/a2dfT2tjU4N3Y5uPd2NbS2tfS6ufg9vHp9PDo9PDo9PDo9PDo9PDo9PDo9PDo9fHp7+zk4N3Y5ODb4NzY4d7Z5uLc39zX4d7Z4d/Z4d/Z6ufg5OHb39zX3dvW6ufg7eni6OXe6OTe7Ojh7+vk6OXf6OXe8Ozk9fDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo8+/n9O/o9PDo9O/n9PDo9O/n8+/n8+/n9PDo8+/n8e7m9PDo9PDo8+/n8+/n9fHp9vLq9vLq9fHp9fHp9/Lq9vLq9fHo9PDo9PDo9PDo9PDo9PDo9PDo9PDo9PDo"
-        ]
+        ],
+        "method": "sampled-rgb32-v1"
       }
     },
     {
-      "id": "instagram-18130853761679146",
-      "date": "2026-09-09T09:31:03+0000",
-      "topic": "Cyprus residential property prices continued their upward trend in Q1 2026.",
-      "topicKey": "cyprus residential property prices continued their upward trend in q1 2026",
-      "headline": "Cyprus residential property prices continued their upward trend in Q1 2026.",
       "creativeKey": "instagram-18130853761679146",
+      "date": "2026-09-09T09:31:03+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Cyprus residential property prices continued their upward trend in Q1 2026.",
+      "id": "instagram-18130853761679146",
       "instagram": {
         "mediaId": "18130853761679146",
         "permalink": "https://www.instagram.com/p/DdD8buRCrNY/"
       },
-      "publishedAssetSha256": "9b4a58ff9eaa75280bf22f33299e03cb5e594d13a213a0ba1d6f32f3027da31e",
+      "phase": "legacy_published",
       "pixelHash": "68b791399246db4cb1eed2ff707b189108897ea1363abcd60f8f25719fba86d7",
+      "platform": "instagram",
+      "publishedAssetSha256": "9b4a58ff9eaa75280bf22f33299e03cb5e594d13a213a0ba1d6f32f3027da31e",
+      "topic": "Cyprus residential property prices continued their upward trend in Q1 2026.",
+      "topicKey": "cyprus residential property prices continued their upward trend in q1 2026",
       "visualSignature": "rgb32:9fDq9fDq+PPt+fTt+fPt+fTu+fTt+fTt+fTu+fTt+vTu+fTu+fTt+fTt+fTt+fTt+fTu+fTt+fTt+fTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+fPt9fDq9fDq9fDq9O/p3NjU1dLP19TQ1dLO1dPP1tPQ1tPQ1tPP1NHO1dPP1tPQ1tPP1dPP1tPP1tPQ1tTQ1tPP1dPP0dDN0dDN0dDN0dDN0dDN0dDN0dDN0dDN0M/M1tXR9PDq9fDq9fDq9PDq3N3c1dfX09bW3d7b2tza1dbX2NnZ19nZ5OPf3N3b1NbW1tjY3N3c1tjY1tjY09XW19jY29zb7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7enk9fDq9fDq9fDq9PDq4+Ti3d/e3N7e6ejl4+Ti3N7e4OHg4+Ph7ern5eXj4OLg3+Dg5eXi4+Ph4OHg4OHg4OHg5+bj9fDq9vHr9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9fDq9fDq9fDq9fDq/fjy/vz0/fny/frz//z1/vv0+/Xu/fny//rz/vvz/frz/Pfw/fnx/fny/Pfw+/bw/vv1/frz/Pjx+fPt9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHrv8C/tLa3s7W2sLK0q62wqqyu3NrWu7y8pqiqra+wu729wMHBs7W1tLa2zMvJ3dvXsLOzsLKzsbKzzs7L+vTu9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9e/q9vHrtLa3oqWooqWoqayuoqWol5ue0tHOvb69tre4oKOmqaytuLm6q66vr7GywMG/zczKio+UnKCjlJmdw8PC+/Xv9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p+fTtv7+/xsfFrrCxu7y81dXS0tHO8ezmy8rIrbCwxsbFt7m5wsPCpaiqubq6srSz1dXT//33+/fw+vbv9vHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8+/p/ffwm56ipaiqsbO0n6KmmJ2gmZ2gz87Mt7i4hImPo6epio+UnKCjh4yRkpabi5CVoqSn5+Tf9fDq8+/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9e/q/Pnx/ffw/fnx/vvz/Pfv+/fw+/Tt/Pjw//vz/Pny/vry//ry//71/vr0/frz/Pfv+PHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHqzdPWydDUxMvRw8rQx8/Txc3SwsvR09fZ2dvcwMnQwsrQxs7TxMzRydDUxMzRwsvQ1tnb+fPs9fDp9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHr09jZ1tvb1Nrax8/TzdTWydHUxs/T1dra3uDfxc3Sy9PW09naxs7TyNDTx8/Txc7S2d3b+fPs8+/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDqxM3Ss8DJw8zR2t3drrzHv8nQt8LMtsLMtMDJwsrQtMDKtsLL5OThw8vRwszRvsjOt8LKt8LK3d/e+fPs9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHq4uPg3+Hf5uXi6ejk3d/f4eLh3uDf4uPi3+Df4uPh4OHg3N7e6Ofk3+Df4uLg3d7e3+Dg4+Ph8Ozn9fDp9O/p9O/p9O/p9O/p9O/p9O/q9O/q9O/q9fDq9fDq9fDq9fDq9/Ps9/Ps9vLr9fHr9/Ps9/Ps+PPs9/Ps+PTt+PPs+PPs+PPs9vLr9/Ps9/Lr9/Ps+PPs+PPs9PHr8/Dq8/Dq9PHr9fHr9PDq8/Dq8e7o8e7o8u7o9fDq9fDq9fDq9O/p7unk7urk7Ojj7+vl8Ozm7unk7Ojj6ubh7Ojj6+fi7enk7url7Ojj7enk7+vl8Ovm7enk6eXh6+fi7+vl7unk6ubh6ubh7ejj7unk9fDq9fDq9fDq9fDq9fDq9fDq8u7oxsfFs7W1u7y8wsLB0NDNvr6+urq8sLKzvL29s7W2uru7vr++vr++vL29v7+/0tDNwMHAs7W2vr69wMC/ubq6vr++u7u8ubq6zc3L+PPt9O/p9fDq9fDq9fDq9fDq9O/pw8TCtLa2u7y8ubm6ycnGw8TCubq6wMC/wsLC0tHOv8C/wsHBxsXFtLW2sLGz49/b+/Xv+PPs+PLs9vHr9/Lr+fPt+fTs9/Lr9/Ls9fDq9fDq9fDq9fDq9fDq9fDq9fDq7+vl7+vl8Orm8ezn8+/p8+7o8Ozm8e3n8u7o8u7o8u3n8u3n8u7o8e3o8u3o8+7o9fDq9O/q9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8+7p9fDq9fDq9fDq9O/p8+/p9PDq9O/p9fDq9O/p9fDq9fDq9fDq9O/p9fDq9vHr9O/p9O/p9O/p9O/p9O/p9O/p9O/p8+/o9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq397a3t3Y4N7a29rW3dzY39/Z2djU397a4eDb3NvX3dzX4N/a5OLc29rW3NvX3t3Y29rW29rW3dvX5OLd4N7Z2djV3dzX29rW4eDb9fDq9fDq9fDq9fDq9fDq9fDq9O/p4N/a3dzX4d/a3drW19bS4N7a3tzY3dzY29rV5+Xf29rW1tXR4uDb4uDb2tnV3tzX4N7Z2tnV4t/b4eDb2tjV4d/a3NrW5+Tf9vHr9PDq9fDq9fDq9fDq9fDq9fDq9O/p4N7Y2tjV3dzX3dvX4uHb4t/a3dvX2tjU3tzY5OHc3dzX19bS4+Hd9fHq9fDq9vDq9fDq9vDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8+7o9O/p8+7p8+7p9fDq9fDq9O/p8+7o9O/p8+/p9O/p8+/p9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDq9fDq9fDq9PDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq+PLr+PLs+PPs+PPs9vDq+PLs+fLs+PLr9vHq9/Lr+fPs9vHr9/Hr+PLr+PPs+PLr+PLs9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p6Ofk5eXi5uXj5eTi8e7o5+bk5eTi6Obj8Ozn6+rl5eXi7evm7uvm6Obj5uXj5ubj5+bj9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8+/p3+Df2Nvc1tra19rb7uvn3N7d2dzc3+Df6efk5eXi2dzc6ejk5eXi3d/e2t3d3d7e2tzc9O/q9fDq9O/q9PDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq+vTt+/Xt+/Xu/PXu9/Ls+vTt+/Xt+vTt+fTt+PLr+/Tt+fPt+vTt+/Tt+vTt+/Xu+/Xt9/Hs9vDq9/Ls9/Ls9vHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq7url7url7enj6+jj7+rl7url7unk7unk7Ojj9O/p8ezn7Oji7Ofj7url8Ozn6+fj7Ojj7enk8ezm7ejj7Ojj8Ovm9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDpzs/My8zKx8jGwcLAzM3KzM3KysrIysvIxMbD4+Hc2tnWv8C/w8PC1tXS4N7ayMjHy8vJzc3L4+Hcy8vJxcXE29rW9/Ls9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDp7evl7erk7uvl7erk6+nj7evk7uvl7Ojj7+3m6ufh7Onj7erk8+/o+fTt9/Ls+fTt+PPt+PPt9/Ls+fTu+fTt9/Ls9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq"
     },
     {
-      "id": "instagram-17954388411239779",
-      "date": "2026-09-09T08:25:42+0000",
-      "topic": "Cyprus increased its standard corporate income tax rate from 12.5% to 15% from 1 January 2026.",
-      "topicKey": "cyprus increased its standard corporate income tax rate from 12 5 to 15 from 1 january 2026",
-      "headline": "Cyprus increased its standard corporate income tax rate from 12.5% to 15% from 1 January 2026.",
       "creativeKey": "instagram-17954388411239779",
+      "date": "2026-09-09T08:25:42+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Cyprus increased its standard corporate income tax rate from 12.5% to 15% from 1 January 2026.",
+      "id": "instagram-17954388411239779",
       "instagram": {
         "mediaId": "17954388411239779",
         "permalink": "https://www.instagram.com/p/DdD09DAiqsZ/"
       },
-      "publishedAssetSha256": "c39ea632a52c4ac1ce1ee6dcbc7ef36a7fd77bd62ac2f803fff93e5779e33699",
+      "phase": "legacy_published",
       "pixelHash": "296cfa68376f07e61ad15658194fac92047d17b78a6c832e5a36bb3c337394f2",
+      "platform": "instagram",
+      "publishedAssetSha256": "c39ea632a52c4ac1ce1ee6dcbc7ef36a7fd77bd62ac2f803fff93e5779e33699",
+      "topic": "Cyprus increased its standard corporate income tax rate from 12.5% to 15% from 1 January 2026.",
+      "topicKey": "cyprus increased its standard corporate income tax rate from 12 5 to 15 from 1 january 2026",
       "visualSignature": "rgb32:9fDq9fDq+PPt+fTt+fPt+fTu+fTt+fTt+fTu+fTt+vTu+fTu+fTt+fTt+fTt+fTu+fTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+fPt9fDq9fDq9fDq9O/p3NjU1dLP19TQ1dLO1dPP1tPQ1tPQ1tPP1NHO1dPP1tPQ1tPP1dPP1dPP1dLP0dDN0dDN0dDN0dDN0dDN0dDN0dDN0dDN0dDN0dDN0dDN0M/M1tXR9PDq9fDq9fDq9PDq3N3c1dfX09bW3d7b2tza1dbX2NnZ19nZ5OPf3N3b1NbW1tjY3t7c2NrY3Nzb7enj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7enk9fDq9fDq9fDq9PDq5OTi3uDf297e6ejk4+Ti3d/e4OHg4uLh7uzn5ubj4eLg3t/f5+bj4eLg5OTi9vHr9fDq9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9/Lr9fDq9fDq9fDq9fDq+/fw/Pfw/vz0/vrz/vv0/vvz/Pjx//vz+fPt/Pjx/frz/fv0/Pjy/vny/fjy+vfw/Pjx9/Hr9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDqw8PBxMTCs7W2qautqKutsrW1xsbFq62v2NbTv7++t7m5tbe4wcLBtLW2uLq6srO0s7W26+ji9/Hr8+/p9O/p9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHrt7i4x8jFtLi3uLq7rrCxqKutq62vpKepzszKwsPCoaWnmZ2gq66uoKOlo6eoqKuto6eq7erk+PPt+vXv+vbw9/Pt9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHrv7+/vL29tbe3oqaotLa3q62vsLKzqqyvqautubu6rrCyq62uvr++4+HcqKusrbCwuLm5y8vJzc3Kpqmqqayu4d7a+fTt9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDquLq6t7m6pqiroaSnpKeqvL29q62vpairpKeqoaWnsbO0tLW2srO07+zmsLK0pKeppamqxsfF4+Hdubq6pqmr4N3Z+fTu9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq/Pfw//nz/fjy/vrz//z0//72+vfx/frz//z1/vv0//vz+/bv+fTt9vDq+vfv/Prz+/jx+fXu9vLr+vfw+vbw9/Pt9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/q9/Lr5eTisb7I1tna+PLqvsfOtMDK3N3d2tzcvsbO7Onl09fZ7+zn9fDq9fDq9O/p8+7o8+7p9O/p9fDq9O/p9O/p9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDq9fDq8e3oj6W3qrjE//vyfpevhJ2yz9TXr73Hlqq7rLrFusXM7+zn9/Hr9O/q9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p+vPsm669mKq78e3o0tbYn7C+hZ2x9fDqydDTpbXBoLHAmqy85eTh9/Hq8u3o9O/p8+7o8+7o8+7o8+7o8+7o8+7p8+7o8+7p8+7o8+7p9fDq9fDq9fDq9fDq9O/p+fPs5+jmssHMsL/L4OPjyM/VtcLM3eHi///12t7f7O7r0tncw8zS9/Pu/vny//rz+vXv/Pny/Pjx/Pfx/vr0/vrz+/bv+/fx/Pjy/vny+vXv9fDq9fDq9fDq9fDq9fDq8+7oxMLCs7OyxMPA0M7L0M3Ku7q5tbS1u7y8wsHAr6+xra2u2dbRycjGt7i4sLKz0tDOuru6ubq6u7y8rrCxs7S0x8bFtLW2t7m5tba2y8rI8u3n9vHr9fDq9fDq9fDq8+/p0NDOwMLBy8vK29rW3NvXxcbFwsPCz8/N0NDNx8jGv8HA2djVzc3LysvIx8fG2NfUyMnH1NXR1tbSw8TDw8TC2djUz9DNy8zKx8fG29rW8u7p9O/q9fDq9fDq9fDq9fDq+vfx/fv0/Pjx+vfx+vfx/Prz/Pnz/fnz/fnz/fny//z1+vfx/frz/fnz/fr0+/jx/Pny/Pjx/Pjx/vv0/fv0+vbv+/nz/Pjy/frz+vXv9PDq8u/p9fDq9fDq9fDq9/Hr4d3a3dvX5ePd3tzX2djU3dvY6eXg3NrW29jV4+Dc2tfU3dvX2tjU29rW2tjV3NrW5ePe3tzY29nV393Y397Z5OHc1tTS4+Db4d7a5eLd7enk9vHr9fDq9fDq9fDq9O/p09LPysvJ0NDOysrIyMjHwMHA0NDN3tzY3dvX5uPf3drX29nV09LP4d/b4d/b39zY6ebh4t/b4N7a4+Dc49/b5uPf3tvY5eHd4d7a5+Pf7url9vHr9fDq9fDq9vHr8e3n29nV4N7a2dfU5OLd5eLe2tjV4N3Z9/Ls+vTu9/Hs+vTu+fTu+vTu+PPt+PPt+fPt9/Hr+PPt+PPs+PLs+PPs+PLs+fTu+PLs+fTt+PPs9vHr9fDq9fDq9fDq9fDq9fDq+/bv+/Xv+/bv+fPu+vXu/Pbw+/Xv+PLs9/Hr9/Lr9/Ls9vHr9vHr9vHr+PLs9/Ls9/Hr9/Ls9/Ls9/Ls9vHr9vHr9O/p9O/p9O/p9fDq9fDq9fDq9fDq9fDq9fDq8+/p4+Hc5uTe6OXg6+ji5ePe5+Pe5+Te5uLe6ufi5ePe5OHc7Ojj5+Tf6ebg5eLe5OLc6eXg5uPf5uPe4+Db6eXh7Ojj9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8+/o29vW2NjU1dXR2NjT19fT3d3X2NnU1tbS2dnU2dnU29rV29vW19fT2tnU1tXR2trV3t3Y29vW1dbR0tLP3d3Y7urk9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8+/p6+jj6+jj6ebh7Ojj7Ojj7+rl6+bi7Ofj7Onk7unl8ezn6ufi6ufi6ufh6+fi7urk7+vl7urk6eXg6+fi7url9/Lr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9/Lr9/Ls9/Ls9/Ls9vHr9vHr9/Ls9/Ls9/Lr9/Hr9vHr9/Ls9/Ls9/Ls+PLs9/Lr9vHr9vHr9/Ls9/Ls9/Hr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHq9/Hr9vDq9vHr9vHr9fDq9vHq9/Hr9/Hr9/Hr9vHr9vDq9/Hr9vHq9vHq9fDq9vDq9/Hr9vHq9/Hr9/Hr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8Ozn7Onl7uvm7uvn7erm8+7p7urm7Onl7evm7erm8Ozo8u7p7Orm7erm7uvn8ezo8e3o7erm7uvn7urm7erl9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p4eLg1dna293d3N7d2Nvb6unl2Nzc09nZ2t3d19rc3+Hf7Onl1Nja2Nvb2dzc4+Ph5OTh1trb2t3d2t7d19vc8O3o9vHq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq+PPt+/Tu+vTt+vTt+vTt+PLr+fTt+vXt+/Xt+fPs+PLs+fPs+/Xu+fTt+fPs+fPt+PPs+vTt+fPs+vXu+vXu9/Lr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq7url7url7enk7Ojj7url7+vl7urk7unk7Ojj8+7p8e3n7Ofj7Ojj7+vm8ezn7Ojj7enj7ejj8Ovm7Ojj6+fi8Ovm9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDpzs/My8zKx8nHwsPBzs7Ly8vJyMnHysvIwsTC5uPe2djVwMHBwcLB0dDO3dvXycnHy8vJzc3L4+Hcy8vJxcXE29rW9/Ls9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDp7evl7erl7uvl7erl7uvl6+jj7Ork7evl7Onk7Onj7Onj7+zm7uzm6uji8Ozm+vXu+PPt+PPt9/Ls+fTu+fTt9/Ls9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq"
     },
     {
-      "id": "instagram-18093610991112678",
-      "date": "2026-09-09T07:56:56+0000",
-      "topic": "Cyprus grew 3.3% year-on-year in real terms in Q2 2026. But the more useful question is where the growth is coming from.",
-      "topicKey": "cyprus grew 3 3 year on year in real terms in q2 2026 but the more useful question is where the growth is coming from",
-      "headline": "Cyprus grew 3.3% year-on-year in real terms in Q2 2026. But the more useful question is where the growth is coming from.",
       "creativeKey": "instagram-18093610991112678",
+      "date": "2026-09-09T07:56:56+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Cyprus grew 3.3% year-on-year in real terms in Q2 2026. But the more useful question is where the growth is coming from.",
+      "id": "instagram-18093610991112678",
       "instagram": {
         "mediaId": "18093610991112678",
         "permalink": "https://www.instagram.com/p/DdDxoWMCv6v/"
       },
-      "publishedAssetSha256": "2f6863728a7ae126dddea8f77ba2f07e24063c0af1dbf4af0bb1cde6b99e36d5",
+      "phase": "legacy_published",
       "pixelHash": "acf7cf5d32e354c5c7ba91227d5cb34b9ee94f1510df9635ed5092ada8e6d9a0",
+      "platform": "instagram",
+      "publishedAssetSha256": "2f6863728a7ae126dddea8f77ba2f07e24063c0af1dbf4af0bb1cde6b99e36d5",
+      "topic": "Cyprus grew 3.3% year-on-year in real terms in Q2 2026. But the more useful question is where the growth is coming from.",
+      "topicKey": "cyprus grew 3 3 year on year in real terms in q2 2026 but the more useful question is where the growth is coming from",
       "visualSignature": "rgb32:9fDq9fDq+PPt+fTt+fPt+fTu+fTt+fTt+fTu+fTt+vTu+fTu+fTt+fTt+fTt+fTu+fTt+fTt+fTt+fTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+vTu+fPt9fDq9fDq9fDq9O/p3NjU1dLP19TQ1dLO1dPP1tPQ1tPQ1tPP1NHO1dPP1tPQ1tPP1dPP1dPP1tPQ1tTQ1tTQ1NLO0dDN0dDN0dDN0dDN0dDN0dDN0dDN0dDN0M/M1tXR9PDq9fDq9fDq9PDq3N3c1dfX09bW3d7b2tza1dbX2NnZ19nZ5OPf3N3b1NbW1tjY3N3b2tza1tjY1djX1NfW3t7c7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7Ojj7enk9fDq9fDq9fDq9PDq5OTi3uDf3N7d6enk5OTh3N/e3+Hg4uPh7uzn5ufk4eLg3+Hg5eTi5OPi3t/f3t/f3uDf6ujl9vHr9fDq9fDq9fDq9vHr9/Lr9/Lr9/Lr9/Lr9/Lr9fDq9fDq9fDq9fDq/Pfw/ffw/vv0/vny/vr0/vv0/Pnx/fnz+/Xu+vTu//z0/Pbu/Pfv/fjw/vz0/vrz/vny/fny/fny+/fx/fny/fny+/Xv9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHrxcXEw8PDuLq6r7Kyr7Gzr7GyyMjHtri3ycnG4uDbq66w19bT1tTRvb69rrCxvb69uLq6uru7tLa2uru6tLW2tbe3uru66+fi9vDr8+7p9O/p9O/p9fDq9fDq9fDq9fDqtra4x8jGtbe3ra+xqKusnKCjqKqsqKussrS04N/al5yfv8C+zc3Ll5uekZaapKapqKusqauti5GVq62vm5+il5ugm5+j09PQ/fny+/fw/Pnx+/fw9PDq9fDq9O/p+PTttri4ubq6xsbExsbF4N3Zuru7tre4vb29tLa3uLm5sbO02NfTy8vIwMLA6Obgu7y7vr++s7W14uDczMzKwMHAuLm5vL28tbe3sLKzu7y8s7a2x8jG9vHr9fDq9O/p+fTtp6qsp6qstre4zczK3drXo6aos7S1rrCxpaiqrrCyoKOm0M7MxcXEsbO04N3avr2+srS1mJ2g1NLPtLW2pKiqoqaosLGyq66vpqmrx8bFs7S2vb299/Lr9fDq9fDq9O/ptbe4rrGylpqemp6hkJSamJyfmZygrrCy1dXSmp2hmZ2hoqWnl5ufjJCWqauu5ePe//z1/Pjx+PLs+vbv/Pjx/Prz+vbv/fny/vrz+vbv/Pjx+/fw9PDq9fDq9fDq9fDr2NbT1dTQzs3L3NrW0dDO0dDNz83M0c/O5+Tf3NnW19TS0dDO0tHO1dTR4d7a8Ovm9fDp8+7o9O/q9O/p8+/p8+7o9O/p8+7p8+/p9O/p9O/p9O/p9fDq9fDq9fDq9fDq+vXu+/Xv/Pfw+vTu+/bv+vXv/Pbv/Pbw9/Ls+PTu+fTu+/Xv+/bv+vXv+PPt9vHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8+7o9fDp9O/p8+7o9vHq+vPs+fLs8u3o9vDq+PLr+/Ts+PLs+fPs+PLr+PLr9e/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p+vTs7+3n8Ozn/PXtzdPWrbvG1tnb+/Ts8OznwsvRsb3I297dusXN19rc2Nvb7+vn+PLr9PDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/q9vHq6+jlpLXBprbD7uvm5+bihZ6yrLnF//rx9vDq1dnae5atusXMq7nFoLG/rbvG1trb8+7o8+/p9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDq9fDq9fHstsPMt8LM9/Lt0dfaj6W3ucXO0tja293fytLXh5+z09jb9vTuwMvSs8DKm6+/7+3p//nx+fTt9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDqzczJxMXC1dTQ0c/Mq7G20NPUzczKxcjIv8LCqrG20NPT1tXRu76+xMXEyMrJtrq8zMvJw8PB1dTR+fPt9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq3dzX2tjV4d/b3tzZ4t/a8u7n3dzY5uLe4N7a4N3Z7erj5eLe3NrW3tzY4d7a3tzY393Z2dfU4+Hd8+/p8u7o8+/p8+/p8+/p8+/p8+/p8+/p8+/p9fDq9fDq9fDq9PDq+/fx/fny+/fx+PTu+vbw+fXv/Pjx+/fx/Pjx/fnz+PXu+fXv+vbw/fjy/Pjy/fny/fnx/vny/Pfx+fXu+fXv9fHr8u7p8u7p8u7p8u7p8u7p8u7p9fDq9fDq9fDq9fDq2NbS2tjU1tTR7urk4d7a1NHP2tfU3dvX3NrW09LO4t7a4N3Z5uPe2tjV1tPR1tPQ2dbT1tTR19TS0tHO19XS6eXg9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDqv8G/rbCxsrW0zc/M0tLPwMDAsLOzu728sbW0s7a2vL69uLq6ycrHzc3Kzc3Ky8vJzc3K0dDNy8vJzMzJzMzJ5uPe9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9vHr8e3n2tnVzczKzc3LysrI4d/a7erk0NDM0NDNz8/M0dLO09LOysnH0tLO+fTt/ffx/Pbw/Pbw/Pbv/Pfw/Pfw/Pbw+PPs9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fHq+vXu/Pbv+/bv/Pfw+PPt9/Hr+/Xv+/Xv+/Xv+/Xu+vXv/Pfw+/Xv9O/p9O/p9O/p9O/p9O/p9O/p9O/p9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8u7o8+7o8+7o8+7o8+/p9O/p8+/p8+7o8+/p9O/p9O/q8u7o8+/p9fDq9O/p9PDq9O/p8+7o9fDq9vHr9fHq9O/p9fDq9PDp9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p4N7Z3NvW2tjU4uDb4uDa4N7Z2djU393Y3dzX3t3Y2NfT4N/a4uDb4+Hb2dfT2tnV6ufi3drX4uDb3dvX3NrW2NfT4uDa4+Hb8u3n9vHq9fDq9fDq9fDq9fDq9fDq9PDp4uDb3NrW4d7Z4t/b29rV5ePd39zY3tzX3NrW3NrX393Y5ePd3NrW2NbT4d/a4uDc3tzX29rW2tjV2tjV7+vm9vDr9O/p9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9O/p393Z1tTR3NrW393Z29jU2tnU5+Xf9O/q8+7o8+7p9O/q9O/p8u7o8u7n8u7o8+7o8u7o8u7o8+7o8+7o9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq8ezn7+rl8u3n8e3n8u3n8e3n8u7o9fDq9fDq9vDq9fDq9fDq9fDq9vHq9fDq9fDq9vDq9fDq9vHr9fDq9PDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9/Ls+PPs9/Ls+PPt9/Ls9/Ls9/Ls9vHr9/Ls9fDq9vHq+PLs9/Ls9vHr9fDr9/Ls9/Lr9vHr9fDq9/Ls9/Ls9vHr9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq7+rl7+rl7unk7ejj7url7+rl7url7urk7ejk9O/p8u3n6+bi7Ojj7+vl8ezn7Ojj7enk7enk8ezm7ejj7Ojj8Ovm9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDpzs/My8zKx8jGwMLAzs7LzMzJycrIy8zKwsTC5ePe29rWxMXExcbE1tXS4N7ayMjHy8vJzc3L4+Hcy8vJxcXE29rW9/Ls9O/p9fDq9fDq9fDq9fDq9fDq9fDq9fDq9PDp7evl7erk7erk7Ojj7erk7Onk7erk8O7n6+nj6ubh7+zm+/bv+vTt+PPs9/Ls+fTt+PPt+PPt9/Ls+fTu+fTt9/Ls9fDq9fDq9fDq9fDq9fDq9fDq9fDq9fDq"
     },
     {
-      "id": "instagram-18144417028560208",
-      "date": "2026-09-09T07:22:54+0000",
-      "topic": "Have an opportunity worth discussing?",
-      "topicKey": "have an opportunity worth discussing",
-      "headline": "Have an opportunity worth discussing?",
       "creativeKey": "instagram-18144417028560208",
+      "date": "2026-09-09T07:22:54+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Have an opportunity worth discussing?",
+      "id": "instagram-18144417028560208",
       "instagram": {
         "mediaId": "18144417028560208",
         "permalink": "https://www.instagram.com/p/DdDtvHCCjNR/"
       },
-      "publishedAssetSha256": "4f203c400e9da5b52789d7f927089322c033a9742b8d13edc69c0c65d5b94073",
+      "phase": "legacy_published",
       "pixelHash": "1a0493dae491023064b37715be19b4c751ecd6b3f07d1ca006c27450584beb00",
+      "platform": "instagram",
+      "publishedAssetSha256": "4f203c400e9da5b52789d7f927089322c033a9742b8d13edc69c0c65d5b94073",
+      "topic": "Have an opportunity worth discussing?",
+      "topicKey": "have an opportunity worth discussing",
       "visualSignature": "rgb32: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"
     },
     {
-      "id": "instagram-17928580992404949",
-      "date": "2026-09-09T07:21:36+0000",
-      "topic": "The right connection can change the value of an opportunity.",
-      "topicKey": "the right connection can change the value of an opportunity",
-      "headline": "The right connection can change the value of an opportunity.",
       "creativeKey": "instagram-17928580992404949",
+      "date": "2026-09-09T07:21:36+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "The right connection can change the value of an opportunity.",
+      "id": "instagram-17928580992404949",
       "instagram": {
         "mediaId": "17928580992404949",
         "permalink": "https://www.instagram.com/p/DdDtn2xio1T/"
       },
-      "publishedAssetSha256": "a38a6ce790e339b6203d216550b749f7061151eca853fc028d22c0e1b8307332",
+      "phase": "legacy_published",
       "pixelHash": "d34af5e44d3e32d284f9961121c64aa3828678890a2435c7b0f2ff9a7fd10baa",
+      "platform": "instagram",
+      "publishedAssetSha256": "a38a6ce790e339b6203d216550b749f7061151eca853fc028d22c0e1b8307332",
+      "topic": "The right connection can change the value of an opportunity.",
+      "topicKey": "the right connection can change the value of an opportunity",
       "visualSignature": "rgb32:9/by9/by9/Xx+Pby9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9vby9/by9/by9/by9vXx+/v3/Pr29PPv8fDs8vLu8PHt8/Lu8/Lu+vj0/Pz3+Pj09/Xx9/by9/by9vj08vXx8/Tx9/by9vXx9vXy9/by9vXx9fXx9vXx9vXx9vXx9/by9/by9vXx9vXx9PPw///7naSqPEtdaHOBcn2KcXSBdniEaXWCbHeESVdnWmZ15+jl+vn1+fby8PTwyOfm1vXz5/n1+fby+vr2+fn0+fjz+/r2/v34/fv3/fv3/v34+vn0+Pfy//34+vn08vHu////X2h2AAAWP05hsLW8OZemSYiWo6ixfYiVBhgxCBgw0NLS//35+fj07u7rrba6nqmvyM3Ov8XHoqyxmaSrwcfIy9DRqrO3s7u/r7e8rrW6sbm9prC0rLW509bX+fjz////ZnJ/AAwnEiM6dH6LNmJ0NqCvXnmImaKtHC9GECQ609bV/v34+Pfz8vLu1djYvcPG1NfWyM3PoayxusHEztLSy8/QxMrLsLi8vsXHys/QzNHRvMPFvcTG1djY9PPv////W2Z0GCxCPlBiQFJlT1prSVJkT2BxR1lqNEZaGStCzc/P//75+fj07u7ru8LEqbK21dnYucDDsrq9t73Aq7S5naiu1NjZrri7r7i82NvawcfHpq+1qLG1q7S38fDt///+ho+YKz5RSVtsPVFiPFFiP1FjPVBhQ1RlQlVmQVFi4OHf/Pr2+Pfz8/LusLm8yM3OvMLE0NXVzNHRtr2/tLu+tr2/s7u+yc7PvcTFq7S4usHD8fHt/Pv2+vn09/by9/by9/bz6Onm5ufk5+jl5+fl5+jl5+jl5+fl5ebk7u/s+fj09vXx+ffz8PDtxMnL3uHfwMbI2NvazdHSq7S5tr3BxsvNztLTxsvMx8zOyM7PuL/C6ero+Pfz9fTx9/by9/by9/by+/n1+/n1+/n1+/n1+/n1+/n1+/n1+/n1+fjz9vXx9/by9/by+Pfz//75+vn1//75/Pv2/fz3///7//76/v34/fz3/fz4/fz4/fz4/v35+fj09/by9/by9/by9/by9/by9vXx9vXx9vXx9vXx9vXx9vXx9vXx9vXx9vXx9/by9/by9/by9/by9fXx9vXx9fTx9vXx9vXx9fTw9fTw9fXx9vXx9vXx9vXx9vXx9fTx9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by+Pby9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by+Pby9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/bx9fXx9PXy9fXx9/bx9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9fXx9PXy9PXx9/bx9/by9/by9/by9/by9/by9/by9/by9/by9/by9vXx9fb0+/39/v7/+vv89PXy9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by8/Xy+vz7/v7++/399Pb09/Xx9/by9/by9/by9/by9/by9/by9/by9/by9PXx/f799Pj64Orw+/z9+vv79PTx9/by9/by9/by9fTw9fTw9fTx9fTw9/by9/by9/by9PTx+vv7+fv84+vx9Pf6/f799PTx9/by9/by9/by9/by9/by9/by9/by9/bx8/Xz////5OzywdPh8PX5////9vTx+Pby9vby9/by//78///6///6///89/by9vXy9/by9/Xy////7PP2xtfk4uvy////9PXz9/by9/by9/by9/by9/by9/by9/by9/by9fXy+vz87vP46O/08/X59/v75PLv+fby+vfz+vn2oaquUF5uUV9uo6qv+vr2+fby+fbx5fPw9vr78/b66O/07/T2/P399PXy9/by9/by9/by9/by9/by9/by9/by9/by9/by+Pn3/////////v7++Pr14/Tw2fHt+f76eYWPAAQfAg0nAgslAAUfeoaP+v/62PDt5PPv9ff0////////////9/j29vXx9/by9/by9/by9/by9/by9/by9/by+Pfz9vXx4eLh2t3d1tvc2N3b3+Hf+/Xy+P34vtTUGCU7OENWNUBTPUhbOENWGiY9wNTV9/z3/vj07+/r1tra3ODg1tra6uvn+/r19/by9/by9/by9/by9/by9/by9/by9vXx5+nl0tbVzNDPzdHQzNDRzdLS6Oro///9vbq9BS5FKGJzIl1vKFhqJlxuDTtRu7e6//746+zp4+Tix83N1NfXy8/P297d7O3q8fHu+Pfz9/by9/by9/by9/by9/by9fTx7u7r8/Pv8PHu8PHv8fLv8PDs8e7r/v35yNTUCy5EAzFICDdNBy5FAi1DDTJIytbW+Pn17+zp8PDs8fLv8PLv8fHu7+/r7e3q8/Lv9/by9/by9/by9/by9/by9/by9/by+Pfz9fb1/P39////+vz79fb06fXx1/Hu7/34dn6JAAUgAg0nAhApAAYhd36J8P342PHv6fby9Pbz+vz8////+/389vf1+Pfz9/by9/by9/by9/by9/by9/by9/by9/by8/Tx/f7+9Pf63ujw/Pz++Pv74vLv9vbx/Pjz+fn1mqKpR1dnSFhom6Oq+fn1+/fz9fbx4/Lw9/v7+vv84evx8/f5/f799PTx9/by9/by9/by9/by9/by9/by9/by9/bx8/Xy////5OzywNPh8PT4////9vTx+Pby9fXx9/by///8///6///6///89/by9vXx+Pby9/Xy/v/+7fL2xNbj4+vx////9PTy9/by9/by9/by9/by9/by9/by9/by9/by9PXx+/z87vP36fD08vb4+/z78/Tx9/by9/by9/by9fTw9fTw9fTw9fTw9/by9/by9/by9PXx+vv78vX56e/07/T3/P399PXx9/by9/by9/by9/by9/by9/by9/by9vby9fXx+Pn2/////////v7/9vf09vXx9/by9/by9/by9/by9/by9/by9/by9/by9/by9vby9vXx9fbz/v/+////////9/j29fTx9vby9/by9/by9/by9/by9/by9/by+Pfz+/n16enm1tvb2d7e2t3c7e3q+/r29/by9/by9/by9/by9/by9/by9/by9/by+Pfy+Pfz+vn18/Lu19vb1Nna19vb6+zo+/n1+ffz+Pfz9/by9/by9/by9/by9/by7e3q7+/r2dvazNHQ0tfVzdHR4uTh6+zp8fHu+Pfz9/by9/by9/by9/by9/by9/by8/Pv7Ozp7u7r4+XjzdDRz9TTy9DQ3+Hg6+zq6uvo8/Pv+Pby9/by9/by9/by9vXx7+/r7e3q8O/s9fTv8/Pu8PDt8O/s6+zp8vLu9/by9vXx9/by9/by9/by9/by9/by9fTw7u/r7u7r7+/s8/Pv9PPv8vHu8PDt7e3q7e3q9PPw9/by9/by9/by9/by+vr0/Pz2/Pv2+fj0+Pfz/Pv1+/r1+/v2+vn0+fn0+/r1+/r19vby9fXx9fXx9fXx9fXx9vXx9/by9/fy+vn0+fn0+fj0+fj0+fn0+vn0+vn0+Pjz9/by9/by+Pfz8/Lv1tnZ1tjY0dbV4+Xj6Onm09fW2d3a2Nra5+nm4+Xj1djY1NfX7/Ds+Pfz9/by9/by9/by9/by9vbx9PTw5+jm5efk5+jl6Orm6ern6Ojl6urn6erm8/Pv+Pby+Pfy9PPw3uDf2Nva2Nvb7Ozq6+vp2dzb3eDe3d/e7Ozp5ufl2Nvb297d9PPw+Pfy9/by9/by9/by9/by9/by9vXx6Onm5ebj5+jm6ern6Onn6ern6Onm6ern8/Lv+Pfy9/by9/fy/Pv2/fv3/fv3+fj0+fj0/fv3/Pv2/fv2+fj0+vn1/fz3/fv2+Pby9/by9/by9/by9/by9/by9/by9/by+vj0+vn1+vj0+vj0+vn0+fj0+vn0+vj0+Pfz9/by"
     },
     {
-      "id": "instagram-18558737938076399",
-      "date": "2026-09-09T07:20:58+0000",
-      "topic": "A development opportunity in Kiti, Larnaca.",
-      "topicKey": "a development opportunity in kiti larnaca",
-      "headline": "A development opportunity in Kiti, Larnaca.",
       "creativeKey": "instagram-18558737938076399",
+      "date": "2026-09-09T07:20:58+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "A development opportunity in Kiti, Larnaca.",
+      "id": "instagram-18558737938076399",
       "instagram": {
         "mediaId": "18558737938076399",
         "permalink": "https://www.instagram.com/p/DdDthQEigDC/"
       },
-      "publishedAssetSha256": "ab2196f0496e44e6c7cf21e61bd0c89f289c5b546677b7d1ecd2607f8afbeda5",
+      "phase": "legacy_published",
       "pixelHash": "ab7d08a0daf967b744d554a55aa3d52d846ae84bb31a877a0a8d89ede2d22df4",
+      "platform": "instagram",
+      "publishedAssetSha256": "ab2196f0496e44e6c7cf21e61bd0c89f289c5b546677b7d1ecd2607f8afbeda5",
+      "topic": "A development opportunity in Kiti, Larnaca.",
+      "topicKey": "a development opportunity in kiti larnaca",
       "visualSignature": "rgb32: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"
     },
     {
-      "id": "instagram-17908221186471119",
-      "date": "2026-09-09T07:19:55+0000",
-      "topic": "Not every opportunity is a good opportunity.",
-      "topicKey": "not every opportunity is a good opportunity",
-      "headline": "Not every opportunity is a good opportunity.",
       "creativeKey": "instagram-17908221186471119",
+      "date": "2026-09-09T07:19:55+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Not every opportunity is a good opportunity.",
+      "id": "instagram-17908221186471119",
       "instagram": {
         "mediaId": "17908221186471119",
         "permalink": "https://www.instagram.com/p/DdDtZUYCvbn/"
       },
-      "publishedAssetSha256": "5ff563208f7447f519b42f37567ff19213759d9aed8d45e2c6ca0dd0593301de",
+      "phase": "legacy_published",
       "pixelHash": "4b059305944aa46ed70c2017af1cf64df52d3b95321f195274ba4f8300d4b841",
+      "platform": "instagram",
+      "publishedAssetSha256": "5ff563208f7447f519b42f37567ff19213759d9aed8d45e2c6ca0dd0593301de",
+      "topic": "Not every opportunity is a good opportunity.",
+      "topicKey": "not every opportunity is a good opportunity",
       "visualSignature": "rgb32:BxorBxorBxkrBRktBRovBhswBhswBhswBxwxBxwxBxwxBx0yBx0yBx0yBx0yCB4zCB4zCB40CB41CB41CB41CR81BB43By1TCTJYCDFWCzJXCjFXETdcEjhcEjhdEjhdBxorBxosBR0xBh4yBx0yBhswBhswBxwxBxwxBxwxBx0yBx0yBx0yBx0yCB4zCB4zCB40CB41CB41CB41CiA2Bh00JTdLNE9mOVNzPlV0MVJyMlRyFTtfETdcEjhdEjhdBxkrBh4yCThKCTxNCC1ABhovBxwxBxwxBxwxBx0yBx0yBx0yBx0yCB4zCB4zCB40CB41CB41CB41CR82CiA3AxkxR1lqur3ERqa0WqGzs73HjKCwG0BjETdcEjhdEjhdBRouBhswBxwxBhwxBhwxBxwxBxwxBxwxBx0yBx0yBx0yBx0yCB4zCB4zCB40CB41CB41CB41CR82CR82CR82BRw0DSA2cHuKMmBzNKW3X4acmKi4I0dqDDNZEzleEjhdBhswBhswBBkvBhswCB0yBxwxCB0yCR4zCR40CR4zCR8zCR4zCiA0CR81CR82Ch82CR82CiA3CyE3DCE4Bx01M0ZZRVdoSV5vV2NyUV9xXXqSVXKMRWSAIERnDzZbEzhdBhswBxwxCx4zBRktAxQqBxsxBRkvABMqAhUrAhQqARQqBRkvBBgwBhwzAxYuAxcvAxgvAxcvAxcuAxgwCB01FCpBHDRLEi1DGzZMIDlOFzdSJUlsLlByFzxhETdcEjhdARcsFys+m6Ssc36JaHSBcn6KKDtNeISPUGBvaHWCbHqGXm16TF1tIzhLY3KBYnF/YnJ/Y3KAZHOCX3B+cX+Mb32LTV9wYnOCZnaFh5SgUGJyM1FuCDBXEjhdEjhdEjhdAxkuESU5TV1sW2p3Xmx6QFJhKDtNV2d1SFhpUmJxV2h2O01faneFFSpAXm17doOQcX+McoCMW2p5VWV1LkNXVmh4X3B/UGNzTF9wR1pscoCONUxhCC5SFDpgEjhdEjhdBBovESY5LkBSEyY6DR4zHjNGCR80GS5BHDFDGi5DEyk/N0pbLkFUGy9FGjBFIzhMIjdMJDhMFitCMURYPFBjDic+HTVKKD5SQlZpJzxSGjJJBR83CylEEThdEjhdEjhdARcsHC9CgYyWZHJ/RFRkiZSdOUpbrLS7iJOejJiiiJSemqWtOUxec4GOmKKrjpqll6Kri5eiiJOfeIeSgI2Zgo+bhJGdg5Ccf42aiZahdIOSCSU9CCM6DS5MEjlfEjhdBxwxCB4zESc7Eic7ESY7DyQ5Gy9DQlNkFStBEig+EylAEyk/DyU8ECY9Kj5SKT1SMERZECc/FC1DCSQ7DylAGTJIECpCDyhBBSE6Jj5UIztRByQ8CCU9CCQ8DzJSETxgBhwxCiA1KkBTIDVKJTpOITZKITZMGjBIHzVLJDtRKUBVIjlPKD5UKD5UHzZMJzxTITlPIjtRJD5UKEJXJT5UJz9XJD5VDShBBiQ7BSA4BB85CCU9CCU9CSU9CSdADzlaBx0yBx0yBxwwCB4yCR4yCh80CR40Cx81Ch80Ch81CyA2CyA2Ch82CyA2DCE3CiE5CSM5CSM5CSM5CyQ5CiM6DCQ9CiU8CSQ7CSQ8CiU9CiY9CSU8CSQ8CSU+CCU9CipGBx0xBx80DC1LDCxMCS1NBitMBitMBixMBitMCCxOBStMBitMDDBQDDFRDDBRCCQ7CilEDS5PCy1OBy1OCCxOBixNBy5PBy1OCC1PBy1OBi1OBy1ODTJUCy5LCCU/CCZABx0yCBsyD1JxDnqUMk9uQGF9PF15OFl3Pl97OFp3QWF9PV16DzZbDjRZDjddCSY+DCpHD3iTHF57NlJxPmB8RWR/MFNyOlt4Olx4OVp3QWB9QGF9EzpeCzFSCCZACSdBBx0yCR81Dj1eDk5uHD9gJ0pqJUhoJEZnJEdnH0NkKkxrJkppDjRYDjRYDjZaCSU9CytIDU5tFEVlI0RlJUhoJ0lpIENkJUdoIURlI0ZnJklpJEZnEDZaDDFRCSdACSdBCB4zCB81CSM8CSE8BSQ/AyI9BSM+BSM/BSRAByVABSNABSRACipECipFCilECSM6CSY/CyVCCSZEBSdEBiZDBSZDByhEBihECChFBihGBShFBihGCy1LCipFCSdACSdCCB40CB83DTZWDDtcEjZYETZYEDZXEDZXEDVXDzVXDjVXDzVXDzRXDTNWDTRXCSU/DCtHDT1fDzhaEjdZDzZYEDZZDzVXDjRXDjRXDjVXDjVXDjVXDTVYDDBQCSdBCSlCCB41CBs1D1RzDYGZPVd1TGuFRWSASGeCO116S2qEQ2J+SmmEIkZoCjFWDzhcCidBDSpJDn6XHWF+TGSAP2B8RWR/Pl97FTteDDNYDjRZDjRZDjRZDjRaDTJTCSlBCSlDCB40CCA3DDNTDDlaDzRWFDhZEzhZEzhZEjdYFDlaFDlaFTlaDzVXDTNVDTRWCSY/CytIDTpcDjdYEjhZEjhaEzhaEzlbDjVXDTRWDjRXDTRXDTRWDTVXDDFPCShCCShECB41CSA3CiQ9CiI9BiRBBiVAByZBBSRBByZCBSZBBiZCBSVBCChECytHCypGCCQ8CSc/CyZCCidEBSdEByhFBylFBilGBylGBylHCCpICixKCy1LCy9LCixHCSdDCilFCR81CR84DkFjDlFxIUJjIERmGj5hIUVmGj9hHkJjHEBiIUVlG0BiDjNXDjZaCSdADCxJDlJyFEZmJERlH0NkG0BiG0BhIUVmIENlIERkFDlcDTNXDjVZDTFTCihECilFCR82Ch02D1BwDXiSOVV0RGWBNlh2RGR/MlVzQ2R/PV57Q2N/N1h2DDNZDjdcCShBDStKDXSPHl98R2F8QWJ+Nlh1PF56RWWAQmJ9RWN/HUNjCzNXDzZaDTNUCilECilFCR42CiE5DCxLDSpMCC1NCC1OCi9PCC5NCi9PCi1OCS5PCC5OCS9PDDFRDTFRCCY/CitGDi1PCy5PBy5PCS5QCS9RCi9RCC5QCS9QCS9RDDFTDTJUDTNVDDBOCilECilFCiA3CiA3Ch82CSA3CSE4CSI4CCE3CSI4CiM6CiI7CSM7CSQ7CCQ7CCM6CCQ7CCU9CSU9CCU+CCY+CSY/CSY/CSZACSdACSdBCSlBCilCCSdDCSdDCihECilECilFCypGCiA3CiA4CSE5CCI5CCI5CCI5CSM6CSM8CSM8CCQ8CCQ8CCQ8CCQ8CCU9CCU9CSU9CSY/CCY/CCZACCdBCSdBCSdBCSdCCSlCCSlDCShECSlFCilFCilFCilFCypGCypGCiA4CSE4CCI5CCI5CCI5CSM6CSM7CSM8CSQ8CCQ8CCQ8CCQ8CCU9CCU9CiU9CSY+CCY+CCZACSZACSdBCSdBCSdCCSlCCSlDCShECilECilFCilFCilFCypGCypGCypGCSE4CCI5CSM6CSM6CiM6CiM8CSM8CiQ9CSU8CSQ8CCQ8CCU9CSY+CiY+CSY+CCY+CCY/CCZACSdBCSdACSdCCSlCCSlDCShECilFCilFCilFCilFCypGCypGCypGCipHCCI5CCI5BiA4BiE4BiE6CSQ9CSU9BSI6ByM7BiI7CSU+ByU9BiI7BiM9CihACylDCylDDCpEDCpEDCpFDCxFDCtFCShFCSlFCilFCypGCilFCypHCytHDCtHCitHCStHByE4DCY8LEJWLUNYMEZcHTZNGDJJLkVaKEBVKkNYGTRKHjhOLkZcLkdcEC1GByVACihCCidBCidCCipDCihDCypGGjhRHTpTGzhSGjdRGTdSGzlTGTdSGjhTDS5KCCpGByE4DCY8JDtRKkBVKUBVFC5FFjBGKEBVIz1SJT5TFTBHGjVMKENYJUBWDCpDCCZACSdBCSdBCSlCCSlDCShECypFGjdRHjtUGjdRGTZRGzhTGjdSGjhTGDhTDS9KCStHCSM6CCM7BB44Ah43Ah83BiI6BiI6Ah84AyA5BCA5BiM9BCM8AiE7AyI8CCdBCSdBCSdBCShCCSlDCShECilFCilFByZDBiZCBydECChECCdDByhFBihFByhFCStHCixI"
     },
     {
-      "id": "instagram-17871447864650643",
-      "date": "2026-09-09T07:18:55+0000",
-      "topic": "Business development is more than finding customers.",
-      "topicKey": "business development is more than finding customers",
-      "headline": "Business development is more than finding customers.",
       "creativeKey": "instagram-17871447864650643",
+      "date": "2026-09-09T07:18:55+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Business development is more than finding customers.",
+      "id": "instagram-17871447864650643",
       "instagram": {
         "mediaId": "17871447864650643",
         "permalink": "https://www.instagram.com/p/DdDtSAdivOn/"
       },
-      "publishedAssetSha256": "0f0b635d5c6a7da72e357e07d56295d98860d2428ce37326b463250de398f3fd",
+      "phase": "legacy_published",
       "pixelHash": "7ced42986de015347ab0a325928ea9c1569f59b44696c3088b9305a450d569f0",
+      "platform": "instagram",
+      "publishedAssetSha256": "0f0b635d5c6a7da72e357e07d56295d98860d2428ce37326b463250de398f3fd",
+      "topic": "Business development is more than finding customers.",
+      "topicKey": "business development is more than finding customers",
       "visualSignature": "rgb32:WuHn/vfy9/by+Pby9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9vXx+/v3/Pr29PPv8fDs8vLu8PHt8/Lu8/Lu+vj0/Pz3+Pj09/XxWuHn/ffy8vXy8vXy9fby9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9PPw///7naSqPEtdaHOAcn2KcXSBd3iEaXWCbHeESVdnWmZ15+jl+vn1W+Hn+fby0vHv0PHv4fPw+fby9vby9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by8vLu////X2h2AAAWP05hsbW7OZemSoiWpKmxfImUBhgxCBkw0NLS//35WuHn/ffy8/Tw9fby9vby9/by9vXx9/by9/by9/by9/by9vXy9/by9/by9/by9/by9/by9/by8/Lv////ZnJ/AAwnEiM6dH2LNmJ0NqCvX3mImaKsHC9GECQ609bV/v34WuHn/vfz/f75+fj09vXx+Pfz+vn1+Pfz9/by+Pby9/by+Pfz9/by9/by9/by9/by9/by9/by8/Lu////W2Z0GCxCPlBiP1NlT1prSlJlT2BwR1hqNEZaGStCzc/P//75W+Lo+vTwxszO6evn/Pv19fTv6Onn8/Lu+ffy9fTw9vbx9vXx+Pfz9/by9/by9/by9/by9/by9PPv///+ho+YKj9RSVxsPVFiPVFiPlJjPVBhQ1VlQlVmQVFi4OHf/Pr2X+Xq7ujmUGRzfY2WipiggpGagpGagI+YeomTgY+ZgY+XhpOc2Nva+/n09PPv9PTw9vXx9/by9vXx9fXx9/fz6Onm5ufk5+jl5+fl5+jl5+jl5ufl5ebk7u/s+fj09vXxW+Hn/PXx19vb2dzb1NjY1NfX4OLg3d/e1djX2dvb1NfX1dnY9PXy///9/f36/v77/v34+Pfz+/v2/fz59/by+/n1+/n1+/n1+/n1+/n1+/n1+/n1+/n1+fjz9vXx9/byXOLo+fPvpK+1nqqvwsjKxsvMucHEpK+zsbm8vcPGvMPGtLy/qbO4tLy/tr7BrbW6mqWr2t3bprC0yM3O9vXy9fTw9fTw9vXx9vXx9vXx9vXx9vXx9vXx9vXx9/by9/byXuTq7unmlKGoiJafl6Oqpa6zj5ujlaGonaitipefgpGamaSqn6muiZaelJ+nrLS5n6mu4OPhpa+0o66z/fv2+vn0+vn09/by9/by9/by9/by9/by9/by9/by9/by9/byWuHn//jz5efl7e3q8O/s8vHu6uvo9PPw7O3rwsjJz9PU+/r28PDt8fHu6+votr7B5ujl7u7r2dzbys7P5ufl6+zp6+vp+Pfz9/by9/by9/by9/by9/by9/by9/by9/byX+Xq6+fkfIyWeoqTf46XiJaefoyXj5yjxcrMdISPgI6YeIiSeIeSk5+mzNHRc4OOipigg5GadYWQfYuVgZCYf42Xfo2W+vn09vXx9/by9/by9/by9/by9/by9/by9/byW+Hn+/Xw5ujm5Ofm3uDf5+jl5ujl4ePi9/f15Obk7e7r297d3+Hh6uvq8vLu5efl4ePh4OLg1tnZ3N/e5ufkxsvMp7G2/Pr29vXx9/by9/by9/by9/by9/by9/by9/byXePp8OvouMDDvMLEtr3BmKOqnaetq7S4pa6znqiuqLK2qLG2rre6q7S58PDs/Pv2+/r2+/r2/fz3/Pv2+/r2/Pr2/Pv39/by9/by9/by9/by9/by9/by9/by9/by9/byXuTq7Oflsbu+oquxnKetn6uwr7i7l6Kqpq6zqbO4m6etmKOqv8XHpq+0zNDQ+vj09vXx9vXx9fXx9vXx9vXx9vXx9vXx9/by9/by9/by+Pby9/by9/by9/by9/by9/byWuDm//n0+vr3/Pv4/f35/v35/Pv4/fz5/vz5/fz5/v36//76/Pv3/f34+fjz9/by9/by9/by9/by9/by9/by9/by9/by+Pby9/by9fbz8/bz9Pbz9fbx+Pby9/by9/byWuHn/ffy9vbx9vXx9vXx9vXx9vXx9vXx9vXx9fXx9vXx9vXx9vby9vXx9/by+Pfy+Pfz+Pfz+Pfz+Pfz+Pfz9/by+Pby8/bz7vT17PT37PT37PT37vT28fX19vby9/byWuHn/fby9PPw9fXx9PTw9PPw9PTw9PTw9PPw9vXx8/Pv8/Pv9fXx9fTw9fTx9fTw9PTw9PTw9fTw9PPw9PTw9/by8PX16/T37PT36/T37vX47vX45vP26/T37vX29vbyW+Hn+/Xw5Ofk5+nm4OLg3uHg4OLg4OLg3d/e4+Xi3+Lg4uTi5ubk5+jl3d/d4+Ti4eTi4+Ti5ufk4uTi4uPh8fTy6/X37PT36/P28Pf54ezvzObq0fL23PL17vT37vX1W+Hn/Pbx4eTh6Onm4+Tj4eLh5+jl4+Xi5ujm5ufl5efk4OPh7u7r+vn09vXx9/by9/by9/by9vby9/by9vXy7fT27PT36/T37vX46e/zut3i0PDz1fH05fP27fT37PT3W+Hn+/Xw4OPi4uTi3N7e3+Hg4+Xj4uTj5OXj3eDe2t3c5ebl4ePh5eXk+Pfy9/by9/by9/by9/by9/by9Pbz7PT36/P37vX44O3ywdHaxN3m0O3x6vX37fT37PT37PT3WuHn/ffy8/Tw9fTw9fTw9fXx9fTw9fPw9vTx8/Lu8vLu9vXx9fTw9PTw9/by9/by9/by9/by9/by9/by8/X07PT36/P27/b54eruv9Hb3+nxz93n5/D07fX47PT37PT3WuHn/vfy9vby9/by9/by9/by9/by+Pfz9/by+Pfz+ffz9/by+Pfy+Pfy9/by9/by9/by9/by9/by9/by8/bz7PT36/P28Pf60Nzkytrjv9Xh0eHp6vL27PT37PT37PT3WuHn/ffy9vby9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9fby7PT27/b53OjuwNLc4Ozx1+Xs7/b47fX37PT37PT37PT3WuHn/ffy9vby9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by7vT17vb53Onvus3Y2ujv6/T37PT37PT37PT37PT37PT3WuHn/ffy9vby9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9fby7PT27PT34Ojs8Pb47PT37PT37PT37PT36/T38vX0WuHn/ffy9vby9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by+Pby9fbz7fT26/T36/P36/T36/T36/T37PT38vX0+PbyWuHn/ffy9fXx9vXx9vXx9/by9vby9vby9vXx9vXy9/by9/by9vXx9vXx9/by9/by9/by9/by9/by9/by9/by9/by9/bx9vby8vXz7/X17vT17vT18fT09fby9/by9/byWuHn/vfy+fn0+/r1+/r19/fz9/fz+/r1+vn1+/n09/fz+Pjz+/r1+/r19vby9fXx9fXx9fXx9fXx9fXx9fXx9fXx+Pjz+Pjz+ffy+Pjz+Pfz+Pfy+ffy+Pfz9/by9/byW+Lo+fPv1dnZ1dnY0tbV5Obj6Onn1NfW2dzb2Nva5+nm4+Xj1djY1NfX7/Ds+Pfz9/by9/by9/by9/by9/by9fTw6Ojm5ufk5+nl6Orm6uro6Ojm6evn6Orn8/Pv+PbyW+Hn+/Tw3ODf2Nva2Nvb7Ozq6+vp2dzb3eDe3d/e7Ozp5ufl2Nvb297d9PPw+Pfy9/by9/by9/by9/by9/by9vXx6Onm5ebj6Ojm6ern6Onn6ern6Onm6ern8/Lv+PfyWuHn/vfz+/v2/fv3/fv3+fj0+fj0/fv3/Pv2/fv2+fj0+vn1/fz3/fv2+Pby9/by9/by9/by9/by9/by9/by9/by+vj0+vn1+vj0+vj0+vn0+fj0+vn0+vj0+Pfz9/by"
     },
     {
-      "id": "instagram-18015282206940246",
-      "date": "2026-09-09T07:17:39+0000",
-      "topic": "Why Cyprus?",
-      "topicKey": "why cyprus",
-      "headline": "Why Cyprus?",
       "creativeKey": "instagram-18015282206940246",
+      "date": "2026-09-09T07:17:39+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Why Cyprus?",
+      "id": "instagram-18015282206940246",
       "instagram": {
         "mediaId": "18015282206940246",
         "permalink": "https://www.instagram.com/p/DdDtKhFColK/"
       },
-      "publishedAssetSha256": "d5844951c01e397c46fc3ee300c174b32e38a8da231ef6dfc77e7a0f6d57c319",
+      "phase": "legacy_published",
       "pixelHash": "17e1d85e574fc3bfd580363d7acb7e4bf82abab38ba3a266090e8ab4dc647f89",
+      "platform": "instagram",
+      "publishedAssetSha256": "d5844951c01e397c46fc3ee300c174b32e38a8da231ef6dfc77e7a0f6d57c319",
+      "topic": "Why Cyprus?",
+      "topicKey": "why cyprus",
       "visualSignature": "rgb32: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"
     },
     {
-      "id": "instagram-18280783882293979",
-      "date": "2026-09-09T07:16:54+0000",
-      "topic": "What does The Smarty Solution actually do?",
-      "topicKey": "what does the smarty solution actually do",
-      "headline": "What does The Smarty Solution actually do?",
       "creativeKey": "instagram-18280783882293979",
+      "date": "2026-09-09T07:16:54+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "What does The Smarty Solution actually do?",
+      "id": "instagram-18280783882293979",
       "instagram": {
         "mediaId": "18280783882293979",
         "permalink": "https://www.instagram.com/p/DdDtDXkCgHm/"
       },
-      "publishedAssetSha256": "89d939727d4e619ee49a546dbffb0e26de22ccfeeaaeb8094858f8396dd1be87",
+      "phase": "legacy_published",
       "pixelHash": "66459e1373aeef9839568368bd1e7270f7ecc62eaba7c60b6e2dd5a2c345f482",
+      "platform": "instagram",
+      "publishedAssetSha256": "89d939727d4e619ee49a546dbffb0e26de22ccfeeaaeb8094858f8396dd1be87",
+      "topic": "What does The Smarty Solution actually do?",
+      "topicKey": "what does the smarty solution actually do",
       "visualSignature": "rgb32:9/by9/by+Pby+Pby9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9vXx+/v3/Pr29PPv8fDs8vLu8PHt8/Lu8/Lu+vj0/Pz3+Pj09/Xx9/by9vby8vTw8vTx8/Tw9fTx9vXx9fTx9fXx9fXx9vTx9/by9/by9/by9/by9/by9/by9/by9PPw///7naSqPEtdaHOBcn2KcXSBdniEaXWCbHeESVdnWmZ15+jl+vn1+Pby8/bz3vr42fj16fv2//77+Pf0/fz4/f36/v35/v34+Pfz9vXx9/by9/by9/by9/by9/by8vLu////X2h2AAAWP05hsLW7OZemSoiWpKixfIiVBRgxCBgw0NLS//35+vn06uvolqKpm6asr7i8o6yy19rZqrS4qrS4u8LEvMPF7O3q+vn09vXx9vby9vXx9/by9/by8fHt////ZnJ/AAwnEiM6dH6LNmJ0NqCvXnmImqKtHC9GECQ609bV/v34+fjz8PDtq7S3wsjJwsfJqLG14uTiu8HEuL/Cu8LEt77B8fLv9vXx+vn0+vn1/fz3+fjz+Pj0+fn2////W2Z0GCxCPlBiQFNmT1prSlJlT2BxRlhqNEZaGStCzc/P//75+Pfz8vHumqaroquxucHDzNLSkZ2ktLy+sbq9qbK3oKqwwcfKusHDnqmvoauxk56mpK6zm6atkp+m2d3bjJScKT1RSVxsPVFiPVFiPlJjPVBhQlRlQlVmQVFi4OHf/Pr29/by9/by4+Xi0NTUxcvM6+zpwcfIyM3OzNHRytDQzNHQvcTG2t3czNHS0dXVxcrL2dvazdLSx8zN5ebj+Pj06Onm5ufk5+jl5+fl5+jl5+jl5+fl5eXk7+/s+fj09vXx+vj06+vpj5yjoayxprC0lqKph5WdmKOpxcvMusLFe4qUrLa53eDe///9+/v3//75+/r3/fz4/v35+fn19/by+/n1+/n1+/n1+/n1+/n1+/r1+/n1+/r1+fjz9vXx9/by+Pfz8/Pv297c5+jl5+jl2t7c3+Lf4uTh1trZ7e7q3eDe6uro9/by9fTw9vXx9fTw9vXx9fXx9fTw9/by9/by9vXx9fTw9vXx9vXx9vXx9vXx9vXx9vXx9vXx9/by9/by9/by+Pfy/v34/Pv3+vr2/fz5/Pv4+vr2+vr4+fn2/fv3+vj0+fj1+fj09/fz9/fz9/fz9/fz9/fz9/fz9/by9/fz+vj29/fz9/fz9/fz9/fz9/fz9/fz9/by9/by9/by9/by+Pfz9vn57vT2/f79/P39/f39/v7+/v7+////9/j2+vn38fb49Pj5/////v7+/////////////v7+9/bz+vv67fT3+/z9/v7+/f7+////////////+vv69vXx9/by9vby+ffz9Pj64u7z/////////v7+/v7+/v7+////+Pn3/Pr45fD07vb5/////v///////////////v7+9/fz+fr63+zy+/39/////////v7+/v7+////+/v79vXx9/by9vXx+vn08fLz3uHk5unr4eXn7/Hy/////v7+////+Pn3+/v55+ns3+Ll3uLl6ezu/////v7+/////v7++Pj09vf24eTo4+fp4uXo5ejr/v7+////////+/v79vXx9/by9vXx/Pv24+fppK+4t8DHprG5v8bM1tvg5Ojq////9/j2/v37x87UqLO7v8bM6+3w/////v7+/////f7++fn18vPzsrvDr7rBqrS9rbe/z9XZ5uns////+/v69vXx9/by9vXx+Pfz9/j54eXo6Ovt4eTn3+Lm2d7i6u3v////+Pj2+/r47e/x4+fq6u3v/////////////////v7++Pj09vf33+Tn6Ort5Ojr5+rt19vg5uns////+/v69vXx9/by9/by9/by+/v6///////+/////////////f39+/v6+Pj09/f0/v7+///+/f39+vr5+/v6+/v6+/v6+vr59vXy+vr4/////v7+/////v79/////v79+/v6+Pj29/bx9/by9/by9/by9/bz+Pf09fXy9fXy9fXy9fXy9fXy9vbz9/by9vby+Pf09/bz9fXy9vbz9vbz9vbz9vbz9vbz9/bx9/bz+Pf09fXy9fXy9fXy9fXy9fXy9vbz9vby9/by9/by9/by+Pfz+Pr77vT3/v7+/v7+/v7/////////////+fn3+vn38fb49Pj5/////v7+/v7+/v7+/////v7+9vby+fr67fP2+/z9/v7+/v//////////////+vv69vXx9/by9vXx+fjz8vf53evw/////////v7+/v7+////////+Pn3/Pv44+7z7PT3/////v7//////////////v7+9/fz+Pr62ujv+vz9/////v7+/v7+/v7+////+/v79vXx9/by9vXx+fj09fX25ujq5ujr2+Dj8/T1/////v7+////+fn3+/r46Ort4eXn4OTo4ubo7O7w3+Pm8/T1////9/f09fb24uXn3+Ll4uXo+fr6/////v7+////+/v79vXx9/by9vXx+vn17O7wsrvCtb7FsLnCx83T2d7h+fr7////+Pj2/v37xs7UsbvCqbO8tb7GvMTLsLnB6Ort////+Pj08fLzvcbMq7W9sLnB0dfc0dfc6Ovt////+vv69vXx9/by9/bx+Pfz+fn75uns5ejr6Ovt5Ojr3eLl+/v8////+Pn3+/r56u3v5Ojq5+ns3+Pn4+fq5uns+/v8////9/f0+vr66Ovu5ejr6Ovt3uPm3OHl7O7w////+/v69vXx9/by9/by9/by+vv5///+/v/9/v79/v7+////+/z6+vv59/j09/fz/v79/v/+///+///+///+///9+/z6+fr49vby+fr4///9/v79/v79///+///+/f78+vv5+fj29/by9/by9/by9/by9vXx9fTw9fTw9fTw9vTx9fTw9vXx9vXx9/by9/by9fTw9vXw9fTw9fTw9fTw9fTw9vXx9vXx9/by9vXx9fTw9fTw9fTw9fTw9fTw9vXw9vXx9vXx9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9vXx9vXx9vXx9/by9vby9vby9vXx9vXy9/by9/by9vXx9vXx9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9/by9vXy9/by9/by9/by9/by9/by+vn0+/r1+/r19/jz9/fz+/r1+vn1+/n09/fz+Pjz+/r1+/r19vby9fXx9fXx9fXx9fXx9fXx9fXx9fXx+Pjz+Pjz+Pfy+Pjz+Pfz+Pfz+Pfz+Pfz9/by9/by+Pfz8/Lv1tnZ1tnZ0tbV4+Xj6Onn1NfW2dzb2Nva5+nm4+Xj1djY1NfX7/Ds+Pfz9/by9/by9/by9/by9/by9fTw6Ojm5ufk5+nl6Orm6uro6Ojm6uvn6erm8/Pv+Pby+Pfy9PPw3uDf2Nva2Nvb7Ozq6+vp2dzb3eDe3d/e7Ozp5ufl2Nvb297d9PPw+Pfy9/by9/by9/by9/by9/by9vXx6Onm5ebj5+jm6ern6Onn6ern6Onm6ern8/Lv+Pfy9/by9/fy/Pv2/fv3/fv3+fj0+fj0/fv3/Pv2/fv2+fj0+vn1/fz3/fv2+Pby9/by9/by9/by9/by9/by9/by9/by+vj0+vn1+vj0+vj0+vn0+fj0+vn0+vj0+Pfz9/by"
     },
     {
-      "id": "instagram-18124298851846502",
-      "date": "2026-09-09T07:12:56+0000",
-      "topic": "Connect · Develop · Invest",
-      "topicKey": "connect develop invest",
-      "headline": "Connect · Develop · Invest",
       "creativeKey": "instagram-18124298851846502",
+      "date": "2026-09-09T07:12:56+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Connect · Develop · Invest",
+      "id": "instagram-18124298851846502",
       "instagram": {
         "mediaId": "18124298851846502",
         "permalink": "https://www.instagram.com/p/DdDsmMLCsR8/"
       },
-      "publishedAssetSha256": "b1620ab074bea2f94c3617043adc7672ab18d2150a1068e454ea8627d6ff47a9",
+      "phase": "legacy_published",
       "pixelHash": "1b123300cb5598bebe262fc9b3a26d84531aaf4ac47a34184ad6f174affe64e7",
+      "platform": "instagram",
+      "publishedAssetSha256": "b1620ab074bea2f94c3617043adc7672ab18d2150a1068e454ea8627d6ff47a9",
+      "topic": "Connect · Develop · Invest",
+      "topicKey": "connect develop invest",
       "visualSignature": "rgb32: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"
     },
     {
-      "id": "instagram-17923798170420028",
-      "date": "2026-09-09T00:07:40+0000",
-      "topic": "There is usually more opportunity around us than we realise. The challenge is identifying what is commercially viable and connecting the right people around it.",
-      "topicKey": "there is usually more opportunity around us than we realise the challenge is identifying what is commercially viable and connecting the right people around it",
-      "headline": "There is usually more opportunity around us than we realise. The challenge is identifying what is commercially viable and connecting the right people around it.",
       "creativeKey": "instagram-17923798170420028",
+      "date": "2026-09-09T00:07:40+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "There is usually more opportunity around us than we realise. The challenge is identifying what is commercially viable and connecting the right people around it.",
+      "id": "instagram-17923798170420028",
       "instagram": {
         "mediaId": "17923798170420028",
         "permalink": "https://www.instagram.com/p/DdC79mFiqYj/"
       },
-      "publishedAssetSha256": "31f59c5e6c8ca7368b4ce8a8d60cb1a32ee88d1294e7ef353335237e8df9686f",
+      "phase": "legacy_published",
       "pixelHash": "0802f7ad2cee353854a068392bdfdb5f597aca17851489636a1d43605dc72307",
+      "platform": "instagram",
+      "publishedAssetSha256": "31f59c5e6c8ca7368b4ce8a8d60cb1a32ee88d1294e7ef353335237e8df9686f",
+      "topic": "There is usually more opportunity around us than we realise. The challenge is identifying what is commercially viable and connecting the right people around it.",
+      "topicKey": "there is usually more opportunity around us than we realise the challenge is identifying what is commercially viable and connecting the right people around it",
       "visualSignature": "rgb32:CSM8CSM8CSI9CSM+CSQ/CSRACiVACiVCCyZDCyZDCydDCihECihECihECidFCidFCilGCilGCypHCypHCypIDCxJBCVFACJDAiVGASRGAyZGAiZGCi1NCy5OCy5ODC9PCSM8CSM+CSdCCSdCCSZBCiVACiVCCyZDCyZDCydDCihECihECihECidFCidFCilGCilGCypHCypHCypJDCtJCClIJ0RfM1BqM0djOExmKkhkLEpmDzFRCi1NDC9PDC9PCSI9CSdCC0BZC0NcCzdQCiNACyZDCyZDCyZDCihECihECihECidFCidFCilGCilGCypHCypHCypIDCtJDCxKBCZGSGJ4usHKR6i4WJqssbnDiZqqFTZVCi1ODS9PDC9QCSM+CSQ/CydCDCdCCyZDCyZDCyZDDCZDCihECihECihECidFCidFCylGCilGCypHCypIDCtJDCtJCitKCyxLCClJDi1NcYKWM2mBM6G1XH+UlaSzHT5cBipKDTBRDDBSCSQ/CCM/BB06BB07CSRBCyZDCiZDCihECihECihECidFCidFCilGCilFCypHCypICShHBiVFCytKCitKCClIMU1nPVdySWR7WWyCVGV9WHKIUGqBQV11GztbCS1QDTFSCCM/ECtGMkhhMUlgFC5KByNADCpFCSdDCSZDCSdFCSZECidGCShFCilGCShGCChHFTJQJkNeBSZGCSpJCitLKkhkSGJ6Hj9dHD5cIUJfHkBeJERgKUhlETVWCy9RDTFTBiE+GjNOqLK9q7S+jZqnjJqndISVoq24N09oXnGFj56riZmnhZWkj56ripqnh5amfo+flaOwcoWXf5Cij5+thJeml6azb4SXWXGHACVGCy5OCCxOByxPCy9RDTFTDTFTCCNAEy1JJz5YIjpVQFdtRVpvIzdST2R6GjRQJz9aXXKGboCSV22BX3OIPldvTmZ8JUNeN1JrSmJ6QFtzMkxnOVVvN1RuZ32RQl12AyZIDzFSDTBSDTFSDTFTDTFTDTFTCiVCDihFTGB1TWJ3TWN3UGZ6RVtyO1JqXnKGR190fY2dIj9ZPVVuTGN5OFNsIj5adIeYf5GiOlZvSmR7Vm6EOlZvACJEEDJSCi1ODTBSDTJUDTJUDTJUDTJUDTFTDC9QCCNBFjFMlKGtdoeXVmt/hpWjfYyceoubbH+QfI6dgpKhFDJP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"
     },
     {
-      "id": "instagram-18101324771347477",
-      "date": "2026-09-14T10:13:29+0000",
-      "topic": "Cyprus 15%. Ireland 12.5%. Is the lower tax rate automatically the better choice?",
-      "topicKey": "cyprus 15 ireland 12 5 is the lower tax rate automatically the better choice",
-      "headline": "Cyprus 15%. Ireland 12.5%. Is the lower tax rate automatically the better choice?",
       "creativeKey": "instagram-18101324771347477",
+      "date": "2026-09-14T10:13:29+0000",
       "format": "feed",
-      "platform": "instagram",
-      "phase": "legacy_published",
+      "headline": "Cyprus 15%. Ireland 12.5%. Is the lower tax rate automatically the better choice?",
+      "id": "instagram-18101324771347477",
       "instagram": {
         "mediaId": "18101324771347477",
         "permalink": "https://www.instagram.com/p/DdQ5RDlIKWm/"
       },
-      "publishedAssetSha256": "763451155b2bdb5f09f90aeb9acdd6c03b063b94073f52d8100613bead5c0e31",
+      "phase": "legacy_published",
       "pixelHash": "2860b7680534cd3b2a39bc9ece297e34bdad06df7a99b22869bf6100cf08b86a",
+      "platform": "instagram",
+      "publishedAssetSha256": "763451155b2bdb5f09f90aeb9acdd6c03b063b94073f52d8100613bead5c0e31",
+      "topic": "Cyprus 15%. Ireland 12.5%. Is the lower tax rate automatically the better choice?",
+      "topicKey": "cyprus 15 ireland 12 5 is the lower tax rate automatically the better choice",
       "visualSignature": "rgb32:cabev8jawcvctcbfhbPicKzmebHnfLLof7Ppg7bqiLjqjLzrkcDuk8LulcPwlsPxm8bxoMjxpsvyrM/ytNP0vNj0w9z1ssjiq8Daq9HrueH2s8rhucvi0OL10+X31Ob4carkhLDdnLfYor3eibbkgbDghLLfiLbkjb3qjbrmjrjjlLvmm8Hnq8norc3uoMXsqcrsrszrttLuwdnzx93zzN/z2er7q73RSlZ4YbjUWbvYXXqXVmOCwdDj5fD93ur3erDkgLTlhrfnjbzqlMLsl8LqmsPpsMzosc3qq8vrw9TnyNfnytnoyNbmytbl0N7qxdvwyN3x0ePz0+Ty1ePw2+jz097qzdjmnKm9osLVdKrDkqi8d4GZucLR7fL47O/1irvnjr3mmMLoj7bci7HVmLvcsMzqscvkpcHcu8fWv8TNycjK5uDY6uDY8OHU+/Ln1ePtyNvpwNHfzdrl4evz5u712N/ozNPezNTfwcjV0NTey9Db09jg09fe6+3v+Pn2qsnltdPtutbvnrzXkK7MmLjSkbzWo8Par8TZtcbWxdLfytXf0djf1dnf6eTh7+vk3+nuwNHdssTSu8nU09zkxtPe0t/n6vL15Ozx6vH07fLz8fP09fb0+fn18Orj3tXS1dPUqKGQvLKg2dzfwdDbvtbgyN3h1uTs1uPt3eXq3+bs3OLo3t/g4uHf5+Xg5eTizNXdy9Tb0trextPYttDXt9Xc2N3d6eXh6Onl3+Hi29vc5uHe4N3exbmz4cq46tjPzMe/X0smnH9S8OXe7OLd2tfX0M3Rx7ar1se4uLvEsaqoxr23zM/W1tXY29PO7+PZt7vJzcXK6d/e4eDg3+Dd493c4dbUw8LNwMLOxsTOysPK0sTF59LIinZr17ug1cOhno95hm9bpYltqaGekYyLgn+EeXmDdlpIf1g3ZFNOmW1B46VYl4B2k4uPjJewpau939HPuquhr52JvaqfrJ6fo5iZjIiPraGfppSTnIaDnoeAnIqEpZGIdl5UbVk6Ni0GqX5IgmU9c1YwTjcZUDMJYkUiW0MvdFlGY045XEUzt4la/cJqp282t4ZVm6GqipSpfHZmNjETNysAY0UGdlQubVdOgWpce1g+YzckVCwid1VEoY2Fool2pXdKIh8HFhcFfVopeVUhjGo+kW9Kh2U+j25LhGtYYEo2bFEyblEylWxJ15xYm2s8kmdBmHlftaKWaWFRUUQzYE89gmhEjHBPh3BjlHVdjWxQh2hYh2lgmHdlrY97oYVskG9XVkIzYkMpxJlgvZJTz6NnyJhnqYRfZ2FeeHl6YG9+WWp9ZHSCXmVsiXdxZniHYXySaI6qh6a+hXh1g3FnZ2BgV1ZcTUxUQz49PTMxNTIzRD9BOjU0SUI+UUhHUElIXlVXcWJhZVVTkn85q49PtZhgt4tUp3pNbWdgW3aIXIekYIqrXI+zeJu4l63EjbXRmsLcocjipcfejJKXiJCVdYOIhoyNhoyTbHeGsJeAenN0T1JbPUBHaFVEY08/JSUlKycfKyYiKSQjfnJAgnVPgXU/j35SkHxim4Rtkod8mKWtnrrNnLvQrMPUy9jjyd3ryNzqyt/szuHt1ODq0dvmz9rj0Nnhx9DaucjX393bxsvTrLXCkp6uo5yZrZ6WfH6HfXRyVlFQMzE3lYZYgndVdnJUjoh1mpNzx8m/0tvby9rh1+nztsvab3+Xfougc4GYWGR+maCwi5KiiY+ga3OJeYCThIqdcHiPc3qQ4+Pq7/L54ebv193my9Hav8XOr7jEnKSxh4iIf3lsXFs8lINbkZGCpa2tw8vPkJure4SYh4+hhpCif4mdYm2Eb3iNdn6So6y7msLSeqzCc6i+g7HEgLPGcqm+lcPUhrfKfbnNkMbYiMDVdrbNpsrb2uDozdXbqK+wl5RzmYxTfnhQt7Khn5+Ut7y73+j0srvKpK29yM/awcfStLrGrbPBsbfDu8DL2uHmutrmuNjjyuHqxd/pstbit9fjv9rktdvmtNzpvN3ouNnnp8/euNTh4uXq5uTkrKeRdHNeeXZefHdPpqmenJmCwL+42uPv6O/17/T46u7z7vL37PD18fT37e/04+fu2d3l4eLo7Ovw5uXq5+Xp49/k29jf393k6OTp9/L08/Dz8O3v//r4+PHu4NrSuq6Ro5l7h4JliIFcW1g1l5WGvLqs1tjW8PL49vf59Pb69Pb66+3x4uPp3+Dn4uTq7vH18/b67vL17fL28vT48vT39vb5+/v88/X48vX45+nt3t7i5+fq39ze7uvq7+vkycW1wb+zpZ59cGlDa2I8pqeY////+Pn66O/y0N/n5+7y+/v8y9TdrrvIoa69sbjF8PH1+Pn++Pj78PP47/P3/Pz81t7kWnyT1d7k//7+zNTclqW1usTOlaW1x9Tc/Pz99vf4+vv8wcC5e3dmX1s9s7Gk0uHqPIGgFGqQjLbJ9/r99vf5udrmdbjPmszdicDT6PL49ff88/X66vD36/H3+/z/SnCKACVM0Nnh/fv72envjcHUsdXimcnal8XV1eTr9vX19PXzuLitgn9qiId5zcvF2eXueqrAttDe+vr/8PT47/L33ebtu83Zz9riyNnj19/n6u3z8/b75u727/X83uXsIFFwQ2+K4+nu9fb47O3vy9LavsjTytHZz9XeydLa7/D09/j61NjaqK6veXtszM/N/v////7+/Pz+8fT47/P38fT529/my9Ha1tvj5Obs3OHo2d/m8vT46vD47fP76e7zy9fg+vv9+fn68/X16+ztx8rS3uDl4eXq3+Pp3+Lo5eju6+7y5Ov0y9vqtby/3eXu6e7y6O3y6e7z7/T47/P57fL46fD28PT67/L54+rx5+z05evy6vD15u726/P58/f8+fz/8PX78PT48fT16u3u2Nzg6+3x6O7z5uvy4uju3uTs4ufv3OXvzNvqy9bf0Nrky9bhucvZy9bhxM/cy9jj1uTu2ubvwdjkwdjk0t/qw9Lfytfk1+Tu1OLst8zazd3nzNrlxtXg0d/o1+Pr2+Xrzt3jv9Hc2OTszNnkyNbiz9zn0Nzo0Nzn0d7qws3T1+PuusrYrsHQy9bgvszYztvl1+Tt1eLrttDettHg0d/pxNPgzNvm2Obu1OLrtcnXztzoydfjw9PgyNXh0N3n1+LtucvYtMfXzNrmu83cvMzcvs7extfm0d/r1+Horri+mqGbrrSuz93tzNrn3+rxfpapKE9rQ2R8PF13N1hzNFdyNlh1OFp0M1ZxNFZxOFlzNldzNVh0Nll1NFZyKk5rKE1qLlNuKU1peJKnz93rwdHhyNnprbG3sqWfzbmsY2tibnBfpa2puMXLpKuh0d7lT2eBASBDKEtmEjBQBSJDHD5aIUNeIkNeK0tlIkNeGz1YJkdhHD9bHkBcGz1aDzVSFzxZFDhWABE2VGyGz9zpsMDRs8ban5eVd19PgG1laGxljotuh4hiYGEzY2hVpLC3Y3+WHURjL1FtIUZjJUhkLlBrMFFrLFBqMFFsLk1oKktnLE1pLEtoLExoLU1pMFBrNFJsMVFsEztZboec1N7on66/oa/Dt7a9inZri3ZrWl1LYmFBWV5OPEIrPEY7dn98kZqfjpylqLnIs8PRucbUvMnVwMzXvcfRvMfOusbStcDKtb7IsrzHqrfFqbjGq7vJsL/Ot8TTwMzYws7ZqbjJnK7Ek7TLhKCwfHh5hXp6ITA1V2RoUFpZR1FRUVtZT1ZQWFpFbHNpgpSihpimlqe4l6i2l6WvjI5yp6ukpJ+gu6ui18W4387B2MvExcC+rayqn6Kei45+nqKYs7/KnKuzh6Omnre/g46TYmJqW19sJDtNNElaPE5aOEhSPExVQ1NbSVZYUl9jUmFqYW50dISSZ3eDUF1dSVA8UlhHdWFPemhYgHFpk4V9qpuSuaqguaibtKSWm4x7lYt6g4FzbG5RRkksVFBQY19kXV9nVFhgGjRGJj9SMEdYL0dbMkpeNExeLkVXMUleLkJTM0VNM0VNNEVTNEJGMD09RU1GVVVJWVZBZ15cWVVXVlRYUlJYVlZcXF1iampucG5zbWttXV9lRlBZKzxJIDREHDBDHjJF"
     },
     {
-      "id": "tss-review-01-cyprus-property-seasonality-feed",
-      "date": "2026-09-15T03:15:34.003Z",
-      "topic": "Stress-testing a Cyprus property plan beyond peak season",
-      "topicKey": "cyprus-property-seasonality-stress-test",
-      "headline": "WOULD YOUR PROPERTY PLAN WORK WITHOUT PEAK SEASON?",
-      "creativeKey": "cyprus-property-seasonality-lefkara-integrated-v2-feed",
       "assetSha256": "dc0aef0c0095314ae8c26d1a7e655b9157e51d561887a1c23d3a28d8feb779cb",
-      "pixelHash": "7a8c0e8814f8b8cc87d1f01521ef08e002f7845994e7e44f8f30500c30c74557",
-      "visualSignature": "rgb32:2MzB1ce53tfO4d7Y3dbO2NHL1NPS1dHQ1M/JycK7xbuyy8fD0d3r0Nzq0Nvoz9voz9vn0Nzn0d3p0t3oy8nFzMnCz8zF0c3G0s7F29fM3NLH39TI3dbMxcO+y8rG2tnWu6+ku6ufpp+bpqKenJiVs7Kxq7C1oaWsnaGmoKCgqKCZrJ+VtLa6vdPrvM/lu8/ku8/ju8/kvNDlv9Pnt7q6t7OsvbmywLyzxL+2h4uPeZeaf46RfYGIpKKfpKCbtLOwpaKhwruz1M7Hxb21tKuj1NHNycrLoaGopKSpp6SioJqTjoJ6lYZ8oKu5qsnpqMLgp8PgqMPgqcPfrcrpo6uxopyUqqefq6eftK+ke3x/WX+DWYGGS1NiiImGkI6KgoF9xsfJx8jG1dPO1tPN3NvW5ubh293aoqCjpZ2ZoJ6hmpSPgnp0dmZcf3FojabClbzlkrTak7XclbfcmL7mk6a4kY6Gko+JlJCJl5KJl5KKm4p9o5WGc3R0dHRzeHh4Xl1cv8DDv8DBwcHAwMC80M/Mzs/NiomLeHNzq6CWlZSXh4OEhn56Y1hSa089cV9UfJ/Hf6zcf6jXgarYhbHfgqnQYWFkcWFXcGBXgnhwZmFgin1phHxwUVRYXF5hWltfODc2qq2xr7O2srW4sLGyycrJxcbFaGZoRz48qqScinxwZFxbeHZ1aWJda3WBaH6baZbJap3WapzSbJ7TcabebJXAWlNSaWFea2NecWljaWFYg3Fba2NZNTlARklOPD1BEA8PpKeso6arqayxqKyvxMfHvsHAZWBjTUE+kn5wgWVSVz4sYF1ik5CMgKjOYKLlYpnVYJbQX5bQYpjQZp7Yap3QaGpocW5nendvg35xfXRjg3BXWlVQKS85P0FIKCktAAAAqayxpaitp6uvqKywxMfIwMPCWlZaQjYtalA7VDovWkIwODEurqulhKjMXZjTYZjSX5bQXpXOYZfQZJvVaqLcZ3B0bWNSc21bdm5cc2hTinddVFFPKy86QkNHISIkAAAArrK1rLC0rrG1rLCyzM/Ptrm5ZGJjPDcxkYV4i4J0a1tFSkA5fnlzhKnKb6ribqDUbJ7Sa53QbJ/Sb6DUdKzkdYOLc2hVeXFhgXlpgnVhkoNsX1xcQEJJVVVXNDM0ERAQt7u+uLu9uLu9ury+tba3oqKigH99XVhWtq6mnJWHbmtaYlxVhIB7eYiae5i3ha/ahK7Ygq3Wg63Xha7YiLXjjaS5jIuBkZCHko1/nJB6opWDdHFwXl9mcG9yUk5MPTs4xMbHxsfIu73AnqGlrKyszMzIl5eUcm5poZyTpZ2NenNldG9omJaQjoqLgnJtk7XWmr/il7rdlrrcl7rdmb/knbHKj5agmKm3mpiSr6WTrKSVhYSDdXd8gYGCaWhjXl1YyszMu72+qKqsuLm60dHP0NDNtLW0qaimnZ2ctbOvqaqtlZOPlZKMnaCilJmforbKrc3nrMrlrMvnqsfhqsnmrsXYurSnwrywyMCxurOksauhm5iViouKj4qFjYB7fnd1u7y9tbW3wsLC1dXT2dnWy8vLsLGxtLSztbWzr6+tra2sqqikq6ehqaaYp6WZtLKvx8jEwcLBvMXMvtPmvdPpv9Tly8m/0cm61c29xsCzt7KssK2poaKeqaeho5qVmZKPy8rI2NjV4uDd5uPf3tvYyMfFwL27trKtt7Ovurezvru3ycXAz8rCyMO5wbyv1c/F5d7R2tDCxLaszdTa0eHu0N/r1dzf2Nza3NjO1c/EyMW/xsO+vr25wsG8u7iyu7av6ejk6Ofj2d7b1dzZy9DOyc/MzdHOx87KxMvHzc/Kw8nEvsbCw8jEv8bCwsnCys/I5eLZ5uDW2dDI2tva3uju3ubs3ufv3uDh4t7W39vS2NXP2NXQ1NDN19PP19HK2dLK6+nk6unlxtnWt87Lu87Lu8/MvNDNw9HOz9jS09jR0tnSzdXP1NrU0tvUz9jQ0NjQ8e3h9evf5d3V5+Xi7/Lz7/P27/T36+zq7ebd6OTb2dbQ3dnU2NXS2tfS4NrR49vS8O3m6Ofho6+0lqWrmKetnKuwmqiuxsfHq66y0tDMr7K1rbCzvsDCuru8urq519LMrrGzp6uvra+xpqyxo6uyq7fBrbnDrLnDr7e8xcXD493W39zW3NrW3tvX5eHX6ePY6+nj6ejioqqwm6Orq7G2pqyynKSsrbO4mKGn09PPrrO3pKyxrLO3lJ6lq7G1ysvItbm5mKGmqq2woKetrbW7qrW9oa23tL7Et73Ay8zJ6ebe4+Da4d/a4d/a6OTb6uXb6efh3d3amqSsrLK3sLa7jJiinKWtv8PFkpqjkZmik5ujk52lkZuk0M/NpKqwkZuko6muqq6ymJ+lnaOqnqeun6mxq7W77/Dr9vPq8ezj5+Te6Obg5uTf5eTf6ubf6OXb6+jh5uXhydHRu8bIv8fIw8nLxcrL293bvMPEwcjGt8C/x8rKwMfI0tfTxs3Lv8XH0NXSyNDMyszL0NHPycvKxsrL3+Dd7+zm7Oni7+vk7uvl7evm6+rl7Ovm7evk6+fe8Ozk5unjkMLCjMDAn8nIir+/fbm5xtvYwtrWir69k8PBkcLAmMjGlMPCoMrIi8HAgry7qM3L5+vk/fbw+PXu+fXv9/Tt9fLq8+/o9PDp9PHs8/Dq8fDq8e/p8e3n8Ozl8+/o7ezl4ebi3uXizd3a2OLfz93a5Ojk3+XhzNrXytrV2uTe1+Le0uDd1eHd1uDc1uHe4ufj7erl8u7p8O7p8O7p8O7o8u/o8e7n8O7n7+zn8e/q7+3p8fDr8u/p8u7n8/Dp9PHq1dXU1NTU29jX29rY1NTU2dnX19bW1tTT2tfV4+Dd19bV4+De4d/d4N3a4+De3NvZ1NXU3t7c3N3b2drZ1tfW1tfW397a4ODd0NLR3d3a19nY7ezo9PHq8e7n9PHq9PDp5OLf3d7b4eLd29zZ5eXi3d7b39/c3t/b39/b397c3d7c9PLs+/jx9fLq9/Tu9/Ps9/Ps9vPs9vPt9vPs9vPs+PTt9/Pr9/Ps9/Tt9PHq9/Tu9fLs8/Dq8u/o9/Ls5+vl1uDcy8zNyc3N0dPSxsnK0dPS1NXUzdDQ1NXTxcjKys3O0tTUzc/Q09PTyszNy83O6efi+PTt9fPs9vPs9vPs+PXu9/Tu9vPs9fLr8/Dq9fHr9PLs9PHr8u/o9fLr7u7n6Ovl8u/p8O7o8e/p8O7o8O7o8e7o8e/p8O7o8O7o8vDq9fLs8/Hq8u/o8u/p8+/p9vLr9/Ps9/Tt+PXu9vPs9fLr9fLr9vLs9vLr9PHq9fPs9fPs9fLs8/Dp9fLr9fLr9/Ps9vPs9vPs9vPs9vPs9/Ts9fLr9fLr9fLr9/Tt+fbv+fbv+PXu9vLr9/Ts+PXu+fbu+PXu9/Tt9vPs9fLr9PHr9PHr9fLs9/Tt9fLr9vPs9vPs9vPs9PHq9vPs9vPs+PXu+PTu+PTu+PTu9/Ps9/Tt+PXt9vPs9PHq9vPs+PXu9/Tt9/Tt9/Tt9/Tt+PXu9/Xu9vPs9fLr9fLr9PHr9PHq9PHr9PLr9vPs9PHr9fLs9fLs9vPt9PHr9/Tt9vPt5ufj5ufj5ubi4uPg6url6enl4uPh7Ovn9fLr9PLr9vPs9fPs9fPs9vPt9vPt9vPt9vPt9fPt9PHq9PLr+PXu+PXt+PTt+PXt+PXu+PXt+PXu+fbv9/Tt9fLr9/Tt9fPs3uHf3ODf3+Lg29/e4ePh5Obj3ODf4+Xj8/Hs+vfv+PXv+fbv+fbv+fbv+fbv+fbv+fbv9/Tt+PXt7uzn19jX2tvZ2tvZ29za4ODd2tvZ3t/c3d7c9/Tt9vPs9/Tt9/Tt9fPs9PLs9PHs9fLs9PLr9PHs9vTu9fLt9vTt+fbv+fbv+fbv+PXv9/Tt9/Tu9/Tu9/Tt9/Tt9/Tt8/Dq5+bi5+bi6Ofj6Ofj6+rl6Ojj6unk6ujj9/Tt9vPt+PXu+PXu+PXu+PXt+PXu+PXu+PTt9/Tt+fXu+/fw+vfv+fbv+fbv+PXu9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt+PXu+/fw+vfv+vfv+vfv+vfw+vfv+/fw+vfv9/Tu+PXu",
-      "format": "feed",
-      "platform": "instagram+facebook",
       "classification": "editorial-opinion",
-      "phase": "verified",
-      "qaBoundSha256": "800381cfb7bf083231ae01343de7237636534b43c8ebcaa5274829899cd78470",
+      "creativeKey": "cyprus-property-seasonality-lefkara-integrated-v2-feed",
+      "date": "2026-09-15T03:15:34.003Z",
+      "facebook": {
+        "photoId": "122301039944216133",
+        "postId": "177672945439622_122301039968216133"
+      },
+      "format": "feed",
+      "headline": "WOULD YOUR PROPERTY PLAN WORK WITHOUT PEAK SEASON?",
+      "id": "tss-review-01-cyprus-property-seasonality-feed",
       "instagram": {
         "containerId": "18115457881819867",
         "mediaId": "18494875597102330"
       },
-      "facebook": {
-        "postId": "177672945439622_122301039968216133",
-        "photoId": "122301039944216133"
-      },
-      "verification": {
-        "instagram": {
-          "width": 1080,
-          "height": 1350,
-          "meanPixelDifference": 0,
-          "id": "18494875597102330",
-          "sha256": "1773f78b4a937cb0075fe72f36c4197be67d9aea0c26a4f3c7af455978c9ccf0",
-          "permalink": "https://www.instagram.com/p/DdSuQPjEZPa/",
-          "downloadedAsset": "social-results/tss-review-01-cyprus-property-seasonality-feed-instagram.png",
-          "evidenceCommit": "80943ad1327ad07c4a9062cd39d3c9184dc2d615",
-          "evidencePath": "social/published-assets/1773f78b4a937cb0075fe72f36c4197be67d9aea0c26a4f3c7af455978c9ccf0.jpg"
-        },
+      "phase": "verified",
+      "pixelHash": "7a8c0e8814f8b8cc87d1f01521ef08e002f7845994e7e44f8f30500c30c74557",
+      "platform": "instagram+facebook",
+      "publishedReview": {
         "facebook": {
-          "width": 720,
+          "assetSha256": "402f5365399a8ba61cf26da6a297cdcc4bb1cee493d0ecadadce16bf25a08b09",
           "height": 900,
-          "meanPixelDifference": 2.157,
-          "id": "177672945439622_122301039968216133",
-          "sha256": "402f5365399a8ba61cf26da6a297cdcc4bb1cee493d0ecadadce16bf25a08b09",
-          "permalink": "https://www.facebook.com/122301039992216133/posts/122301039968216133",
+          "note": "Actual Facebook download inspected. Platform resizing and compression did not crop or damage the creative.",
+          "passed": true,
+          "reviewedAt": "2026-09-15T03:18:09.579Z",
+          "reviewer": "Codex actual-live-asset visual review",
+          "width": 720
+        },
+        "instagram": {
+          "assetSha256": "1773f78b4a937cb0075fe72f36c4197be67d9aea0c26a4f3c7af455978c9ccf0",
+          "height": 1350,
+          "note": "Actual Instagram download inspected. Full creative, logo and text are intact, readable and uncropped.",
+          "passed": true,
+          "reviewedAt": "2026-09-15T03:18:09.579Z",
+          "reviewer": "Codex actual-live-asset visual review",
+          "width": 1080
+        }
+      },
+      "qaBoundSha256": "800381cfb7bf083231ae01343de7237636534b43c8ebcaa5274829899cd78470",
+      "topic": "Stress-testing a Cyprus property plan beyond peak season",
+      "topicKey": "cyprus-property-seasonality-stress-test",
+      "verification": {
+        "facebook": {
           "downloadedAsset": "social-results/tss-review-01-cyprus-property-seasonality-feed-facebook.png",
           "evidenceCommit": "3044232c8807ac3bd05314dfc66cd74d8f66cc94",
-          "evidencePath": "social/published-assets/402f5365399a8ba61cf26da6a297cdcc4bb1cee493d0ecadadce16bf25a08b09.jpg"
+          "evidencePath": "social/published-assets/402f5365399a8ba61cf26da6a297cdcc4bb1cee493d0ecadadce16bf25a08b09.jpg",
+          "height": 900,
+          "id": "177672945439622_122301039968216133",
+          "meanPixelDifference": 2.157,
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301039968216133",
+          "sha256": "402f5365399a8ba61cf26da6a297cdcc4bb1cee493d0ecadadce16bf25a08b09",
+          "width": 720
+        },
+        "instagram": {
+          "downloadedAsset": "social-results/tss-review-01-cyprus-property-seasonality-feed-instagram.png",
+          "evidenceCommit": "80943ad1327ad07c4a9062cd39d3c9184dc2d615",
+          "evidencePath": "social/published-assets/1773f78b4a937cb0075fe72f36c4197be67d9aea0c26a4f3c7af455978c9ccf0.jpg",
+          "height": 1350,
+          "id": "18494875597102330",
+          "meanPixelDifference": 0,
+          "permalink": "https://www.instagram.com/p/DdSuQPjEZPa/",
+          "sha256": "1773f78b4a937cb0075fe72f36c4197be67d9aea0c26a4f3c7af455978c9ccf0",
+          "width": 1080
         }
       },
-      "publishedReview": {
-        "instagram": {
-          "passed": true,
-          "reviewer": "Codex actual-live-asset visual review",
-          "reviewedAt": "2026-09-15T03:18:09.579Z",
-          "assetSha256": "1773f78b4a937cb0075fe72f36c4197be67d9aea0c26a4f3c7af455978c9ccf0",
-          "width": 1080,
-          "height": 1350,
-          "note": "Actual Instagram download inspected. Full creative, logo and text are intact, readable and uncropped."
-        },
-        "facebook": {
-          "passed": true,
-          "reviewer": "Codex actual-live-asset visual review",
-          "reviewedAt": "2026-09-15T03:18:09.579Z",
-          "assetSha256": "402f5365399a8ba61cf26da6a297cdcc4bb1cee493d0ecadadce16bf25a08b09",
-          "width": 720,
-          "height": 900,
-          "note": "Actual Facebook download inspected. Platform resizing and compression did not crop or damage the creative."
-        }
-      }
+      "visualSignature": "rgb32:2MzB1ce53tfO4d7Y3dbO2NHL1NPS1dHQ1M/JycK7xbuyy8fD0d3r0Nzq0Nvoz9voz9vn0Nzn0d3p0t3oy8nFzMnCz8zF0c3G0s7F29fM3NLH39TI3dbMxcO+y8rG2tnWu6+ku6ufpp+bpqKenJiVs7Kxq7C1oaWsnaGmoKCgqKCZrJ+VtLa6vdPrvM/lu8/ku8/ju8/kvNDlv9Pnt7q6t7OsvbmywLyzxL+2h4uPeZeaf46RfYGIpKKfpKCbtLOwpaKhwruz1M7Hxb21tKuj1NHNycrLoaGopKSpp6SioJqTjoJ6lYZ8oKu5qsnpqMLgp8PgqMPgqcPfrcrpo6uxopyUqqefq6eftK+ke3x/WX+DWYGGS1NiiImGkI6KgoF9xsfJx8jG1dPO1tPN3NvW5ubh293aoqCjpZ2ZoJ6hmpSPgnp0dmZcf3FojabClbzlkrTak7XclbfcmL7mk6a4kY6Gko+JlJCJl5KJl5KKm4p9o5WGc3R0dHRzeHh4Xl1cv8DDv8DBwcHAwMC80M/Mzs/NiomLeHNzq6CWlZSXh4OEhn56Y1hSa089cV9UfJ/Hf6zcf6jXgarYhbHfgqnQYWFkcWFXcGBXgnhwZmFgin1phHxwUVRYXF5hWltfODc2qq2xr7O2srW4sLGyycrJxcbFaGZoRz48qqScinxwZFxbeHZ1aWJda3WBaH6baZbJap3WapzSbJ7TcabebJXAWlNSaWFea2NecWljaWFYg3Fba2NZNTlARklOPD1BEA8PpKeso6arqayxqKyvxMfHvsHAZWBjTUE+kn5wgWVSVz4sYF1ik5CMgKjOYKLlYpnVYJbQX5bQYpjQZp7Yap3QaGpocW5nendvg35xfXRjg3BXWlVQKS85P0FIKCktAAAAqayxpaitp6uvqKywxMfIwMPCWlZaQjYtalA7VDovWkIwODEurqulhKjMXZjTYZjSX5bQXpXOYZfQZJvVaqLcZ3B0bWNSc21bdm5cc2hTinddVFFPKy86QkNHISIkAAAArrK1rLC0rrG1rLCyzM/Ptrm5ZGJjPDcxkYV4i4J0a1tFSkA5fnlzhKnKb6ribqDUbJ7Sa53QbJ/Sb6DUdKzkdYOLc2hVeXFhgXlpgnVhkoNsX1xcQEJJVVVXNDM0ERAQt7u+uLu9uLu9ury+tba3oqKigH99XVhWtq6mnJWHbmtaYlxVhIB7eYiae5i3ha/ahK7Ygq3Wg63Xha7YiLXjjaS5jIuBkZCHko1/nJB6opWDdHFwXl9mcG9yUk5MPTs4xMbHxsfIu73AnqGlrKyszMzIl5eUcm5poZyTpZ2NenNldG9omJaQjoqLgnJtk7XWmr/il7rdlrrcl7rdmb/knbHKj5agmKm3mpiSr6WTrKSVhYSDdXd8gYGCaWhjXl1YyszMu72+qKqsuLm60dHP0NDNtLW0qaimnZ2ctbOvqaqtlZOPlZKMnaCilJmforbKrc3nrMrlrMvnqsfhqsnmrsXYurSnwrywyMCxurOksauhm5iViouKj4qFjYB7fnd1u7y9tbW3wsLC1dXT2dnWy8vLsLGxtLSztbWzr6+tra2sqqikq6ehqaaYp6WZtLKvx8jEwcLBvMXMvtPmvdPpv9Tly8m/0cm61c29xsCzt7KssK2poaKeqaeho5qVmZKPy8rI2NjV4uDd5uPf3tvYyMfFwL27trKtt7Ovurezvru3ycXAz8rCyMO5wbyv1c/F5d7R2tDCxLaszdTa0eHu0N/r1dzf2Nza3NjO1c/EyMW/xsO+vr25wsG8u7iyu7av6ejk6Ofj2d7b1dzZy9DOyc/MzdHOx87KxMvHzc/Kw8nEvsbCw8jEv8bCwsnCys/I5eLZ5uDW2dDI2tva3uju3ubs3ufv3uDh4t7W39vS2NXP2NXQ1NDN19PP19HK2dLK6+nk6unlxtnWt87Lu87Lu8/MvNDNw9HOz9jS09jR0tnSzdXP1NrU0tvUz9jQ0NjQ8e3h9evf5d3V5+Xi7/Lz7/P27/T36+zq7ebd6OTb2dbQ3dnU2NXS2tfS4NrR49vS8O3m6Ofho6+0lqWrmKetnKuwmqiuxsfHq66y0tDMr7K1rbCzvsDCuru8urq519LMrrGzp6uvra+xpqyxo6uyq7fBrbnDrLnDr7e8xcXD493W39zW3NrW3tvX5eHX6ePY6+nj6ejioqqwm6Orq7G2pqyynKSsrbO4mKGn09PPrrO3pKyxrLO3lJ6lq7G1ysvItbm5mKGmqq2woKetrbW7qrW9oa23tL7Et73Ay8zJ6ebe4+Da4d/a4d/a6OTb6uXb6efh3d3amqSsrLK3sLa7jJiinKWtv8PFkpqjkZmik5ujk52lkZuk0M/NpKqwkZuko6muqq6ymJ+lnaOqnqeun6mxq7W77/Dr9vPq8ezj5+Te6Obg5uTf5eTf6ubf6OXb6+jh5uXhydHRu8bIv8fIw8nLxcrL293bvMPEwcjGt8C/x8rKwMfI0tfTxs3Lv8XH0NXSyNDMyszL0NHPycvKxsrL3+Dd7+zm7Oni7+vk7uvl7evm6+rl7Ovm7evk6+fe8Ozk5unjkMLCjMDAn8nIir+/fbm5xtvYwtrWir69k8PBkcLAmMjGlMPCoMrIi8HAgry7qM3L5+vk/fbw+PXu+fXv9/Tt9fLq8+/o9PDp9PHs8/Dq8fDq8e/p8e3n8Ozl8+/o7ezl4ebi3uXizd3a2OLfz93a5Ojk3+XhzNrXytrV2uTe1+Le0uDd1eHd1uDc1uHe4ufj7erl8u7p8O7p8O7p8O7o8u/o8e7n8O7n7+zn8e/q7+3p8fDr8u/p8u7n8/Dp9PHq1dXU1NTU29jX29rY1NTU2dnX19bW1tTT2tfV4+Dd19bV4+De4d/d4N3a4+De3NvZ1NXU3t7c3N3b2drZ1tfW1tfW397a4ODd0NLR3d3a19nY7ezo9PHq8e7n9PHq9PDp5OLf3d7b4eLd29zZ5eXi3d7b39/c3t/b39/b397c3d7c9PLs+/jx9fLq9/Tu9/Ps9/Ps9vPs9vPt9vPs9vPs+PTt9/Pr9/Ps9/Tt9PHq9/Tu9fLs8/Dq8u/o9/Ls5+vl1uDcy8zNyc3N0dPSxsnK0dPS1NXUzdDQ1NXTxcjKys3O0tTUzc/Q09PTyszNy83O6efi+PTt9fPs9vPs9vPs+PXu9/Tu9vPs9fLr8/Dq9fHr9PLs9PHr8u/o9fLr7u7n6Ovl8u/p8O7o8e/p8O7o8O7o8e7o8e/p8O7o8O7o8vDq9fLs8/Hq8u/o8u/p8+/p9vLr9/Ps9/Tt+PXu9vPs9fLr9fLr9vLs9vLr9PHq9fPs9fPs9fLs8/Dp9fLr9fLr9/Ps9vPs9vPs9vPs9vPs9/Ts9fLr9fLr9fLr9/Tt+fbv+fbv+PXu9vLr9/Ts+PXu+fbu+PXu9/Tt9vPs9fLr9PHr9PHr9fLs9/Tt9fLr9vPs9vPs9vPs9PHq9vPs9vPs+PXu+PTu+PTu+PTu9/Ps9/Tt+PXt9vPs9PHq9vPs+PXu9/Tt9/Tt9/Tt9/Tt+PXu9/Xu9vPs9fLr9fLr9PHr9PHq9PHr9PLr9vPs9PHr9fLs9fLs9vPt9PHr9/Tt9vPt5ufj5ufj5ubi4uPg6url6enl4uPh7Ovn9fLr9PLr9vPs9fPs9fPs9vPt9vPt9vPt9vPt9fPt9PHq9PLr+PXu+PXt+PTt+PXt+PXu+PXt+PXu+fbv9/Tt9fLr9/Tt9fPs3uHf3ODf3+Lg29/e4ePh5Obj3ODf4+Xj8/Hs+vfv+PXv+fbv+fbv+fbv+fbv+fbv+fbv9/Tt+PXt7uzn19jX2tvZ2tvZ29za4ODd2tvZ3t/c3d7c9/Tt9vPs9/Tt9/Tt9fPs9PLs9PHs9fLs9PLr9PHs9vTu9fLt9vTt+fbv+fbv+fbv+PXv9/Tt9/Tu9/Tu9/Tt9/Tt9/Tt8/Dq5+bi5+bi6Ofj6Ofj6+rl6Ojj6unk6ujj9/Tt9vPt+PXu+PXu+PXu+PXt+PXu+PXu+PTt9/Tt+fXu+/fw+vfv+fbv+fbv+PXu9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt+PXu+/fw+vfv+vfv+vfv+vfw+vfv+/fw+vfv9/Tu+PXu"
     },
     {
-      "id": "tss-review-02-property-transfer-fees-feed",
-      "date": "2026-09-15T10:01:41.383Z",
-      "topic": "Cyprus acquisition costs: transfer fee and VAT interaction",
-      "topicKey": "cyprus-acquisition-transfer-fees-vat",
-      "headline": "A PROPERTY PRICE ISN'T THE FULL COST.",
-      "creativeKey": "cyprus-acquisition-transfer-fees-vat-data-editorial-r2-feed",
       "assetSha256": "ad76947e91dd1607f8c29aadaa3f9e86b65b518e3f01a5372167ca40e6274f1a",
-      "pixelHash": "d1dd5ae76fb1a0096c163447ba4e636f787041d5ca0069f3ff059d29d77b4135",
-      "visualSignature": "rgb32:+/r2/Pv2/vz4/fz3/Pv3/Pv3/vz4/fz4/fv3/vz4/vz4/Pv3/Pv3/Pv3/Pv3/Pv3/Pv3+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/Pv38vPx3eLk3uPl3+Tl6+7t4OXm3uPl5Ojp2d/h2+Dh8PDu8PHv8PHv8PHv7/Du9PXy/Pv2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2+/n2+fn1+fn1/f35/f36+/r3/f35/Pz3+vr2/Pv4//35+/v2+Pj0+Pj0+Pj0+fn1+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/Pv39vbz5+no7O3r2Nvc3eDg5ebl2dzd4OPj4OPj29/f297e7e7s+/r2+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39fXy4OPj4+bm3+Dh5t/g4ePj6Orp+fj0+/r2//755ujnprC50tfaoqy1l6OuqbO7maWvrLS9n6q0p7C4tb3D0NbY/////f37/f35+/r1+/r2+fj1+Pf0+vr2+vn1+vn1+vr19vbz9fXz+Pn28/bz+fn29fXz+vn2+/r2//753+Linqm0oKq0wcfMqrK7v8fN1NjbrLS8o622x83QzNHUyM3Rpa64naiyv8bL///8+fj0/v78/////Pz4/v75/v75//76///7//76/Pv3/Pv3/Pr2/Pr2+/r2+/r2///63ODgrLa9qbO7vMTJwcjMytDTusLIqbO7pK63vcTJ6Ono7/Dt29/g0dbY3uHh/v34/v34xsvPoay17e7s3eDg3N/g1trcz9TW09fZ9/fz/fv3+vn1+/r2+/r2+/r2//755OXkzM7SrbW9w8bL1dba3t7hu77FusDGsbrBwsjN7e7s//77/v36/v78/f36+vn1//75dYaWNk9qxszP5Obm1djb1NfZ09ja0tbY4OLi3eDh7O3s/Pv3+/r2+/r2//z46fLvk8jH4/Dtt9rXstbVuNjXwd/d4/Dt///8/v35+/r2+vr2+vr1+fn1+vn1+/r2/fz47u/t3uHh+/r25Obm1djb4uTk8fHv7/Du8PHu7u7s+vn2+/r2+/r2+/r2//345O7rZq+xebi6ebe5cbO2ps/QiMDBhb6/1efl//35+fn1+/r2+/r2+/r2+/r2+/r2+vn1/Pv3/v35+vn1+vn1+vn1+vn1/Pv3/fz4/fz3/vz4+/r2+/r2+/r2+/r2/fv38PPwstLSyd7dvNbWudbW9PXy2ObltdTU0+Ti+/j1+vn1+/r2+/r2+/r2+/r2+/r2+/r2/v37///8/fz5+/r1/Pr2/Pv3+/r2+vn2+/r2+/r2/Pv3+/r2+/r2+/r2/Pv39PTx1tbZ2Nja2drb5OPj0tfY19nb397f1tjb3uHi/vz3/Pv2/Pv3/Pv3+/r2+vn1///6o662bH6P3uDh2Nzd1dnb0dXYx83Rz9TX9vXz+fj1+Pf0+/r2+/r2+/r2/fz38PHu1Nnb4eTk4OPj19zc4eTj2t3f3uHh4uXl4ePj1dnb3+Hh4uTk19rc3d/h7e7s///7eIiXOVJrztPV6Ono09fa19rc4+Xl5ufn4+Xl6+zq7Ozr+/r2+/r2+/r2/Pv38/Pw4uTk5+jo4ePk3N/f6Ono4ePj4OLi5Obm4ePj5+jo3uHi4+Xl4uTk5+jo+vn1/Pv3+fn28/Px/fz59vXy8vPw9fTy/fv3/vz4/fz4/Pv3/fz3+/r2+/r2+/r2+/r2/Pv3/vz4/fv3/vz4/vz4/fv3/vz4/vz4/fz4/fz4/fz4/fz4/fz4/vz4/fv3+/r2+/r2+/r2/v34+vn2/Pv3/fz4/Pv3+vr2+vn2+vn2+/r2+vr2+/r2+/r2+/r2+/r2+vr2+vn1+fj1+fn1+fn1+vn1+fn1+vn1+fj1+fj1+vn1+fn1+fn1+fn1+vn1+vn1+vn1+fn1+fj1+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv3/v35///6/v75/v75/v75///6/v34//75///6//75//76/v75//76//76/v35//75/v35///6/v75+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pr26PHu2+Li1dja3N/g2dze293f1Nja4uXk1trc0NXY19vc19vc19vc1dna09fa3N/g1tna2NrbztLV2Nrc9/bz+fjz+Pjz+Pfz+Pfz+Pfz+Pfz+Pfz+fj0+Pfz+fj0///58ffy8/by+ffz+ffz+Pfy+Pfy9vXx+fj09vXw9fTv+vj0/Pv3+fn2+vn1+Pfz+fjy/v37//7+/v78/v79////////////////////////////////////////////1t3l19zl1tzl1tzm193m2uHp2uHp3eLp3uPq5Orx5evz1dzjxcnOztPYztXb1Nvj2uPtq7Sul6CUo6ymnqOboKWdq7ChrLeknaeakpWUlpuVoaWdrKukvresp6WZuLSno7XQpLXPpbbQp7fQqLnSqbnOrrvPscDTrLvOiZepfoeVbXeCaW51ZG12bnaBfYSLkKK3ITMuDhsPFCUXIC4iMj00REw+QUk4PU01KTsrLj8sJTEnKiwqSEI5WVI6dmxTpLTSobPRo7XSqrvXpLLJd4CJd4GLeoONc3mAX2duZmhreXx/enx+bnF0gYWFiYuKd3t+bXd6JDIsMT4vQlFEOEFCNjtAPkFGSExKSVNDQ04/NT82KzIvLjAvREM5WllKobHRn7HRn7LSprjZnazFd3yCa3R8ZXB6b3d+foKGgIOFgIGBhYeIiYyQjJCRjZCQbG1rlJOManBtKjYsKDMtHyUlIicqKCotJSsrLDEwLTEwJysmKC4nIyUiGx4bHyIenbLVma/SlqzQnLPZh5Oke4CDfIeReYGKfIGDf4OFiIuMj5OUkJSVlZyim6Oqio6QYGBfgXtxraicMDcuISkgNz09JykqIiQlLzI1Jy0qISQhTVJTKy0rHh4eMzM2JCUjlqnDmKvJobTRrMLeg42Xc3h7eYKKfIaQi5WdjZefjpafkpylkp2ojpegj5acfoOEX2JjhHtrpJ2MKjAqCxAMIycmLDE0KC8yMztDEhkYHCMfYGxyb3eAPUFGKi80bnN9b21ocG9renp4foCAcHFwX2RoXmduZG57a3iEdoGLdn+Id4GMfIaRfoeSeIOOZm5yTlRXcHBpf3hsa2dfQEdHPUNDb3Z6eYGIS1dnQk9aaHN6dICKeomYdYSTWWNuYG1/ZF5WaGJabGljaWdiaGZgX2BeTE9SMzk9MjxIVmJwYGx4Y255aHSBa3mHZXF+TldeQkxSYGRkWVZNamljQ0tPLDM6cHZ7d3x+WGJsSldpdH2Eb3h+bXV7aHB2Z293T1lmKDU/KDVALDhDKzhDKjZDJTRAIzE9GCg1FCU1IDFDJDVGJjhHJTdIJTdHJDREHC06Gis5JDE9IC43JDM7EyUxDh8tKDVCKDVBGSo5FSc6JjdGKTtJKTtKKz1MHS49FCc4AhYoCx0wKTlKLz9PIDJCIDFCKTpLGyw+HC5AKzxMIzNEAxYpAxYoAxYoAxYpBBgrBBgqBBgqARUpABMnAxYpAhYoBRgrFys7FSg4DyM0GCs7EyY2EiU1Fyo6BRkrAhYpBhksCRsuDh8yECI1DiE0DiE0ESM2ESM2DiE0ECQ2Ch4xBxwvCBwvCBsvCBsvCBwvBxwvBxwvBRksBBgrAxcqBRkrEiQ3EyY4Fig6FCc5FCg5FSk6EiU3FSg6Ch4wBRktBBgqCBwuFSg5FSc4FCY4Fig5Fig6Fig6Fig5Fyk7CRwuBhotBxotBhosBhosBhotBhosBxosBhkrAxcrAhcqBhksHzFCJjdHKDlKIDFCJDVGIzVGIDNEJThIDyEzAxcpBBgrBBgrAhYqAhYqAhYqAhYpAhYpAhYpAxYpAhYpBRgqBRgqBBgqBBgrBBgrAxgrAxgrBRgqBBgqAxgrBBgrBBcpARQmABMnABQnABQoABMoABQoARUoABQnAxYpBBcp",
-      "format": "feed",
-      "platform": "instagram+facebook",
       "classification": "factual",
-      "phase": "verified",
-      "qaBoundSha256": "b86446cb137e82fb915a239b8702834cfa6ba7f1295e42569f10e840765820c1",
+      "creativeKey": "cyprus-acquisition-transfer-fees-vat-data-editorial-r2-feed",
+      "date": "2026-09-15T10:01:41.383Z",
+      "facebook": {
+        "photoId": "122301078164216133",
+        "postId": "177672945439622_122301078188216133"
+      },
+      "format": "feed",
+      "headline": "A PROPERTY PRICE ISN'T THE FULL COST.",
+      "id": "tss-review-02-property-transfer-fees-feed",
       "instagram": {
         "containerId": "18115528618819867",
         "mediaId": "18122682412899827"
       },
-      "facebook": {
-        "postId": "177672945439622_122301078188216133",
-        "photoId": "122301078164216133"
-      },
-      "verification": {
-        "instagram": {
-          "width": 1080,
-          "height": 1350,
-          "meanPixelDifference": 0,
-          "id": "18122682412899827",
-          "sha256": "0a324629bb961b5a22410073470122fa053c9da22c16fbab6f906b02139a3a29",
-          "permalink": "https://www.instagram.com/p/DdTcuzokQfm/",
-          "downloadedAsset": "social-results/tss-review-02-property-transfer-fees-feed-instagram.png",
-          "evidenceCommit": "a1f00f68f20fecb94da1703d865745dda485d7d2",
-          "evidencePath": "social/published-assets/0a324629bb961b5a22410073470122fa053c9da22c16fbab6f906b02139a3a29.jpg"
-        },
+      "phase": "verified",
+      "pixelHash": "d1dd5ae76fb1a0096c163447ba4e636f787041d5ca0069f3ff059d29d77b4135",
+      "platform": "instagram+facebook",
+      "publishedReview": {
         "facebook": {
-          "width": 720,
+          "assetSha256": "6e06fa7db3824e110a8c573656cd614753621900529f229419089c6148fbc2d7",
           "height": 900,
-          "meanPixelDifference": 2.147,
-          "id": "177672945439622_122301078188216133",
-          "sha256": "6e06fa7db3824e110a8c573656cd614753621900529f229419089c6148fbc2d7",
-          "permalink": "https://www.facebook.com/122301039992216133/posts/122301078188216133",
+          "note": "Actual Facebook download inspected. Platform resizing and compression did not crop or damage the creative.",
+          "passed": true,
+          "reviewedAt": "2026-09-15T10:04:06.224Z",
+          "reviewer": "Codex actual-live-asset visual review",
+          "width": 720
+        },
+        "instagram": {
+          "assetSha256": "0a324629bb961b5a22410073470122fa053c9da22c16fbab6f906b02139a3a29",
+          "height": 1350,
+          "note": "Actual Instagram download inspected. The full creative, TSS logo, text and Larnaca Castle image are intact, readable and uncropped.",
+          "passed": true,
+          "reviewedAt": "2026-09-15T10:04:06.224Z",
+          "reviewer": "Codex actual-live-asset visual review",
+          "width": 1080
+        }
+      },
+      "qaBoundSha256": "b86446cb137e82fb915a239b8702834cfa6ba7f1295e42569f10e840765820c1",
+      "topic": "Cyprus acquisition costs: transfer fee and VAT interaction",
+      "topicKey": "cyprus-acquisition-transfer-fees-vat",
+      "verification": {
+        "facebook": {
           "downloadedAsset": "social-results/tss-review-02-property-transfer-fees-feed-facebook.png",
           "evidenceCommit": "741de2f5c261d7479adb485bf83cee84ca3ff0c6",
-          "evidencePath": "social/published-assets/6e06fa7db3824e110a8c573656cd614753621900529f229419089c6148fbc2d7.jpg"
+          "evidencePath": "social/published-assets/6e06fa7db3824e110a8c573656cd614753621900529f229419089c6148fbc2d7.jpg",
+          "height": 900,
+          "id": "177672945439622_122301078188216133",
+          "meanPixelDifference": 2.147,
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301078188216133",
+          "sha256": "6e06fa7db3824e110a8c573656cd614753621900529f229419089c6148fbc2d7",
+          "width": 720
+        },
+        "instagram": {
+          "downloadedAsset": "social-results/tss-review-02-property-transfer-fees-feed-instagram.png",
+          "evidenceCommit": "a1f00f68f20fecb94da1703d865745dda485d7d2",
+          "evidencePath": "social/published-assets/0a324629bb961b5a22410073470122fa053c9da22c16fbab6f906b02139a3a29.jpg",
+          "height": 1350,
+          "id": "18122682412899827",
+          "meanPixelDifference": 0,
+          "permalink": "https://www.instagram.com/p/DdTcuzokQfm/",
+          "sha256": "0a324629bb961b5a22410073470122fa053c9da22c16fbab6f906b02139a3a29",
+          "width": 1080
         }
       },
-      "publishedReview": {
-        "instagram": {
-          "passed": true,
-          "reviewer": "Codex actual-live-asset visual review",
-          "reviewedAt": "2026-09-15T10:04:06.224Z",
-          "assetSha256": "0a324629bb961b5a22410073470122fa053c9da22c16fbab6f906b02139a3a29",
-          "width": 1080,
-          "height": 1350,
-          "note": "Actual Instagram download inspected. The full creative, TSS logo, text and Larnaca Castle image are intact, readable and uncropped."
-        },
-        "facebook": {
-          "passed": true,
-          "reviewer": "Codex actual-live-asset visual review",
-          "reviewedAt": "2026-09-15T10:04:06.224Z",
-          "assetSha256": "6e06fa7db3824e110a8c573656cd614753621900529f229419089c6148fbc2d7",
-          "width": 720,
-          "height": 900,
-          "note": "Actual Facebook download inspected. Platform resizing and compression did not crop or damage the creative."
-        }
-      }
+      "visualSignature": "rgb32:+/r2/Pv2/vz4/fz3/Pv3/Pv3/vz4/fz4/fv3/vz4/vz4/Pv3/Pv3/Pv3/Pv3/Pv3/Pv3+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/Pv38vPx3eLk3uPl3+Tl6+7t4OXm3uPl5Ojp2d/h2+Dh8PDu8PHv8PHv8PHv7/Du9PXy/Pv2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2+/n2+fn1+fn1/f35/f36+/r3/f35/Pz3+vr2/Pv4//35+/v2+Pj0+Pj0+Pj0+fn1+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/Pv39vbz5+no7O3r2Nvc3eDg5ebl2dzd4OPj4OPj29/f297e7e7s+/r2+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39fXy4OPj4+bm3+Dh5t/g4ePj6Orp+fj0+/r2//755ujnprC50tfaoqy1l6OuqbO7maWvrLS9n6q0p7C4tb3D0NbY/////f37/f35+/r1+/r2+fj1+Pf0+vr2+vn1+vn1+vr19vbz9fXz+Pn28/bz+fn29fXz+vn2+/r2//753+Linqm0oKq0wcfMqrK7v8fN1NjbrLS8o622x83QzNHUyM3Rpa64naiyv8bL///8+fj0/v78/////Pz4/v75/v75//76///7//76/Pv3/Pv3/Pr2/Pr2+/r2+/r2///63ODgrLa9qbO7vMTJwcjMytDTusLIqbO7pK63vcTJ6Ono7/Dt29/g0dbY3uHh/v34/v34xsvPoay17e7s3eDg3N/g1trcz9TW09fZ9/fz/fv3+vn1+/r2+/r2+/r2//755OXkzM7SrbW9w8bL1dba3t7hu77FusDGsbrBwsjN7e7s//77/v36/v78/f36+vn1//75dYaWNk9qxszP5Obm1djb1NfZ09ja0tbY4OLi3eDh7O3s/Pv3+/r2+/r2//z46fLvk8jH4/Dtt9rXstbVuNjXwd/d4/Dt///8/v35+/r2+vr2+vr1+fn1+vn1+/r2/fz47u/t3uHh+/r25Obm1djb4uTk8fHv7/Du8PHu7u7s+vn2+/r2+/r2+/r2//345O7rZq+xebi6ebe5cbO2ps/QiMDBhb6/1efl//35+fn1+/r2+/r2+/r2+/r2+/r2+vn1/Pv3/v35+vn1+vn1+vn1+vn1/Pv3/fz4/fz3/vz4+/r2+/r2+/r2+/r2/fv38PPwstLSyd7dvNbWudbW9PXy2ObltdTU0+Ti+/j1+vn1+/r2+/r2+/r2+/r2+/r2+/r2/v37///8/fz5+/r1/Pr2/Pv3+/r2+vn2+/r2+/r2/Pv3+/r2+/r2+/r2/Pv39PTx1tbZ2Nja2drb5OPj0tfY19nb397f1tjb3uHi/vz3/Pv2/Pv3/Pv3+/r2+vn1///6o662bH6P3uDh2Nzd1dnb0dXYx83Rz9TX9vXz+fj1+Pf0+/r2+/r2+/r2/fz38PHu1Nnb4eTk4OPj19zc4eTj2t3f3uHh4uXl4ePj1dnb3+Hh4uTk19rc3d/h7e7s///7eIiXOVJrztPV6Ono09fa19rc4+Xl5ufn4+Xl6+zq7Ozr+/r2+/r2+/r2/Pv38/Pw4uTk5+jo4ePk3N/f6Ono4ePj4OLi5Obm4ePj5+jo3uHi4+Xl4uTk5+jo+vn1/Pv3+fn28/Px/fz59vXy8vPw9fTy/fv3/vz4/fz4/Pv3/fz3+/r2+/r2+/r2+/r2/Pv3/vz4/fv3/vz4/vz4/fv3/vz4/vz4/fz4/fz4/fz4/fz4/fz4/vz4/fv3+/r2+/r2+/r2/v34+vn2/Pv3/fz4/Pv3+vr2+vn2+vn2+/r2+vr2+/r2+/r2+/r2+/r2+vr2+vn1+fj1+fn1+fn1+vn1+fn1+vn1+fj1+fj1+vn1+fn1+fn1+fn1+vn1+vn1+vn1+fn1+fj1+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv3/v35///6/v75/v75/v75///6/v34//75///6//75//76/v75//76//76/v35//75/v35///6/v75+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pr26PHu2+Li1dja3N/g2dze293f1Nja4uXk1trc0NXY19vc19vc19vc1dna09fa3N/g1tna2NrbztLV2Nrc9/bz+fjz+Pjz+Pfz+Pfz+Pfz+Pfz+Pfz+fj0+Pfz+fj0///58ffy8/by+ffz+ffz+Pfy+Pfy9vXx+fj09vXw9fTv+vj0/Pv3+fn2+vn1+Pfz+fjy/v37//7+/v78/v79////////////////////////////////////////////1t3l19zl1tzl1tzm193m2uHp2uHp3eLp3uPq5Orx5evz1dzjxcnOztPYztXb1Nvj2uPtq7Sul6CUo6ymnqOboKWdq7ChrLeknaeakpWUlpuVoaWdrKukvresp6WZuLSno7XQpLXPpbbQp7fQqLnSqbnOrrvPscDTrLvOiZepfoeVbXeCaW51ZG12bnaBfYSLkKK3ITMuDhsPFCUXIC4iMj00REw+QUk4PU01KTsrLj8sJTEnKiwqSEI5WVI6dmxTpLTSobPRo7XSqrvXpLLJd4CJd4GLeoONc3mAX2duZmhreXx/enx+bnF0gYWFiYuKd3t+bXd6JDIsMT4vQlFEOEFCNjtAPkFGSExKSVNDQ04/NT82KzIvLjAvREM5WllKobHRn7HRn7LSprjZnazFd3yCa3R8ZXB6b3d+foKGgIOFgIGBhYeIiYyQjJCRjZCQbG1rlJOManBtKjYsKDMtHyUlIicqKCotJSsrLDEwLTEwJysmKC4nIyUiGx4bHyIenbLVma/SlqzQnLPZh5Oke4CDfIeReYGKfIGDf4OFiIuMj5OUkJSVlZyim6Oqio6QYGBfgXtxraicMDcuISkgNz09JykqIiQlLzI1Jy0qISQhTVJTKy0rHh4eMzM2JCUjlqnDmKvJobTRrMLeg42Xc3h7eYKKfIaQi5WdjZefjpafkpylkp2ojpegj5acfoOEX2JjhHtrpJ2MKjAqCxAMIycmLDE0KC8yMztDEhkYHCMfYGxyb3eAPUFGKi80bnN9b21ocG9renp4foCAcHFwX2RoXmduZG57a3iEdoGLdn+Id4GMfIaRfoeSeIOOZm5yTlRXcHBpf3hsa2dfQEdHPUNDb3Z6eYGIS1dnQk9aaHN6dICKeomYdYSTWWNuYG1/ZF5WaGJabGljaWdiaGZgX2BeTE9SMzk9MjxIVmJwYGx4Y255aHSBa3mHZXF+TldeQkxSYGRkWVZNamljQ0tPLDM6cHZ7d3x+WGJsSldpdH2Eb3h+bXV7aHB2Z293T1lmKDU/KDVALDhDKzhDKjZDJTRAIzE9GCg1FCU1IDFDJDVGJjhHJTdIJTdHJDREHC06Gis5JDE9IC43JDM7EyUxDh8tKDVCKDVBGSo5FSc6JjdGKTtJKTtKKz1MHS49FCc4AhYoCx0wKTlKLz9PIDJCIDFCKTpLGyw+HC5AKzxMIzNEAxYpAxYoAxYoAxYpBBgrBBgqBBgqARUpABMnAxYpAhYoBRgrFys7FSg4DyM0GCs7EyY2EiU1Fyo6BRkrAhYpBhksCRsuDh8yECI1DiE0DiE0ESM2ESM2DiE0ECQ2Ch4xBxwvCBwvCBsvCBsvCBwvBxwvBxwvBRksBBgrAxcqBRkrEiQ3EyY4Fig6FCc5FCg5FSk6EiU3FSg6Ch4wBRktBBgqCBwuFSg5FSc4FCY4Fig5Fig6Fig6Fig5Fyk7CRwuBhotBxotBhosBhosBhotBhosBxosBhkrAxcrAhcqBhksHzFCJjdHKDlKIDFCJDVGIzVGIDNEJThIDyEzAxcpBBgrBBgrAhYqAhYqAhYqAhYpAhYpAhYpAxYpAhYpBRgqBRgqBBgqBBgrBBgrAxgrAxgrBRgqBBgqAxgrBBgrBBcpARQmABMnABQnABQoABMoABQoARUoABQnAxYpBBcp"
     },
     {
-      "id": "tss-review-03-housing-income-share-feed",
-      "date": "2026-09-15T22:48:36.806Z",
-      "topic": "Housing costs as a share of household income: Cyprus versus EU",
-      "topicKey": "household-housing-income-share-cyprus-eu",
-      "headline": "CYPRUS HOUSING. THE HOUSEHOLD VIEW.",
-      "creativeKey": "household-housing-income-share-cyprus-eu-landmark-v2-feed",
       "assetSha256": "ed7ce4ea970c6ec9604627bdfd9df8054db22a01bedb82c408419d9dc201bc68",
-      "pixelHash": "a044f5bdf946c52fc517cbee75498feb1b7282080d9d4bebef634323d9adbe63",
-      "visualSignature": "rgb32:+vjz+vjz/Pn0/Pn0/Pn0/Pr0+/n0/Pn0/Pr0/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz//78///////7///9///+///9/fv2+vfz+vjz+vjz+ffy8PDt8fHu8PDt7/Dt9PTw8vHu7+/s8PHt+vn0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz+vjz+/jz+Pbypa20ipWgmbK5pqmynqKslqGq19nZ/vv2+ffy+vjz+Pfy3uLi3ODh3eHh2t/g4+Xk3uLi2d7f2+Dg8vLu8/Lu8/Lu8/Lu8/Lu8/Lu8/Lu9PPv+vjz+vjz+vjz+ffy///5wMLGXlpugtHVVsPJbIeWTl1yp6+2///6+Pbx+vjz+vjz9vTw9fPv9fPv9fTv8/Pu9fTv9vTw9fPv8/Lu8vHu8vHt8vHt8/Lu8vHt8fHt8/Lu+Pfy+Pfy+ffy+vjz+vjz4uPioaqyubm+famyoLvBhI2arLS7///5+Pby+vjz+vjz/vz3/vz3//74/v76/v76/Pv3/Pv3/v75/Pr1/v35/v34/v34/Pv3/fz5/v34/vz4/f34/v34/Pr1/Pr09fTw5Obl7e7r4+Xj6ubk4uHg4eTj6+zq+vjz+vjz+vjz+ffy1tnZ1tnZztLUxMnNw8jM2Nrb297dys7Q7e3p1djZ1NfX0tXW293d0tbX0tXW0tXW0dXW0dTV4+Xj+/n0xMrNyM7Ryc/Sys/S6Ozq8vPv8vPv7u/s+vjz+vjz+/n08/Lutr7CxsvOoq22r7i/k5+qoqy1pa+3maWu3ODhoKu0mqWvpK62nqixm6avprC4l6OtjpqlnqmxvsXK9fTws7vApa62h5SgnKaw+vfy+/nz+vjz+/nz+vjz+vjz+/n09fPvt77Dtr3Dt7/DwsnNusLHusLFrLW8v8XJtb3CtLzBv8XJyc7RsrrA3+Hgtr7Csbi+uL/EsLi+rba89fTv/Pr0+/n0+vjz9/bx+ffz+ffz+vjz+ffz+vjz+vjz/Pr08/HurbS7q7O6sLe9q7K5q7S7pq+3nKavrra8qLC4rLO6rLO6vMDFsri+4ePiqLC4qrO6pK21prC3oqu07ezp/fv1+fjz+fjz+/n0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz6PLu7PTx5e/r4u7r+fn1+/v28/fz+vv2+fv35e/s3+zp1eXi7PPu+/r2/v35/fz4/Pv3/v35/fz4+ffy+ffz+ffy+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjzocrKq9DPr9LRnsnJx97cz+LflcXFpc3M4evnnMnJi7/AnsrJp87N1eXi//r1+Pfy+fjz+ffy+vjz+/n0+vjz+/n0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy7vDs7O/s8fHt9PTw7O/r8/Lu7fDs6+/r9PTw7e/s8/Pv9/Xx7e/r7/Ht9/Xx9fTw9/Xx9vXx8/Lu9/Xx9/Xx9/Xx9/Xw+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy5+bl4+Ti5ebk5ebl3+Df6Ojm5+fl5ufl4+Xj4OLh5ufl5ebl29zc8O/s4uPh4uPi5+jm6Onm5ebj4+Tj3+Hg2t3c19ra9fTw+/n0+vjz+vjz+vjz+vjz+vjz/Pn08vTw3ubkzdDS0NTV1tna1dnZ3d/f2Nrb1tnZ2t3c0dXW09bX0dTV2dvb2Nvbys7Q0tbX293c0NPU0dXW6uro+/nz+Pbx+Pbx+ffy+vjz+vjz+vjz+vjz+vjz+vjz/Pn08vTv5+3q6uro5ufl6enn6Onn7Ozp6+vp6+vo7e3q5+jm6Onn5+jm6+vp6uvo3+Dg5ufl7e7q5ufl5+jm9fPv+/n0+vjz+vjz+fjz+fjz+fjz+fjz+fjz+vjz+vjz+vjz+vj0/Pr1/vz1/vz1/fv1/vv1/fv0/vv1/vv1/fv1/vv1/vz1/vz1/fv1/vv1/v32/vz1/fv0/vz1/vz1/fr0/Pnz/Pnz+/nz+/nz/Pnz/Pnz+/nz+/nz+vjz+vjz+vjz+vjz9vXz9vXz9fXz9fXz9fXz9vbz9fXz9vbz8/Tz9fXz9vbz9PXz8/Xz9PXz9vXz8vTz8vTz8vTz8fTz8vTz8fPz8vTz8/Tz9PTz9PTz8vPz9PTz9fXz+vjz+vjz+vjz+Pbzsc77nsb9rM79qs39qs39rtD9rND9q9D9vtr80Ob8tdb8p878pM39qM/9rtH8osv9n8r9ncj9oMn9ocn9n8f9nsb9osb9ocT9oMP9psf8nsD8rsj7+/nz+vjz+/nz9vXznsH5kbv7ncL8lb38nsP8nMT9qs39rc/8yOD8xt/9pMz9mMX9osv9o8v9pMv9psz9m8T9nMT9lsH+lcD+kb7+lL/+k77+l7/9o8b+s879f63+kLj8/Pnz+vjz+/nz9vXzl7j3gKv7ha/8ga7+h7L/irT/kbn/k7v/j7r/jrr/jrr/iLb/iLb/i7f/j7r/jbj/i7f/kLv/ibj/jLr/kr7+qMj+n8L+qsf9scv9psL7fav7h7L6/Pnz+vjz+/nz9fTxW4LLM2fFPnDLPnLPQHXSQ3nXRHzaRX3dR4DgSYPjSoTlTofnTYfpTonrT4rtT4zxUo7yVpDyW5PzV5DyXpX2ZJj2YJb1YZf2YJb1X5b2Vo/0c6H1/frz+vjz+/n09fTwZYWhPWiNR3CVR3CWSXKXS3OZTXSaT3WcUnedU3efVHaeU3egVHijUnOfVnelWnOZUHCfUHOmUXSpeI+zaH2iTG6mUHOsTXCqTnGrTW2nRGeka4Ox/fr0+fjz+/n09/Xwm5ykhIaPi42WjI6YjZCajpCbj5CakJGbkZKekpKckpGbkpKclJOdjo2XmZahlYaCh3+JlZGhmpOdtqOSoox4cWdompadlpCUiX9+fmthdWRVj39w+/n0+vjz+/n09/Xwm5uhgoSNioyWi4yWi42YjI6ajo+cj5CfkJCfkJCdkZCekZCfj4+fkJCjjo+mjY2mjo2okI2lkYygjoSUjoWTg3yMi4SUkImbi4SUiYCMh3yEmouN+/n0+vjz+/n09/XwnpmchoKFjYmMjYqRjouSj4yUkYyWko2VlI6WlI+YlI6YlY6YlY2XkoqVkYqYkIiWj4aSjoWSjoWSjoaUjYSSjoWUi4KTiH6QhX6Rg3ySeHKMjIig/Pr1+vjz+/n09/Xwn5qViIJ7j4mEkIuIkYyLk4yJlI2MlY2MlY6NlY2Nlo6Olo2Olo6Plo+Ulo+Vl46UloyRlYyUlYyVlIqVlImSkoiRkIaSjYOQioGQhX2Ne3OJj4qf/Pr1+vjz+/n09/TvnZSMhHx0ioR9ioN7ioN9i4R/jIV/jYV+kIeAkYmEkImGkYmFkoiFk4mIk4mIlImNlIqPlImNk4aLkoaMkYaLj4SKjYGJiX6Ih3yIhHmFeW59jYOS/Pr1+vjz+/n09/XwqaGbk4yGl5GJlJCKlZKOl5SSnJiUnZeUnZaToJeTo5qXo5mVo5iUo5eUo5eWopeVo5eUoZWWoJaYn5WYn5SWnZOVnJKVmpCUlo6Xk4yYjYWSopum/Pr0+vjz+vjz+Pby5ejp4ebm5+vq5+vq4ebm3OPj6ezr7e/t3+Tl4ebm9vXx/Pn0+/nz+/nz+/n0+/n0/Pn0/Pn0/Pr0/Pr0/Pn0/Pn0/Pn0/Pr0/Pr1/Pr1/fr1/Pr1+vjz+vjz+vjz+Pby4uTj3ODf3uHg3uHh3uLh4ePj3ODg4eTj4OPi5Ofl7e/s+vjz+vjz+vjz+vjz+vjz9vXx9fXx9fXx9fXx9fXx9fXx9fXx9fXx9fXx9fXw9fXw9vXw+vjz+vjz+vjz+ffz4OLh19ra19ra293d3N7d3N7d19ra3uDf2tzc7u3q+/r1+ffz+vjz+vjz+vjz+vjz8vTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8vTv+vjz+vjz+vjz+vjz/Pv1/fv2/fz2/fv1/fr1+/r1/fv2/Pv1/fv1/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz",
-      "format": "feed",
-      "platform": "instagram+facebook",
       "classification": "factual",
+      "creativeKey": "household-housing-income-share-cyprus-eu-landmark-v2-feed",
+      "date": "2026-09-15T22:48:36.806Z",
       "editorial": null,
-      "phase": "verified",
-      "qaBoundSha256": "6d597b9b5f369793c10bb9e76cbde8cb20aa5e2ffb1d4ac6e5df5f9570d4e228",
+      "facebook": {
+        "photoId": "122301141896216133",
+        "postId": "177672945439622_122301141914216133"
+      },
+      "format": "feed",
+      "headline": "CYPRUS HOUSING. THE HOUSEHOLD VIEW.",
+      "id": "tss-review-03-housing-income-share-feed",
       "instagram": {
         "containerId": "18115693906819867",
         "mediaId": "17953623450276650"
       },
-      "facebook": {
-        "postId": "177672945439622_122301141914216133",
-        "photoId": "122301141896216133"
-      },
-      "verification": {
-        "instagram": {
-          "width": 1080,
-          "height": 1350,
-          "meanPixelDifference": 1.63,
-          "id": "17953623450276650",
-          "sha256": "6f22e604f039169297bdc445ca9e38689bd77bf147b8973ae076fe3a9f585c51",
-          "permalink": "https://www.instagram.com/p/DdU0f_lH8qE/",
-          "downloadedAsset": "social-results/tss-review-03-housing-income-share-feed-instagram.png",
-          "evidenceCommit": "c5faaac056dce966ca27e547fb329278110ecd9e",
-          "evidencePath": "social/published-assets/6f22e604f039169297bdc445ca9e38689bd77bf147b8973ae076fe3a9f585c51.jpg"
-        },
+      "phase": "verified",
+      "pixelHash": "a044f5bdf946c52fc517cbee75498feb1b7282080d9d4bebef634323d9adbe63",
+      "platform": "instagram+facebook",
+      "publishedReview": {
         "facebook": {
-          "width": 720,
+          "assetSha256": "3e2319062000be94ce5cdc14c7e2741bfa8df8f9d76ac3c3d6bdbb07275e98aa",
           "height": 900,
-          "meanPixelDifference": 1.54,
-          "id": "177672945439622_122301141914216133",
-          "sha256": "3e2319062000be94ce5cdc14c7e2741bfa8df8f9d76ac3c3d6bdbb07275e98aa",
-          "permalink": "https://www.facebook.com/122301039992216133/posts/122301141914216133",
+          "note": "Actual Facebook download inspected. Platform resizing and compression did not crop or damage the creative.",
+          "passed": true,
+          "reviewedAt": "2026-09-15T22:50:47.204Z",
+          "reviewer": "Codex actual-live-asset visual review",
+          "width": 720
+        },
+        "instagram": {
+          "assetSha256": "6f22e604f039169297bdc445ca9e38689bd77bf147b8973ae076fe3a9f585c51",
+          "height": 1350,
+          "note": "Actual Instagram download inspected. The full creative, TSS logo, text and Petra tou Romiou image are intact, readable and uncropped.",
+          "passed": true,
+          "reviewedAt": "2026-09-15T22:50:47.204Z",
+          "reviewer": "Codex actual-live-asset visual review",
+          "width": 1080
+        }
+      },
+      "qaBoundSha256": "6d597b9b5f369793c10bb9e76cbde8cb20aa5e2ffb1d4ac6e5df5f9570d4e228",
+      "topic": "Housing costs as a share of household income: Cyprus versus EU",
+      "topicKey": "household-housing-income-share-cyprus-eu",
+      "verification": {
+        "facebook": {
           "downloadedAsset": "social-results/tss-review-03-housing-income-share-feed-facebook.png",
           "evidenceCommit": "08fbaf4aff758c90e6dd56dcbc202a1aef59271c",
-          "evidencePath": "social/published-assets/3e2319062000be94ce5cdc14c7e2741bfa8df8f9d76ac3c3d6bdbb07275e98aa.jpg"
+          "evidencePath": "social/published-assets/3e2319062000be94ce5cdc14c7e2741bfa8df8f9d76ac3c3d6bdbb07275e98aa.jpg",
+          "height": 900,
+          "id": "177672945439622_122301141914216133",
+          "meanPixelDifference": 1.54,
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301141914216133",
+          "sha256": "3e2319062000be94ce5cdc14c7e2741bfa8df8f9d76ac3c3d6bdbb07275e98aa",
+          "width": 720
+        },
+        "instagram": {
+          "downloadedAsset": "social-results/tss-review-03-housing-income-share-feed-instagram.png",
+          "evidenceCommit": "c5faaac056dce966ca27e547fb329278110ecd9e",
+          "evidencePath": "social/published-assets/6f22e604f039169297bdc445ca9e38689bd77bf147b8973ae076fe3a9f585c51.jpg",
+          "height": 1350,
+          "id": "17953623450276650",
+          "meanPixelDifference": 1.63,
+          "permalink": "https://www.instagram.com/p/DdU0f_lH8qE/",
+          "sha256": "6f22e604f039169297bdc445ca9e38689bd77bf147b8973ae076fe3a9f585c51",
+          "width": 1080
         }
       },
-      "publishedReview": {
-        "instagram": {
-          "passed": true,
-          "reviewer": "Codex actual-live-asset visual review",
-          "reviewedAt": "2026-09-15T22:50:47.204Z",
-          "assetSha256": "6f22e604f039169297bdc445ca9e38689bd77bf147b8973ae076fe3a9f585c51",
-          "width": 1080,
-          "height": 1350,
-          "note": "Actual Instagram download inspected. The full creative, TSS logo, text and Petra tou Romiou image are intact, readable and uncropped."
-        },
-        "facebook": {
-          "passed": true,
-          "reviewer": "Codex actual-live-asset visual review",
-          "reviewedAt": "2026-09-15T22:50:47.204Z",
-          "assetSha256": "3e2319062000be94ce5cdc14c7e2741bfa8df8f9d76ac3c3d6bdbb07275e98aa",
-          "width": 720,
-          "height": 900,
-          "note": "Actual Facebook download inspected. Platform resizing and compression did not crop or damage the creative."
-        }
-      }
+      "visualSignature": "rgb32:+vjz+vjz/Pn0/Pn0/Pn0/Pr0+/n0/Pn0/Pr0/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz//78///////7///9///+///9/fv2+vfz+vjz+vjz+ffy8PDt8fHu8PDt7/Dt9PTw8vHu7+/s8PHt+vn0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz+vjz+/jz+Pbypa20ipWgmbK5pqmynqKslqGq19nZ/vv2+ffy+vjz+Pfy3uLi3ODh3eHh2t/g4+Xk3uLi2d7f2+Dg8vLu8/Lu8/Lu8/Lu8/Lu8/Lu8/Lu9PPv+vjz+vjz+vjz+ffy///5wMLGXlpugtHVVsPJbIeWTl1yp6+2///6+Pbx+vjz+vjz9vTw9fPv9fPv9fTv8/Pu9fTv9vTw9fPv8/Lu8vHu8vHt8vHt8/Lu8vHt8fHt8/Lu+Pfy+Pfy+ffy+vjz+vjz4uPioaqyubm+famyoLvBhI2arLS7///5+Pby+vjz+vjz/vz3/vz3//74/v76/v76/Pv3/Pv3/v75/Pr1/v35/v34/v34/Pv3/fz5/v34/vz4/f34/v34/Pr1/Pr09fTw5Obl7e7r4+Xj6ubk4uHg4eTj6+zq+vjz+vjz+vjz+ffy1tnZ1tnZztLUxMnNw8jM2Nrb297dys7Q7e3p1djZ1NfX0tXW293d0tbX0tXW0tXW0dXW0dTV4+Xj+/n0xMrNyM7Ryc/Sys/S6Ozq8vPv8vPv7u/s+vjz+vjz+/n08/Lutr7CxsvOoq22r7i/k5+qoqy1pa+3maWu3ODhoKu0mqWvpK62nqixm6avprC4l6OtjpqlnqmxvsXK9fTws7vApa62h5SgnKaw+vfy+/nz+vjz+/nz+vjz+vjz+/n09fPvt77Dtr3Dt7/DwsnNusLHusLFrLW8v8XJtb3CtLzBv8XJyc7RsrrA3+Hgtr7Csbi+uL/EsLi+rba89fTv/Pr0+/n0+vjz9/bx+ffz+ffz+vjz+ffz+vjz+vjz/Pr08/HurbS7q7O6sLe9q7K5q7S7pq+3nKavrra8qLC4rLO6rLO6vMDFsri+4ePiqLC4qrO6pK21prC3oqu07ezp/fv1+fjz+fjz+/n0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz6PLu7PTx5e/r4u7r+fn1+/v28/fz+vv2+fv35e/s3+zp1eXi7PPu+/r2/v35/fz4/Pv3/v35/fz4+ffy+ffz+ffy+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjzocrKq9DPr9LRnsnJx97cz+LflcXFpc3M4evnnMnJi7/AnsrJp87N1eXi//r1+Pfy+fjz+ffy+vjz+/n0+vjz+/n0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy7vDs7O/s8fHt9PTw7O/r8/Lu7fDs6+/r9PTw7e/s8/Pv9/Xx7e/r7/Ht9/Xx9fTw9/Xx9vXx8/Lu9/Xx9/Xx9/Xx9/Xw+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy5+bl4+Ti5ebk5ebl3+Df6Ojm5+fl5ufl4+Xj4OLh5ufl5ebl29zc8O/s4uPh4uPi5+jm6Onm5ebj4+Tj3+Hg2t3c19ra9fTw+/n0+vjz+vjz+vjz+vjz+vjz/Pn08vTw3ubkzdDS0NTV1tna1dnZ3d/f2Nrb1tnZ2t3c0dXW09bX0dTV2dvb2Nvbys7Q0tbX293c0NPU0dXW6uro+/nz+Pbx+Pbx+ffy+vjz+vjz+vjz+vjz+vjz+vjz/Pn08vTv5+3q6uro5ufl6enn6Onn7Ozp6+vp6+vo7e3q5+jm6Onn5+jm6+vp6uvo3+Dg5ufl7e7q5ufl5+jm9fPv+/n0+vjz+vjz+fjz+fjz+fjz+fjz+fjz+vjz+vjz+vjz+vj0/Pr1/vz1/vz1/fv1/vv1/fv0/vv1/vv1/fv1/vv1/vz1/vz1/fv1/vv1/v32/vz1/fv0/vz1/vz1/fr0/Pnz/Pnz+/nz+/nz/Pnz/Pnz+/nz+/nz+vjz+vjz+vjz+vjz9vXz9vXz9fXz9fXz9fXz9vbz9fXz9vbz8/Tz9fXz9vbz9PXz8/Xz9PXz9vXz8vTz8vTz8vTz8fTz8vTz8fPz8vTz8/Tz9PTz9PTz8vPz9PTz9fXz+vjz+vjz+vjz+Pbzsc77nsb9rM79qs39qs39rtD9rND9q9D9vtr80Ob8tdb8p878pM39qM/9rtH8osv9n8r9ncj9oMn9ocn9n8f9nsb9osb9ocT9oMP9psf8nsD8rsj7+/nz+vjz+/nz9vXznsH5kbv7ncL8lb38nsP8nMT9qs39rc/8yOD8xt/9pMz9mMX9osv9o8v9pMv9psz9m8T9nMT9lsH+lcD+kb7+lL/+k77+l7/9o8b+s879f63+kLj8/Pnz+vjz+/nz9vXzl7j3gKv7ha/8ga7+h7L/irT/kbn/k7v/j7r/jrr/jrr/iLb/iLb/i7f/j7r/jbj/i7f/kLv/ibj/jLr/kr7+qMj+n8L+qsf9scv9psL7fav7h7L6/Pnz+vjz+/nz9fTxW4LLM2fFPnDLPnLPQHXSQ3nXRHzaRX3dR4DgSYPjSoTlTofnTYfpTonrT4rtT4zxUo7yVpDyW5PzV5DyXpX2ZJj2YJb1YZf2YJb1X5b2Vo/0c6H1/frz+vjz+/n09fTwZYWhPWiNR3CVR3CWSXKXS3OZTXSaT3WcUnedU3efVHaeU3egVHijUnOfVnelWnOZUHCfUHOmUXSpeI+zaH2iTG6mUHOsTXCqTnGrTW2nRGeka4Ox/fr0+fjz+/n09/Xwm5ykhIaPi42WjI6YjZCajpCbj5CakJGbkZKekpKckpGbkpKclJOdjo2XmZahlYaCh3+JlZGhmpOdtqOSoox4cWdompadlpCUiX9+fmthdWRVj39w+/n0+vjz+/n09/Xwm5uhgoSNioyWi4yWi42YjI6ajo+cj5CfkJCfkJCdkZCekZCfj4+fkJCjjo+mjY2mjo2okI2lkYygjoSUjoWTg3yMi4SUkImbi4SUiYCMh3yEmouN+/n0+vjz+/n09/XwnpmchoKFjYmMjYqRjouSj4yUkYyWko2VlI6WlI+YlI6YlY6YlY2XkoqVkYqYkIiWj4aSjoWSjoWSjoaUjYSSjoWUi4KTiH6QhX6Rg3ySeHKMjIig/Pr1+vjz+/n09/Xwn5qViIJ7j4mEkIuIkYyLk4yJlI2MlY2MlY6NlY2Nlo6Olo2Olo6Plo+Ulo+Vl46UloyRlYyUlYyVlIqVlImSkoiRkIaSjYOQioGQhX2Ne3OJj4qf/Pr1+vjz+/n09/TvnZSMhHx0ioR9ioN7ioN9i4R/jIV/jYV+kIeAkYmEkImGkYmFkoiFk4mIk4mIlImNlIqPlImNk4aLkoaMkYaLj4SKjYGJiX6Ih3yIhHmFeW59jYOS/Pr1+vjz+/n09/XwqaGbk4yGl5GJlJCKlZKOl5SSnJiUnZeUnZaToJeTo5qXo5mVo5iUo5eUo5eWopeVo5eUoZWWoJaYn5WYn5SWnZOVnJKVmpCUlo6Xk4yYjYWSopum/Pr0+vjz+vjz+Pby5ejp4ebm5+vq5+vq4ebm3OPj6ezr7e/t3+Tl4ebm9vXx/Pn0+/nz+/nz+/n0+/n0/Pn0/Pn0/Pr0/Pr0/Pn0/Pn0/Pn0/Pr0/Pr1/Pr1/fr1/Pr1+vjz+vjz+vjz+Pby4uTj3ODf3uHg3uHh3uLh4ePj3ODg4eTj4OPi5Ofl7e/s+vjz+vjz+vjz+vjz+vjz9vXx9fXx9fXx9fXx9fXx9fXx9fXx9fXx9fXx9fXw9fXw9vXw+vjz+vjz+vjz+ffz4OLh19ra19ra293d3N7d3N7d19ra3uDf2tzc7u3q+/r1+ffz+vjz+vjz+vjz+vjz8vTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8vTv+vjz+vjz+vjz+vjz/Pv1/fv2/fz2/fv1/fr1+/r1/fv2/Pv1/fv1/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz"
     },
     {
-      "id": "tss-review-04-investor-brief-feed",
-      "date": "2026-09-16T06:52:13.436Z",
-      "topic": "TSS: prepare a clear investor brief before introductions",
-      "topicKey": "tss-investor-brief-objective-budget-timeframe",
-      "headline": "START WITH A CLEAR INVESTOR BRIEF.",
-      "creativeKey": "tss-investor-brief-four-essentials-reference-v3-feed",
       "assetSha256": "f8e91bb479c9514aa16182aa91605878d84e7c12d6707b21aecf9a78623a7ee2",
-      "pixelHash": "e2fb843742255c37918ffce6b01ef7de98a373b39a7d9df3ad36f23e59a08c02",
-      "visualSignature": "rgb32:+/r2+/r2/fv3/fv3/vz4/fv3/fz4/fz4/vz4/v34/v35/Pv3/Pv3/Pv3/Pv3/Pv3/Pv3+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/Pv39fbz4ubn6Ovq3ePk4ebn3+Xm3+Xl3uPk0trd1tzf8PDu8PHv8PHu8PHv7/Du9PXy/Pv2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2/Pv3/Pv4/fz4+vr3/fz5/Pv3+fn1/Pz4+fn1+vr2/Pv4+vr2/Pv3+Pf0+Pj0+fn1+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/Pv39PTx4uTk3eDg4uXj3N/f4ePj7e3r3eDg4uTk3eDh5ujn8fHv6erp/fz3+vn1+/r2+/r2+Pj1+Pj0+/r2+vn1+/r29PTx4OLj4+bm39/h5d/g4ePj6Orp+fj0+/r2//754uTko663r7i/kp+qn6qzwcfM19vcjJqmtLzDtb3EqLG60NTXqrS9/////f77+/v3+/r2/v77///8/Pv3//75/vz4/v34+Pn19/fz+vr29Pb0+vr29fbz+vn2+/r2//355+jnuMDFxcvPrbe+srrBqbK7yM3RpK63oKu0qbO7qLK7q7S8qbK7q7S8iZek6uvq///7sdTUos3O9PPwxszQ1trb0dXY7u7t+vr19/fz+Pj09/bz+fj0+/r2+/r2///63+HilqKum6ewpa+4mKSvtL3D6evq2Nzd2Nzd2N3d2Nzd3N/f5ebm297f09fZ9PTx//35aa+ySZ+k8fPw4OLi5ujn5ufn6uzq7e3s6Oro7Ozr6erp7u7s+/r2+/r2//754uTkrLG6s7vCvcPIt73F3+Di///+/v79///9///9///9/v37/v37///9///9/Pv3+/r2/P37+/37/fz4/v35/fz3/fz3/fv3/Pv3/v34//35//75/v34+/r2+/r2+/r2+/v3odDP5PHv1unnl8rKs9bVoszMrNHRn8vLm8nJrNLRps7Pv9vak8XG4Ozp//z4/v34jpuneIiX7O3syc/S0NTW1tnbyM7RzdLV8fHv9PTx8vLw9fXy+/r2+/r2//z46fHuc7W40OXj7PTwo87Nr9TTi8HCksTFlMXGeri6i8HCjMHDo83Nf7u8xN7c//76/f34fY2bYnaI8fHv3N/g5+jn9PPx7u7s6+zq7vDt7O3r7Ozr8fHv+/r2+/r2/Pv39vXy5OLj2Nvc1trb4ePj1Nfa7+3s///7/v35/f36//769fn2+/v3+/v3+/r2+/r2+/r3/f36/f37+/r37/Dt8fHu8/Pw9vbz///6//75//75//75/v35+/r2+/r2/Pv39fXy3eDg3uHh3eDh3+Hi2tze4uTk7O3r6+zr6evp6uvq7e3s7e3s6+vp+fn1+/r2//z3c7S2V6eq7vDuyc7Sy9DUys7S0tfZ8fHu8fHu7u7t8fHu8fHv+fj0+/r2/Pv38/Pw29/g2t3e7e7s9PPx8vLw8PHu8PDu8PDu8PDu7+/u8fHv7/Dt7/Dt+vn1+/r2/vv3pc/PksbH+Pj0+ff0+/r2+vr1+fj09PPw8vLv7u/t8PHu8vLw+fj1+/r2+/r2+vr2+fn1+vn1/Pr2/fz4/fz4/fz3/fz4/vz4/vz4/vz3/fz4/vz4/vz4+/r2+/n2/Pz49/Xy9/Py+Pn16+3r7O3r6erp6Ono6uvq/fz4///6/v75/fz4+/r2+/r2+/r2+/r2+/v3+/r2+/r2+vn1+vn1+vn1+vn2+vn1+vr2+vn1+vn1+vn1+vn1+vn2+/r2//35W3CEO1Rs6OnoztLV0dXY0dXX0NXXzNHU6Ono6+zq6+zr9/bz/Pv2+/r2+vn1+/n1/fv3/fz3/fv3/fz4/Pv3/fv3/fz4/vz4/fv3/fv3/fz3/fz3/vz4/fz3+/r2/vz4v8bKsbrB+fj15Obm7Ozr/Pr2+vr2+/r19vbz9vby9vXy+fj0+vn1+vn19/by8/Tx7O3r6uvp7e7s6uvo6Onn6Onn6uro5+jm6ern5+jm6uvo6+zs5+rr6Orp8PHw9vb0/f37/v799fb0+Pbz9/Xw9vTv9vXw9fTw9/bx9vXw9fTv9PPv8/Lu8vHt8vDs2ebi0NrZz9LT09bXz9PTztDRyMvK1tjXyczLys3JxcjIzc/P0NLTyMvNxtDX3eTp6e7x5Ovu5evv5+7y6Ozt5ufl5+nn5+bi6+jh7Onj5OPg4eHe5OTg397a3dzY5ubk5eXk4ODe2dnY4+Pg6+rm2djTyMbBz83H3NjQzMrEy8nD2NbQ1NPT0c3L2OTv1+bz1OLt0+Dq0+Dr1OPv1t3k1NTT2Nzc2tjS3dnQ3NjRzc3Kx8jHycrHw8K9v766xsrLs7a5qqywxMXH0dLRz9DPuLu8vb/At7m5vL28trm8n5+clZSPoKKfmp2goq+9r8bdr8nhsdHurszlrcznssvgwL2yxcG0zMW3vbeqsa6moqGekJSRmJSQmYuHioN/c3eBfICJnKClsbS3ur2+j5SZXGBmUFFVU1RYUVNVUVJVYGBcc25mZGBMXFpEfnx1pqOWkYl+enuAg7DXgrTghbPcnZ+Vp52HrqOLlo16dnFqbWppVVlYYGJfTUdDQTo3cnd/kZigmZ+lq7CyfIGJRklWPkJJJicoJygoMjIyOjs6SUtIUVBKQz82MC8WcGpXq6GGlYBkRyMPWXCMbK3lZ6XbdKPLfp+3jIx+fG9YUE5JS0pKNTc9Q0NFMi0lNSshoKasl56lkZmgdXyER0pWSUtXSEtVSUpNRUVDPT06KSgnJSUkICEgKCkpPDsuU0w+qJt/lH5kXUAwWnKLcLLqbKfabq/nanyLfHFcdGxaSkdDS0tMMTQ9QD9CST0vUUIwnKGloqqsa3N8QEVRSEpWSk1ZSk1VUFBUU1NRU1JNV1ZRWFVOaWhifXZkcmhPgXRdpZV1kXheSjMrTlVed5m1fbPifbfodaHEeHJmcGlZNjIsRkZILjRBOTtBYlVAc2BEq66ndXt+SlFbUFZgSk1YSkxXTE5VT1BUT05LVVJMXFhRZGJco6Serp+DtJxxppFsmYdloIRkUjguTlBZfYmUiLfcibzli8LqiZ+jbWFOPjk0RkZHMDZAODtCa11Gg25Ja3B0T1ZhVVtlU1liTlVdT1RdUVZgTlBUT05KS0lEUE1GcGtio6GWY2BVdG5hlIhwnYlkpo1rgltJZ1FQgZapn8fgnsnkmL3RfH13a19NSEZBRENBMTU8MDI4Y1Q/c2A+Mjg+TlhnS1ZiSVJeR1FdR1BaR09cT1llRkhLFhUVDhEUV1hYh4iCNjk7OD1FRktSXl5YhXRae2JOdmRdWl1iV2dzlKexfY6VZ21sZmNZQkRDR05XOUJRPENSTU1KPDkjISkuPEdVSldoRFFhQlBgQU1cP0xcTFxtNj1GGR4hDRMaKjE6Zm50Q0tTP0lTP0pYS1ZfXVhOWE1GYmVlP0VKLkBYb36OZWpqSk1OXmNjT1llT11uQ1FnQ1JqTlNYOzsvDh0qIS89RVRkOUlZP05eQE9fM0NUMkNUPkxZLTpHCBclFSQ0MEFOMkJQJjdHJDZGKjtMLDxLJi43ITE+IDRGITRHJjhJPUxXNEJNMT5IN0ZVLj9RLD5SL0FVIS87GyguAxcpBhkrDyI0DyI0DiEzDiIzDyM0DyI0Ch0vBBgqBBcpBRgqBBgrBBgrBhkrAxYoAxYpAxgqAxcqBBkqAhcpBhkrGiw8HS4+Hi8/GCk7GCo6Giw8Fyo7HC9ACR0vABMnBRYrBxotECM2DyI1DyI1ECE0DyI1ESQ3DB8xAhcqAxYqBhgsCBsvCBwvBxouBRcrBhktBhksBxgrBxotBBksBhouGiw9HzFBHzBAGSs8HC0/Gyw+Gi0+HTBBCx0wAxUpAxcpAxcoAhYnARcqARYpAhYpARYoARYpAhYpBBcpBBYpBBcqBRkrBBksBBgrBBYpBBcrBBcqBRcqBBgqBBgrBBcqARQnARQmABMmARQnABQnABMmARUoABMnAhYpAxUp",
-      "format": "feed",
-      "platform": "instagram+facebook",
       "classification": "promotion",
+      "creativeKey": "tss-investor-brief-four-essentials-reference-v3-feed",
+      "date": "2026-09-16T06:52:13.436Z",
       "editorial": null,
-      "phase": "verified",
-      "qaBoundSha256": "e74d531936fbc5d8ff7cab4132b341a959015e0e21bb7d26bc57dd20cca57806",
+      "facebook": {
+        "photoId": "122301188906216133",
+        "postId": "177672945439622_122301188930216133"
+      },
+      "format": "feed",
+      "headline": "START WITH A CLEAR INVESTOR BRIEF.",
+      "id": "tss-review-04-investor-brief-feed",
       "instagram": {
         "containerId": "18115776760819867",
         "mediaId": "18026983037879458"
       },
-      "facebook": {
-        "postId": "177672945439622_122301188930216133",
-        "photoId": "122301188906216133"
-      },
-      "verification": {
-        "instagram": {
-          "width": 1080,
-          "height": 1350,
-          "meanPixelDifference": 0,
-          "id": "18026983037879458",
-          "sha256": "d957b94e92c008b396745147836f6421e6ee3eb0524813c1461efc073d232161",
-          "permalink": "https://www.instagram.com/p/DdVr1_dFtYp/",
-          "downloadedAsset": "social-results/tss-review-04-investor-brief-feed-instagram.png",
-          "evidenceCommit": "da76908136138cc37f00adf4d63fcd8dc7b32084",
-          "evidencePath": "social/published-assets/d957b94e92c008b396745147836f6421e6ee3eb0524813c1461efc073d232161.jpg"
-        },
+      "phase": "verified",
+      "pixelHash": "e2fb843742255c37918ffce6b01ef7de98a373b39a7d9df3ad36f23e59a08c02",
+      "platform": "instagram+facebook",
+      "publishedReview": {
         "facebook": {
-          "width": 720,
+          "assetSha256": "39e358946f93b30ee8c3fd2c3429fcf1cc20e89383ebeb4e24c58271755b21ac",
           "height": 900,
-          "meanPixelDifference": 2.07,
-          "id": "177672945439622_122301188930216133",
-          "sha256": "39e358946f93b30ee8c3fd2c3429fcf1cc20e89383ebeb4e24c58271755b21ac",
-          "permalink": "https://www.facebook.com/122301039992216133/posts/122301188930216133",
-          "downloadedAsset": "social-results/tss-review-04-investor-brief-feed-facebook.png",
-          "evidenceCommit": "fd4a992d3873a3c720b7377da5dfc2b6439d8974",
-          "evidencePath": "social/published-assets/39e358946f93b30ee8c3fd2c3429fcf1cc20e89383ebeb4e24c58271755b21ac.jpg"
+          "note": "Actual Facebook download inspected. Platform resizing and compression did not crop or damage the creative.",
+          "passed": true,
+          "reviewedAt": "2026-09-16T07:02:13.997Z",
+          "reviewer": "Codex actual-live-asset visual review",
+          "width": 720
+        },
+        "instagram": {
+          "assetSha256": "d957b94e92c008b396745147836f6421e6ee3eb0524813c1461efc073d232161",
+          "height": 1350,
+          "note": "Actual Instagram download inspected. The full creative, TSS logo, text and Pano Lefkara image are intact, readable and uncropped.",
+          "passed": true,
+          "reviewedAt": "2026-09-16T07:02:13.997Z",
+          "reviewer": "Codex actual-live-asset visual review",
+          "width": 1080
         }
       },
+      "qaBoundSha256": "e74d531936fbc5d8ff7cab4132b341a959015e0e21bb7d26bc57dd20cca57806",
+      "topic": "TSS: prepare a clear investor brief before introductions",
+      "topicKey": "tss-investor-brief-objective-budget-timeframe",
+      "verification": {
+        "facebook": {
+          "downloadedAsset": "social-results/tss-review-04-investor-brief-feed-facebook.png",
+          "evidenceCommit": "fd4a992d3873a3c720b7377da5dfc2b6439d8974",
+          "evidencePath": "social/published-assets/39e358946f93b30ee8c3fd2c3429fcf1cc20e89383ebeb4e24c58271755b21ac.jpg",
+          "height": 900,
+          "id": "177672945439622_122301188930216133",
+          "meanPixelDifference": 2.07,
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301188930216133",
+          "sha256": "39e358946f93b30ee8c3fd2c3429fcf1cc20e89383ebeb4e24c58271755b21ac",
+          "width": 720
+        },
+        "instagram": {
+          "downloadedAsset": "social-results/tss-review-04-investor-brief-feed-instagram.png",
+          "evidenceCommit": "da76908136138cc37f00adf4d63fcd8dc7b32084",
+          "evidencePath": "social/published-assets/d957b94e92c008b396745147836f6421e6ee3eb0524813c1461efc073d232161.jpg",
+          "height": 1350,
+          "id": "18026983037879458",
+          "meanPixelDifference": 0,
+          "permalink": "https://www.instagram.com/p/DdVr1_dFtYp/",
+          "sha256": "d957b94e92c008b396745147836f6421e6ee3eb0524813c1461efc073d232161",
+          "width": 1080
+        }
+      },
+      "visualSignature": "rgb32:+/r2+/r2/fv3/fv3/vz4/fv3/fz4/fz4/vz4/v34/v35/Pv3/Pv3/Pv3/Pv3/Pv3/Pv3+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/Pv39fbz4ubn6Ovq3ePk4ebn3+Xm3+Xl3uPk0trd1tzf8PDu8PHv8PHu8PHv7/Du9PXy/Pv2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2/Pv3/Pv4/fz4+vr3/fz5/Pv3+fn1/Pz4+fn1+vr2/Pv4+vr2/Pv3+Pf0+Pj0+fn1+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/Pv39PTx4uTk3eDg4uXj3N/f4ePj7e3r3eDg4uTk3eDh5ujn8fHv6erp/fz3+vn1+/r2+/r2+Pj1+Pj0+/r2+vn1+/r29PTx4OLj4+bm39/h5d/g4ePj6Orp+fj0+/r2//754uTko663r7i/kp+qn6qzwcfM19vcjJqmtLzDtb3EqLG60NTXqrS9/////f77+/v3+/r2/v77///8/Pv3//75/vz4/v34+Pn19/fz+vr29Pb0+vr29fbz+vn2+/r2//355+jnuMDFxcvPrbe+srrBqbK7yM3RpK63oKu0qbO7qLK7q7S8qbK7q7S8iZek6uvq///7sdTUos3O9PPwxszQ1trb0dXY7u7t+vr19/fz+Pj09/bz+fj0+/r2+/r2///63+HilqKum6ewpa+4mKSvtL3D6evq2Nzd2Nzd2N3d2Nzd3N/f5ebm297f09fZ9PTx//35aa+ySZ+k8fPw4OLi5ujn5ufn6uzq7e3s6Oro7Ozr6erp7u7s+/r2+/r2//754uTkrLG6s7vCvcPIt73F3+Di///+/v79///9///9///9/v37/v37///9///9/Pv3+/r2/P37+/37/fz4/v35/fz3/fz3/fv3/Pv3/v34//35//75/v34+/r2+/r2+/r2+/v3odDP5PHv1unnl8rKs9bVoszMrNHRn8vLm8nJrNLRps7Pv9vak8XG4Ozp//z4/v34jpuneIiX7O3syc/S0NTW1tnbyM7RzdLV8fHv9PTx8vLw9fXy+/r2+/r2//z46fHuc7W40OXj7PTwo87Nr9TTi8HCksTFlMXGeri6i8HCjMHDo83Nf7u8xN7c//76/f34fY2bYnaI8fHv3N/g5+jn9PPx7u7s6+zq7vDt7O3r7Ozr8fHv+/r2+/r2/Pv39vXy5OLj2Nvc1trb4ePj1Nfa7+3s///7/v35/f36//769fn2+/v3+/v3+/r2+/r2+/r3/f36/f37+/r37/Dt8fHu8/Pw9vbz///6//75//75//75/v35+/r2+/r2/Pv39fXy3eDg3uHh3eDh3+Hi2tze4uTk7O3r6+zr6evp6uvq7e3s7e3s6+vp+fn1+/r2//z3c7S2V6eq7vDuyc7Sy9DUys7S0tfZ8fHu8fHu7u7t8fHu8fHv+fj0+/r2/Pv38/Pw29/g2t3e7e7s9PPx8vLw8PHu8PDu8PDu8PDu7+/u8fHv7/Dt7/Dt+vn1+/r2/vv3pc/PksbH+Pj0+ff0+/r2+vr1+fj09PPw8vLv7u/t8PHu8vLw+fj1+/r2+/r2+vr2+fn1+vn1/Pr2/fz4/fz4/fz3/fz4/vz4/vz4/vz3/fz4/vz4/vz4+/r2+/n2/Pz49/Xy9/Py+Pn16+3r7O3r6erp6Ono6uvq/fz4///6/v75/fz4+/r2+/r2+/r2+/r2+/v3+/r2+/r2+vn1+vn1+vn1+vn2+vn1+vr2+vn1+vn1+vn1+vn1+vn2+/r2//35W3CEO1Rs6OnoztLV0dXY0dXX0NXXzNHU6Ono6+zq6+zr9/bz/Pv2+/r2+vn1+/n1/fv3/fz3/fv3/fz4/Pv3/fv3/fz4/vz4/fv3/fv3/fz3/fz3/vz4/fz3+/r2/vz4v8bKsbrB+fj15Obm7Ozr/Pr2+vr2+/r19vbz9vby9vXy+fj0+vn1+vn19/by8/Tx7O3r6uvp7e7s6uvo6Onn6Onn6uro5+jm6ern5+jm6uvo6+zs5+rr6Orp8PHw9vb0/f37/v799fb0+Pbz9/Xw9vTv9vXw9fTw9/bx9vXw9fTv9PPv8/Lu8vHt8vDs2ebi0NrZz9LT09bXz9PTztDRyMvK1tjXyczLys3JxcjIzc/P0NLTyMvNxtDX3eTp6e7x5Ovu5evv5+7y6Ozt5ufl5+nn5+bi6+jh7Onj5OPg4eHe5OTg397a3dzY5ubk5eXk4ODe2dnY4+Pg6+rm2djTyMbBz83H3NjQzMrEy8nD2NbQ1NPT0c3L2OTv1+bz1OLt0+Dq0+Dr1OPv1t3k1NTT2Nzc2tjS3dnQ3NjRzc3Kx8jHycrHw8K9v766xsrLs7a5qqywxMXH0dLRz9DPuLu8vb/At7m5vL28trm8n5+clZSPoKKfmp2goq+9r8bdr8nhsdHurszlrcznssvgwL2yxcG0zMW3vbeqsa6moqGekJSRmJSQmYuHioN/c3eBfICJnKClsbS3ur2+j5SZXGBmUFFVU1RYUVNVUVJVYGBcc25mZGBMXFpEfnx1pqOWkYl+enuAg7DXgrTghbPcnZ+Vp52HrqOLlo16dnFqbWppVVlYYGJfTUdDQTo3cnd/kZigmZ+lq7CyfIGJRklWPkJJJicoJygoMjIyOjs6SUtIUVBKQz82MC8WcGpXq6GGlYBkRyMPWXCMbK3lZ6XbdKPLfp+3jIx+fG9YUE5JS0pKNTc9Q0NFMi0lNSshoKasl56lkZmgdXyER0pWSUtXSEtVSUpNRUVDPT06KSgnJSUkICEgKCkpPDsuU0w+qJt/lH5kXUAwWnKLcLLqbKfabq/nanyLfHFcdGxaSkdDS0tMMTQ9QD9CST0vUUIwnKGloqqsa3N8QEVRSEpWSk1ZSk1VUFBUU1NRU1JNV1ZRWFVOaWhifXZkcmhPgXRdpZV1kXheSjMrTlVed5m1fbPifbfodaHEeHJmcGlZNjIsRkZILjRBOTtBYlVAc2BEq66ndXt+SlFbUFZgSk1YSkxXTE5VT1BUT05LVVJMXFhRZGJco6Serp+DtJxxppFsmYdloIRkUjguTlBZfYmUiLfcibzli8LqiZ+jbWFOPjk0RkZHMDZAODtCa11Gg25Ja3B0T1ZhVVtlU1liTlVdT1RdUVZgTlBUT05KS0lEUE1GcGtio6GWY2BVdG5hlIhwnYlkpo1rgltJZ1FQgZapn8fgnsnkmL3RfH13a19NSEZBRENBMTU8MDI4Y1Q/c2A+Mjg+TlhnS1ZiSVJeR1FdR1BaR09cT1llRkhLFhUVDhEUV1hYh4iCNjk7OD1FRktSXl5YhXRae2JOdmRdWl1iV2dzlKexfY6VZ21sZmNZQkRDR05XOUJRPENSTU1KPDkjISkuPEdVSldoRFFhQlBgQU1cP0xcTFxtNj1GGR4hDRMaKjE6Zm50Q0tTP0lTP0pYS1ZfXVhOWE1GYmVlP0VKLkBYb36OZWpqSk1OXmNjT1llT11uQ1FnQ1JqTlNYOzsvDh0qIS89RVRkOUlZP05eQE9fM0NUMkNUPkxZLTpHCBclFSQ0MEFOMkJQJjdHJDZGKjtMLDxLJi43ITE+IDRGITRHJjhJPUxXNEJNMT5IN0ZVLj9RLD5SL0FVIS87GyguAxcpBhkrDyI0DyI0DiEzDiIzDyM0DyI0Ch0vBBgqBBcpBRgqBBgrBBgrBhkrAxYoAxYpAxgqAxcqBBkqAhcpBhkrGiw8HS4+Hi8/GCk7GCo6Giw8Fyo7HC9ACR0vABMnBRYrBxotECM2DyI1DyI1ECE0DyI1ESQ3DB8xAhcqAxYqBhgsCBsvCBwvBxouBRcrBhktBhksBxgrBxotBBksBhouGiw9HzFBHzBAGSs8HC0/Gyw+Gi0+HTBBCx0wAxUpAxcpAxcoAhYnARcqARYpAhYpARYoARYpAhYpBBcpBBYpBBcqBRkrBBksBBgrBBYpBBcrBBcqBRcqBBgqBBgrBBcqARQnARQmABMmARQnABQnABMmARUoABMnAhYpAxUp"
+    },
+    {
+      "assetSha256": "59a53c5892cffd828e04bcbc36aab46d0abc2dbb7f2c1f4808c73fe64d836379",
+      "classification": "factual",
+      "creativeKey": "british-emigration-2025-ons-data-editorial-r2-feed",
+      "date": "2026-09-16T11:08:45.847Z",
+      "editorial": null,
+      "facebook": {
+        "photoId": "122301236642216133",
+        "postId": "177672945439622_122301236666216133"
+      },
+      "format": "feed",
+      "headline": "BRITISH EMIGRATION. THE DATA.",
+      "id": "tss-review-05-british-emigration-feed",
+      "instagram": {
+        "containerId": "18115824220819867",
+        "mediaId": "17956056960217964"
+      },
+      "phase": "verified",
+      "pixelHash": "ad528b4cf779cb701b19a391cdf060e22335f1e37266a7f6703c424c3a9d3c8d",
+      "platform": "instagram+facebook",
+      "qaBoundSha256": "15c55c98ce2c2a0d4bb33958dc5d22b7512a099cf2159d07d8b3c08b3e7ca50c",
+      "topic": "British emigration: measured long-term outflow without invented motives",
+      "topicKey": "british-emigration-2025-evidence-not-tax-causation",
+      "verification": {
+        "facebook": {
+          "downloadedAsset": "social-results/tss-review-05-british-emigration-feed-facebook.png",
+          "evidenceCommit": "72f5f9adbdcd4243dfe6a006e2b564391279f85a",
+          "evidencePath": "social/published-assets/b7f54eae100c192afaca1c28acdeee74409829186f6232c2223c74edb65afd63.jpg",
+          "height": 900,
+          "id": "177672945439622_122301236666216133",
+          "meanPixelDifference": 2.152,
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301236666216133",
+          "sha256": "b7f54eae100c192afaca1c28acdeee74409829186f6232c2223c74edb65afd63",
+          "width": 720
+        },
+        "instagram": {
+          "downloadedAsset": "social-results/tss-review-05-british-emigration-feed-instagram.png",
+          "evidenceCommit": "3fbd898d44890b2c1021632cea1efc793690a396",
+          "evidencePath": "social/published-assets/06e844a661d95704805765ef0f0f53ed31cb4de26cd50a2814ccf41cbfbb10fe.jpg",
+          "height": 1350,
+          "id": "17956056960217964",
+          "meanPixelDifference": 0,
+          "permalink": "https://www.instagram.com/p/DdWJM1fHCXe/",
+          "sha256": "06e844a661d95704805765ef0f0f53ed31cb4de26cd50a2814ccf41cbfbb10fe",
+          "width": 1080
+        }
+      },
+      "visualSignature": "rgb32:+/r2/Pv3/fz4/fz4/fv3/fz3/fv3/vz3/vz3/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/fv38fLw3ePk4ebn3+Tl4ebn6u3s3+Xm3uTl7vDu/fz3+vr2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2+/r3/Pz4/Pz4/Pv3/fz4/Pv4+/v3+fn1+Pj0+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/fv38vLv297e3uHh4OPi3N/f4ePk5efn7O3r/fv3+fj1+fj1+vn1+/r2+vn2+vn1+vn1+/r2+/r2+/r2+/r2+/r2/Pv39fXy4OPj4+bm3+Dh5t/g4ePj6Orp+fj0+/r2///6297ehpWioKy0tLzCtLvDpK23p7C5xsvQ/////fz5//78/v76+/v3/f35/v77/v77+/r2+fj1+Pf0+vr2+vn1+vn1+/r19vbz9fXy+Pn18/bz+fn29fXz+vn2+/r2///63d/gqbO8pa64o663wMbLlaGsrLW9n6u0qrO8qrO7j5uoxs3Q6erpoKmzrbW9mqaw+Pfz//79/////Pz4/v75//76/v35/v75///7/vz4/Pr3/Pr2/Pr2+/r2+/r2///62dzeoay1rbe+n6q0prC5ytDT1drb2Nzd4OPj1Nnb0dbY297f8vPw3eHh19zdzNLV/fz3xsvPm6ex6uvq2t3e0dXY3d/g1trby9HT6uvq/Pv3+fn1+vr2+/r2+/r2//754uTkqbC5ub7Fu8DHuLzD5ujp/////f36/f36///////+///+//77///8///9/v79//75dISVOFFrxszQ3uDiy9DU2Nrd0tbY19rc4+Xl6+vq5+jn9/f0/Pr2+/r2/fv38/fzsdjW0ujn3+/sudza2unnpM3N9/j1+vr2p8/PvdrZxN7cqdDQ0+Xjn8vL2ejl///76uzq2Nvc/fz39fTx8vLw8PDu7/Dt9/fz/v35+/r2/Pv3+/r2+/r2+/r2/fv39PbzeLe5nsvLdLW3XKirfbq7UqSozuTh0OTiaLCycLO1bbGzeLe5YqyvdLW3k8XG///8+fn2/v77+vr1/fv3/fz3/fz3/fz4/Pr2+/r2+/r2+/r2+/r2+/r2+/r2//z45e7rlcPF0uPh0eLhuNXVz+HgrtHQsdPTwNrZt9XVwdrZyN3dqs7P1+XkqdDQ4e3q//z4/f37///7/fz5/Pr2+vn2+vn2+/r2+/r2+/r2+/r2/Pv2+/r2+/r2+/r2/fz37+/s29nb2tzd3t7f3dze2drc19ja4OHi1dfa6Ofm29vd2drc2tnb293e/v35/Pz4/v34rre/gpGg3uHh2t3ezdHV19rc/fv3+fj1+/r2+vn1+Pj0+/r2+/r2+/r2/fv38/Pw1tvd4ePj2t7e2d3e3+Li4uXl3uHh6erp3+Lj5+no5Obl4+Xl4OPj6Orp+/r2/v34ipimYHSI1dnb3+Li0NXX3N/g2t3e3N/f3N/g297f6erp+/n2+/r2+/r2/Pv39PTx3N/g5OXl4ePj3N/g7u7s+/r2+fj0+fn1+fj1+vn2+fn1+fj0+Pj0+vn1+/r2/Pv3+/r39/f0/fz59vXy9fXy9PTx8/Px9vXy9PTx9fXy/fz3+/r2+/r2+/r2+/r2/Pr3/v34/fz4/fz4/v34/Pv3+/r2/Pr2+/r2+/v2+/r2+/r2+/v2/Pv2+/r2+/r2+/r2+/r2/fv3+vn2/Pv3/Pv3/fv3/fv3/Pv3/fv3/Pv3+vr2+/r2+/r2+/r2+/r2+vr2+fn1+vn1+fj1+fn1+vn1+vn1+vn1+vn2+vn1+vr2+vn1+vn1+/r2+vn1+vn1+vn1+fn1+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv3/v75//76//75/v75/v75//35//76/v35//75/v35/v75//76/v35//75/v75//76//76+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/fv36vLv2ODg09bY1Nna297f297f29/f1dna4ePj19rc3uHi297g09fZ3+Hh2d3e2dzd1NfZ1trb9vby/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/n17PLv7PDt8fHu8PDu8fLv8fHv8fHu8PDt8vLv7+/t8vLv8fHu7/Dt8fHu8PDu8PHu8PDt8fDu+fj0+fj0+fj0+fj0+Pfz+fj0+fn1+fn1+fj0+fj0+fj0+fj0+fj07Ovm8O3n8O7o8O/p7+7p7u3p7Ovm7Ozl7+7o8O7q7u3o7Ozm6+vm6+vm7Ovm7e3n7Ozm6+vm7evm7Ovn7u7p7+/q8PDs6+vm6+rl7u7p6erk5uXg5+bh6Ofi6eji6Ofh19XM2dXL1tPJz9DGz87G1dLL09PJzc/Izs7IzMzH1dXP09PP09TP0tLMz8/Iz9DJ09PK1tXLzs7Hzs3I0tHM0dHNy8zFzMzF19fT5ufk5+bj2tnU0dLM1dnS1tnT1tjSoqCSr6mXraiZoaCPpqOTsq+kxL+y0tHKxMbFuLm0mpuWlpaUoKCWrK+gpqubsK+hsK6ep6aWqKaXpqOcpKOfubi2xcbF2tzc59/h7efq7vHy////zczKlZOOmJaRlpOOdW5cc2xcZV5UaWFQb2ZTb32GYX6PY4GVZIWbipeeb3NwZWlnaWhaZGhcZ25ec3VehX5ldHNcgXxidHFednp0ipqfjJ6jhZSbg4yTi5GWjZGSn6SlkZKSnJmTq6mjpqKaYlZGW05BPjMrSz03UD42P0FFCRYnDxsrJS43TFBXREhISk5KUlA+QUA2Skw6U1I+YVhJa1xNYFRFXlRFTEo/RUk9T09HNDMxR0xKJSooJykoEhMSLzIzUFdbQEdPQ0pQVlNQSUlHQDczS0I/Tj42TkxNLDtEQ1FbVWRwfoeMcWZiX05IXlpVdVtPdG5lbHByk4yQlY6SQjk8YE1HVTk5aVpeQjxCLTpCNTs7ISckIyIjGhcUKywrJi4yLDM5KzE2OT9HPEhWP0JHR0dHNDI1O0NKP09aSFVeQlNdUl1mUlFWTUZGPj5EYFdWd2xvYGdwgI6cgISQLSUpLS40Ly00MjVHFiExDSQxFxojHBwiFx8nDBMaTVJYmqCijI2HmpqQP0VOR0NIPzs+QUZNJSszOEFMNEFPMzE4WzstP0tXHC9ALzM6KjA5TFBXS01UN0JMWnJ8Vl5kMjE3KS47LDRANzxHMjpGHik1HyUxJyw1OkBIICs4MTtFNTxDbG9vjZGNGik4GiEtIio1FiY2DR0sGis6DyAwDxwqLywuIC06EyMyHSk3Gyo5ICs4KTlGKDlHJztKKjtJJTVDJS46KDdEJzhFJzdFJzhFIzRDIzRCHzE/DB8wFCU0ChspJzZCNURPAhYpDyEzMD9OLD1MMEBQIzRFHi9AMkJSLUBSHjBBIjNFMUFRJDVFBBgrBRkrBRgrBRcqBRgqBRksBRksBBgrAxcqCRwvHC5AFig6ECM1Giw9Fik7FSY5GSs8BxosAxcpBxgtCxwvEiI1ESI1ESI1EyQ3ECI1ECE1ECE0EyQ3ECI1DiAzCRwwCBsvCRsvCBsvCBwvCBsvCBsvCRsvCRsvCx0wFyg6Fyk7GCk8Fig6Fig7Fyk7FCY5Fic6DR8yCRwvBRgrCx4xFyg6EyQ3FSY5Fyk7FCY4Fig6Fig6FSc5Fig6FSY5BhksBhksBhksBhksBhksBhksBhksBhksBRgrCRsuIjNDKDhJKTlJHzBCJDVGJDVFIjNCJjdGDyEzBBcpBBcqBBcqAhYoAxcpAhcpAhYoAxYoAxYoAhcpAxcpAhYoAxYoBRgqBBgqBRgqBRgqBRgqBRgqBRgqBBgqBBgqBBcqARQnABMmABQmABQmABQmABQnARQoABMmAxcpBBgp",
       "publishedReview": {
         "instagram": {
           "passed": true,
           "reviewer": "Codex actual-live-asset visual review",
-          "reviewedAt": "2026-09-16T07:02:13.997Z",
-          "assetSha256": "d957b94e92c008b396745147836f6421e6ee3eb0524813c1461efc073d232161",
+          "reviewedAt": "2026-09-16T13:06:02.432Z",
+          "assetSha256": "06e844a661d95704805765ef0f0f53ed31cb4de26cd50a2814ccf41cbfbb10fe",
           "width": 1080,
           "height": 1350,
-          "note": "Actual Instagram download inspected. The full creative, TSS logo, text and Pano Lefkara image are intact, readable and uncropped."
+          "note": "Actual Instagram download inspected. The full creative, TSS logo, text and Finikoudes photograph are intact, readable and uncropped."
         },
         "facebook": {
           "passed": true,
           "reviewer": "Codex actual-live-asset visual review",
-          "reviewedAt": "2026-09-16T07:02:13.997Z",
-          "assetSha256": "39e358946f93b30ee8c3fd2c3429fcf1cc20e89383ebeb4e24c58271755b21ac",
+          "reviewedAt": "2026-09-16T13:06:02.432Z",
+          "assetSha256": "b7f54eae100c192afaca1c28acdeee74409829186f6232c2223c74edb65afd63",
           "width": 720,
           "height": 900,
           "note": "Actual Facebook download inspected. Platform resizing and compression did not crop or damage the creative."
         }
       }
-    },
-    {
-      "id": "tss-review-05-british-emigration-feed",
-      "date": "2026-09-16T11:08:45.847Z",
-      "topic": "British emigration: measured long-term outflow without invented motives",
-      "topicKey": "british-emigration-2025-evidence-not-tax-causation",
-      "headline": "BRITISH EMIGRATION. THE DATA.",
-      "creativeKey": "british-emigration-2025-ons-data-editorial-r2-feed",
-      "assetSha256": "59a53c5892cffd828e04bcbc36aab46d0abc2dbb7f2c1f4808c73fe64d836379",
-      "pixelHash": "ad528b4cf779cb701b19a391cdf060e22335f1e37266a7f6703c424c3a9d3c8d",
-      "visualSignature": "rgb32:+/r2/Pv3/fz4/fz4/fv3/fz3/fv3/vz3/vz3/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/fv38fLw3ePk4ebn3+Tl4ebn6u3s3+Xm3uTl7vDu/fz3+vr2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2+/r3/Pz4/Pz4/Pv3/fz4/Pv4+/v3+fn1+Pj0+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/fv38vLv297e3uHh4OPi3N/f4ePk5efn7O3r/fv3+fj1+fj1+vn1+/r2+vn2+vn1+vn1+/r2+/r2+/r2+/r2+/r2/Pv39fXy4OPj4+bm3+Dh5t/g4ePj6Orp+fj0+/r2///6297ehpWioKy0tLzCtLvDpK23p7C5xsvQ/////fz5//78/v76+/v3/f35/v77/v77+/r2+fj1+Pf0+vr2+vn1+vn1+/r19vbz9fXy+Pn18/bz+fn29fXz+vn2+/r2///63d/gqbO8pa64o663wMbLlaGsrLW9n6u0qrO8qrO7j5uoxs3Q6erpoKmzrbW9mqaw+Pfz//79/////Pz4/v75//76/v35/v75///7/vz4/Pr3/Pr2/Pr2+/r2+/r2///62dzeoay1rbe+n6q0prC5ytDT1drb2Nzd4OPj1Nnb0dbY297f8vPw3eHh19zdzNLV/fz3xsvPm6ex6uvq2t3e0dXY3d/g1trby9HT6uvq/Pv3+fn1+vr2+/r2+/r2//754uTkqbC5ub7Fu8DHuLzD5ujp/////f36/f36///////+///+//77///8///9/v79//75dISVOFFrxszQ3uDiy9DU2Nrd0tbY19rc4+Xl6+vq5+jn9/f0/Pr2+/r2/fv38/fzsdjW0ujn3+/sudza2unnpM3N9/j1+vr2p8/PvdrZxN7cqdDQ0+Xjn8vL2ejl///76uzq2Nvc/fz39fTx8vLw8PDu7/Dt9/fz/v35+/r2/Pv3+/r2+/r2+/r2/fv39PbzeLe5nsvLdLW3XKirfbq7UqSozuTh0OTiaLCycLO1bbGzeLe5YqyvdLW3k8XG///8+fn2/v77+vr1/fv3/fz3/fz3/fz4/Pr2+/r2+/r2+/r2+/r2+/r2+/r2//z45e7rlcPF0uPh0eLhuNXVz+HgrtHQsdPTwNrZt9XVwdrZyN3dqs7P1+XkqdDQ4e3q//z4/f37///7/fz5/Pr2+vn2+vn2+/r2+/r2+/r2+/r2/Pv2+/r2+/r2+/r2/fz37+/s29nb2tzd3t7f3dze2drc19ja4OHi1dfa6Ofm29vd2drc2tnb293e/v35/Pz4/v34rre/gpGg3uHh2t3ezdHV19rc/fv3+fj1+/r2+vn1+Pj0+/r2+/r2+/r2/fv38/Pw1tvd4ePj2t7e2d3e3+Li4uXl3uHh6erp3+Lj5+no5Obl4+Xl4OPj6Orp+/r2/v34ipimYHSI1dnb3+Li0NXX3N/g2t3e3N/f3N/g297f6erp+/n2+/r2+/r2/Pv39PTx3N/g5OXl4ePj3N/g7u7s+/r2+fj0+fn1+fj1+vn2+fn1+fj0+Pj0+vn1+/r2/Pv3+/r39/f0/fz59vXy9fXy9PTx8/Px9vXy9PTx9fXy/fz3+/r2+/r2+/r2+/r2/Pr3/v34/fz4/fz4/v34/Pv3+/r2/Pr2+/r2+/v2+/r2+/r2+/v2/Pv2+/r2+/r2+/r2+/r2/fv3+vn2/Pv3/Pv3/fv3/fv3/Pv3/fv3/Pv3+vr2+/r2+/r2+/r2+/r2+vr2+fn1+vn1+fj1+fn1+vn1+vn1+vn1+vn2+vn1+vr2+vn1+vn1+/r2+vn1+vn1+vn1+fn1+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv3/v75//76//75/v75/v75//35//76/v35//75/v35/v75//76/v35//75/v75//76//76+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/fv36vLv2ODg09bY1Nna297f297f29/f1dna4ePj19rc3uHi297g09fZ3+Hh2d3e2dzd1NfZ1trb9vby/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/n17PLv7PDt8fHu8PDu8fLv8fHv8fHu8PDt8vLv7+/t8vLv8fHu7/Dt8fHu8PDu8PHu8PDt8fDu+fj0+fj0+fj0+fj0+Pfz+fj0+fn1+fn1+fj0+fj0+fj0+fj0+fj07Ovm8O3n8O7o8O/p7+7p7u3p7Ovm7Ozl7+7o8O7q7u3o7Ozm6+vm6+vm7Ovm7e3n7Ozm6+vm7evm7Ovn7u7p7+/q8PDs6+vm6+rl7u7p6erk5uXg5+bh6Ofi6eji6Ofh19XM2dXL1tPJz9DGz87G1dLL09PJzc/Izs7IzMzH1dXP09PP09TP0tLMz8/Iz9DJ09PK1tXLzs7Hzs3I0tHM0dHNy8zFzMzF19fT5ufk5+bj2tnU0dLM1dnS1tnT1tjSoqCSr6mXraiZoaCPpqOTsq+kxL+y0tHKxMbFuLm0mpuWlpaUoKCWrK+gpqubsK+hsK6ep6aWqKaXpqOcpKOfubi2xcbF2tzc59/h7efq7vHy////zczKlZOOmJaRlpOOdW5cc2xcZV5UaWFQb2ZTb32GYX6PY4GVZIWbipeeb3NwZWlnaWhaZGhcZ25ec3VehX5ldHNcgXxidHFednp0ipqfjJ6jhZSbg4yTi5GWjZGSn6SlkZKSnJmTq6mjpqKaYlZGW05BPjMrSz03UD42P0FFCRYnDxsrJS43TFBXREhISk5KUlA+QUA2Skw6U1I+YVhJa1xNYFRFXlRFTEo/RUk9T09HNDMxR0xKJSooJykoEhMSLzIzUFdbQEdPQ0pQVlNQSUlHQDczS0I/Tj42TkxNLDtEQ1FbVWRwfoeMcWZiX05IXlpVdVtPdG5lbHByk4yQlY6SQjk8YE1HVTk5aVpeQjxCLTpCNTs7ISckIyIjGhcUKywrJi4yLDM5KzE2OT9HPEhWP0JHR0dHNDI1O0NKP09aSFVeQlNdUl1mUlFWTUZGPj5EYFdWd2xvYGdwgI6cgISQLSUpLS40Ly00MjVHFiExDSQxFxojHBwiFx8nDBMaTVJYmqCijI2HmpqQP0VOR0NIPzs+QUZNJSszOEFMNEFPMzE4WzstP0tXHC9ALzM6KjA5TFBXS01UN0JMWnJ8Vl5kMjE3KS47LDRANzxHMjpGHik1HyUxJyw1OkBIICs4MTtFNTxDbG9vjZGNGik4GiEtIio1FiY2DR0sGis6DyAwDxwqLywuIC06EyMyHSk3Gyo5ICs4KTlGKDlHJztKKjtJJTVDJS46KDdEJzhFJzdFJzhFIzRDIzRCHzE/DB8wFCU0ChspJzZCNURPAhYpDyEzMD9OLD1MMEBQIzRFHi9AMkJSLUBSHjBBIjNFMUFRJDVFBBgrBRkrBRgrBRcqBRgqBRksBRksBBgrAxcqCRwvHC5AFig6ECM1Giw9Fik7FSY5GSs8BxosAxcpBxgtCxwvEiI1ESI1ESI1EyQ3ECI1ECE1ECE0EyQ3ECI1DiAzCRwwCBsvCRsvCBsvCBwvCBsvCBsvCRsvCRsvCx0wFyg6Fyk7GCk8Fig6Fig7Fyk7FCY5Fic6DR8yCRwvBRgrCx4xFyg6EyQ3FSY5Fyk7FCY4Fig6Fig6FSc5Fig6FSY5BhksBhksBhksBhksBhksBhksBhksBhksBRgrCRsuIjNDKDhJKTlJHzBCJDVGJDVFIjNCJjdGDyEzBBcpBBcqBBcqAhYoAxcpAhcpAhYoAxYoAxYoAhcpAxcpAhYoAxYoBRgqBBgqBRgqBRgqBRgqBRgqBRgqBBgqBBgqBBcqARQnABMmABQmABQmABQmABQnARQoABMmAxcpBBgp",
-      "format": "feed",
-      "platform": "instagram+facebook",
-      "classification": "factual",
-      "editorial": null,
-      "phase": "awaiting_published_visual_review",
-      "qaBoundSha256": "15c55c98ce2c2a0d4bb33958dc5d22b7512a099cf2159d07d8b3c08b3e7ca50c",
-      "instagram": {
-        "containerId": "18115824220819867",
-        "mediaId": "17956056960217964"
-      },
-      "facebook": {
-        "postId": "177672945439622_122301236666216133",
-        "photoId": "122301236642216133"
-      },
-      "verification": {
-        "instagram": {
-          "width": 1080,
-          "height": 1350,
-          "meanPixelDifference": 0,
-          "id": "17956056960217964",
-          "sha256": "06e844a661d95704805765ef0f0f53ed31cb4de26cd50a2814ccf41cbfbb10fe",
-          "permalink": "https://www.instagram.com/p/DdWJM1fHCXe/",
-          "downloadedAsset": "social-results/tss-review-05-british-emigration-feed-instagram.png",
-          "evidenceCommit": "3fbd898d44890b2c1021632cea1efc793690a396",
-          "evidencePath": "social/published-assets/06e844a661d95704805765ef0f0f53ed31cb4de26cd50a2814ccf41cbfbb10fe.jpg"
-        },
-        "facebook": {
-          "width": 720,
-          "height": 900,
-          "meanPixelDifference": 2.152,
-          "id": "177672945439622_122301236666216133",
-          "sha256": "b7f54eae100c192afaca1c28acdeee74409829186f6232c2223c74edb65afd63",
-          "permalink": "https://www.facebook.com/122301039992216133/posts/122301236666216133",
-          "downloadedAsset": "social-results/tss-review-05-british-emigration-feed-facebook.png",
-          "evidenceCommit": "72f5f9adbdcd4243dfe6a006e2b564391279f85a",
-          "evidencePath": "social/published-assets/b7f54eae100c192afaca1c28acdeee74409829186f6232c2223c74edb65afd63.jpg"
-        }
-      }
     }
   ],
-  "qaFailures": {}
+  "qaFailures": {},
+  "version": 2
 }
