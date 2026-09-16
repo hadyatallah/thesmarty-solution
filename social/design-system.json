@@ -41,7 +41,8 @@
     "footer": "THESMARTYSOLUTION.COM",
     "locationLabel": true,
     "sourceLabel": true,
-    "fullWidthLowerPhotographyPreferred": true
+    "fullWidthLowerPhotographyPreferred": true,
+    "photoTransition": "soft-tonal-blend"
   },
   "geography": {
     "occupiedCyprusImageryAllowed": false,

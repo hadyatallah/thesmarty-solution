@@ -156,6 +156,7 @@ test('reference checklist editorial renders four practical points and full-width
   assert.deepEqual([metadata.width, metadata.height], [1080, 1350]);
   assert.equal(layout.visualStyle, 'reference-checklist-editorial');
   assert.deepEqual(layout.photoRegion, { x: 0, y: 780, width: 1080, height: 360 });
+  assert.deepEqual(layout.photoTransition, { y: 650, height: 250, mode: 'cream-to-photo-fade' });
   assert.equal(layout.logoSha256, LOGO_SHA);
   assert.equal(layout.textRegions.filter(r => /^0[1-4]$/.test(r.text)).length, 0);
 });

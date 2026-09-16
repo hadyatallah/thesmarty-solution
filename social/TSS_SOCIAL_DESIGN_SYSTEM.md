@@ -35,6 +35,9 @@ The same composition is the primary direction for practical checklists and TSS
 service posts: a strong left-hand hook, two to four concise supporting points on
 the right and full-width verified landmark photography below. Large empty areas
 or oversized copy without supporting value are not acceptable.
+Where the light editorial palette meets full-width photography, use a soft tonal
+fade so the photograph emerges from the layout. Do not introduce a hard horizontal
+divider unless the approved reference for that individual post explicitly uses one.
 
 ## Template family
 Only these three template families are permitted. Each format is composed separately.

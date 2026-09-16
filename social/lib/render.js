@@ -128,9 +128,14 @@ async function renderReferenceChecklistEditorial(input) {
   requireThat(photoSha256 === p.sha256, 'Approved photograph changed');
   const oriented = sharp(photo, { failOn: 'warning' }).rotate(), stats = await oriented.stats();
   requireThat(stats.entropy > 1 && stats.channels.some(c => c.stdev > 12), 'Blank or failed photograph');
-  const photoTop = 780;
+  // Begin the photograph behind the lower editorial copy, then wash its upper
+  // edge back to cream. This avoids a hard panel boundary and lets the palette
+  // and landmark merge in the same way as the approved visual reference.
+  const photoTop = 650;
+  const photoTransition = { y: photoTop, height: 250, mode: 'cream-to-photo-fade' };
   const background = await oriented.resize(width, height - photoTop, { fit: 'cover', position: p.cropPosition || 'centre' }).modulate({ brightness: 0.92, saturation: 0.92 }).jpeg({ quality: 90 }).toBuffer();
   layers.push({ input: background, left: 0, top: photoTop });
+  svgLayer(`<svg width="1080" height="250" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="merge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${colors.cream}" stop-opacity="1"/><stop offset="0.22" stop-color="${colors.cream}" stop-opacity="0.96"/><stop offset="0.55" stop-color="${colors.cream}" stop-opacity="0.72"/><stop offset="0.82" stop-color="${colors.cream}" stop-opacity="0.24"/><stop offset="1" stop-color="${colors.cream}" stop-opacity="0"/></linearGradient></defs><rect width="1080" height="250" fill="url(#merge)"/></svg>`, 0, photoTop);
   svgLayer(`<svg width="1080" height="260" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="shade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#082746" stop-opacity="0.02"/><stop offset="0.32" stop-color="#082746" stop-opacity="0.35"/><stop offset="1" stop-color="#04182b" stop-opacity="0.96"/></linearGradient></defs><rect width="1080" height="260" fill="url(#shade)"/><rect y="105" width="1080" height="155" fill="#04182b" fill-opacity="0.9"/></svg>`, 0, 1090);
 
   const logo = await fs.readFile(path.join(ROOT, '..', 'logo-mark.png'));
@@ -202,7 +207,8 @@ async function renderReferenceChecklistEditorial(input) {
       logoRegion,
       photoSha256,
       palette: colors,
-      photoRegion: { x: 0, y: photoTop, width, height: 360 },
+      photoRegion: { x: 0, y: 780, width, height: 360 },
+      photoTransition,
       safeArea: { left: 48, right: 1032, top, bottom }
     }
   };
