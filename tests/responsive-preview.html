@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>TSS responsive layout check</title>
+  <style>
+    body{margin:0;padding:12px;background:#dce5e8;font:14px system-ui;color:#07182b}
+    nav{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-bottom:12px}
+    label{display:flex;gap:8px;align-items:center}select{padding:6px;font:inherit}
+    iframe{display:block;height:844px;border:1px solid #667988;background:white}
+  </style>
+</head>
+<body>
+  <nav aria-label="Layout controls">
+    <label>Page <select id="page"><option value="index.html">Home</option><option value="opportunity-kiti.html">Kiti</option><option value="kiti-enquiry.html">Existing enquiry link</option><option value="divisions.html">What We Do</option><option value="about.html">About</option><option value="contact.html">Contact</option></select></label>
+    <label>Width <select id="width"><option>360</option><option selected>390</option><option>768</option><option>1180</option></select></label>
+    <span>Uses the live pages. No forms are submitted automatically.</span>
+  </nav>
+  <iframe id="preview" title="Website at selected viewport width" width="390"></iframe>
+  <script>
+    const page = document.querySelector('#page');
+    const width = document.querySelector('#width');
+    const preview = document.querySelector('#preview');
+    const params = new URLSearchParams(location.search);
+    if ([...page.options].some(option => option.value === params.get('page'))) page.value = params.get('page');
+    if ([...width.options].some(option => option.value === params.get('width'))) width.value = params.get('width');
+    const render = () => { preview.width = width.value; preview.src = '../' + page.value; };
+    page.addEventListener('change', render);
+    width.addEventListener('change', () => { preview.width = width.value; });
+    render();
+  </script>
+</body>
+</html>
