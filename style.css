@@ -22,3 +22,5 @@ h1,h2,h3{margin:0 0 .55em;color:var(--ink);font-family:Manrope,Inter,sans-serif;
 /* Direct opportunity enquiry flow. */
 #enquire{scroll-margin-top:100px}#enquire:focus{outline:none}.kiti-hero-facts{margin-top:30px;border-color:rgba(255,255,255,.2)}.kiti-hero-facts dt{color:#aec3ce}.kiti-hero-facts dd{color:#fff}.private-opportunities .contactbox h3{color:#fff}.contact form{min-width:0}.private-opportunities .contactbox{overflow-wrap:anywhere}
 @media(max-width:620px){#enquire{scroll-margin-top:88px}.private-opportunities .pagehero h1{font-size:clamp(2rem,8.2vw,3rem)}.private-opportunities .pagehero .btns{align-items:flex-start;flex-direction:column}}
+
+@media(max-width:940px){.private-opportunities .contact form{order:-1}}
