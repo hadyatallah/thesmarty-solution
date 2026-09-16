@@ -600,8 +600,8 @@
       "platform": "instagram",
       "classification": "promotion",
       "editorial": null,
-      "phase": "awaiting_published_visual_review",
-      "qaBoundSha256": "072536a387dfd2dfe1350cb1af95d01a66866184aa11da4b4052377f141c9532",
+      "phase": "publishing_facebook",
+      "qaBoundSha256": "e74d531936fbc5d8ff7cab4132b341a959015e0e21bb7d26bc57dd20cca57806",
       "instagram": {
         "containerId": "18115776760819867",
         "mediaId": "18026983037879458"
