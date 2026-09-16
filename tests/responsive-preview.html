@@ -26,7 +26,7 @@
     const params = new URLSearchParams(location.search);
     if ([...page.options].some(option => option.value === params.get('page'))) page.value = params.get('page');
     if ([...width.options].some(option => option.value === params.get('width'))) width.value = params.get('width');
-    const render = () => { preview.width = width.value; preview.src = '../' + page.value; };
+    const render = () => { preview.width = width.value; preview.src = '../' + page.value + '?layout-check=' + Date.now(); };
     page.addEventListener('change', render);
     width.addEventListener('change', () => { preview.width = width.value; });
     render();
