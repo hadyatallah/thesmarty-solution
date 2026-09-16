@@ -669,7 +669,7 @@
       "platform": "instagram+facebook",
       "classification": "factual",
       "editorial": null,
-      "phase": "published",
+      "phase": "awaiting_published_visual_review",
       "qaBoundSha256": "15c55c98ce2c2a0d4bb33958dc5d22b7512a099cf2159d07d8b3c08b3e7ca50c",
       "instagram": {
         "containerId": "18115824220819867",
@@ -678,6 +678,30 @@
       "facebook": {
         "postId": "177672945439622_122301236666216133",
         "photoId": "122301236642216133"
+      },
+      "verification": {
+        "instagram": {
+          "width": 1080,
+          "height": 1350,
+          "meanPixelDifference": 0,
+          "id": "17956056960217964",
+          "sha256": "06e844a661d95704805765ef0f0f53ed31cb4de26cd50a2814ccf41cbfbb10fe",
+          "permalink": "https://www.instagram.com/p/DdWJM1fHCXe/",
+          "downloadedAsset": "social-results/tss-review-05-british-emigration-feed-instagram.png",
+          "evidenceCommit": "3fbd898d44890b2c1021632cea1efc793690a396",
+          "evidencePath": "social/published-assets/06e844a661d95704805765ef0f0f53ed31cb4de26cd50a2814ccf41cbfbb10fe.jpg"
+        },
+        "facebook": {
+          "width": 720,
+          "height": 900,
+          "meanPixelDifference": 2.152,
+          "id": "177672945439622_122301236666216133",
+          "sha256": "b7f54eae100c192afaca1c28acdeee74409829186f6232c2223c74edb65afd63",
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301236666216133",
+          "downloadedAsset": "social-results/tss-review-05-british-emigration-feed-facebook.png",
+          "evidenceCommit": "72f5f9adbdcd4243dfe6a006e2b564391279f85a",
+          "evidencePath": "social/published-assets/b7f54eae100c192afaca1c28acdeee74409829186f6232c2223c74edb65afd63.jpg"
+        }
       }
     }
   ],
