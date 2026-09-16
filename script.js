@@ -175,17 +175,18 @@ function tssCreateNonce_() {
 
       if (form.dataset.tssForm === 'kiti') {
         const originalMessage = String(data.get('message') || '').trim();
+        const separateBackground = String(data.get('experience') || '').trim();
         const detailedMessage = [
           'Source opportunity: Kiti Residential Development Opportunity',
           'Enquiry type: Investor / Development Opportunity',
           `Role: ${data.get('profile') || '-'}`,
           `Structure to assess: ${data.get('structure') || '-'}`,
-          `Development / investment background: ${data.get('experience') || '-'}`,
+          ...(separateBackground ? [`Development / investment background: ${separateBackground}`] : []),
           `Indicative timing: ${data.get('timing') || '-'}`,
           `Indicative project / investment capacity: ${data.get('capital') || '-'}`,
           `Privacy consent: ${data.get('privacy_consent') || '-'}`,
           '',
-          'What they would like to evaluate:',
+          separateBackground ? 'What they would like to evaluate:' : 'Background and what they would like to assess:',
           originalMessage
         ].join('\n');
         data.set('message', detailedMessage);
@@ -235,6 +236,123 @@ function tssCreateNonce_() {
   });
 })();
 
+// Render the assistant's small Markdown subset with DOM nodes only. Model output
+// must never become HTML, and only parsed HTTP(S) destinations become links.
+function tssAgentLink_(destination) {
+  let url;
+  try {
+    url = new URL(destination, window.location.href);
+  } catch (error) {
+    return null;
+  }
+  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) return null;
+
+  const isTss = ['thesmartysolution.com', 'www.thesmartysolution.com'].includes(url.hostname);
+  const isLocal = url.origin === window.location.origin;
+  if (isTss || isLocal) {
+    if (url.pathname === '/kiti-enquiry.html') {
+      url.pathname = '/opportunity-kiti.html';
+      url.hash = 'enquire';
+    } else if (url.pathname === '/projects.html') {
+      url.pathname = '/opportunity-kiti.html';
+    }
+    return { href: `${url.pathname}${url.search}${url.hash}`, external: false };
+  }
+  return { href: url.href, external: true };
+}
+
+function tssAgentInline_(parent, value, allowLinks = true, depth = 0) {
+  const text = String(value || '');
+  if (depth > 6) {
+    parent.appendChild(document.createTextNode(text));
+    return;
+  }
+  // Balanced single-level parentheses cover common URLs without accepting HTML.
+  const tokens = /\[[^\]\n]+\]\((?:[^()\s]|\([^()\s]*\))+\)|\*\*[^*\n]+\*\*|https?:\/\/[^\s<>"']+/gi;
+  let previous = 0;
+  for (const match of text.matchAll(tokens)) {
+    parent.appendChild(document.createTextNode(text.slice(previous, match.index)));
+    const token = match[0];
+    if (token.startsWith('**')) {
+      const strong = document.createElement('strong');
+      tssAgentInline_(strong, token.slice(2, -2), allowLinks, depth + 1);
+      parent.appendChild(strong);
+    } else if (allowLinks) {
+      const markdown = token.startsWith('[');
+      const split = markdown ? token.indexOf('](') : -1;
+      let destination = markdown ? token.slice(split + 2, -1) : token;
+      let trailing = '';
+      if (!markdown) {
+        // Keep sentence punctuation outside a bare link. Retain balanced URL
+        // parentheses, such as a Wikipedia article's disambiguation suffix.
+        while (/[.,;:!?\])}]$/.test(destination)) {
+          const last = destination.slice(-1);
+          const opener = { ')': '(', ']': '[', '}': '{' }[last];
+          if (opener && destination.split(opener).length >= destination.split(last).length) break;
+          trailing = last + trailing;
+          destination = destination.slice(0, -1);
+        }
+      }
+      const safeLink = tssAgentLink_(destination);
+      if (safeLink) {
+        const link = document.createElement('a');
+        link.setAttribute('href', safeLink.href);
+        if (safeLink.external) {
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noopener noreferrer');
+        }
+        tssAgentInline_(link, markdown ? token.slice(1, split) : destination, false, depth + 1);
+        parent.appendChild(link);
+        if (trailing) parent.appendChild(document.createTextNode(trailing));
+      } else {
+        parent.appendChild(document.createTextNode(token));
+      }
+    } else {
+      parent.appendChild(document.createTextNode(token));
+    }
+    previous = match.index + token.length;
+  }
+  parent.appendChild(document.createTextNode(text.slice(previous)));
+}
+
+function tssRenderAgentReply_(container, value) {
+  const lines = String(value || '').replace(/\r\n?/g, '\n').split('\n');
+  let paragraph = [];
+  let list = null;
+  const flushParagraph = () => {
+    if (!paragraph.length) return;
+    const element = document.createElement('p');
+    tssAgentInline_(element, paragraph.join('\n'));
+    container.appendChild(element);
+    paragraph = [];
+  };
+
+  for (const line of lines) {
+    if (!line.trim()) {
+      flushParagraph();
+      list = null;
+      continue;
+    }
+    const item = line.match(/^\s*(?:([-*])|(\d+)[.)])\s+(.+)$/);
+    if (item) {
+      flushParagraph();
+      const type = item[2] ? 'ol' : 'ul';
+      if (!list || list.tagName.toLowerCase() !== type) {
+        list = document.createElement(type);
+        if (type === 'ol' && Number(item[2]) !== 1) list.setAttribute('start', String(Number(item[2])));
+        container.appendChild(list);
+      }
+      const element = document.createElement('li');
+      tssAgentInline_(element, item[3]);
+      list.appendChild(element);
+    } else {
+      list = null;
+      paragraph.push(line);
+    }
+  }
+  flushParagraph();
+}
+
 // TSS Business Assistant
 (() => {
   const endpoint = window.TSS_AGENT_ENDPOINT || 'https://thesmarty-solution-agent.vercel.app/api/tss-agent';
@@ -245,7 +363,8 @@ function tssCreateNonce_() {
     .tss-agent-launch:hover{transform:translateY(-2px);background:#0d2942}.tss-agent-launch span:first-child{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#12c7c0;color:#07182b;font-size:.78rem}
     .tss-agent{position:fixed;right:22px;bottom:158px;z-index:60;width:min(410px,calc(100vw - 28px));height:min(650px,calc(100svh - 190px));display:none;grid-template-rows:auto 1fr auto;overflow:hidden;border:1px solid #dce5e8;border-radius:24px;background:#fff;box-shadow:0 28px 90px rgba(3,17,31,.28);font-family:Inter,system-ui,sans-serif}
     .tss-agent.open{display:grid}.tss-agent-head{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px 19px;background:#07182b;color:#fff}.tss-agent-id{display:flex;align-items:center;gap:11px}.tss-agent-mark{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#12c7c0;color:#07182b;font-weight:900}.tss-agent-head strong{display:block;line-height:1.2}.tss-agent-head small{display:block;margin-top:3px;color:#a9bdc8}.tss-agent-close{border:0;background:transparent;color:#fff;font-size:1.6rem;line-height:1;cursor:pointer}
-    .tss-agent-body{overflow:auto;padding:18px;background:#f7f8f7}.tss-msg{max-width:88%;margin:0 0 12px;padding:11px 13px;border-radius:16px;white-space:pre-wrap;font-size:.9rem;line-height:1.5}.tss-msg.agent{border:1px solid #dce5e8;border-bottom-left-radius:5px;background:#fff;color:#21384b}.tss-msg.user{margin-left:auto;border-bottom-right-radius:5px;background:#0d2942;color:#fff}.tss-msg.status{background:transparent;color:#667988;font-size:.8rem;padding-left:3px}
+    .tss-agent-body{min-height:0;min-width:0;overflow:auto;padding:18px;background:#f7f8f7}.tss-msg{max-width:88%;margin:0 0 12px;padding:11px 13px;border-radius:16px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:.9rem;line-height:1.5}.tss-msg.agent{white-space:normal;border:1px solid #dce5e8;border-bottom-left-radius:5px;background:#fff;color:#21384b}.tss-msg.user{margin-left:auto;border-bottom-right-radius:5px;background:#0d2942;color:#fff}.tss-msg.status{background:transparent;color:#667988;font-size:.8rem;padding-left:3px}
+    .tss-msg.agent p{margin:0 0 10px;white-space:pre-line}.tss-msg.agent ul,.tss-msg.agent ol{margin:0 0 10px;padding-left:20px}.tss-msg.agent li+li{margin-top:6px}.tss-msg.agent>:last-child{margin-bottom:0}.tss-msg.agent a{color:#075e61;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}.tss-msg.agent a:focus-visible{outline:2px solid #0a8f91;outline-offset:3px;border-radius:2px}
     .tss-quick{display:flex;flex-wrap:wrap;gap:7px;margin:3px 0 14px}.tss-quick button{padding:8px 10px;border:1px solid #cbd8de;border-radius:999px;background:#fff;color:#21384b;font:700 .76rem Inter,system-ui,sans-serif;cursor:pointer}.tss-quick button:hover{border-color:#0a8f91;background:#e8faf8}
     .tss-lead-link{display:inline-flex;margin:4px 0 14px;padding:9px 12px;border:0;border-radius:999px;background:#e8faf8;color:#075e61;font:800 .78rem Inter,system-ui,sans-serif;cursor:pointer}
     .tss-lead{display:none;margin:4px 0 14px;padding:14px;border:1px solid #dce5e8;border-radius:16px;background:#fff}.tss-lead.open{display:grid;gap:9px}.tss-lead strong{font-size:.9rem;color:#07182b}.tss-lead input{width:100%;padding:10px 11px;border:1px solid #cbd8de;border-radius:9px;font:inherit}.tss-lead .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}.tss-lead button{min-height:40px;border:0;border-radius:999px;background:#07182b;color:#fff;font-weight:800;cursor:pointer}.tss-lead small{color:#667988;line-height:1.4}
@@ -258,10 +377,13 @@ function tssCreateNonce_() {
   launch.className = 'tss-agent-launch';
   launch.type = 'button';
   launch.setAttribute('aria-label', 'Open The Smarty Solution business assistant');
+  launch.setAttribute('aria-expanded', 'false');
+  launch.setAttribute('aria-controls', 'tss-business-assistant');
   launch.innerHTML = '<span>TSS</span><span class="label">Ask TSS</span>';
 
   const panel = document.createElement('section');
   panel.className = 'tss-agent';
+  panel.id = 'tss-business-assistant';
   panel.setAttribute('aria-label', 'The Smarty Solution business assistant');
   panel.innerHTML = `
     <div class="tss-agent-head">
@@ -286,8 +408,9 @@ function tssCreateNonce_() {
 
   const addMessage = (role, text, className = '') => {
     const item = document.createElement('div');
-    item.className = `tss-msg ${className || role}`;
-    item.textContent = text;
+    item.className = `tss-msg ${className || (role === 'assistant' ? 'agent' : role)}`;
+    if (role === 'assistant') tssRenderAgentReply_(item, text);
+    else item.textContent = text;
     body.appendChild(item);
     body.scrollTop = body.scrollHeight;
     return item;
@@ -354,7 +477,11 @@ function tssCreateNonce_() {
             ? 'A confirmation email has been sent to you.'
             : 'The enquiry was recorded, but the confirmation email could not be verified.';
           leadBox.dispatchEvent(new CustomEvent('tss:submission-confirmed'));
-          leadBox.innerHTML = `<strong>Sent to TSS for review.</strong><small>${emailText}${reference} A member of the team can follow up using the details you provided.</small>`;
+          const confirmationHeading = document.createElement('strong');
+          confirmationHeading.textContent = 'Sent to TSS for review.';
+          const confirmationMessage = document.createElement('small');
+          confirmationMessage.textContent = `${emailText}${reference} A member of the team can follow up using the details you provided.`;
+          leadBox.replaceChildren(confirmationHeading, confirmationMessage);
         } else {
           leadBox.dispatchEvent(new CustomEvent('tss:submission-processing'));
           button.disabled = true;
@@ -403,8 +530,20 @@ function tssCreateNonce_() {
     setTimeout(() => input.focus(), 50);
   };
 
-  launch.addEventListener('click', () => panel.classList.contains('open') ? panel.classList.remove('open') : openAgent());
-  close.addEventListener('click', () => panel.classList.remove('open'));
+  const closeAgent = () => {
+    panel.classList.remove('open');
+    launch.setAttribute('aria-expanded', 'false');
+    launch.focus();
+  };
+  launch.addEventListener('click', () => panel.classList.contains('open') ? closeAgent() : openAgent());
+  close.addEventListener('click', closeAgent);
+  body.addEventListener('click', (event) => {
+    const link = event.target.closest('a');
+    if (link && link.getAttribute('href').startsWith('/opportunity-kiti.html')) closeAgent();
+  });
+  panel.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAgent();
+  });
 
   async function send(text) {
     const value = String(text || '').trim();
