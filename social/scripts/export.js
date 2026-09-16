@@ -1,11 +1,15 @@
 import fs from 'node:fs/promises';
+import sharp from 'sharp';
 import { renderCreative } from '../lib/render.js';
 import { imageFingerprint, requireThat, sha256, visualSignature } from '../lib/qa.js';
 
 const input = JSON.parse(await fs.readFile(process.argv[2], 'utf8'));
 requireThat(['feed', 'story'].includes(input.creative.format), 'Reels need a dedicated inspected MP4, not a still-image export');
 const { buffer, layout } = await renderCreative(input.creative);
-const hash = sha256(buffer), file = `social/assets/${hash}.png`;
+const { format } = await sharp(buffer).metadata();
+requireThat(['png', 'jpeg'].includes(format), 'Still-image export must contain PNG or JPEG bytes');
+const extension = format === 'jpeg' ? 'jpg' : 'png';
+const hash = sha256(buffer), file = `social/assets/${hash}.${extension}`;
 await fs.mkdir('social/assets', { recursive: true });
 await fs.writeFile(file, buffer);
 const layoutText = JSON.stringify(layout, null, 2) + '\n';

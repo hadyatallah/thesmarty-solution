@@ -1,4 +1,5 @@
 const ISO_WITH_ZONE = /(?:Z|[+-]\d{2}:\d{2})$/;
+const EVIDENCE_AUTHORITIES = ['primary', 'official-statistics', 'original-market-study'];
 
 const normalise = value => String(value || '')
   .normalize('NFKC')
@@ -56,7 +57,7 @@ export function validateTrendCandidate(candidate, intelligence, needs, now = Dat
   requireEditorial(candidate.editorialType === 'trend', 'Trend candidate needs an explicit editorial type');
   requireEditorial(candidate.facts?.classification === 'factual' && candidate.facts.claims?.length > 0 && candidate.facts.sources?.length > 0, 'Trend candidate needs factual claims and sources');
   requireEditorial(validTime(candidate.reviewedAt) && Date.parse(candidate.reviewedAt) <= now + 60000 && now - Date.parse(candidate.reviewedAt) <= intelligence.trendPolicy.maxCandidateAgeDays * 86400000, 'Trend candidate review is stale or invalid');
-  requireEditorial(candidate.facts.sources.every(source => ['primary', 'official-statistics', 'original-market-study'].includes(source.authorityType)), 'Trend candidate must use primary, official or original-study evidence');
+  requireEditorial(candidate.facts.sources.every(source => EVIDENCE_AUTHORITIES.includes(source.authorityType)), 'Trend candidate must use primary, official or original-study evidence');
   requireEditorial(candidate.facts.sources.every(source => validTime(source.checkedAt) && Date.parse(source.checkedAt) <= now + 60000 && validTime(source.validUntil) && Date.parse(source.validUntil) > now), 'Trend candidate source check is stale or invalid');
   validateBrief(candidate, intelligence, needs);
   return true;
@@ -79,8 +80,9 @@ export function validateBrief(brief, intelligence, needs) {
 }
 
 export function pickCta(brief, format, intelligence, feedback, existing = []) {
-  const retired = new Set(feedback.approvedLearnings.flatMap(item => item.retireCtaIds || []));
-  const preferred = new Set(feedback.approvedLearnings.flatMap(item => item.preferCtaIds || []));
+  const comparableLearnings = feedback.approvedLearnings.filter(item => item.status === 'approved' && item.format === format && item.objective === brief.objective);
+  const retired = new Set(comparableLearnings.flatMap(item => item.retireCtaIds || []));
+  const preferred = new Set(comparableLearnings.flatMap(item => item.preferCtaIds || []));
   const usage = new Map();
   for (const item of existing) {
     const id = item.editorial?.cta?.id;
@@ -140,7 +142,7 @@ export function validateEditorialMetadata(item, intelligence, needs, proofRegist
   if (editorial.editorialType === 'trend') {
     requireEditorial(editorial.trend?.candidateId && validTime(editorial.trend.reviewedAt) && Date.parse(editorial.trend.reviewedAt) <= now + 60000 && now - Date.parse(editorial.trend.reviewedAt) <= intelligence.trendPolicy.maxCandidateAgeDays * 86400000, 'Trend candidate review is missing or stale');
     requireEditorial(item.facts?.classification === 'factual' && item.facts.claims?.length > 0 && item.facts.sources?.length > 0, 'Trend content requires verified factual evidence');
-    requireEditorial(item.facts.sources.every(source => ['primary', 'official-statistics', 'original-market-study'].includes(source.authorityType)), 'Trend content source authority is insufficient');
+    requireEditorial(item.facts.sources.every(source => EVIDENCE_AUTHORITIES.includes(source.authorityType)), 'Trend content source authority is insufficient');
   }
   if (editorial.editorialType === 'social-proof') {
     const proof = proofRegistry.records.find(entry => entry.id === editorial.socialProofId);
@@ -151,7 +153,7 @@ export function validateEditorialMetadata(item, intelligence, needs, proofRegist
   if (editorial.editorialType === 'repurpose') requireEditorial(editorial.repurpose, 'Repurposed content needs explicit source metadata');
   if (editorial.repurpose) requireEditorial(editorial.editorialType === 'repurpose', 'Repurpose metadata needs the repurpose editorial type');
   if (item.format === 'reel') {
-    requireEditorial(editorial.reelScript?.durationSeconds >= 15 && editorial.reelScript.durationSeconds <= 30, 'Reel script must target 15 to 30 seconds');
+    requireEditorial(Number.isFinite(editorial.reelScript?.durationSeconds) && editorial.reelScript.durationSeconds >= 15 && editorial.reelScript.durationSeconds <= 30, 'Reel script must target 15 to 30 seconds');
     requireEditorial(editorial.reelScript.hook === item.headline && editorial.reelScript.beats?.length >= 1 && editorial.reelScript.beats.length <= 3 && editorial.reelScript.close === editorial.cta.text, 'Reel script structure is invalid');
   }
   if (editorial.repurpose) validateRepurposeMetadata(item, editorial.repurpose);
@@ -160,8 +162,17 @@ export function validateEditorialMetadata(item, intelligence, needs, proofRegist
 
 export function enforceEditorialPolicy(item, intelligence, needs, policy, proofRegistry, now = Date.now()) {
   requireEditorial(policy?.version === 1 && Array.isArray(policy.grandfatheredContentIds), 'Invalid editorial adoption policy');
-  if (!item.editorial && policy.grandfatheredContentIds.includes(item.id)) return true;
-  return validateEditorialMetadata(item, intelligence, needs, proofRegistry, now);
+  const grandfathered = policy.grandfatheredContentIds.includes(item.id);
+  if (!item.editorial && grandfathered) return true;
+  validateEditorialMetadata(item, intelligence, needs, proofRegistry, now);
+  if (!grandfathered && (item.facts?.classification === 'factual' || item.facts?.claims?.length > 0)) {
+    requireEditorial(item.facts.sources?.length > 0 && item.facts.sources.every(source => EVIDENCE_AUTHORITIES.includes(source.authorityType)), 'New factual content must use primary, official or original-study evidence with authority metadata');
+  }
+  if (!grandfathered && item.format === 'reel' && item.asset?.videoQA) {
+    const duration = item.asset?.videoQA?.duration;
+    requireEditorial(Number.isFinite(duration) && duration >= 15 && duration <= 30 && Math.abs(duration - item.editorial.reelScript.durationSeconds) <= 0.25, 'Reel export duration must match its approved 15 to 30 second script');
+  }
+  return true;
 }
 
 export function validateRepurposeMetadata(item, repurpose) {

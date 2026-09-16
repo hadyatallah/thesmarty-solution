@@ -1,5 +1,5 @@
-name: Publish TSS Instagram Queue
-run-name: TSS social QA and controlled publishing
+name: TSS Instagram and Facebook Automation
+run-name: TSS social readiness, QA and publishing
 
 on:
   push:
@@ -12,8 +12,12 @@ on:
       - '.github/workflows/publish-instagram.yml'
       - 'package-lock.json'
   workflow_dispatch:
+  schedule:
+    - cron: '15 9,14,19 * * *'
+      timezone: 'Asia/Nicosia'
 
-# A Cyprus-time schedule is added only after the dual-platform live result is inspected.
+# The schedule starts with readiness checks. Publishing is gated by all ten
+# exact approvals, inspected live results and enabled-format verification.
 permissions:
   contents: write
 
@@ -51,6 +55,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_SHA: ${{ github.sha }}
         run: node social/scripts/process-queue.js
+      - name: Report monthly content supply without approving drafts
+        if: ${{ !cancelled() && hashFiles('social-results/history.json') != '' }}
+        run: node social/scripts/check-content-plan.js
       - name: Check inspected QA samples without publishing
         env:
           TSS_PUBLISHER_KEY: ${{ secrets.TSS_PUBLISHER_KEY }}

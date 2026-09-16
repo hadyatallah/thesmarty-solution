@@ -1,272 +1,157 @@
-# TSS direct publishing
+# TSS Instagram and Facebook automation
 
-This extends the existing Instagram publisher, Meta app, repository and Vercel
-deployment. Metricool remains connected and is not called to publish.
+The existing GitHub → secured Vercel → Meta pipeline publishes TSS content.
+Metricool is not used for publishing. Website, enquiry, Sheets, Microsoft 365
+and SEO functionality are outside this system.
 
-## Current rollout and first ten reviews
+## Current operation — 16 September 2026
 
-Hady's confirmed brief is investors, entrepreneurs and people relocating:
-Cyprus property, taxes, buying costs, business and evidence-based comparisons
-with European countries. Use about 80% useful content and 20% TSS promotion.
-No speculative forecasts or unsupported explanations for people moving.
+Posts 1–5 have explicit user approval and verified Instagram/Facebook results.
+Post 5 is [on Instagram](https://www.instagram.com/p/DdWJM1fHCXe/) and
+[Facebook](https://www.facebook.com/122301039992216133/posts/122301236666216133).
+The durable source of truth is `tss-social-state: social/history.json`.
 
-The initial batch has seven dedicated feed posts, two dedicated Stories and a
-15-second three-scene Reel. The source of truth is
-`social/review-batches/2026-09-initial/index.json`, which references the exact
-queue files, exported previews, captions and sources. Final quality review sets
-`awaiting_user_approval`, never `approved`. The GitHub workflow checks these
-review assets without sending a live request or reserving them in history.
+The user authorized recurring automation after this audit. The workflow checks
+at **09:15, 14:15 and 19:15 Asia/Nicosia**, including daylight saving changes.
+`schedulerEnabled: true` records that authorization; it is NOT proof of readiness.
+`automationReadiness()` computes the effective publishing permission on every run.
+Until all launch gates pass, these are readiness/account/QA checks only:
 
-ChatGPT's **TSS Post Review** task checks hourly in Asia/Nicosia and notifies
-Hady here when new final posts or revisions are ready. The notification task
-does not publish, approve content or activate publishing schedules.
+1. Exact asset/caption approval for each of the first ten posts.
+2. Actual published-image/video inspection for those ten posts.
+3. Controlled, inspected Feed, Story and Reel results, bound to actual asset hashes.
+4. No unresolved or uncertain publication outcomes.
 
-Before any of the first ten posts publishes, Hady must explicitly approve its
-number/content. Record approvedBy, approvedAt, contentSha256 calculated with
-`userApprovalBinding(item)`, and a reference to the actual user authorization
-in `social/user-approval-policy.json`. Never infer approval from passing QA.
-The runner and all live endpoint actions enforce this policy. New posts beyond
-the ten still require user approval until all ten initial approvals are recorded.
-An edited asset, caption, claim or creative invalidates content approval.
-Scheduling and check-time changes preserve that content approval, while the
-technical QA seal must be recalculated after fresh inspection.
+No more activation approval is needed after those already-agreed gates pass.
+Posts 6–10 remain awaiting individual approval. A controlled test is selected
+explicitly through `controlledPublicationId` and still requires its own approval.
+Scheduled events never execute a controlled-test exception. The current target is
+null. Feed is currently the only live-verified format.
 
-After content approval, set the queue status to approved and arrange the
-controlled live tests. The three-per-day publisher stays off until the existing
-dual-platform test and each enabled format's actual published result have been
-inspected. The target is quality-controlled publication, not filling every slot.
+Each workflow writes `social/automation-status.json` to the state branch. Its
+`publishingEnabled`, blockers, approval counts and unpublished queue counts
+explain the current effective state. Account errors fail closed and appear as
+safe platform/error codes, never credential values. GitHub reports failed runs.
+The separate TSS Post Review notification task remains a notification-only task.
 
-The first-batch commit passed all 19 fail-closed tests in GitHub Actions, but
-the protected Meta account inspection rejected credentials/permissions. Its run
-is `34844492005` and published zero new posts. Review-asset verification now
-runs independently of that connection check. The live publisher remains
-blocked; read only safe error codes to identify the affected account before
-changing credentials. No Meta app setup is restarted.
+## Monthly plan and platform scope
 
-The three existing Instagram publication records stay unchanged. They are
-imported into durable history alongside recent Instagram content. The old
-15-minute publishing trigger is removed. Publishing is disabled by default.
+The approved calendar-month plan is **44 assets**: 16 Feed, 20 Stories, 8 Reels,
+with 36 useful and at most 8 promotional assets. Topic/format allocations are in
+`social/monthly-content-plan.json`; draft planning uses those allocations.
+The publisher enforces total, format and promotion caps. Missed or failed slots
+stay empty. At most one item is attempted per run, one of each format per local
+day, and three assets per local day. Only an explicitly authorized controlled
+rollout test may bypass normal daily/monthly limits.
 
-Initial inspection on 14 September 2026 verified the Instagram credentials and
-17 retrievable current posts (16 images and one video), now fingerprinted.
-The three earlier queue publication IDs returned Meta error 100/subcode 33 when
-queried individually. Their existing metadata is preserved; the current API
-cannot confirm their published assets or determine why they are unavailable.
-They must remain part of the manual creative/source duplicate review, and cannot
-serve as live-verification proof. Read-only results are retained at
-`tss-social-state: social/legacy-publication-checks.json`. Facebook production
-Page credentials were absent. No new live publication or schedule was activated.
+- Feed: Instagram + Facebook, dedicated 1080×1350 PNG/JPEG.
+- Story: Instagram adapter, dedicated 1080×1920; still awaits controlled live test.
+- Reel: Instagram adapter, dedicated 1080×1920 H.264 MP4; awaits controlled live test.
+- Facebook Story/Reel adapters are not implemented or live-verified.
 
-Authenticated Meta inspection confirmed the existing app ID `1707395857227784`
-(The Smarty Solution Publisher). Its Manage Pages use case already has
-`pages_show_list` ready for testing. `pages_manage_posts` and
-`pages_read_engagement` initially showed **Add**. The posting permission includes
-creating, editing and deleting Page posts; the read permission includes Page
-content, follower data and insights. Meta's confirmation for
-`pages_read_engagement` also adds it to the existing **Manage messaging & content
-on Instagram** use case. A fresh reopening of Manage Pages confirmed that
-`pages_manage_posts`, `pages_read_engagement` and `pages_show_list` all show
-**Ready for testing**, despite generic errors shown during the saves. The app's
-Required actions screen reports no current required actions. A Page token must
-be created for the correct TSS Page, stored in the existing Vercel project's
-Production environment, and deployed. Hady subsequently reported completing
-this step; use the next protected API inspection to confirm the deployed
-credentials rather than restarting setup. Actual Page identity must pass the
-protected API inspection before the controlled dual-platform test verifies real
-publishing access. Scheduled publishing stays disabled until that test is
-inspected and verified.
+Consequently the full planned mix currently represents **60 platform publications**:
+32 Feed publications plus 20 Instagram Stories and 8 Instagram Reels. It does not
+mean every format is cross-posted to Facebook. Facebook vertical publishing needs
+its own adapter, verification and an updated platform-publication target.
 
-Only the `controlledPublicationId` may publish while the scheduler is disabled,
-and it remains subject to explicit initial-post user approval.
-That test requires an approved **feed** export and both correct TSS accounts.
-Missing Facebook credentials block both platforms before any container creation.
-After the live photos and captions pass API checks, inspect the downloaded
-Instagram and Facebook files in the `tss-social-qa` workflow artifact. Mark that
-history record `verified` with per-platform `publishedReview` objects containing
-passed, reviewer, timestamp and the SHA-256 of each actual downloaded asset. Only then set
-`verifiedLivePublication`, `formatVerifications`, `approvedFormats`, and `schedulerEnabled` and add:
+## Content production and honest limits
 
-```yaml
-schedule:
-  - cron: '15 9,14,19 * * *'
-    timezone: 'Asia/Nicosia'
-```
+`node social/scripts/generate-drafts.js YYYY-MM-DD --history /path/to/current/history.json` prepares nonapproved drafts
+from the reviewed bank and eligible reviewed trend candidates. It respects monthly
+format/pillar capacities and existing history, reports exhausted inputs, and uses
+current design requirements. It does not invent facts, final footage or approval.
 
-The runner allows one content item per run and at most three per Cyprus day,
-with at most one feed, one Story and one Reel. A controlled rollout test is a
-single explicit exception to daily caps. Existing posts count toward normal caps.
-A post from an earlier day, or more than four hours late, is not published as
-backlog. Only formats with a controlled live verification can be scheduled.
-These are target slots, not guaranteed delivery times. GitHub may delay or drop
-scheduled runs and disables inactive public schedules after 60 days.
+Each workflow also runs the planner in dry-run mode and retains a monthly
+content-supply report, including exhausted topic/format inputs.
 
-## Credentials
+The publishing workflow consumes final approved queue items. It does **not** run
+an autonomous research/design agent. The current reviewed bank contains only six
+evergreen briefs and no reviewed trend candidates; it cannot supply 44 fresh,
+varied, researched assets every month by itself. Sustained production still needs
+reviewed source briefs, source updates, dedicated rendering and final visual QA.
+Do not describe the end-to-end content engine as fully autonomous or paid-free
+at unlimited volume. No new model subscription or paid publishing service is
+configured by this audit.
 
-Existing Vercel variables remain server-side:
+New posts map to an investor/entrepreneur/relocator decision need and topic pillar.
+Hooks must be supported, CTAs varied, and migration counts must never be presented
+as proof of motives. Social proof needs evidence, permission and confidentiality
+review. Performance learning affects only comparable formats/objectives. New
+factual claims require primary/official/original-study source metadata, exact
+supporting excerpts, dates and editorial review. URL retrieval alone cannot judge
+whether a source really proves a claim.
 
-- `TSS_PUBLISHER_KEY`, also the existing GitHub Actions secret
-- `INSTAGRAM_ACCESS_TOKEN`
-- `INSTAGRAM_USER_ID` = `17841424595983267`
-- `META_GRAPH_VERSION`, default `v25.0`
+## Design and final QA
 
-Facebook requires separate existing-app Page credentials in Vercel production:
+Use the approved light cream/navy/teal composition with the original pinned TSS
+logo, readable typography and verified Republic-controlled Cyprus photography.
+Blend the photograph smoothly into the palette. No category horizontal line,
+floating cards or large writing boxes in new creatives. Previously approved
+exports stay immutable; renderer changes do not alter published posts.
 
-- `FACEBOOK_PAGE_ACCESS_TOKEN` (also accepts `FACEBOOK_PAGE_TOKEN`,
-  `META_PAGE_ACCESS_TOKEN` or `FB_PAGE_ACCESS_TOKEN`)
-- `FACEBOOK_PAGE_ID` = `177672945439622`, optional because the target is pinned
+Final export → fact/source/geography review → actual visual inspection → manifest
+seal → approved queue → repeated actual-file/OCR/source/duplicate checks → publish.
+All checks fail closed. Maximum five relevant hashtags. Story caption metadata
+must be under 120 characters. New Reels must match their 15–30-second script;
+existing reviewed rollout assets retain their original approval bindings.
 
-Use the existing Meta app and a Page token with Page publishing/read permissions.
-Store credentials in the platform's secure environment editor, never in chat.
-The inspection response reports configuration and confirms account identity. It
-never returns tokens. App review, verification, access level and token expiry
-are determined from the actual account/API response, not assumed from app setup.
+Export stills using `node social/scripts/export.js content-queue/FILE.json`.
+File extension is derived from actual PNG/JPEG bytes. Inspect dedicated MP4s with
+`node social/scripts/inspect-reel.js content-queue/FILE.json /path/to/video.mp4`.
+This verifies decoding and fingerprints but cannot sign off visual quality or
+footage/music rights. Commit content-addressed assets first, reference their
+immutable commit, inspect final files, then bind the review. No script may invent
+fresh inspection dates. Technical reviews expire after seven days.
 
-The inspected files in `social/qa-samples` are permanently marked `qaOnly`.
-The workflow checks their real export, OCR, immutable hosting and a signed
-Instagram API dry run. All live API actions reject these samples. They never
-enter the publishing queue or content-history reservations. Expired sample
-reviews are skipped, without fabricating a new inspection date.
+The exact first-ten user content approval is separate from QA. Changed content
+invalidates it; schedule/check-date updates preserve content approval but require
+a fresh technical seal. QA passage and strategy approval never imply post approval.
+The review index is `social/review-batches/2026-09-initial/index.json`.
 
-GitHub uses its short-lived built-in `GITHUB_TOKEN` to write history to
-`tss-social-state: social/history.json`. No new personal GitHub token is needed.
-No model API calls, Meta ad calls or paid publishing service are added. The
-publishing layer is designed for existing free GitHub/Meta infrastructure.
+## Publication history and recovery
 
-## Generate, export and inspect
+History records topic, hook, format, platforms, fingerprints and API checkpoints.
+Exact creative reuse is blocked permanently; similar topics/hooks are blocked for
+30 days unless a documented deliberate update or materially different repurpose
+passes policy. Current Instagram content is imported and fingerprinted before
+publishing. Three old unretrievable publication IDs remain preserved as legacy
+metadata; they cannot serve as verified-format evidence.
 
-`node social/scripts/generate-drafts.js YYYY-MM-DD` creates up to three curated
-Feed, Story and Reel drafts. Every new draft maps to an approved audience
-decision need, hook type, content objective and CTA. The selector rotates CTA
-usage and underused audience needs. It still produces fewer drafts when the
-reviewed bank is exhausted or topics already exist.
+A protected version/policy digest preflight first confirms that the deployed
+endpoint has the same approval and editorial policies as the checked-out runner.
+A stale deployment stops before reservation.
 
-The generation inputs are fail-closed:
+A durable reservation precedes side effects. A run consumes its attempt before
+publishing; failure on a later platform or verification cannot allow another post
+through the run cap. Any uncertain result is quarantined and ends further attempts.
+Known Instagram/Facebook IDs remain reported even if later verification fails.
+Never delete a reservation or retry blindly. Investigate actual account state and
+known IDs before an explicit controlled recovery.
 
-- `social/audience-needs.json` defines investor, entrepreneur and relocator
-  decision problems. These are editorial directions, not claims about everyone.
-- `social/editorial-intelligence.json` controls hooks, CTAs, repurposing,
-  social proof, trends, carousels and performance learning.
-- `social/trend-candidates.json` accepts only current, source-reviewed trend
-  briefs using primary, official-statistics or original-study evidence.
-- `social/social-proof-registry.json` is empty by default. Results and
-  testimonials remain blocked without evidence, permission and confidentiality
-  review.
-- `social/performance-feedback.json` influences selection only through explicit
-  approved learnings after a minimum of three comparable posts.
+Every published asset is downloaded, compared and permanently archived by hash
+on the state branch. Caption comparison preserves punctuation, numbers and signs.
+Controlled rollout results require actual visual review before `verified` status.
+Later scheduled results may be marked `automatically_verified` after exact-caption
+and image/video comparisons; this does not fabricate a human visual review.
+Their final exports must still have passed visual QA before publication.
 
-The original queue items are listed in `social/editorial-adoption-policy.json`
-so the new layer does not invalidate the first review batch. Any later queue ID
-must carry the new editorial metadata. The generator never invents current
-market facts, generates final footage or approves its own output.
+The secured endpoint validates signed manifests, account identities, sources,
+assets and approvals. Serialization, reservations, caps and schedule gates live
+in the GitHub runner; the endpoint is not a standalone scheduler. Keep the existing
+publisher key secret and use the runner for all publication calls.
 
-Set an explicit `publishAt` with the correct Asia/Nicosia UTC offset. Export feed
-and Story images with:
+## Credentials and operations
 
-`node social/scripts/export.js content-queue/FILE.json`
+Existing credentials stay in GitHub Actions Secrets and Vercel Production. Never
+read, commit, print or paste their values. Account checks verify expected TSS
+identities and return safe status information only. Token setup is account-level,
+not repeated per post; Meta expiry/revocation may still require secure replacement.
 
-This creates a content-addressed PNG and layout evidence, and resets approval.
-For a dedicated Reel MP4, use:
+Run the regression suite with `node --test social/tests/*.test.js`. The workflow
+also checks unpublished review exports and retains QA artifacts. Actual published
+media is additionally retained on the state branch so verification does not depend
+on expiring artifacts.
 
-`node social/scripts/inspect-reel.js content-queue/FILE.json /path/to/dedicated.mp4`
-
-This decodes the complete video, enforces the vertical policy, fingerprints six
-frames and resets approval. It does not approve text, facts, music/footage rights
-or the full-video inspection. Review the actual exported MP4 before approving it.
-
-Related subjects can be repurposed only by naming the source post and recording
-the new angle, audience value and visual difference. The new format and hook
-must differ, while exact creative and asset reuse remains permanently blocked.
-Carousel concepts may be prepared as four-to-six-slide editorial outlines, but
-carousel publication is disabled until per-slide rendering, QA, a Meta adapter
-and a controlled live test are completed. A future carousel replaces a Feed
-slot and does not increase the 44-asset monthly limit.
-
-Commit the asset first. Set `asset.commit` to the immutable 40-character Git
-commit containing it. Inspect the actual file, read its caption and compare it
-with `social-results/recent-instagram.json` from the latest workflow.
-
-Fact-bearing posts need a claim inventory and sources with direct HTTPS URLs,
-an evidence excerpt, checked time, expiry and a note explaining support for the
-claim. Source retrieval confirms the excerpt remains available. Editorial review
-must confirm the meaning, scope and completeness of claims. HTTP success alone
-is never treated as fact verification.
-
-Approve only after every check exported by `social/lib/qa.js` passes. Set status
-`approved` and add `review` with reviewer, reviewedAt, boundSha256=`binding(item)`,
-captionSha256=`sha256(item.caption)`, assetSha256 and all check values `true`.
-Use the helper exports to calculate hashes. A seven-day review expiry requires
-fresh inspection for older batches. Changing any creative content, caption,
-platform, asset, evidence or publishing time invalidates approval.
-
-Every publishing run repeats manifest, source, real-file, dimensions, byte hash,
-decoded pixel hash, text layout and OCR checks before a signed endpoint dry run.
-The endpoint repeats manifest, account, source and actual hosted-file checks.
-Mutable renderer URLs and legacy `imageUrl` direct requests cannot publish.
-
-## Formats and imagery
-
-- Feed: dedicated 1080x1350 still PNG/JPEG.
-- Story: dedicated 1080x1920 still image with central safe area. Under-120-character
-  caption text is metadata. The Story's visible message must be in its image.
-- Reel: dedicated 1080x1920 H.264/yuv420p MP4, 6-60 seconds by TSS policy. Full
-  decode, full-video inspection, sampled-frame review and rights checks are
-  required. The scheduler blocks Reels until published-video comparison is
-  passed and its own controlled live result is inspected.
-- Facebook's enabled adapter publishes feed photos only. Facebook Stories/Reels
-  fail closed until their own adapters and live verifications are completed.
-
-The correct original logo is pinned by SHA-256. Fonts are fixed. Copy is measured
-at the actual font size, never silently truncated. There is no fallback photo
-panel. A missing or failed photograph stops rendering.
-
-The photo catalog contains five reviewed real Cyprus locations. Each additional
-photo must be registered by exact file hash
-after checking the real location, Republic-controlled geography and licensing.
-An AI location label or an allowed city name alone cannot approve imagery.
-The v2 landmark renderer refuses unregistered photos for every template.
-
-## Duplicate protection and recovery
-
-History contains date, topic, headline, creative identifier, actual asset and
-decoded-pixel fingerprints, format, platforms, container IDs and publication IDs.
-Exact creative/asset reuse is permanently blocked. Topic/headline similarity is
-checked for 30 days. Dates appended to a topic key do not evade this check.
-Actual historical Instagram images are downloaded once and fingerprinted. A
-small decoded RGB signature also catches identical images after ordinary JPEG
-compression or resizing. A failed historical download blocks publishing until
-the recent visual history can be checked. This image comparison is conservative;
-similar-looking graphics can require a new visual before they pass.
-Historical videos are decoded and fingerprinted at six points across their
-duration. Reel exports must supply matching actual decoded-frame evidence.
-The duplicate check also compares those frames after video recompression; it
-does not rely on the video filename, hook or MP4 bytes alone. Visual similarity
-is a conservative additional gate, not a substitute for editorial duplicate review.
-A deliberate update needs its prior record, reason, new angle and visual change.
-Recent Instagram posts are imported before every approval/publishing run and
-stored at `tss-social-state: social/recent-instagram.json`. The three-day slot
-plan alone cannot approve a format. `formatVerifications` must point to a
-verified, inspected live record for each scheduled format.
-
-The runner saves a durable reservation **before** container creation, then saves
-the container ID and a checkpoint before each publishing call. Any save conflict
-stops the call. Failures, timeouts and partial Instagram/Facebook success are
-quarantined. They are never automatically retried. An uncertain result may have
-published successfully. Check the actual account and known container/publication
-IDs before any manual recovery. Do not delete reservations to force retries.
-
-Controlled live test assets are also stored on the history branch by file hash
-so an editor can inspect the exact API-published photos without relying on an
-expiring artifact download. QA artifacts include actual published images and crop/visual-content
-comparisons. Bad final comparisons block rollout and the record is quarantined.
-Source and credential errors fail the GitHub job. Nothing reports a successful
-live publication merely because an API request returned HTTP 200.
-
-## Scope
-
-Website enquiry code, Google Sheets, Microsoft 365, Metricool settings and
-scheduled/draft posts, website HTML/CSS/JS, SEO and social connections are outside
-this change. Existing social-only API functions are extended in place.
-
-Primary references: [Meta content publishing](https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/content-publishing/),
-[Page photos](https://developers.facebook.com/docs/graph-api/reference/page/photos/),
-[GitHub schedules](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
+[GitHub schedule syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onschedule)
+allows IANA timezones. Scheduled runs can be delayed and are delivery opportunities,
+not a promise to publish at an exact second.

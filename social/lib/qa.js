@@ -198,7 +198,9 @@ export function schedulerProof(config, history) {
   }
   for (const format of config.approvedFormats) {
     const proof = history.find(i => i.id === config.formatVerifications?.[format]);
-    requireThat(proof?.phase === 'verified' && proof.format === format && proof.publishedReview?.instagram?.passed === true, `No controlled live verification for ${format}`);
+    requireThat(proof?.phase === 'verified' && proof.format === format && proof.instagram?.mediaId, `No controlled live verification for ${format}`);
+    const review = proof.publishedReview?.instagram;
+    requireThat(review?.passed === true && review.reviewer && proof.verification?.instagram?.sha256 && review.assetSha256 === proof.verification.instagram.sha256, `Actual live ${format} asset needs matching visual inspection`);
   }
   return first;
 }

@@ -1,6 +1,6 @@
 {
   "qaVersion": 2,
-  "schedulerEnabled": false,
+  "schedulerEnabled": true,
   "timezone": "Asia/Nicosia",
   "slots": [
     "09:15",
@@ -44,8 +44,15 @@
   "formatVerifications": {
     "feed": "tss-review-01-cyprus-property-seasonality-feed"
   },
-  "controlledPublicationId": "tss-review-05-british-emigration-feed",
+  "controlledPublicationId": null,
   "verifiedLivePublication": "tss-review-01-cyprus-property-seasonality-feed",
   "stateBranch": "tss-social-state",
-  "publisherUrl": "https://thesmarty-solution-agent.vercel.app/api/publish-instagram"
+  "publisherUrl": "https://thesmarty-solution-agent.vercel.app/api/publish-instagram",
+  "automationAuthorization": {
+    "authorizedBy": "Hady",
+    "authorizedAt": "2026-09-16",
+    "reference": "Explicit instruction in TSS Work chat to audit, correct and proceed with Instagram and Facebook automation.",
+    "mode": "activate-after-initial-approvals-and-live-format-verification",
+    "requireInitialTenVerified": true
+  }
 }

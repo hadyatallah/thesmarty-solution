@@ -4,16 +4,23 @@ import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, enforceUserApproval
 import { analyzeVideo, inspectExport, verifyPublishedImage, verifyPublishedVideo } from '../lib/export-qa.js';
 import { Ledger } from '../lib/ledger.js';
 import { enforceEditorialPolicy } from '../lib/editorial.js';
+import { canonicalCaption, enforceResolvedHistory, PublicationRun } from '../lib/publication-run.js';
+import { automationReadiness } from '../lib/automation-readiness.js';
+import { enforcePublisherContract, publisherPolicyDigest } from '../lib/publisher-contract.js';
 
-const [config, approvalPolicy, editorialIntelligence, audienceNeeds, editorialPolicy, proofRegistry] = await Promise.all([
+const [config, approvalPolicy, editorialIntelligence, audienceNeeds, editorialPolicy, proofRegistry, monthlyPlan] = await Promise.all([
   fs.readFile('social/publishing-config.json', 'utf8').then(JSON.parse),
   fs.readFile('social/user-approval-policy.json', 'utf8').then(JSON.parse),
   fs.readFile('social/editorial-intelligence.json', 'utf8').then(JSON.parse),
   fs.readFile('social/audience-needs.json', 'utf8').then(JSON.parse),
   fs.readFile('social/editorial-adoption-policy.json', 'utf8').then(JSON.parse),
-  fs.readFile('social/social-proof-registry.json', 'utf8').then(JSON.parse)
+  fs.readFile('social/social-proof-registry.json', 'utf8').then(JSON.parse),
+  fs.readFile('social/monthly-content-plan.json', 'utf8').then(JSON.parse)
 ]);
-const report = { qaVersion: QA_VERSION, checkedAt: new Date().toISOString(), schedulerEnabled: config.schedulerEnabled, secretReferences: { TSS_PUBLISHER_KEY: Boolean(process.env.TSS_PUBLISHER_KEY), GITHUB_TOKEN: Boolean(process.env.GITHUB_TOKEN) }, qa: [], published: [] };
+const report = { qaVersion: QA_VERSION, checkedAt: new Date().toISOString(), schedulerAuthorized: config.schedulerEnabled === true, schedulerEnabled: false, secretReferences: { TSS_PUBLISHER_KEY: Boolean(process.env.TSS_PUBLISHER_KEY), GITHUB_TOKEN: Boolean(process.env.GITHUB_TOKEN) }, qa: [], published: [] };
+const publicationRun = new PublicationRun(config.maxPostsPerRun);
+const expectedPolicyDigest = publisherPolicyDigest({ approvalPolicy, editorialIntelligence, audienceNeeds, proofRegistry, editorialPolicy });
+let currentHistory;
 await fs.mkdir('social-results', { recursive: true });
 const localDay = date => new Intl.DateTimeFormat('en-CA', { timeZone: config.timezone }).format(date);
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -39,34 +46,38 @@ async function download(url, video = false) {
   requireThat(bytes.length <= (video ? 64 : 16) * 1024 * 1024, 'Media exceeds the inspection download limit');
   return bytes;
 }
-async function verify(item, record, reference, ledger, controlled) {
-  const checks = {};
+async function verify(item, record, reference, ledger) {
+  const checks = record.verification ||= {};
   for (const platform of item.platforms) {
     const result = await call(platform === 'instagram' ? { action: 'verifyInstagram', mediaId: record.instagram.mediaId } : { action: 'verifyFacebook', postId: record.facebook.postId });
     const m = result.media;
-    if (item.format !== 'story') requireThat(normalize(platform === 'instagram' ? m.caption : m.message) === normalize(item.caption), 'Published caption does not match approved caption');
+    if (item.format !== 'story') requireThat(canonicalCaption(platform === 'instagram' ? m.caption : m.message) === canonicalCaption(item.caption), 'Published caption does not match approved caption');
     const url = platform === 'instagram' ? m.media_url : m.attachments?.data?.[0]?.media?.image?.src;
     requireThat(url, 'No actual published image returned');
     const actual = await download(url, item.format === 'reel');
     const file = `social-results/${item.id}-${platform}.${item.format === 'reel' ? 'mp4' : 'png'}`;
     await fs.writeFile(file, actual);
     const validation = item.format === 'reel' ? await verifyPublishedVideo(reference, actual, item) : await verifyPublishedImage(reference, actual, item.asset.width / item.asset.height);
-    checks[platform] = { ...validation, id: String(m.id), sha256: sha256(actual), permalink: platform === 'instagram' ? m.permalink : m.permalink_url, downloadedAsset: file };
-    if (controlled) {
-      const evidencePath = `social/published-assets/${sha256(actual)}.${item.format === 'reel' ? 'mp4' : 'jpg'}`;
-      checks[platform].evidenceCommit = await ledger.writeFile(evidencePath, actual, `Save actual ${platform} controlled-test asset`);
-      checks[platform].evidencePath = evidencePath;
-    }
+    checks[platform] = { ...validation, passed: true, id: String(m.id), sha256: sha256(actual), permalink: platform === 'instagram' ? m.permalink : m.permalink_url, downloadedAsset: file };
+    const evidencePath = `social/published-assets/${sha256(actual)}.${item.format === 'reel' ? 'mp4' : 'jpg'}`;
+    checks[platform].evidenceCommit = await ledger.writeFile(evidencePath, actual, `Save actual ${platform} published asset`);
+    checks[platform].evidencePath = evidencePath;
+    await ledger.save(`Save actual ${platform} asset verification ${item.id}`);
   }
   return checks;
 }
 try {
   let inspection;
   // Read-only wait while the existing Vercel Git deployment catches up with the push.
-  for (let attempt = 0; attempt < 6; attempt++) {
-    try { inspection = await call({ action: 'inspect' }); requireThat(inspection.qaVersion === QA_VERSION, 'Publisher deployment has not reached QA version 2'); break; }
-    catch (error) { if (attempt === 5) throw error; await delay(5000); }
+  for (let attempt = 0; attempt < 13; attempt++) {
+    try {
+      inspection = await call({ action: 'inspect' });
+      requireThat(inspection.qaVersion === QA_VERSION, 'Publisher deployment has not reached the required QA version');
+      enforcePublisherContract(inspection, expectedPolicyDigest);
+      break;
+    } catch (error) { if (attempt === 12) throw error; await delay(5000); }
   }
+  report.publisherContract = { version: inspection.contractVersion, policyDigest: inspection.policyDigest, matched: true };
   report.accounts = { instagram: inspection.instagram, facebook: inspection.facebook, facebookConfigured: inspection.facebookConfigured };
   report.serverEnvironmentReferences = inspection.environmentReferences;
   report.userApprovalPolicy = inspection.userApprovalPolicy;
@@ -76,7 +87,7 @@ try {
   const queue = await Promise.all(queueFiles.map(async f => JSON.parse(await fs.readFile(path.join('content-queue', f), 'utf8'))));
   const seeds = queue.filter(i => i.status === 'published').map(i => ({ id: i.id, date: i.publishedAt, topic: i.topic, topicKey: i.topicKey, headline: i.headline, creativeKey: i.creativeKey, format: i.format, platform: 'instagram', phase: 'legacy_published', instagram: { mediaId: i.mediaId }, legacyImageUrl: i.imageUrl }));
   const ledger = new Ledger(process.env.GITHUB_TOKEN, config.stateBranch, process.env.GITHUB_SHA);
-  const history = await ledger.load(seeds);
+  const history = currentHistory = await ledger.load(seeds);
   await ledger.writeFile('social/recent-instagram.json', JSON.stringify(report.recentInstagram, null, 2) + '\n', 'Save recent Instagram content for editorial duplicate review');
   const recentIds = new Set(history.items.map(i => i.instagram?.mediaId));
   let imported = 0;
@@ -135,13 +146,17 @@ try {
   await ledger.writeFile('social/legacy-publication-checks.json', JSON.stringify(report.legacyPublicationChecks, null, 2) + '\n', 'Record read-only verification of earlier publisher media IDs');
   report.historyCount = history.items.length;
   const now = Date.now(), day = localDay(new Date(now)), month = day.slice(0, 7);
+  report.automation = automationReadiness(config, approvalPolicy, queue, history.items, monthlyPlan, now);
+  report.schedulerEnabled = config.schedulerEnabled === true && report.automation.ready;
+  await ledger.writeFile('social/automation-status.json', JSON.stringify(report.automation, null, 2) + '\n', 'Record automatic publishing readiness');
   const due = queue.filter(i => i.status === 'approved').sort((a, b) => Date.parse(a.publishAt) - Date.parse(b.publishAt));
-  const controlled = config.controlledPublicationId;
-  if (config.schedulerEnabled) {
+  const controlled = process.env.GITHUB_EVENT_NAME === 'schedule' ? null : config.controlledPublicationId;
+  if (report.schedulerEnabled) {
     schedulerProof(config, history.items);
+    enforceResolvedHistory(history.items);
   }
-  let sent = 0;
   for (const item of due) {
+    if (!publicationRun.canAttempt) break;
     const existing = history.items.find(i => i.id === item.id);
     const completingFacebook = facebookCompletionEligible(item, existing, controlled);
     if (existing && !completingFacebook) { report.qa.push({ id: item.id, blocked: 'Already used or reserved. No automatic retry.' }); continue; }
@@ -163,27 +178,26 @@ try {
       if (isControlled && config.verifiedLivePublication) schedulerProof(config, history.items);
       if (completingFacebook) {
         enforceUserApproval(item, approvalPolicy, now);
-        requireThat(sent < config.maxPostsPerRun, 'Daily/run publishing cap reached');
         const record = existing;
         record.qaBoundSha256 = item.review.boundSha256;
-        record.phase = 'publishing_facebook'; await ledger.save(`Checkpoint Facebook completion ${item.id}`);
-        try {
-          const result = await operation('publishFacebook', item);
-          record.facebook = { postId: result.postId, photoId: result.photoId };
-          record.platform = item.platforms.join('+');
-          record.phase = 'published'; await ledger.save(`Save Facebook completion ${item.id}`);
-          record.verification = await verify(item, record, reference, ledger, isControlled);
-          record.phase = 'awaiting_published_visual_review'; await ledger.save(`Save completed platform asset checks ${item.id}`);
-          report.published.push({ id: item.id, verification: record.verification, completedPlatform: 'facebook', requiresFinalPublishedVisualReview: true });
-          sent++;
-        } catch (error) {
-          record.phase = 'needs_review'; record.lastError = error.message;
-          await ledger.save(`Quarantine uncertain Facebook completion ${item.id}`);
-          throw error;
-        }
+        await publicationRun.attempt(record, async () => {
+          try {
+            record.phase = 'publishing_facebook'; await ledger.save(`Checkpoint Facebook completion ${item.id}`);
+            const result = await operation('publishFacebook', item);
+            record.facebook = { postId: result.postId, photoId: result.photoId };
+            record.platform = item.platforms.join('+');
+            record.phase = 'published'; await ledger.save(`Save Facebook completion ${item.id}`);
+            record.verification = await verify(item, record, reference, ledger);
+            record.phase = 'awaiting_published_visual_review'; await ledger.save(`Save completed platform asset checks ${item.id}`);
+          } catch (error) {
+            record.phase = 'needs_review'; record.lastError = error.message;
+            await ledger.save(`Quarantine uncertain Facebook completion ${item.id}`);
+            throw error;
+          }
+        });
         continue;
       }
-      if (!isControlled && !config.schedulerEnabled) continue;
+      if (!isControlled && !report.schedulerEnabled) continue;
       if (Date.parse(item.publishAt) > now) continue;
       enforceUserApproval(item, approvalPolicy, now);
       if (!isControlled) {
@@ -195,51 +209,67 @@ try {
       requireThat(isControlled || thisMonth.length < config.monthlyPlan.calendarMonthCap, 'Monthly content asset cap reached');
       requireThat(isControlled || thisMonth.filter(i => i.format === item.format).length < config.monthlyPlan.formatCaps[item.format], 'Monthly format cap reached');
       requireThat(isControlled || item.facts.classification !== 'promotion' || thisMonth.filter(i => i.classification === 'promotion').length < config.monthlyPlan.promotionCap, 'Monthly direct-promotion cap reached');
-      requireThat((isControlled || today.length < config.maxPostsPerDay) && sent < config.maxPostsPerRun, 'Daily/run publishing cap reached');
+      requireThat(isControlled || today.length < config.maxPostsPerDay, 'Daily publishing cap reached');
       requireThat(isControlled || today.filter(i => i.format === item.format).length < config.maxPerFormatPerDay[item.format], 'Daily format cap reached');
       const editorial = history.items.filter(i => !i.phase.startsWith('legacy') && now - Date.parse(i.date) < 30 * 86400000);
       const promotionShare = (editorial.filter(i => i.classification === 'promotion').length + (item.facts.classification === 'promotion' ? 1 : 0)) / (editorial.length + 1);
       requireThat(item.facts.classification !== 'promotion' || promotionShare <= config.maxDirectPromotionShare, 'Direct promotion would exceed 25% of content');
       const record = { id: item.id, date: new Date().toISOString(), topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, assetSha256: item.asset.sha256, pixelHash: item.asset.pixelHash, visualSignature: item.asset.visualSignature, videoVisual: item.asset.videoVisual, format: item.format, platform: item.platforms.join('+'), classification: item.facts.classification, editorial: item.editorial ? { version: item.editorial.version, audienceNeedIds: item.editorial.audienceNeedIds, pillar: item.editorial.pillar, hookType: item.editorial.hook?.type, objective: item.editorial.objective, ctaId: item.editorial.cta?.id, contentFamilyId: item.editorial.contentFamilyId, editorialType: item.editorial.editorialType, repurposeSourceId: item.editorial.repurpose?.sourceId || null } : null, phase: 'reserved', qaBoundSha256: item.review.boundSha256, instagram: null, facebook: null };
-      history.items.push(record);
-      // Every side effect has a durable checkpoint first. Failed saves stop the call.
-      await ledger.save(`Reserve inspected social creative ${item.id}`);
-      try {
-        if (item.platforms.includes('instagram')) {
-          record.phase = 'preparing_instagram'; await ledger.save(`Checkpoint container creation ${item.id}`);
-          const prepared = await operation('prepare', item);
-          record.instagram = { containerId: prepared.containerId };
-          record.phase = 'prepared'; await ledger.save(`Save Instagram container ${item.id}`);
-          record.phase = 'publishing_instagram'; await ledger.save(`Checkpoint Instagram publication ${item.id}`);
-          const ticket = sign({ id: item.id, assetSha256: item.asset.sha256, containerId: prepared.containerId, format: item.format }, process.env.TSS_PUBLISHER_KEY);
-          const result = await operation('publishInstagram', item, { containerId: prepared.containerId, ticket });
-          record.instagram.mediaId = result.mediaId; record.phase = 'instagram_published'; await ledger.save(`Save Instagram publication ${item.id}`);
+      await publicationRun.attempt(record, async () => {
+        history.items.push(record);
+        // Every side effect has a durable checkpoint first. Failed saves stop the call.
+        await ledger.save(`Reserve inspected social creative ${item.id}`);
+        try {
+          if (item.platforms.includes('instagram')) {
+            record.phase = 'preparing_instagram'; await ledger.save(`Checkpoint container creation ${item.id}`);
+            const prepared = await operation('prepare', item);
+            record.instagram = { containerId: prepared.containerId };
+            record.phase = 'prepared'; await ledger.save(`Save Instagram container ${item.id}`);
+            record.phase = 'publishing_instagram'; await ledger.save(`Checkpoint Instagram publication ${item.id}`);
+            const ticket = sign({ id: item.id, assetSha256: item.asset.sha256, containerId: prepared.containerId, format: item.format }, process.env.TSS_PUBLISHER_KEY);
+            const result = await operation('publishInstagram', item, { containerId: prepared.containerId, ticket });
+            record.instagram.mediaId = result.mediaId; record.phase = 'instagram_published'; await ledger.save(`Save Instagram publication ${item.id}`);
+          }
+          if (item.platforms.includes('facebook')) {
+            record.phase = 'publishing_facebook'; await ledger.save(`Checkpoint Facebook publication ${item.id}`);
+            const result = await operation('publishFacebook', item);
+            record.facebook = { postId: result.postId, photoId: result.photoId }; record.phase = 'published'; await ledger.save(`Save Facebook publication ${item.id}`);
+          }
+          record.verification = await verify(item, record, reference, ledger);
+          const needsVisualReview = isControlled || approvalPolicy.firstPostIds.includes(item.id);
+          record.phase = needsVisualReview ? 'awaiting_published_visual_review' : 'automatically_verified';
+          record.verificationMethod = 'published-asset-comparison';
+          await ledger.save(`Save actual published asset checks ${item.id}`);
+        } catch (error) {
+          record.phase = 'needs_review'; record.lastError = error.message;
+          await ledger.save(`Quarantine uncertain publication ${item.id}`);
+          throw error;
         }
-        if (item.platforms.includes('facebook')) {
-          record.phase = 'publishing_facebook'; await ledger.save(`Checkpoint Facebook publication ${item.id}`);
-          const result = await operation('publishFacebook', item);
-          record.facebook = { postId: result.postId, photoId: result.photoId }; record.phase = 'published'; await ledger.save(`Save Facebook publication ${item.id}`);
-        }
-        record.verification = await verify(item, record, reference, ledger, isControlled);
-        record.phase = 'awaiting_published_visual_review'; await ledger.save(`Save actual published asset checks ${item.id}`);
-        report.published.push({ id: item.id, verification: record.verification, requiresFinalPublishedVisualReview: true });
-        sent++;
-      } catch (error) {
-        record.phase = 'needs_review'; record.lastError = error.message;
-        await ledger.save(`Quarantine uncertain publication ${item.id}`);
-        throw error;
-      }
+      });
     } catch (error) {
       report.qa.push({ id: item.id, passed: false, blocked: error.message });
       report.blocked = true;
     }
-    if (sent >= config.maxPostsPerRun) break;
+  }
+  if (publicationRun.attempts.length) {
+    report.automation = automationReadiness(config, approvalPolicy, queue, history.items, monthlyPlan);
+    report.schedulerEnabled = config.schedulerEnabled === true && report.automation.ready;
+    await ledger.writeFile('social/automation-status.json', JSON.stringify(report.automation, null, 2) + '\n', 'Refresh automatic publishing readiness after publication attempt');
   }
 } catch (error) {
   report.blocked = true; report.error = error.message; report.meta = error.safeMeta || null;
+  report.schedulerEnabled = false;
+  if (report.automation) {
+    report.automation.publishingEnabled = false;
+    report.automation.mode = 'blocked';
+    report.automation.runtimeError = error.message;
+  }
 } finally {
+  if (currentHistory) await fs.writeFile('social-results/history.json', JSON.stringify(currentHistory, null, 2) + '\n');
+  report.publicationAttempts = publicationRun.attempts;
+  report.published = publicationRun.published;
   await fs.writeFile('social-results/report.json', JSON.stringify(report, null, 2) + '\n');
-  const summary = [`TSS social QA v${QA_VERSION}`, `Scheduler enabled: ${report.schedulerEnabled}`, `Facebook configured: ${report.accounts?.facebookConfigured ?? 'not checked'}`, `Published: ${report.published.length}`, ...report.qa.map(q => `${q.id}: ${q.passed ? 'QA passed' : q.blocked}`), ...(report.error ? [report.error] : [])].join('\n');
+  const summary = [`TSS social QA v${QA_VERSION}`, `Scheduler authorized: ${report.schedulerAuthorized}`, `Publishing enabled after readiness checks: ${report.schedulerEnabled}`, ...(report.automation?.blockers || []), `Facebook configured: ${report.accounts?.facebookConfigured ?? 'not checked'}`, `Publishing attempts: ${report.publicationAttempts.length}`, `Posts confirmed on at least one platform: ${report.published.length}`, ...report.publicationAttempts.map(attempt => `${attempt.id}: Instagram=${attempt.instagramMediaId || 'not confirmed'}, Facebook=${attempt.facebookPostId || 'not confirmed'}, phase=${attempt.phase}${attempt.needsReview ? '; needs review, do not retry' : ''}`), ...report.qa.map(q => `${q.id}: ${q.passed ? 'QA passed' : q.blocked}`), ...(report.error ? [report.error] : [])].join('\n');
   console.log(summary);
   if (report.serverEnvironmentReferences) console.log('Server variable references (presence only): ' + JSON.stringify(report.serverEnvironmentReferences));
   if (report.userApprovalPolicy) console.log('User approval policy: ' + JSON.stringify(report.userApprovalPolicy));

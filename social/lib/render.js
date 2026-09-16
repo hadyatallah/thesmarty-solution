@@ -29,6 +29,7 @@ async function wrap(text, size, bold, width, maxLines) {
   return lines;
 }
 export async function renderCreative(input) {
+  requireThat(input.compositionReady !== false, 'Draft needs its dedicated composition before export');
   if (input.designVersion === 2 && input.visualStyle === 'reference-checklist-editorial') return renderReferenceChecklistEditorial(input);
   if (input.designVersion === 2 && input.visualStyle === 'reference-data-editorial') return renderReferenceDataEditorial(input);
   if (input.designVersion === 2 && input.visualStyle === 'reference-integrated-editorial') return renderReferenceIntegratedEditorial(input);
@@ -453,7 +454,6 @@ async function renderLandmarkCreative(input) {
   await block('Connect · Develop · Invest', 1008 - tagline.info.width, top + 144, 18, 25, 1, C.slate, false, 280);
   const t = input.text || {};
   await block(t.category, 72, top + 18, 20, 27, 1, C.slate, true, 560);
-  box(72, top + 61, 534, 2, C.navy);
   let y = top + 178;
   y = await block(t.headline, 72, y, 62, 74, 3) + 22;
   if (t.highlight) y = await block(t.highlight, 72, y, 68, 80, 2, C.teal) + 20;
@@ -467,8 +467,10 @@ async function renderLandmarkCreative(input) {
   requireThat(photoSha256 === p.sha256, 'Approved photograph changed');
   const oriented = sharp(photo, { failOn: 'warning' }).rotate(), stats = await oriented.stats();
   requireThat(stats.entropy > 1 && stats.channels.some(c => c.stdev > 12), 'Blank or failed photograph');
-  const projected = await oriented.resize(936, photoHeight, { fit: 'cover', position: p.cropPosition || 'centre' }).png().toBuffer();
-  layers.push({ input: projected, left: 72, top: photoTop });
+  const projected = await oriented.resize(width, photoHeight, { fit: 'cover', position: p.cropPosition || 'centre' }).png().toBuffer();
+  layers.push({ input: projected, left: 0, top: photoTop });
+  const fadeHeight = 160, bottomFadeHeight = 80;
+  layers.push({ input: Buffer.from(`<svg width="${width}" height="${photoHeight}" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="photo-in" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${colors.cream}" stop-opacity="1"/><stop offset="0.35" stop-color="${colors.cream}" stop-opacity="0.86"/><stop offset="1" stop-color="${colors.cream}" stop-opacity="0"/></linearGradient><linearGradient id="photo-out" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${colors.cream}" stop-opacity="0"/><stop offset="1" stop-color="${colors.cream}" stop-opacity="1"/></linearGradient></defs><rect width="${width}" height="${fadeHeight}" fill="url(#photo-in)"/><rect y="${photoHeight - bottomFadeHeight}" width="${width}" height="${bottomFadeHeight}" fill="url(#photo-out)"/></svg>`), left: 0, top: photoTop });
   await block(t.location, 72, photoTop + photoHeight + 18, 20, 27, 1, C.slate, true);
   await block(t.source, 72, photoTop + photoHeight + 57, 18, 25, 2, C.slate, false);
   await block('THESMARTYSOLUTION.COM', 72, bottom - 28, 20, 28, 1, C.navy, true);
@@ -479,5 +481,5 @@ async function renderLandmarkCreative(input) {
   }
   for (const r of regions) requireThat(!(r.x < logoRegion.x + logoRegion.width && r.x + r.width > logoRegion.x && r.y < logoRegion.y + logoRegion.height && r.y + r.height > logoRegion.y), 'Text overlaps the TSS logo');
   const buffer = await sharp({ create: { width, height, channels: 3, background: colors.cream } }).composite(layers).png().toBuffer();
-  return { buffer, layout: { designVersion: 2, format: input.format, width, height, textRegions: regions, logoSha256: LOGO_SHA, logoRegion, photoSha256, palette: colors, photoRegion: { x: 72, y: photoTop, width: 936, height: photoHeight }, safeArea: { left: 72, right: 1008, top, bottom } } };
+  return { buffer, layout: { designVersion: 2, format: input.format, width, height, textRegions: regions, logoSha256: LOGO_SHA, logoRegion, photoSha256, palette: colors, categoryRule: false, photoTransition: { y: photoTop, height: fadeHeight, mode: 'cream-to-photo-fade' }, photoRegion: { x: 0, y: photoTop + fadeHeight, width, height: photoHeight - fadeHeight - bottomFadeHeight }, safeArea: { left: 72, right: 1008, top, bottom } } };
 }

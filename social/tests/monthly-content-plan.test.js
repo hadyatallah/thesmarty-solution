@@ -57,7 +57,9 @@ test('strategy cannot approve or activate publishing', () => {
 });
 
 test('publishing caps match the approved monthly plan', () => {
-  assert.equal(config.schedulerEnabled, false);
+  assert.equal(config.schedulerEnabled, true);
+  assert.equal(config.automationAuthorization.requireInitialTenVerified, true);
+  assert.equal(config.controlledPublicationId, null);
   assert.equal(config.monthlyPlan.path, 'social/monthly-content-plan.json');
   assert.equal(config.monthlyPlan.calendarMonthCap, plan.targets.contentAssets);
   assert.equal(config.monthlyPlan.promotionCap, plan.targets.tssPromotionalAssets);

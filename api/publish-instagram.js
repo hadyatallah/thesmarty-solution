@@ -5,8 +5,10 @@ import editorialIntelligence from '../social/editorial-intelligence.json' with {
 import audienceNeeds from '../social/audience-needs.json' with { type: 'json' };
 import proofRegistry from '../social/social-proof-registry.json' with { type: 'json' };
 import editorialPolicy from '../social/editorial-adoption-policy.json' with { type: 'json' };
+import { PUBLISHER_CONTRACT_VERSION, publisherPolicyDigest } from '../social/lib/publisher-contract.js';
 
 const VERSION = process.env.META_GRAPH_VERSION || 'v25.0';
+const POLICY_DIGEST = publisherPolicyDigest({ approvalPolicy, editorialIntelligence, audienceNeeds, proofRegistry, editorialPolicy });
 const credentials = () => ({
   ig: process.env.INSTAGRAM_ACCESS_TOKEN,
   igId: process.env.INSTAGRAM_USER_ID,
@@ -56,7 +58,7 @@ async function inspect(c) {
   }
   const keys = ['TSS_PUBLISHER_KEY', 'INSTAGRAM_ACCESS_TOKEN', 'INSTAGRAM_USER_ID', 'FACEBOOK_PAGE_ACCESS_TOKEN', 'FACEBOOK_PAGE_TOKEN', 'META_PAGE_ACCESS_TOKEN', 'FB_PAGE_ACCESS_TOKEN', 'FACEBOOK_PAGE_ID', 'META_PAGE_ID', 'FB_PAGE_ID', 'FACEBOOK_USER_ACCESS_TOKEN', 'FACEBOOK_ACCESS_TOKEN', 'META_USER_ACCESS_TOKEN'];
   const environmentReferences = Object.fromEntries(keys.map(name => [name, Boolean(process.env[name])]));
-  return { ...accounts, recent, qaVersion: QA_VERSION, environmentReferences, userApprovalPolicy: { requiredCount: approvalPolicy.requiredCount, recordedCount: approvalPolicy.firstPostIds.filter(id => approvalPolicy.approvals[id]).length } };
+  return { ...accounts, recent, qaVersion: QA_VERSION, contractVersion: PUBLISHER_CONTRACT_VERSION, policyDigest: POLICY_DIGEST, environmentReferences, userApprovalPolicy: { requiredCount: approvalPolicy.requiredCount, recordedCount: approvalPolicy.firstPostIds.filter(id => approvalPolicy.approvals[id]).length } };
 }
 async function validate(item, c) {
   enforceEditorialPolicy(item, editorialIntelligence, audienceNeeds, editorialPolicy, proofRegistry);

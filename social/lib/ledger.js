@@ -27,7 +27,12 @@ export class Ledger {
     requireThat(/^social\/[a-zA-Z0-9._/-]+$/.test(filePath) && !filePath.includes('..'), 'Invalid evidence path');
     const existing = await this.api(`/contents/${filePath}?ref=${this.branch}`, 'GET', null, true);
     const content = Buffer.from(bytes).toString('base64');
-    if (existing && existing.content.replace(/\s/g, '') === content) return null;
+    if (existing && existing.content.replace(/\s/g, '') === content) {
+      // Reused archive bytes still need a concrete immutable evidence commit.
+      const ref = await this.api(`/git/ref/heads/${this.branch}`);
+      requireThat(/^[a-f0-9]{40}$/.test(ref.object?.sha || ''), 'Invalid existing evidence commit');
+      return ref.object.sha;
+    }
     const result = await this.api(`/contents/${filePath}`, 'PUT', { branch: this.branch, message, content, ...(existing ? { sha: existing.sha } : {}) });
     return result.commit.sha;
   }

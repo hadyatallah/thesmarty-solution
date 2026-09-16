@@ -64,7 +64,7 @@ Use for Larnaca, Limassol, Paphos, Kiti and other locations/opportunities.
 - Photograph must sit inside a repeatable editorial composition, not be uploaded as an unbranded full-frame photo
 - Cream editorial header or lower information panel
 - Location name / question in navy
-- Same category label, rule, logo and footer as all other templates
+- Same category label, logo and footer as all other templates; no category rule
 
 ## Photography rules
 - Republic of Cyprus controlled areas only
@@ -198,6 +198,31 @@ approval; scheduling-only changes preserve content approval but require a fresh
 technical QA seal.
 
 Full automatic publishing follows the ten approvals and inspected live rollout
-tests. Each enabled format needs its own actual live proof. Target three
-quality-controlled items per day across feed, Story and Reel; publish fewer
-when a slot cannot pass quality, fresh-evidence or duplicate gates.
+tests. Each enabled format needs its own actual live proof. The agreed calendar
+month plan is 44 assets: 16 Feed, 20 Stories and 8 Reels, with at most 8 direct
+TSS promotions. Three daily slots are the maximum available capacity, not a
+requirement to create or publish three items every day. Skip any slot that cannot
+pass quality, fresh-evidence or duplicate gates; do not backfill missed slots.
+
+## Draft planning and remaining editorial work
+
+`node social/scripts/generate-drafts.js YYYY-MM-DD --history /path/to/current/state-branch/social/history.json --dry-run`
+reports the remaining format and topic-pillar allocations using the current queue
+and a freshly retrieved state-branch history snapshot. Remove `--dry-run` to
+write new unapproved drafts. This does not create publishing times or activate
+the scheduler. Previously imported legacy publications protect against recent
+duplicates but do not consume the new system's monthly allocations.
+
+The planner uses the reviewed editorial bank and valid source-reviewed trend
+candidates. It reports exhausted subjects and remaining allocations rather than
+filling them with invented market facts or repeating recent topics. A skipped
+unreviewed or expired trend is reported without blocking safe evergreen drafts.
+Feed and Reel briefs still need a dedicated composition before export; a generic
+brief cannot silently enter the old card renderer. Story drafts use dedicated
+vertical layouts and currently choose only verified CC0/public-domain imagery
+because Instagram does not display Story caption metadata for photo attribution.
+
+The bank currently contains six evergreen briefs. No unattended research,
+source-meaning review, final-image review or performance-import service exists.
+Those steps must be completed before a draft can become a final approved item.
+An editorial metadata field or a passing OCR result cannot replace that work.
