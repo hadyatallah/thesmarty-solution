@@ -128,6 +128,8 @@
     },
     {
       "number": 5,
+      "revision": 2,
+      "revisionReason": "Redesigned in the approved TSS data-editorial system with a soft cream-to-photograph transition. The misleading tax-exodus framing was removed to match the ONS finding that recent British emigration was broadly stable.",
       "id": "tss-review-05-british-emigration-feed",
       "status": "awaiting_user_approval",
       "manifestPath": "content-queue/tss-review-05-british-emigration-feed.json",
@@ -136,21 +138,28 @@
         "instagram",
         "facebook"
       ],
-      "headline": "A UK TAX EXODUS? WHAT THE DATA SAY.",
-      "caption": "ONS estimates 246,000 British nationals left the UK long-term in 2025, versus 257,000 in 2024. The 2025 figure is provisional.\n\nThese counts do not establish that tax caused the departures. Motives need separate evidence.\n\nWhich relocation question would you want properly researched?\n\nSource: ONS: UK emigration explained, 21 May 2026.\nhttps://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/ukemigrationexplainedwhatweknowaboutbritsmovingabroad/2026-05-21\n\nPhoto: Finikoudes, Larnaca, Cyprus, Georgy Papantoniou, CC BY 3.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Finikoudes_by_Georgy_-_panoramio.jpg\nhttps://creativecommons.org/licenses/by/3.0\n\n#Cyprus #Relocation #UnitedKingdom #Migration #TheSmartySolution",
-      "contentSha256": "25c52a333c6149bfcb6bde79eefb90aa05be3542bee1bcdeadfd776a178da6ae",
-      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/77d7375d3cdcef299b760918ff146b3a073ccfcb/social/assets/5a738140a3391931dd6c1a12325592cbb4a826f181894cb403bafb54f7782e05.png",
+      "headline": "BRITISH EMIGRATION. THE DATA.",
+      "caption": "ONS estimates 246,000 British nationals left the UK long-term in the year ending December 2025, slightly fewer than the 257,000 estimated for the previous year. ONS says British emigration has been broadly stable in recent years, and the 2025 estimate is provisional.\n\nThese figures count long-term moves. They do not identify individual motives or prove that tax caused the departures.\n\nWhat evidence would you verify before making a relocation decision?\n\nSource: ONS: UK emigration explained, 21 May 2026.\nhttps://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/ukemigrationexplainedwhatweknowaboutbritsmovingabroad/2026-05-21\n\nPhoto: Finikoudes, Larnaca, Cyprus, Georgy Papantoniou, CC BY 3.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Finikoudes_by_Georgy_-_panoramio.jpg\nhttps://creativecommons.org/licenses/by/3.0\n\n#Cyprus #Relocation #UnitedKingdom #Migration #TheSmartySolution",
+      "contentSha256": "cda7e8eea41c00f3bfbaddceadfd988565c2f07a3d50c72fea1676b3b827ae0e",
+      "previewUrl": "https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/e5a8cc7bd1e9dafd53b4e0e477a9f47b2119a6b5/social/assets/59a53c5892cffd828e04bcbc36aab46d0abc2dbb7f2c1f4808c73fe64d836379.jpg",
       "videoUrl": null,
       "sources": [
         {
           "title": "ONS: UK emigration explained, 21 May 2026",
           "url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/ukemigrationexplainedwhatweknowaboutbritsmovingabroad/2026-05-21",
-          "reviewNote": "Provisional 2025 long-term emigration; no proof of tax motives.",
-          "checkedAt": "2026-09-14T12:20:37.319301Z",
-          "validUntil": "2026-09-21T12:20:37.319301Z"
+          "reviewNote": "Provisional year-ending December 2025 long-term emigration. ONS describes the recent level as broadly stable. The statistics do not identify individual motives or prove tax causation.",
+          "checkedAt": "2026-09-16T07:05:00.000Z",
+          "validUntil": "2026-09-23T07:05:00.000Z"
+        },
+        {
+          "title": "Finikoudes photograph and CC BY 3.0 licence",
+          "url": "https://commons.wikimedia.org/wiki/File:Finikoudes_by_Georgy_-_panoramio.jpg",
+          "reviewNote": "Verified photograph of Finikoudes in Larnaca, Republic of Cyprus. Georgy Papantoniou, CC BY 3.0; cropped for the 4:5 composition.",
+          "checkedAt": "2026-09-16T07:05:00.000Z",
+          "validUntil": "2026-09-23T07:05:00.000Z"
         }
       ],
-      "reviewedAt": "2026-09-14T12:40:04.763Z"
+      "reviewedAt": "2026-09-16T10:58:28.108Z"
     },
     {
       "number": 6,
