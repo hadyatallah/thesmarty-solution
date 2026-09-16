@@ -243,9 +243,11 @@ async function renderReferenceDataEditorial(input) {
   requireThat(photoSha256 === p.sha256, 'Approved photograph changed');
   const oriented = sharp(photo, { failOn: 'warning' }).rotate(), stats = await oriented.stats();
   requireThat(stats.entropy > 1 && stats.channels.some(c => c.stdev > 12), 'Blank or failed photograph');
-  const photoTop = 820;
+  const photoTop = 760;
+  const photoTransition = { y: photoTop, height: 220, mode: 'cream-to-photo-fade' };
   const background = await oriented.resize(width, height - photoTop, { fit: 'cover', position: p.cropPosition || 'centre' }).modulate({ brightness: 0.94, saturation: 0.92 }).jpeg({ quality: 90 }).toBuffer();
   layers.push({ input: background, left: 0, top: photoTop });
+  svgLayer(`<svg width="1080" height="220" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="merge" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${colors.cream}" stop-opacity="1"/><stop offset="0.2" stop-color="${colors.cream}" stop-opacity="0.97"/><stop offset="0.55" stop-color="${colors.cream}" stop-opacity="0.7"/><stop offset="0.82" stop-color="${colors.cream}" stop-opacity="0.2"/><stop offset="1" stop-color="${colors.cream}" stop-opacity="0"/></linearGradient></defs><rect width="1080" height="220" fill="url(#merge)"/></svg>`, 0, photoTop);
   svgLayer(`<svg width="1080" height="310" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="shade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#082746" stop-opacity="0.08"/><stop offset="0.38" stop-color="#082746" stop-opacity="0.48"/><stop offset="1" stop-color="#04182b" stop-opacity="0.96"/></linearGradient></defs><rect width="1080" height="310" fill="url(#shade)"/><rect y="110" width="1080" height="200" fill="#04182b" fill-opacity="0.9"/></svg>`, 0, 1040);
 
   const logo = await fs.readFile(path.join(ROOT, '..', 'logo-mark.png'));
@@ -272,15 +274,20 @@ async function renderReferenceDataEditorial(input) {
   await block(t.body, 60, y, 23, 32, 3, C.navy, false, 500);
 
   async function fact(icon, label, body, y0) {
-    const symbol = icon === 'receipt'
-      ? '<path d="M24 16h26v40l-5-4-4 4-4-4-4 4-4-4-5 4z" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><path d="M30 27h14M30 36h14" stroke="#fff" stroke-width="4" stroke-linecap="round"/>'
-      : '<circle cx="27" cy="27" r="6" fill="#fff"/><circle cx="45" cy="45" r="6" fill="#fff"/><path d="M25 49L47 23" stroke="#fff" stroke-width="5" stroke-linecap="round"/>';
+    const symbols = {
+      receipt: '<path d="M24 16h26v40l-5-4-4 4-4-4-4 4-4-4-5 4z" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><path d="M30 27h14M30 36h14" stroke="#fff" stroke-width="4" stroke-linecap="round"/>',
+      percent: '<circle cx="27" cy="27" r="6" fill="#fff"/><circle cx="45" cy="45" r="6" fill="#fff"/><path d="M25 49L47 23" stroke="#fff" stroke-width="5" stroke-linecap="round"/>',
+      people: '<circle cx="29" cy="27" r="8" fill="none" stroke="#fff" stroke-width="4"/><circle cx="47" cy="30" r="6" fill="none" stroke="#fff" stroke-width="4"/><path d="M15 53c2-10 8-15 15-15s13 5 15 15M41 42c8 0 13 4 15 12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>',
+      evidence: '<path d="M18 18h36v38H18z" fill="none" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><path d="M26 29h20M26 38h20M26 47h12" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="51" cy="50" r="8" fill="#082746" stroke="#fff" stroke-width="4"/><path d="M57 56l6 6" stroke="#fff" stroke-width="4" stroke-linecap="round"/>'
+    };
+    const symbol = symbols[icon];
+    requireThat(symbol, 'Unknown reference-data fact icon');
     svgLayer(`<svg width="72" height="72" xmlns="http://www.w3.org/2000/svg"><circle cx="36" cy="36" r="35" fill="${C.navy}"/>${symbol}</svg>`, 614, y0);
     await block(label, 714, y0 + 3, 21, 28, 1, C.navy, true, 300);
     await block(body, 714, y0 + 34, 18, 25, 4, C.navy, false, 300);
   }
-  await fact('receipt', t.fact1Label, t.fact1Body, 272);
-  await fact('percent', t.fact2Label, t.fact2Body, 474);
+  await fact(t.fact1Icon || 'receipt', t.fact1Label, t.fact1Body, 272);
+  await fact(t.fact2Icon || 'percent', t.fact2Label, t.fact2Body, 474);
 
   svgLayer(`<svg width="7" height="38" xmlns="http://www.w3.org/2000/svg"><rect width="7" height="38" rx="3.5" fill="${C.teal}"/></svg>`, 60, 733);
   await block(t.question, 84, 736, 20, 27, 1, C.navy, true, 920);
@@ -318,7 +325,8 @@ async function renderReferenceDataEditorial(input) {
       photoSha256,
       palette: colors,
       categoryRule: false,
-      photoRegion: { x: 0, y: photoTop, width, height: 330 },
+      photoRegion: { x: 0, y: 820, width, height: 330 },
+      photoTransition,
       safeArea: { left: 48, right: 1032, top, bottom }
     }
   };

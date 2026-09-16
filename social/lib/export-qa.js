@@ -42,7 +42,11 @@ export async function inspectRenderedImage(item, buffer) {
   requireThat(sha256(layoutBytes) === item.asset.layoutSha256, 'Layout evidence changed');
   const layout = JSON.parse(layoutBytes);
   requireThat(layout.format === item.format && layout.width === item.asset.width && layout.height === item.asset.height && layout.logoSha256 === item.creative.logoSha256, 'Incorrect layout evidence');
-  const creativeText = Object.values(item.creative.text);
+  // Icon identifiers control the renderer but are not visible copy and should
+  // not be treated as OCR text.
+  const creativeText = Object.entries(item.creative.text)
+    .filter(([key]) => !key.endsWith('Icon'))
+    .map(([, value]) => value);
   const expectedText = item.creative.designVersion === 2
     ? ['reference-data-editorial', 'reference-checklist-editorial'].includes(item.creative.visualStyle)
       ? [

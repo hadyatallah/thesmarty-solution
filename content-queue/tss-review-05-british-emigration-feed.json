@@ -1,33 +1,44 @@
 {
   "qaVersion": 2,
   "id": "tss-review-05-british-emigration-feed",
-  "status": "awaiting_user_approval",
+  "status": "draft",
   "reviewBatch": "2026-09-initial",
   "reviewNumber": 5,
-  "topic": "British emigration: measured outflow versus unproven tax motives",
+  "revision": 2,
+  "revisionReason": "Redesigned in the approved TSS data-editorial system and reframed to match the ONS finding that British emigration was broadly stable, without implying an unproven tax motive.",
+  "topic": "British emigration: measured long-term outflow without invented motives",
   "topicKey": "british-emigration-2025-evidence-not-tax-causation",
-  "headline": "A UK TAX EXODUS? WHAT THE DATA SAY.",
-  "creativeKey": "british-emigration-2025-evidence-not-tax-causation-landmark-v2-feed",
+  "headline": "BRITISH EMIGRATION. THE DATA.",
+  "creativeKey": "british-emigration-2025-ons-data-editorial-r2-feed",
   "format": "feed",
   "platforms": [
     "instagram",
     "facebook"
   ],
   "publishAt": "2026-09-15T09:15:00+03:00",
-  "caption": "ONS estimates 246,000 British nationals left the UK long-term in 2025, versus 257,000 in 2024. The 2025 figure is provisional.\n\nThese counts do not establish that tax caused the departures. Motives need separate evidence.\n\nWhich relocation question would you want properly researched?\n\nSource: ONS: UK emigration explained, 21 May 2026.\nhttps://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/ukemigrationexplainedwhatweknowaboutbritsmovingabroad/2026-05-21\n\nPhoto: Finikoudes, Larnaca, Cyprus, Georgy Papantoniou, CC BY 3.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Finikoudes_by_Georgy_-_panoramio.jpg\nhttps://creativecommons.org/licenses/by/3.0\n\n#Cyprus #Relocation #UnitedKingdom #Migration #TheSmartySolution",
+  "caption": "ONS estimates 246,000 British nationals left the UK long-term in the year ending December 2025, slightly fewer than the 257,000 estimated for the previous year. ONS says British emigration has been broadly stable in recent years, and the 2025 estimate is provisional.\n\nThese figures count long-term moves. They do not identify individual motives or prove that tax caused the departures.\n\nWhat evidence would you verify before making a relocation decision?\n\nSource: ONS: UK emigration explained, 21 May 2026.\nhttps://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/ukemigrationexplainedwhatweknowaboutbritsmovingabroad/2026-05-21\n\nPhoto: Finikoudes, Larnaca, Cyprus, Georgy Papantoniou, CC BY 3.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Finikoudes_by_Georgy_-_panoramio.jpg\nhttps://creativecommons.org/licenses/by/3.0\n\n#Cyprus #Relocation #UnitedKingdom #Migration #TheSmartySolution",
   "creative": {
     "designVersion": 2,
+    "visualStyle": "reference-data-editorial",
+    "assetFormat": "jpg",
     "format": "feed",
     "template": "insight-data",
     "photoKey": "finikoudes",
     "text": {
-      "category": "RELOCATION / EVIDENCE",
-      "headline": "A UK TAX EXODUS? WHAT THE DATA SAY.",
-      "highlight": "246,000",
-      "body": "British nationals leaving the UK, 2025. Provisional ONS estimate; not proof of motive.",
-      "question": "What evidence would establish why they moved?",
+      "category": "RELOCATION / UK DATA",
+      "headline": "BRITISH EMIGRATION. THE DATA.",
+      "metric": "246,000",
+      "metricLabel": "BRITISH NATIONALS LEFT LONG-TERM",
+      "body": "Year ending December 2025. Provisional ONS estimate.",
+      "fact1Icon": "people",
+      "fact1Label": "RECENT TREND",
+      "fact1Body": "Broadly stable in recent years, not a new surge.",
+      "fact2Icon": "evidence",
+      "fact2Label": "MOTIVE",
+      "fact2Body": "Migration counts do not show why each person moved.",
+      "question": "MEASURE THE MOVE. DON'T INVENT THE REASON.",
       "location": "FINIKOUDES / LARNACA, CYPRUS",
-      "source": "ONS | year ending Dec 2025 | provisional"
+      "source": "ONS | 21 May 2026 | provisional 2025 data"
     },
     "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
   },
@@ -35,7 +46,7 @@
     "classification": "factual",
     "claims": [
       {
-        "text": "ONS estimates 246,000 long-term British emigrants in 2025 versus 257,000 in 2024; 2025 is provisional.",
+        "text": "ONS estimates 246,000 British nationals left the UK long-term in the year ending December 2025, slightly fewer than 257,000 in the previous year; ONS describes recent emigration as broadly stable and the 2025 estimate as provisional.",
         "sourceIds": [
           "ons-emigration"
         ]
@@ -47,12 +58,13 @@
         "title": "ONS: UK emigration explained, 21 May 2026",
         "url": "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/internationalmigration/articles/ukemigrationexplainedwhatweknowaboutbritsmovingabroad/2026-05-21",
         "expectedText": "An estimated 246,000 left the UK",
-        "reviewNote": "Provisional 2025 long-term emigration; no proof of tax motives.",
+        "reviewNote": "Provisional year-ending December 2025 long-term emigration. ONS describes the recent level as broadly stable. The statistics do not identify individual motives or prove tax causation.",
         "sourceType": "official-statistics",
-        "checkedAt": "2026-09-14T12:20:37.319301Z",
-        "validUntil": "2026-09-21T12:20:37.319301Z",
+        "checkedAt": "2026-09-16T07:05:00.000Z",
+        "validUntil": "2026-09-23T07:05:00.000Z",
         "additionalEvidence": [
-          "257,000 who are estimated to have left the previous year"
+          "257,000 who are estimated to have left the previous year",
+          "The number of British nationals emigrating (leaving to live abroad for at least a year) has been broadly stable in recent years"
         ]
       }
     ]
@@ -66,41 +78,14 @@
     "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
   },
   "asset": {
-    "path": "social/assets/5a738140a3391931dd6c1a12325592cbb4a826f181894cb403bafb54f7782e05.png",
-    "sha256": "5a738140a3391931dd6c1a12325592cbb4a826f181894cb403bafb54f7782e05",
-    "pixelHash": "276dbc2e0464edcf1f74dc0e2303ff337862013217f2152ef7581e95c4bc76b8",
-    "visualSignature": "rgb32:+vjz+vjz/Pn0/Pn0/Pn0/Pr0+/n0/Pn0/Pr0/Pn1+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz//78///////7///9///+///9/fv2+vfz+vjz+vjz+ffy8PDt8fHu8PDt7/Dt9PTw8fHt7u/s7/Dt9/by/Pr0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz+vjz+/jz+Pbypa20ipWgmbK5pqmynqKslqGq19nZ/vv2+ffy+vjz+Pfy3uLi3ODh3eHh2t/g4+bk3+Li2d7f2+Dg7Ozq9PPv8/Lu8/Lu8/Lu8/Lu8/Lu9PPv+vjz+vjz+vjz+ffy///5wMLGXlpugtHVVsPJbIeWTl1yp6+2///6+Pbx+vjz+vjz9/Xw9vTw9fTv9fTw9PPv9fTw9fPv9vTw8/Lu8vHu8vHt8fHt8vHu8vHt8fHt8vLt+Pfy+ffy+Pbx+ffy+/nz4uPioqqyubm/fKiynrrAg4yZrLS7///5+Pby+vjz+ffy/Pz3/Pr1+/r1/fz4/v34/Pr1//75/fz3/fz3/fz3/fz3/v34//74//34/v35/v75+/r2/fz4/v33//748fDt5efl7O3r4uXj7eno6Obl5ujn6uzq+vjz+vjz+ffy/vz23N7d6Onm5OXk0dXV19ra5+fmwsjL19na2dzc5OXj297dztLT19ra0dXW0NPVz9PU3+Hg1NfY0tbW2tzc6ernx87RyM7Q1NjZzdTWw8nNz9TV8fLu+vjz+vjz+ffy//33m6WuxMrPw8nMjZqml6Ot8fLvsbm+m6avmKSuy9DSt77Do661nKexqLG4kp+pkJyomKOtlKCqoqy0yc3Q1djZfoyakZ2nmKSti5ijlqGr0dXW//74+Pby+vjz+vjz+vjztr7Csrq/srq/tLzB4uTirra9usLGqbO5q7S7tr3D5ebkvMPHusHGq7O7ys7R/Pr19fTw+Pfy9/Xx+/n1+fjz9fXy+fjz+/n09PPv+Pbx+/n0+ffz+vjz+vjz+ffy/fv1z9HTt73Cpa21qbC43d/eqbC4qrC4rLK5ub7Do6214eLhpa62o6y0p7C3yc7Q+vjz+/n0+vjz+/nz+vjz+vjz+vjz+vjz+vjz/Pn0+/nz+vjz+vjz+vjz+vjz+vjz+vjz5O7q6/Pv5/Hu3+zo+Pjz4u7q5vLt5vHt4Ozp+/v5+vjz/fv2/fz6/v34+/r1+ffy+ffy+ffy+ffz+vjz+vjz+ffy+ffy+ffy+ffy+ffy+vjz+vjz+vjz+vjz+vjz+vjzoMvLmMbHgru8ib6/x9/ciL6/gru8hLy9gLu87PDs/vr1+vjz+ffy+ffy+vjz+/nz+/n0+/n0+/jz+/n0+/nz+/n0+/n0+/n0+/n0+/jz+/n0+vjz+vjz+vjz+vjz+Pfy6+/r8vLu8/Pv8PLu4+vn8/Tv8/Tw8/Pv8PLu9vXx9vXw9vTw9vXw+Pbx9fTv9vTw9fPv9PTv9/bx9vXw9/bx9PPv9PPv9/bx9fTw9vXw9vXw+fjz+vjz+vjz+/n09vXw1tjZ1tjZ2Nrb3uDe09XW1tjY2dvb2dvb3N3d293d3N7d3d/e3uDf4uTi2dvb3+Hg5OXj2Nvb3N7d293d4eLh19ra2Nra4OHg3N7d2t3c3t/e9vTw+/nz+vjz+vjz+vjz5OXj5+jm3+Hg4+Tj5OXk5ufl297d4uPh+Pfy/fv3/Pr1/vz3/fz3/Pv2/Pr1/fz3/vz3/fz2+/r1/Pv2/fv2/v33/Pn1+Pby+vfz+Pfy+ffy+vfz+vjz+vjz/Pn08PTv3ebkx8rNyM3P2t3dztLTyc3P1NfX2dvbzdHSyc7Q1NfYyc7QxsrNyMzO19rZys/Q1tnZzNDS1djZ0dTVz9PUy8/R5OXj/Pr0+Pby+vjy+ffy+ffy+vjz+vjz/Pn08/Xw7fLu8vDs8O/r8/Lu8vHt8fDt9PLw9fTw9PPw9PPv9fTw8/Lv8/Lu9PPv9vXx8fHu8O/r9PPv7+/r8/Lv9fTw8/Lv9/bx/fv2/fv2/Pv2/Pv2/fr1+vjz+vjz+vjz+/jz9PDs+ffz+/n2/Pr3+Pby9vXv8/Lr8/Hs7+3o7uzn8O7p8/Hr8O/q8O7p8e/p9PLt+vnz8/Hq+vjy8vDq8O7o8fDp9vXv8vHs8O/p8O7o7+3o8O7p+vjz+vjz+/n09vTvg31veHNiiot9hoV3fX14Y2VZUVlCam5ebW5kU1dRTlNJTE5FTE1EVltLUVVKVlJLdG5jeHlyjo2Fj5KJVFdFZmZThIyHQUY6ODkrR0M2SEUxZWVS/fv2+ffy+/n09vTwd3RaXlIrUU0pNj0bS0UzXFU5R040REU4RUc7UlNLR0lDTVBEP0QuQEcwTU8zT0wxNzImQD85U1NMSEtDSEw9gX98tri6mJiXXV9UR1ZGQVNBYGpc/fr2+vjz+/nz+PbzamZQX1QxV082S0YlWlZCgIJzmKWgiJukbnVyMDUxPD43VVpBVmFEYGJFa2REVlc0XVc/S0lBb3N0jpWbsbm/0srS4eLr+///293dVFJMTEhAaWRd/fv2+ffy+/jz9/bzfnRhUkg3RToxUEEvVFNQLU5pIERfMlRtaXR8QklIV1pOQ0YzRU49VFc5aWFGY1xAa2NIWFlHXm9raH1/V2VqU19lT1daUVVWW19hgYOBjpCNn5+a/Pr0+vjz+/jz9/bygXhuTkQ6Rzo0UEA7V0hCJC85Ii05Q0pTbHJ3WlBMXFlPZllKYVxNY2RZg3dxe25qW0xEYk5GV0hAU01INjg6PkRAHiMgGxgWFxYUJS4yERwmP0ZO/vz2+ffy+/n09vTubGxuP0dQWVJMTkVATUVASVddV2duXHF8fYSIdWFaZFdUbl5XmoJ5goOHtLjEkIqROCooTDw6TkBKLjJBEyk0JSQnHx4eExQVMS8vlZiUkZCGqaWZ/Pr1+vjz/Pn08/Lud3JwWE1LWU5IUkpEQj88UFdcRj4+eUsvSVRbMjY6OzEvV09MeGpkWllYjKSocGZhOCkmNjQ4Qjw+RUNIJCgrJh8iOjQxPz48Njk7cm5ppJqK4NfC+ffz+vjz+/nz9/bxenZ1czUWjGFIMi8wNjMzVFVUQzQsplgmg3dsbl9XhHpxhnVpnpWJnp6WnJyUnZ2Ui392k4V6mZmQkpGJjIuEg4N9hIJ7REdILTAzDgwMf3Zp3dTB+Pby+vjz+/n09vPucHN1iU0svoJZf3hwfHJqnJeOrqaYqp+RtLCkqaKYsayiq6WbraierKqhrKWarquhpaObpqadqKifn6CZnp6Xm5qSl5aOkJKLk5KKQ0A8kId43dTA+ffz+vjz+/n09/TvnpaQnYyBtKCPs6uftK6isauhrqujrqykqqefqqigqKaeqqifqqieqaeeqqqhrKqhrq2kr62krq2jsK+krayhsK6hureqwsG01dHBk4p7l5B/yb+r+vn0+vjz+/n0+PXwwrqztK6ntrKsuLOrubatuLauubevu7mvurmwuLevubmwvLqxu7uxvb20vr62vr61vb20vr60vb2zu7qwu7qvt7esmp2YmZyYqKmil4+Cj4uAoJuP+/n1+vjz+vjz+Pfy4+fm3eLj4ubl3uTk7vDt4OXk3uPj5uno7e/s3ePj4OTk+Pby/Pr0+/n0+/n0+/n0/Pn0/Pn0/Pn0/Pn0/Pn0+/jz9/Xx9/Tw9/Tw/Pn0/fv1+/n0+vjz+vjz+vjz+ffy4OLi3uHh3ODf3uHh3eHh3uLh3eHg4OPi4ePj5Ofl7e7r+Pfy+vjz+vjz+vjz+vjz9vXx9fXx9fXx9fXx9fXx9fXx9vbx9vby9vby9fXw9fXw9vbx+vjz+vjz+vjz+ffz4eLh19ra19na293d3N7d3N7e2Nva4OHg2dzc7u3q/Pr1+ffz+vjz+vjz+vjz+vjz8vTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8vTv+vjz+vjz+vjz+vjz/Pv1/fv2/fz2/fv1/fr1+/r1/fv1/Pv1/fv1/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz",
-    "layoutSha256": "dfd16e83b66fa90ad1718f16cfe204117b7bb40aa571299325e780bd7850fe75",
+    "path": "social/assets/59a53c5892cffd828e04bcbc36aab46d0abc2dbb7f2c1f4808c73fe64d836379.jpg",
+    "sha256": "59a53c5892cffd828e04bcbc36aab46d0abc2dbb7f2c1f4808c73fe64d836379",
+    "pixelHash": "ad528b4cf779cb701b19a391cdf060e22335f1e37266a7f6703c424c3a9d3c8d",
+    "visualSignature": "rgb32:+/r2/Pv3/fz4/fz4/fv3/fz3/fv3/vz3/vz3/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/fv38fLw3ePk4ebn3+Tl4ebn6u3s3+Xm3uTl7vDu/fz3+vr2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2+/r3/Pz4/Pz4/Pv3/fz4/Pv4+/v3+fn1+Pj0+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/fv38vLv297e3uHh4OPi3N/f4ePk5efn7O3r/fv3+fj1+fj1+vn1+/r2+vn2+vn1+vn1+/r2+/r2+/r2+/r2+/r2/Pv39fXy4OPj4+bm3+Dh5t/g4ePj6Orp+fj0+/r2///6297ehpWioKy0tLzCtLvDpK23p7C5xsvQ/////fz5//78/v76+/v3/f35/v77/v77+/r2+fj1+Pf0+vr2+vn1+vn1+/r19vbz9fXy+Pn18/bz+fn29fXz+vn2+/r2///63d/gqbO8pa64o663wMbLlaGsrLW9n6u0qrO8qrO7j5uoxs3Q6erpoKmzrbW9mqaw+Pfz//79/////Pz4/v75//76/v35/v75///7/vz4/Pr3/Pr2/Pr2+/r2+/r2///62dzeoay1rbe+n6q0prC5ytDT1drb2Nzd4OPj1Nnb0dbY297f8vPw3eHh19zdzNLV/fz3xsvPm6ex6uvq2t3e0dXY3d/g1trby9HT6uvq/Pv3+fn1+vr2+/r2+/r2//754uTkqbC5ub7Fu8DHuLzD5ujp/////f36/f36///////+///+//77///8///9/v79//75dISVOFFrxszQ3uDiy9DU2Nrd0tbY19rc4+Xl6+vq5+jn9/f0/Pr2+/r2/fv38/fzsdjW0ujn3+/sudza2unnpM3N9/j1+vr2p8/PvdrZxN7cqdDQ0+Xjn8vL2ejl///76uzq2Nvc/fz39fTx8vLw8PDu7/Dt9/fz/v35+/r2/Pv3+/r2+/r2+/r2/fv39PbzeLe5nsvLdLW3XKirfbq7UqSozuTh0OTiaLCycLO1bbGzeLe5YqyvdLW3k8XG///8+fn2/v77+vr1/fv3/fz3/fz3/fz4/Pr2+/r2+/r2+/r2+/r2+/r2+/r2//z45e7rlcPF0uPh0eLhuNXVz+HgrtHQsdPTwNrZt9XVwdrZyN3dqs7P1+XkqdDQ4e3q//z4/f37///7/fz5/Pr2+vn2+vn2+/r2+/r2+/r2+/r2/Pv2+/r2+/r2+/r2/fz37+/s29nb2tzd3t7f3dze2drc19ja4OHi1dfa6Ofm29vd2drc2tnb293e/v35/Pz4/v34rre/gpGg3uHh2t3ezdHV19rc/fv3+fj1+/r2+vn1+Pj0+/r2+/r2+/r2/fv38/Pw1tvd4ePj2t7e2d3e3+Li4uXl3uHh6erp3+Lj5+no5Obl4+Xl4OPj6Orp+/r2/v34ipimYHSI1dnb3+Li0NXX3N/g2t3e3N/f3N/g297f6erp+/n2+/r2+/r2/Pv39PTx3N/g5OXl4ePj3N/g7u7s+/r2+fj0+fn1+fj1+vn2+fn1+fj0+Pj0+vn1+/r2/Pv3+/r39/f0/fz59vXy9fXy9PTx8/Px9vXy9PTx9fXy/fz3+/r2+/r2+/r2+/r2/Pr3/v34/fz4/fz4/v34/Pv3+/r2/Pr2+/r2+/v2+/r2+/r2+/v2/Pv2+/r2+/r2+/r2+/r2/fv3+vn2/Pv3/Pv3/fv3/fv3/Pv3/fv3/Pv3+vr2+/r2+/r2+/r2+/r2+vr2+fn1+vn1+fj1+fn1+vn1+vn1+vn1+vn2+vn1+vr2+vn1+vn1+/r2+vn1+vn1+vn1+fn1+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv3/v75//76//75/v75/v75//35//76/v35//75/v35/v75//76/v35//75/v75//76//76+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/fv36vLv2ODg09bY1Nna297f297f29/f1dna4ePj19rc3uHi297g09fZ3+Hh2d3e2dzd1NfZ1trb9vby/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/n17PLv7PDt8fHu8PDu8fLv8fHv8fHu8PDt8vLv7+/t8vLv8fHu7/Dt8fHu8PDu8PHu8PDt8fDu+fj0+fj0+fj0+fj0+Pfz+fj0+fn1+fn1+fj0+fj0+fj0+fj0+fj07Ovm8O3n8O7o8O/p7+7p7u3p7Ovm7Ozl7+7o8O7q7u3o7Ozm6+vm6+vm7Ovm7e3n7Ozm6+vm7evm7Ovn7u7p7+/q8PDs6+vm6+rl7u7p6erk5uXg5+bh6Ofi6eji6Ofh19XM2dXL1tPJz9DGz87G1dLL09PJzc/Izs7IzMzH1dXP09PP09TP0tLMz8/Iz9DJ09PK1tXLzs7Hzs3I0tHM0dHNy8zFzMzF19fT5ufk5+bj2tnU0dLM1dnS1tnT1tjSoqCSr6mXraiZoaCPpqOTsq+kxL+y0tHKxMbFuLm0mpuWlpaUoKCWrK+gpqubsK+hsK6ep6aWqKaXpqOcpKOfubi2xcbF2tzc59/h7efq7vHy////zczKlZOOmJaRlpOOdW5cc2xcZV5UaWFQb2ZTb32GYX6PY4GVZIWbipeeb3NwZWlnaWhaZGhcZ25ec3VehX5ldHNcgXxidHFednp0ipqfjJ6jhZSbg4yTi5GWjZGSn6SlkZKSnJmTq6mjpqKaYlZGW05BPjMrSz03UD42P0FFCRYnDxsrJS43TFBXREhISk5KUlA+QUA2Skw6U1I+YVhJa1xNYFRFXlRFTEo/RUk9T09HNDMxR0xKJSooJykoEhMSLzIzUFdbQEdPQ0pQVlNQSUlHQDczS0I/Tj42TkxNLDtEQ1FbVWRwfoeMcWZiX05IXlpVdVtPdG5lbHByk4yQlY6SQjk8YE1HVTk5aVpeQjxCLTpCNTs7ISckIyIjGhcUKywrJi4yLDM5KzE2OT9HPEhWP0JHR0dHNDI1O0NKP09aSFVeQlNdUl1mUlFWTUZGPj5EYFdWd2xvYGdwgI6cgISQLSUpLS40Ly00MjVHFiExDSQxFxojHBwiFx8nDBMaTVJYmqCijI2HmpqQP0VOR0NIPzs+QUZNJSszOEFMNEFPMzE4WzstP0tXHC9ALzM6KjA5TFBXS01UN0JMWnJ8Vl5kMjE3KS47LDRANzxHMjpGHik1HyUxJyw1OkBIICs4MTtFNTxDbG9vjZGNGik4GiEtIio1FiY2DR0sGis6DyAwDxwqLywuIC06EyMyHSk3Gyo5ICs4KTlGKDlHJztKKjtJJTVDJS46KDdEJzhFJzdFJzhFIzRDIzRCHzE/DB8wFCU0ChspJzZCNURPAhYpDyEzMD9OLD1MMEBQIzRFHi9AMkJSLUBSHjBBIjNFMUFRJDVFBBgrBRkrBRgrBRcqBRgqBRksBRksBBgrAxcqCRwvHC5AFig6ECM1Giw9Fik7FSY5GSs8BxosAxcpBxgtCxwvEiI1ESI1ESI1EyQ3ECI1ECE1ECE0EyQ3ECI1DiAzCRwwCBsvCRsvCBsvCBwvCBsvCBsvCRsvCRsvCx0wFyg6Fyk7GCk8Fig6Fig7Fyk7FCY5Fic6DR8yCRwvBRgrCx4xFyg6EyQ3FSY5Fyk7FCY4Fig6Fig6FSc5Fig6FSY5BhksBhksBhksBhksBhksBhksBhksBhksBRgrCRsuIjNDKDhJKTlJHzBCJDVGJDVFIjNCJjdGDyEzBBcpBBcqBBcqAhYoAxcpAhcpAhYoAxYoAxYoAhcpAxcpAhYoAxYoBRgqBBgqBRgqBRgqBRgqBRgqBRgqBBgqBBgqBBcqARQnABMmABQmABQmABQmABQnARQoABMmAxcpBBgp",
+    "layoutSha256": "0c066848a89ed679eb226c8c52d444fced7881c98b6a2e9c75aa8df8bdc754a6",
     "width": 1080,
     "height": 1350,
     "originFormat": "feed",
-    "commit": "77d7375d3cdcef299b760918ff146b3a073ccfcb"
-  },
-  "review": {
-    "reviewer": "Codex final-export editorial review",
-    "reviewedAt": "2026-09-14T12:40:04.763Z",
-    "assetSha256": "5a738140a3391931dd6c1a12325592cbb4a826f181894cb403bafb54f7782e05",
-    "captionSha256": "f89c8d1c70b65fcbd89dc31bb876d67c18a598face892f6421b32a83c697e3e0",
-    "checks": {
-      "dimensions": true,
-      "imageLoaded": true,
-      "noPlaceholders": true,
-      "noBlankPanels": true,
-      "readableText": true,
-      "validCharacters": true,
-      "noClippedText": true,
-      "correctLogo": true,
-      "brandPalette": true,
-      "safeMargins": true,
-      "visualHierarchy": true,
-      "factsVerified": true,
-      "sourcesChecked": true,
-      "geographyVerified": true,
-      "duplicatesChecked": true,
-      "hashtagLimit": true,
-      "finalExportInspected": true
-    },
-    "notes": "Actual final files visually inspected; actual text-region OCR, source semantics and comparison values verified; Republic-controlled photo and licence checked; recent history and within-batch duplicates checked. User approval is separate and still absent.",
-    "boundSha256": "be847cdfa32d7e065c6f84a6f1cf121df896b5166ca19ad7dee1cd46730f0328"
+    "commit": null
   }
 }

@@ -106,8 +106,10 @@ test('reference data editorial renders the selected TSS data and landmark compos
       metric: '50%',
       metricLabel: 'TRANSFER-FEE DISCOUNT',
       body: 'Where transfer fees are charged, subject to the stated exceptions.',
+      fact1Icon: 'people',
       fact1Label: 'VAT CHARGED',
       fact1Body: 'No transfer fee for the same transaction under the stated conditions.',
+      fact2Icon: 'evidence',
       fact2Label: 'FEE CHARGED',
       fact2Body: 'A 50% discount applies, with exceptions.',
       question: 'CHECK THE EXACT TRANSACTION BEFORE YOU BUDGET.',
@@ -120,6 +122,7 @@ test('reference data editorial renders the selected TSS data and landmark compos
   assert.deepEqual([metadata.width, metadata.height], [1080, 1350]);
   assert.equal(layout.visualStyle, 'reference-data-editorial');
   assert.deepEqual(layout.photoRegion, { x: 0, y: 820, width: 1080, height: 330 });
+  assert.deepEqual(layout.photoTransition, { y: 760, height: 220, mode: 'cream-to-photo-fade' });
   assert.equal(layout.categoryRule, false);
   assert.match(layout.photoSha256, /^[a-f0-9]{64}$/);
   assert.equal(layout.logoSha256, LOGO_SHA);
