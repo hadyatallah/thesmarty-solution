@@ -6,28 +6,39 @@
   "reviewNumber": 4,
   "topic": "TSS: prepare a clear investor brief before introductions",
   "topicKey": "tss-investor-brief-objective-budget-timeframe",
-  "headline": "BETTER BRIEFS. BETTER CONVERSATIONS.",
-  "creativeKey": "tss-investor-brief-objective-budget-timeframe-landmark-v2-feed",
+  "headline": "START WITH A CLEAR INVESTOR BRIEF.",
+  "creativeKey": "tss-investor-brief-four-essentials-reference-v3-feed",
   "format": "feed",
   "platforms": [
     "instagram",
     "facebook"
   ],
   "publishAt": "2026-09-15T09:15:00+03:00",
-  "caption": "Looking at a Cyprus property or business opportunity? Start with a clear brief: your objective, budget, timeframe and the questions you need answered.\n\nThe Smarty Solution works on investor connections and the presentation of selected business, property and development opportunities.\n\nTell us what you are looking for so the conversation can start with a clear purpose.\n\nSource: The Smarty Solution: current services.\nhttps://www.thesmartysolution.com/\n\n#Cyprus #CyprusProperty #RealEstate #Investment #TheSmartySolution",
+  "caption": "Looking at a Cyprus property, business or development opportunity? Start with four things:\n\n• Objective\n• Budget range\n• Timeframe\n• Key questions\n\nTSS first works to understand the objective, commercial logic and expectations on both sides.\n\nWhat are you looking for in Cyprus?\n\nSource: The Smarty Solution, current services and approach.\nhttps://www.thesmartysolution.com/\n\nPhoto: Pano Lefkara, Cyprus, Qasinka, CC0.\nhttps://commons.wikimedia.org/wiki/File:2022_03_Pano_Lefkara_1.jpg\n\n#Cyprus #CyprusInvestment #CyprusBusiness #Investment #TheSmartySolution",
   "creative": {
     "designVersion": 2,
+    "visualStyle": "reference-checklist-editorial",
+    "assetFormat": "jpg",
     "format": "feed",
     "template": "place-opportunity",
     "photoKey": "lefkara",
     "text": {
-      "category": "TSS / INVESTOR CONVERSATIONS",
-      "headline": "BETTER BRIEFS. BETTER CONVERSATIONS.",
-      "highlight": "START WITH THE BRIEF.",
-      "body": "Your objective. Your budget. Your timeframe. Start a focused conversation with TSS.",
-      "question": "What are you looking for in Cyprus?",
+      "category": "TSS / INVESTOR READINESS",
+      "headline": "START WITH A CLEAR INVESTOR BRIEF.",
+      "metric": "4 THINGS",
+      "metricLabel": "TO DEFINE FIRST",
+      "intro": "A focused introduction starts with useful context.",
+      "fact1Label": "OBJECTIVE",
+      "fact1Body": "What result are you trying to achieve?",
+      "fact2Label": "BUDGET RANGE",
+      "fact2Body": "What level of capital should guide the search?",
+      "fact3Label": "TIMEFRAME",
+      "fact3Body": "When are you ready to evaluate or act?",
+      "fact4Label": "KEY QUESTIONS",
+      "fact4Body": "What must be answered before you engage?",
+      "question": "WHAT ARE YOU LOOKING FOR IN CYPRUS?",
       "location": "PANO LEFKARA / CYPRUS",
-      "source": "The Smarty Solution | investor connections"
+      "source": "Source: TSS | Current services"
     },
     "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
   },
@@ -35,7 +46,7 @@
     "classification": "promotion",
     "claims": [
       {
-        "text": "TSS offers investor connections and presentation of selected business, property and development opportunities.",
+        "text": "TSS first understands the objective, commercial logic and expectations on both sides.",
         "sourceIds": [
           "tss-website"
         ]
@@ -46,11 +57,11 @@
         "id": "tss-website",
         "title": "The Smarty Solution: current services",
         "url": "https://www.thesmartysolution.com/",
-        "expectedText": "Investor connections",
-        "reviewNote": "Use existing commercial-introduction and opportunity services; no tax or legal advisory claims.",
+        "expectedText": "We first understand the objective, commercial logic and expectations on both sides",
+        "reviewNote": "Supports the investor-readiness framing and TSS fit-first approach. No investment, financial, tax or legal advisory claim is made.",
         "sourceType": "company-website",
-        "checkedAt": "2026-09-14T12:20:37.319301Z",
-        "validUntil": "2026-09-21T12:20:37.319301Z"
+        "checkedAt": "2026-09-16T04:44:17.452Z",
+        "validUntil": "2026-09-23T04:44:17.452Z"
       }
     ]
   },
@@ -63,21 +74,21 @@
     "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
   },
   "asset": {
-    "path": "social/assets/30da50b01a7641b4a47910d4a01dbdced404c213ddbec9655d7a2d087c553850.png",
-    "sha256": "30da50b01a7641b4a47910d4a01dbdced404c213ddbec9655d7a2d087c553850",
-    "pixelHash": "edffb597fbbb8de3218dd8554254332b053b2bc2f03eb45a143eee2ec13e4a17",
-    "visualSignature": "rgb32:+vjz+vjz/Pr0+/nz+/n0/Pr1/Pr0+/n0/Pr0/Pn0/Pr0/Pn0/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz//78///////7///9///+///9/fv2+vfz+vjz+vjz+vjz8fDt9PTw8fHu7u/s7/Dt8/Lu7/Dt7/Dt7+/s8PDt7/Dt+Pfy/Pn0+/n0+/n0+/n0+vjz+vjz+vjz+/jz+Pbypa20ipWgmbK5pqmynqKslqGq19nZ/vv2+ffy+vjz+fjy4uXk5efl3uLi2+Dg3ODh4eTk2d7f2+Dg2d7f3eLh2d/f7e7r9PPv8/Lu8/Lu9PPv+vjz+vjz+vjz+ffy///5wMLGXlpugtHVVsPJbIeWTl1yp6+2///6+Pbx+vjz+vjz9fTw8/Lu9fPv9fTv9fPv9PPv9fTv9vTw9vXw9fPv9vTw8/Lu8fDt8fHt8fHt8/Lu+vjz+Pfy+Pbx+Pfy+fjz4uPhoamxubm+fKixoLvBhI2arLS7///5+Pby+vjz+vjz/v35/v35/v34//35//75/v35/v35/fv3/Pr2/v76/v35/fz4/v76/v35/v75/fz3+ffy/f34/f34///59PPw5efl7O3r4+bk8ezp4uHg4eTj6+zq+vjz+vjz+/nz9/Xwy8/Ry8/Ryc3PxMnNw8nLyc7QxcrN2dvb4+Tix8zOyc3Q2NvayM3PzNDRyc7Q2dzb//74ztLUzdHTzdHTxsvOvMXJv8bKxcvOwcnN8/Tw8vPv7u/s+vjz+vjz/Pr08vHtkJyniJaiuMDGyc7Rv8bKpa+3kp+rtr7Eyc7SgY+bm6avoau0kZ6prba9tLzDq7S8/Pz5lqOue4qYq7S6uL/EwcbJmqWujZqknKav9PPv/Pn0+vjz+vjz+vjz+/n09vTwwMbJvsXJsrvAr7e9t7/DusHFrLW7s7zBsLi+xcvOucDFrLW7s7zBs7zBtr7DqbO6sLi/19ra/Pr1+Pby+vjz+vnz+Pby9/bx+Pjz9/Xx+vjz+ffz+vjz+vjz+/n09fTvv8LHvMDFsbe+pq62qrG5uL3CpKy0p7C4sbe+qrG4qK+3ub7DwsbKpa21rLO6qrG5p6+3wcTJ/vv1/Pr1/vv2/vv2/fv2/fv2//z2/vz3+vjz+vjz+vjz+vjz+vjz+/n03evn2unl2erm6PPv4O7q1unl2Onl8/fz4e7q3+zo4/Ds1efk3u3o7PPu6vLv1unm4e3p2ujl2Obj7vLt0OPf1eXi3Onl2Ofk1OXizeLf9vfy+/jz+vjz+vjz+/jz+PfylMTEpczMnsnJf7q7h76+h76/r9LR6O/rebe4gLq8qM7OocvLjcHCps3N4+zpmMbGk8TEere5pc3N0+XiZ66whr2+kcPEgry9j8LDksPD6O/q/fn0+ffy+vjz+vjz+/jz8fLu9fXw9fTw7/Lt8/Pv9vXx9vbx+fby8fTw8vPv9PTv9fXw9PPv9fTw9vTw8/Lv9PPv8fLu8/Pv9PPv8PLt9fTw8fLt8fPu8fLv9fbx9vfx+vjz+vjz+vjz+vjz+vnz2tzc29zc2dzbztHT2Nra3d/e3t/e1dfY293d2Nra1NfX5ebk3d/e4uPh4eLh293c2tzc3N7d6enm297d4uLh5eXj4OHg4eHg29zc7u3q/fr1+ffz+vjz+vjz+vjz+vjz5+bl4uTi4+Tj3uDg3eDe6uro3d/f6enn4OLg7e3q/vz3/Pv1+vn1/fv2/vz3/fv2+/r1+Pbx+ffy+ffy+Pfy+ffy+ffz9/fy+Pfy+fjz+vjz+vjz+vjz+vjz/Pn08PTv3ebjyMvPyc7Q19ra19ra1djY19ra09bXyc7Qys/Qz9TV09fX3t/e0NTVztLUzdHT4ePh/fv1+Pfy+vjz+fjz+vjz+vjz+vjz+vjz+ffy+ffy+ffy+vjz+vjz/Pn08/Xw6/Ds8vDt7+/s9PLv8/Lu8PDs9fTx8fHt8fHu7+/t8PDt9PTv9/bx8O7q7u3p9PLu9/Tv/fnz/Pjy/Pnz/Pn0/Pn1+/r1/Pr1/Pr1/Pr1/fv2/fv2+vjz+vjz+vjz+/nz+Pby+Pbx/Pr0+Pby9PLt9vPu9PLs+/r29/Xu9vTs8vDq9vPu8vDr9fXy9fb09PXz8/Xz8vPx8/b18vXz9PTx9PPu9PLr8/Dr8O/r8fDr7+3p8O7p+vjz+vjz+vjz+PbxyMzOvsPGqrC2hoqRvcC+l5qYS0ZBiIF3kohuQjsqa2ZcgIGDYFBPc6HOfrrxeLDjeK/iebTrhLHfdYSWeJOoiIV8qJp/hH1yUFRcXmBmOjo3TEtG/fv3+vjz+vjz+Pbxt77Cg4uVaXF9m6Clv8LCjpSZZ2luYGJkfoB+VVlfOjYuSlBQPEZRUHqkaazpZ63saLDxY6rpaqnjgYWBlI57oZR5g3hiaGJZLjM5MjEwKBINNiwp/fz2+vjz+/n09/bxeoGKX2dzkpifvMHDpKmuVVtmQERKREhMP0NIQkZKS0hBTUc1NTUYX19ZlpiRdnZ1Z4iqbbTya7LyjZuao5V4qpx8dWxZW1ZSNTo6Oz47JRkVOC8s/vz3+vfy/Pr08/LtlJmflp+nrrW6q7K1WmBsQUZQJScoIiIiKywsMjMzTExISEU+Ly4WamZOv7GRi2pHSDIsb67mbbX1eLLjh6e7mJJ8bWRTV1RROjxBQ0VJLSggVEk+/vz3+ffy+/jz9/XxvMHGqLC3kZuiXWNtS09bUVVfUlVZUVFOR0ZDNzYzMC8sMDEwQkE2XldGuauKkXVZVklHcajWe8D5ecL+dY2hintiZV9SUVBNPD9GP0FJT0EyeGlV/Pr2+vjz+vjz9/XxwsXDnKSmV19rSk5aT1NeUFNcVVZbWllXXVtVY19Yenlyq6SSppJro5Fwr5x4kXNXPzExcX2Iibnhi8v/icHsjI+FX1ZHQj06PUNMNzxHZlhCmYZm+/n2+vjz+vjz+ffxrrKvXWVuV15qWF5oUldgVFpiVFdaU1FPXVlTYl1Ul5WNqqSTn45utJ96r5htrIxqYEQ+eH6NpM/po9z/odX2jpSOZFhIS0hEPEBGMjhBaFlAn4to+vj1+vjz/Pr18/HrZ2twVF1sXWRvV19oV19mVl1mXGJsVlZVJCEdNTQxnpuRcXBnQUNFa2tniX5nrZFtj2ZQgnl6eY+bsc7boLi/gH5zamJUT05NRUlSPUNPVE1BcGZI+vn1+vjz/Pr19PLsVFRPUVhiZW14XWRuW2JrV11maHJ/SkpKFxIMEhAQc3JxdXRwSkxOT1Vdb3Fth25Ni3VheXJoOkFMkqCuiYiBcWxhfntyaW93YGl5WmR6Y2JfamJF+fj0+vjz+/n19fPuTUlAMDAvYGl0V19pVVplTlNfX2l3RUdIGRgUEwwLbm5urKylkpSUg4SFgYiOhX15bVhGZG10anZ/Z3F5mo9xeW1TdHJsb3N6ZW+AXWuCT0tJYlhB+vn1+vjz+/n09vTvcm9oSkdBeX6Gd36Gcnd9b3R6dn6JZmdnR0ZCRT47k5OSvr65ra6sbWdjiIqMj4iGh3hseoWQbXqCmJiVrKaKgHZbbmhkXVlZg4yZgYydU1VbVVFM/fz3+vjz+vjz+ffy4ufn5Ono5+rp4ebl3+Xk7/Du5+ro3+Tk9PXx//33+ffz+vjz+ffy9fPu/Pnz+/nz/fv2/fr0+vjz/Pn0+fj0+/v3/Pn0+fbx/Pr1/fr1/vv2/Pr2+vjz+vjz+vjz+ffy5OXk3eDg29/f3eHh3eHg4+Xk3uHh4OPi4uTj5ejm7O7r8vHu+/nz+/n0+vjz+vjz9fXw9fXw9fbx9fbx9fbx9PXw9fXw9vbx9fXw9fXw9fXw9vXw+vjz+vjz+vjz+ffz4eLh19ra19ra293d3N7d3N7d19ra3+Hg2tzc7e3q/Pr1+ffz+vjz+vjz+vjz+vjz8vTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8fTv8vTv+vjz+vjz+vjz+vjz/Pv1/fv1/fz2/fv1/fr1/Pr1/fv2/Pv1/fv1/Pr0+vjz+vjz+vjz+vjz+vjz+vjz+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+/n0+vjz+vjz",
-    "layoutSha256": "fe87aa3aaddb3ac897db76a298f856679c99d134e340730fae6c748613ab72e9",
+    "path": "social/assets/636498078a05c641eb85d5c490c249fd89a753f325b31433e4f09a906ace45fa.jpg",
+    "sha256": "636498078a05c641eb85d5c490c249fd89a753f325b31433e4f09a906ace45fa",
+    "pixelHash": "a8efab084c777a25d7b28699619494a4b291ecffe76c3b561583884e5ed374b7",
+    "visualSignature": "rgb32:+/r2+/r2/fv3/fv3/vz4/fv3/fz4/fz4/vz4/v34/v35/Pv3/Pv3/Pv3/Pv3/Pv3/Pv3+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/Pv39fbz4ubn6Ovq3ePk4ebn3+Xm3+Xl3uPk0trd1tzf8PDu8PHv8PHu8PHv7/Du9PXy/Pv2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2/Pv3/Pv4/fz4+vr3/fz5/Pv3+fn1/Pz4+fn1+vr2/Pv4+vr2/Pv3+Pf0+Pj0+fn1+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/Pv39PTx4uTk3eDg4uXj3N/f4ePj7e3r3eDg4uTk3eDh5ujn8fHv6erp/fz3+vn1+/r2+/r2+Pj1+Pj0+/r2+vn1+/r29PTx4OLj4+bm39/h5d/g4ePj6Orp+fj0+/r2//754uTko663r7i/kp+qn6qzwcfM19vcjJqmtLzDtb3EqLG60NTXqrS9/////f77+/v3+/r2/v77///8/Pv3//75/vz4/v34+Pn19/fz+vr29Pb0+vr29fbz+vn2+/r2//355+jnuMDFxcvPrbe+srrBqbK7yM3RpK63oKu0qbO7qLK7q7S8qbK7q7S8iZek6uvq///7sdTUos3O9PPwxszQ1trb0dXY7u7t+vr19/fz+Pj09/bz+fj0+/r2+/r2///63+HilqKum6ewpa+4mKSvtL3D6evq2Nzd2Nzd2N3d2Nzd3N/f5ebm297f09fZ9PTx//35aa+ySZ+k8fPw4OLi5ujn5ufn6uzq7e3s6Oro7Ozr6erp7u7s+/r2+/r2//754uTkrLG6s7vCvcPIt73F3+Di///+/v79///9///9///9/v37/v37///9///9/Pv3+/r2/P37+/37/fz4/v35/fz3/fz3/fv3/Pv3/v34//35//75/v34+/r2+/r2+/r2+/v3odDP5PHv1unnl8rKs9bVoszMrNHRn8vLm8nJrNLRps7Pv9vak8XG4Ozp//z4/v34jpuneIiX7O3syc/S0NTW1tnbyM7RzdLV8fHv9PTx8vLw9fXy+/r2+/r2//z46fHuc7W40OXj7PTwo87Nr9TTi8HCksTFlMXGeri6i8HCjMHDo83Nf7u8xN7c//76/f34fY2bYnaI8fHv3N/g5+jn9PPx7u7s6+zq7vDt7O3r7Ozr8fHv+/r2+/r2/Pv39vXy5OLj2Nvc1trb4ePj1Nfa7+3s///7/v35/f36//769fn2+/v3+/v3+/r2+/r2+/r3/f36/f37+/r37/Dt8fHu8/Pw9vbz///6//75//75//75/v35+/r2+/r2/Pv39fXy3eDg3uHh3eDh3+Hi2tze4uTk7O3r6+zr6evp6uvq7e3s7e3s6+vp+fn1+/r2//z3c7S2V6eq7vDuyc7Sy9DUys7S0tfZ8fHu8fHu7u7t8fHu8fHv+fj0+/r2/Pv38/Pw29/g2t3e7e7s9PPx8vLw8PHu8PDu8PDu8PDu7+/u8fHv7/Dt7/Dt+vn1+/r2/vv3pc/PksbH+Pj0+ff0+/r2+vr1+fj09PPw8vLv7u/t8PHu8vLw+fj1+/r2+/r2+/r2+fn1+vn1/Pv2/fz4/fz4/fz4/fz4/vz4/v34/vz4/fz4/vz4/v34+/r2+/r2/Pz49/Xy9/Ty+Pn17O3r7O3r6erp6Ono6uvq/fz4///6/v75/fz4+/r2+/r2+/r2+/r2+/r2+/r2+vn2+vn1+vn1+vn1+vn1+vn1+vn2+vn1+vn1+vn1+vn1+fn1+vr2//35W3CEO1Rs6OnoztLV0dXY0dXXz9XXzNHU6Ono6+zq6+zr9vbz/Pv2+/r2+/r2/Pr2/fz4/v34/vz4/v34/vz4/v34/v35//35/vz4//z5/v34/v34//35/v34/Pr3//35wMfLs7vC+vn15efn7e7s/fz3/Pv3+/r29/f09/fz9/bz+vn1+/r2+/r2+vn19vfz7/Du7O3r7u7s7O3r7Ozr7e3r7e7r6uvp7e3r6uvp7e7s7u7s6evp6+zr9PTx+vn1/v79///++fn2+/r2+vn1+fj0+fj0+fj0+vn1+fj0+fj0+Pf0+Pfz+Pfz///86PTw3+jn3+Hi6Ovq4uXn6u3t6u3v4+bo3+Ll6+3u6u7u5+rr7O7t6enn4+Pf+Pfx///6//72//73///3///6////////////////////////////////////////1dbX1NXV1tfW4OHf1tfVysrIu7q3qaWi2dXOyse+trSqqaafv7u2tLzEt8vbvtbrudDmt87kuM/kuNDlutTrvsrUvbmuvLetvLiuwruuysS3sK+tpKaorq6un52alZSRnqOnoaaqmqCmdXyFeHuAnJ6dVVdUHxkWhHxxdm1UMioQIxwUXFlUTUtTOjE2UIzGWJTQU5DKUpDLU5LNWJrZX4SvS1ppVnKHW1lTfm9SfXBbPj5AJCk1Oz1CExQTAAAApqywlJqhbXR+cXaAo6anrrKxd3p8T05QRkdHdnJrU1VZPDs4Tk1GUVhjQ0VQWom7aKjlZKPcY6LZYpzRY6LcbJO6eHVthYqEj4d0hntkeHFhSkpMLzQ7ODUzLyEbGREOdX2GV15pZWt2m6Ckq6+wlpufXmRtbHF3Z2txX2RoWF5nPz49NTErP0AwOD01T1pmcoqeaoaeZ5S+ZKHYYqDZaKDRiYVylodqoJJ1fnNdXllQSUhHJi0rODMxMRoXFgoITVJfdHuElJqgpKmsnKGlVltmKy83CwwOEBIVGhseJCUnRUVAXlhPQzspLCoMa2ZVpJh9hG5RSzEkYIu1ZqfgZaPZfpGbiZCLlY10e29ZUEtGR0VGMDM2Oz49IB8ZGxMNkZedl5+llZyinaSnXGFrQ0VSRklSPD4+OTk3OTk4LzAwMTIyMjQyMjEvNjYiZF5MqJ2EmIRqTywYVmd+bK/oZqPaa6rjcZOvhIF0d2xXTUpHSkpKMzU8Q0FEPTIoRDYonaOpnaWqh4+XU1lkRUdTS05aSU1VTU5STUxLR0dDPTw5PDk1NDQwQD86R0Q3WlNDqZt8j3hdWUA0WG+Fda7edK/gdbPna4CReGhTcmxcQT86SUpLLzQ+PD1CVkk4YE85paiml52dVFtmRUpVSkxXSUxXS01UUFFVVFRRVVNOXFlUYV5Yj46Ip5t/n4tmnoxtnY1sl31gRy4mS0lPeYiWgLPcgrnngLnlf4qJb2ZUNC4oRkVGLjZBODtBZ1pDfWpHiZCPUVpjRU5bS1NgQ0tXQ0pVRkxXRklPQkRFTUxLVFJOXl5bk5aTgntrkINnkYNni31fk35jW0M7TU5adIeahbLSgbDTgbDNeYqOX1dJPj8+PUFEKjI/LzU+X1ZDdGRHOENSQE5fRVJiQE1dP01bP01bP01dQUxaQ0pQKTA2Jy81VFpdeYCAOEFGPkdRWl5gaWddenFhbVdOW01QWmt9aomdf6C0dpGiXWNnVVdTOUBFOEFKLDhGKzZER0dDRkU2ESIxKTpMQlJiOEhYPk1dQE9eNERTMUJTQE1ZJjI+AhIhHi07MUBMFyc1FiY2FCU2Gyw7LTY8KzM7KjZBHi08Gi0+OEtaQFFeNkZTLzxGLTtIKjxNJzhLLD1RIDA/FCMpAxYoBhkrECM1DyIzDiEzDyI0ECM0DyM0CR0uBBgqBRgqAhYoAxcpBhkrBhkrBhosBRkrAxcqAxYqBBcqAxcpBRosGCo8HS4+Hi8/GSs8Gy0+HC8/Fyo8HC9ADB8wBBcpBBYqCBstESM2DiE1DyI1DyI0ECI1ESQ3Cx8xARYpAxYqBhgsCRsvCBsuBxsuBhouBhotBxstBxgsBxotBRotCBwvGy0+ITJCHzBAGSs8HS5AHC0/Giw+HTBBDB4xBBYpBBcpAxcoAhYpARYqARYpARYoARUpARYpAhYpBBcpBBYpBBYqBRgqBBgrBBgrBBYpBBgrBBgqBBcpBBgqAhcqAxcqARUoARQmABMlARQnABMmABMmARUoABMmAhYpBBYq",
+    "layoutSha256": "cbbac0d098518bafc3c8354e5a0626b7ca5e4b89601c36eec28cf739b1e38fc9",
     "width": 1080,
     "height": 1350,
     "originFormat": "feed",
-    "commit": "77d7375d3cdcef299b760918ff146b3a073ccfcb"
+    "commit": "f4065388d54a5b1f33a409e559cfc73dfd62e721"
   },
   "review": {
     "reviewer": "Codex final-export editorial review",
-    "reviewedAt": "2026-09-14T12:40:04.762Z",
-    "assetSha256": "30da50b01a7641b4a47910d4a01dbdced404c213ddbec9655d7a2d087c553850",
-    "captionSha256": "2a559a9d39e17b4049fd1e940f425b54ae2f75f2146d4765a386fdb64af35ee9",
+    "reviewedAt": "2026-09-16T04:49:27.553Z",
+    "assetSha256": "636498078a05c641eb85d5c490c249fd89a753f325b31433e4f09a906ace45fa",
+    "captionSha256": "c5bb864b83a633bd216e0383d94bd529017a3bfdf12de7501c9da5351c925310",
     "checks": {
       "dimensions": true,
       "imageLoaded": true,
@@ -97,7 +108,7 @@
       "hashtagLimit": true,
       "finalExportInspected": true
     },
-    "notes": "Actual final files visually inspected; actual text-region OCR, source semantics and comparison values verified; Republic-controlled photo and licence checked; recent history and within-batch duplicates checked. User approval is separate and still absent.",
-    "boundSha256": "a2129dee75bd901b37d5e99d83d724f975075d8a9f8eb4011d7773fee487e313"
+    "notes": "Actual final JPEG visually inspected against the user-selected TSS editorial reference; OCR, source meaning, geography, rights, safe margins, logo, crop and duplicate history verified. User approval remains separate.",
+    "boundSha256": "1c560ec69dd6e8690231dadf4ae0e3fa0400a0e659dfbf1df6eca61d07696291"
   }
 }
