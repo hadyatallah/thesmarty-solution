@@ -600,13 +600,26 @@
       "platform": "instagram",
       "classification": "promotion",
       "editorial": null,
-      "phase": "instagram_published",
+      "phase": "awaiting_published_visual_review",
       "qaBoundSha256": "072536a387dfd2dfe1350cb1af95d01a66866184aa11da4b4052377f141c9532",
       "instagram": {
         "containerId": "18115776760819867",
         "mediaId": "18026983037879458"
       },
-      "facebook": null
+      "facebook": null,
+      "verification": {
+        "instagram": {
+          "width": 1080,
+          "height": 1350,
+          "meanPixelDifference": 0,
+          "id": "18026983037879458",
+          "sha256": "d957b94e92c008b396745147836f6421e6ee3eb0524813c1461efc073d232161",
+          "permalink": "https://www.instagram.com/p/DdVr1_dFtYp/",
+          "downloadedAsset": "social-results/tss-review-04-investor-brief-feed-instagram.png",
+          "evidenceCommit": "da76908136138cc37f00adf4d63fcd8dc7b32084",
+          "evidencePath": "social/published-assets/d957b94e92c008b396745147836f6421e6ee3eb0524813c1461efc073d232161.jpg"
+        }
+      }
     }
   ],
   "qaFailures": {}
