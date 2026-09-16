@@ -600,7 +600,7 @@
       "platform": "instagram+facebook",
       "classification": "promotion",
       "editorial": null,
-      "phase": "published",
+      "phase": "awaiting_published_visual_review",
       "qaBoundSha256": "e74d531936fbc5d8ff7cab4132b341a959015e0e21bb7d26bc57dd20cca57806",
       "instagram": {
         "containerId": "18115776760819867",
@@ -619,8 +619,19 @@
           "sha256": "d957b94e92c008b396745147836f6421e6ee3eb0524813c1461efc073d232161",
           "permalink": "https://www.instagram.com/p/DdVr1_dFtYp/",
           "downloadedAsset": "social-results/tss-review-04-investor-brief-feed-instagram.png",
-          "evidenceCommit": "da76908136138cc37f00adf4d63fcd8dc7b32084",
+          "evidenceCommit": null,
           "evidencePath": "social/published-assets/d957b94e92c008b396745147836f6421e6ee3eb0524813c1461efc073d232161.jpg"
+        },
+        "facebook": {
+          "width": 720,
+          "height": 900,
+          "meanPixelDifference": 2.07,
+          "id": "177672945439622_122301188930216133",
+          "sha256": "39e358946f93b30ee8c3fd2c3429fcf1cc20e89383ebeb4e24c58271755b21ac",
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301188930216133",
+          "downloadedAsset": "social-results/tss-review-04-investor-brief-feed-facebook.png",
+          "evidenceCommit": "fd4a992d3873a3c720b7377da5dfc2b6439d8974",
+          "evidencePath": "social/published-assets/39e358946f93b30ee8c3fd2c3429fcf1cc20e89383ebeb4e24c58271755b21ac.jpg"
         }
       }
     }
