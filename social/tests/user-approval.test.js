@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { enforceUserApproval, sha256, sign, userApprovalBinding } from '../lib/qa.js';
 import handler from '../../api/publish-instagram.js';
+import configuredPolicy from '../user-approval-policy.json' with { type: 'json' };
 
 const item = () => ({ id: 'first-01', caption: 'Verified information', topic: 'Topic', format: 'feed', platforms: ['instagram'], asset: { sha256: sha256('image') }, creative: { format: 'feed' }, facts: { claims: [], sources: [] }, geography: { mode: 'no-location-imagery' }, publishAt: new Date().toISOString() });
 const policy = () => ({ version: 1, requiredCount: 10, approver: 'Hady', firstPostIds: Array.from({ length: 10 }, (_, i) => `first-${String(i + 1).padStart(2, '0')}`), approvals: {} });
@@ -33,8 +34,38 @@ test('the live API rejects an unreviewed post before any external request, inclu
       let code, output;
       const payload = { action, item: item() };
       await handler({ method: 'POST', headers: { 'x-tss-publisher-key': 'test-only-key' }, body: { payload, signature: sign(payload, 'test-only-key') } }, { setHeader() {}, status(s) { code = s; return this; }, json(d) { output = d; } });
-      assert.equal(code, 422); assert.match(output.error, /Explicit user approval/);
+      assert.equal(code, 422); assert.match(output.error, /Completed final QA approval required/);
     }
+    assert.equal(requests, 0);
+  } finally {
+    globalThis.fetch = oldFetch;
+    if (oldKey === undefined) delete process.env.TSS_PUBLISHER_KEY; else process.env.TSS_PUBLISHER_KEY = oldKey;
+  }
+});
+
+test('automatic authorization replaces individual launch approval only for QA-approved supported formats', () => {
+  const p = structuredClone(configuredPolicy), now = Date.parse(p.automationAuthorization.authorizedAt);
+  p.approvals = {};
+  for (const [format, platforms] of Object.entries(p.automationAuthorization.platformsByFormat)) {
+    const i = { ...item(), status: 'approved', format, platforms };
+    enforceUserApproval(i, p, now);
+    assert.throws(() => enforceUserApproval({ ...i, status: 'awaiting_user_approval' }, p, now), /Completed final QA/);
+    assert.throws(() => enforceUserApproval({ ...i, status: 'draft' }, p, now), /Completed final QA/);
+  }
+  assert.throws(() => enforceUserApproval({ ...item(), status: 'approved', format: 'story', platforms: ['instagram', 'facebook'] }, p, now), /outside.*scope/);
+  assert.throws(() => enforceUserApproval({ ...item(), status: 'approved', format: 'carousel', platforms: ['instagram'] }, p, now), /outside.*scope/);
+  assert.deepEqual(p.approvals, {});
+});
+
+test('QA-approved label cannot publish an incomplete manifest under the launch waiver', async () => {
+  const oldKey = process.env.TSS_PUBLISHER_KEY, oldFetch = globalThis.fetch;
+  process.env.TSS_PUBLISHER_KEY = 'test-only-key'; let requests = 0;
+  globalThis.fetch = async () => { requests++; throw new Error('Unexpected external request'); };
+  try {
+    const payload = { action: 'prepare', item: { ...item(), status: 'approved' } };
+    let code, output;
+    await handler({ method: 'POST', headers: { 'x-tss-publisher-key': 'test-only-key' }, body: { payload, signature: sign(payload, 'test-only-key') } }, { setHeader() {}, status(s) { code = s; return this; }, json(d) { output = d; } });
+    assert.equal(code, 422); assert.match(output.error, /requires editorial intelligence metadata/);
     assert.equal(requests, 0);
   } finally {
     globalThis.fetch = oldFetch;

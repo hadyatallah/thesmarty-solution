@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { ACCOUNT, QA_VERSION, checkDuplicates, checkSources, enforceUserApproval, facebookCompletionEligible, imageFingerprint, immutableAssetUrl, normalize, requireThat, schedulerProof, sha256, sign, validateManifest, visualSignature } from '../lib/qa.js';
+import { ACCOUNT, QA_VERSION, automaticPublishingAuthorization, checkDuplicates, checkSources, enforceUserApproval, facebookCompletionEligible, imageFingerprint, immutableAssetUrl, normalize, requireThat, schedulerProof, sha256, sign, validateManifest, visualSignature } from '../lib/qa.js';
 import { analyzeVideo, inspectExport, verifyPublishedImage, verifyPublishedVideo } from '../lib/export-qa.js';
 import { Ledger } from '../lib/ledger.js';
 import { enforceEditorialPolicy } from '../lib/editorial.js';
@@ -201,7 +201,7 @@ try {
       if (Date.parse(item.publishAt) > now) continue;
       enforceUserApproval(item, approvalPolicy, now);
       if (!isControlled) {
-        requireThat(config.approvedFormats.includes(item.format), 'Format has not passed a controlled live verification');
+        requireThat(config.approvedFormats.includes(item.format), 'Format is not enabled for scheduled publishing');
         requireThat(localDay(new Date(item.publishAt)) === day && now - Date.parse(item.publishAt) < 4 * 3600000, 'Stale post will not be published as backlog');
       }
       const today = history.items.filter(i => localDay(new Date(i.date)) === day);
@@ -236,7 +236,7 @@ try {
             record.facebook = { postId: result.postId, photoId: result.photoId }; record.phase = 'published'; await ledger.save(`Save Facebook publication ${item.id}`);
           }
           record.verification = await verify(item, record, reference, ledger);
-          const needsVisualReview = isControlled || approvalPolicy.firstPostIds.includes(item.id);
+          const needsVisualReview = isControlled || (!automaticPublishingAuthorization(approvalPolicy.automationAuthorization, now) && approvalPolicy.firstPostIds.includes(item.id));
           record.phase = needsVisualReview ? 'awaiting_published_visual_review' : 'automatically_verified';
           record.verificationMethod = 'published-asset-comparison';
           await ledger.save(`Save actual published asset checks ${item.id}`);

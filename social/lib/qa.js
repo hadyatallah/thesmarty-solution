@@ -27,8 +27,35 @@ export function binding(item) {
 export function userApprovalBinding(item) {
   return sha256(JSON.stringify({ id: item.id, topic: item.topic, topicKey: item.topicKey, headline: item.headline, creativeKey: item.creativeKey, format: item.format, platforms: item.platforms, caption: item.caption, assetSha256: item.asset?.sha256, creative: item.creative, claims: item.facts?.claims, sources: item.facts?.sources?.map(({ id, url, expectedText, additionalEvidence, reviewNote, authorityType }) => ({ id, url, expectedText, additionalEvidence, reviewNote, authorityType })), geography: item.geography, editorial: item.editorial }));
 }
+// An explicit change of launch policy is authorization to use completed QA.
+// It does not create individual approvals or evidence of previous live tests.
+export function automaticPublishingAuthorization(authorization, now = Date.now()) {
+  if (!authorization || authorization.mode === 'activate-after-initial-approvals-and-live-format-verification') return null;
+  requireThat(authorization.mode === 'automatic_after_qa' && authorization.authorizedBy === 'Hady' &&
+    validTime(authorization.authorizedAt) && Date.parse(authorization.authorizedAt) <= now + 60000 &&
+    authorization.authorizationReference?.length >= 12, 'Invalid automatic publishing authorization');
+  requireThat(authorization.accounts?.instagramId === ACCOUNT.instagramId && authorization.accounts?.facebookId === ACCOUNT.facebookId,
+    'Automatic publishing authorization must identify the TSS accounts');
+  const allowed = { feed: ['instagram', 'facebook'], story: ['instagram'], reel: ['instagram'] };
+  const scope = authorization.platformsByFormat;
+  requireThat(scope && Object.keys(scope).length === 3 && Object.entries(allowed).every(([format, platforms]) =>
+    Array.isArray(scope[format]) && scope[format].length === platforms.length && platforms.every(p => scope[format].includes(p))),
+  'Automatic publishing authorization exceeds the implemented platform formats');
+  const waived = ['first_ten_individual_approval', 'first_ten_published_visual_review', 'prior_live_verification_per_format'];
+  requireThat(Array.isArray(authorization.waivedLaunchGates) && authorization.waivedLaunchGates.length === waived.length &&
+    waived.every(gate => authorization.waivedLaunchGates.includes(gate)), 'Automatic publishing authorization must name the waived launch gates');
+  return authorization;
+}
 export function enforceUserApproval(item, policy, now = Date.now()) {
-  requireThat(policy?.version === 1 && policy.requiredCount === 10 && policy.firstPostIds?.length === 10 && new Set(policy.firstPostIds).size === 10 && policy.approver, 'Missing or invalid ten-post user approval policy');
+  requireThat([1, 2].includes(policy?.version) && policy.requiredCount === 10 && policy.firstPostIds?.length === 10 && new Set(policy.firstPostIds).size === 10 && policy.approver, 'Missing or invalid ten-post user approval policy');
+  const automatic = automaticPublishingAuthorization(policy.automationAuthorization, now);
+  if (automatic) {
+    requireThat(item.status === 'approved', 'Completed final QA approval required before automatic publication');
+    requireThat(Array.isArray(item.platforms) && item.platforms.length > 0 && item.platforms.every(p => automatic.platformsByFormat[item.format]?.includes(p)),
+      'Post is outside the authorized automatic platform/format scope');
+    return true;
+  }
+  requireThat(policy.version === 1, 'Automatic publishing policy requires explicit authorization');
   const validApproval = a => a?.approvedBy === policy.approver && SHA.test(a.contentSha256 || '') && validTime(a.approvedAt) && Date.parse(a.approvedAt) <= now + 60000 && a.authorizationReference?.length >= 12;
   const approval = policy.approvals?.[item.id];
   if (policy.firstPostIds.includes(item.id) || !policy.firstPostIds.every(id => validApproval(policy.approvals?.[id]))) {
@@ -190,13 +217,16 @@ export async function checkSources(item) {
     }
   }
 }
-export function schedulerProof(config, history) {
+export function schedulerProof(config, history, now = Date.now()) {
+  const automatic = automaticPublishingAuthorization(config.automationAuthorization, now);
   const first = history.find(i => i.id === config.verifiedLivePublication);
   requireThat(first?.phase === 'verified' && first.format === 'feed' && first.instagram?.mediaId && first.facebook?.postId, 'Scheduler needs a verified dual-platform feed test');
   for (const p of ['instagram', 'facebook']) {
     requireThat(first.publishedReview?.[p]?.passed === true && first.publishedReview[p].reviewer && first.publishedReview[p].assetSha256 === first.verification?.[p]?.sha256, 'Actual live images need inspection before scheduling');
   }
   for (const format of config.approvedFormats) {
+    requireThat(FORMATS[format], 'Unsupported scheduled format');
+    if (automatic && format !== 'feed' && automatic.platformsByFormat[format]) continue;
     const proof = history.find(i => i.id === config.formatVerifications?.[format]);
     requireThat(proof?.phase === 'verified' && proof.format === format && proof.instagram?.mediaId, `No controlled live verification for ${format}`);
     const review = proof.publishedReview?.instagram;

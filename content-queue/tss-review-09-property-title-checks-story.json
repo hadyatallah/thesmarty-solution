@@ -1,18 +1,18 @@
 {
   "qaVersion": 2,
   "id": "tss-review-09-property-title-checks-story",
-  "status": "awaiting_user_approval",
+  "status": "approved",
   "reviewBatch": "2026-09-initial",
   "reviewNumber": 9,
   "topic": "Cyprus property due diligence: independent document checks",
   "topicKey": "cyprus-property-title-charges-permit-checklist",
   "headline": "BUYING IN CYPRUS? CHECK BEFORE SIGNING.",
-  "creativeKey": "cyprus-property-title-charges-permit-checklist-landmark-v2-story",
+  "creativeKey": "cyprus-property-title-charges-permit-checklist-landmark-v2-story-revision-2",
   "format": "story",
   "platforms": [
     "instagram"
   ],
-  "publishAt": "2026-09-15T09:15:00+03:00",
+  "publishAt": "2026-09-18T14:15:00+03:00",
   "caption": "Before buying, ask an independent lawyer to check title, charges and permits. General information.",
   "creative": {
     "designVersion": 2,
@@ -23,12 +23,13 @@
       "category": "PROPERTY / DUE DILIGENCE",
       "headline": "BUYING IN CYPRUS? CHECK BEFORE SIGNING.",
       "highlight": "TITLE. CHARGES. PERMITS.",
-      "body": "Ask an independent lawyer to check the property's documents and liabilities.",
+      "body": "Ask an independent lawyer to check the property's documents and liabilities. General information.",
       "question": "A viewing cannot replace due diligence.",
       "location": "LARNACA CASTLE / CYPRUS",
       "source": "UK FCDO guidance | updated 2019"
     },
-    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+    "assetFormat": "jpg"
   },
   "facts": {
     "classification": "factual",
@@ -48,8 +49,8 @@
         "expectedText": "seek your own independent legal advice",
         "reviewNote": "General due-diligence checklist only. Do not draw current liability or procedural claims from older guidance.",
         "sourceType": "government-guidance",
-        "checkedAt": "2026-09-14T12:20:37.319301Z",
-        "validUntil": "2026-09-21T12:20:37.319301Z",
+        "checkedAt": "2026-09-16T13:28:45.574Z",
+        "validUntil": "2026-09-23T13:28:45.574Z",
         "additionalEvidence": [
           "building works taking place without the correct planning permission or building permit"
         ]
@@ -65,21 +66,24 @@
     "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
   },
   "asset": {
-    "path": "social/assets/17c2fcf3f028a094440d930c80b537a54ffed64555d2f877d9d0f50d615b6330.png",
-    "sha256": "17c2fcf3f028a094440d930c80b537a54ffed64555d2f877d9d0f50d615b6330",
-    "pixelHash": "9f99d69fe3ddb8c9a4d73ec14ebbcc3f6f69eddd6f402484e87fad79b49bfada",
-    "visualSignature": "rgb32:+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+Pbx9/Xx9/by9/bx9/bx9/Xx+Pfy+vjz+vjz+vjz+vjz+/n0/Pn0/Pn0+vnz+/n0+/n0+/jz/Pn0+/n0+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz/v76///9//75///5///8///9/Pv2+vfz+vjz+vjz+ffz9PPv8/Pv8vLv9vXx9fTw8/Pv9fTw8vLv8/Lu+Pfy/Pn0+/n0+/n0+/n0+/n0+/n0+vjz+vjz+vjz+vjz+ffyvcPHqK+2tMnMusTHubrAqbG43uDf/fv1+ffy+vjz+ffy5Obk3uHh4OTj6Onn4+Xk4eTj4+bk3+Pi4OTj6+zp8/Lt8vHt8vHt8fDs8fDs8vHt+Pbx+ffy+Pby+Pby//33x8vNYG1/kcnNX7e+dJKeXmt+p7C3///5+Pbx+vjz+vjz/v36/fz5/fz4/v33/fv4/fz5/v35/v34+vj0/v35+/n2+/n0/vz2/fz2/fv3/fz4/f35/fv4/f35//759vXy4+Tj0NTV0s7QvsvOzdfYw8fK09bX/fr1+ffy+/n09vXwwMXJy8/R0dXWztHTzNHSxsvOyM3P1dnZ7e7sv8XK19vb4+Xj09bX0tXWy9DRwMfKxcvN1tnZx8vO1tna2t3d9PPw+Pfz9vfz9/by9PLu9PTw8vLv+vjz+vjz+/n09PPvnqqypK+2qbO6rre9tLzBnaixo621ub/Ev8XJmKSuqbK5v8bJtLzBq7W8qrS6rre9rre9qLG4pa+2qLG5xMnN5ebk293d4eLh3+Hg+Pbx/Pn0+/n0+vjz+vjz+/n09fTvz9HTztDSt73EtbvCyMvOyMrOxMrN5Oblnqawv8PIvcHH0NHUvsLGtrvBsbe+1tfb3N7hwsXJuL3DvMLHqrO6rre9o6y0qLG4rre+4ePi+/nz+vjz+vjz+vjz+ffy/vr1y9/exd3byOHevdnY3+rmsdLS9/fz7PDsz+Thw9zbvNrXwN3auNbVttfXwNvZuNbUtNTTt9bV3+zo+/jz/fz3/Pv2/v33/fz3+fjz9/bx+fjz+vjz+vjz+vjz+vjz+ffystPSrtHQsNLRocvLr9LRmsjHx97cv9rYqM7OtdXUyN7cwNrYxt7cx93bxd3bw9zayd/dyt/d1OTh+Pfy+Pby+Pfy+Pfy+Pby+fjz+vjz+vjy+vjz+vjz+vjz/Pn08PPvv9vZvdvYuNjXttjWu9rYttfVvNrYw93bzuPgv9vY+Pn0//75/v34//35//75/v35/v34/v35/v34/fv1/Pr0/Pr0/fr1/Pr1/Pv1/Pr1+/n0+vjz+vjz+vjz+vjz+vjz6Obk5ubk5ufl6Ofl4ODf6ebl5+fl6+rn6urn5+jm4+bk6uvo6uvo5+nm5ufl6uro5+jl6Onm4uTi5OXj6Ojm6urn5OXj6enn5OXk5OXk8/Lu+/n0+vjz+vjz+vjz+Pfy2t7e293d19na0tXW0NTV3d/e6+vp6ern7u3q6+vo6enn7u7r7Ozp7ezq6+vo6urn6+vo7Ozp8fDs9PPu9PPv9fTv8/Lu9fPv9PPv9PLu+Pbx+vjz+vjz+vjz/Pn08fTw4+vo6unn3uHg3+Hg3uDf5ebk3+Hg293d5OXk297d2tzc5eXk3d/e4+Ti3uDf1NfY3N7e4OHg9fPv/fr1+/j0+/nz+/n0+/n0+/n0+/n0+vjz+vjz+vjz+vjz+vjz+vjz+vjz/Pr0/fr1/fv1/Pr1/Pn0/fv1/fv2+/n0/Pr0/fv2/Pr1/fv2/Pr1/Pv1/Pv1/Pr0/Pr0+ffy+Pby+Pby+ffy+ffy+Pfx+Pbx+Pbx+ffy+ffy+vjz+vjz+vjz+vjz/Pnz/Pnz+/nz+/nz/Pn0/Pr1+/n0/Pr0///5///6/fv2/vz3/Pr1/fv2/vz2/v75///7//75//75///5///5//34//z5//35///7///7/vz4/Pv3+vjz+vjz+vjz+ffz1N3py9bnzdjo0Nroz9jl0drl1t/qz9jitr7HrLK4pquvnqKjn6SnsbW3t8LLbnlyaHJnc31wgYiBjZGIjZKFipSDfol7gIp8eX15ioeBl5KCvLWl+/n1+vjz+vjz+Pbyt8bipLndqbzescXnkJ2udX+JdIGPdX6HbnV8dHd6fH5/en2AgIWIi4+QeH6AZG5rJTQrKjwrJjEvJi0wLTI0MTkyNUA0KzUrHCQcISQhKikgWFhL/Pr2+vjz+vjz+Pfzt8rporzmqsPsqMDkhY2VgouSfIeRhYyRjZOWlZuemZ6fnaWroqmvlZmcaWplqqKTf4J5ERsSKzEwISYnHyMmKi4xGyAdMjc2SlFRJCYmHyElT1FR/fv2+ffy+/n09/XwqqqsmJqfqa21pqirg4J9fICDgIiQj5mhm6Srm6OqoKiwoqqzoKevh4uNZmdkoZWBlol0S0tDNTcyaWxrdXl8TldhRk1Mcnt7lKCqgIiQWmJnkZeg//74+ffy+/n0+PXvqZV7m4FhqZR3n4tyl4hzfXFhVk9GSEpMeX2Bjo+Ql5iampyel5ufc3FsY2BVkYNsh3ZTh4FpPT8xlI19qqKQamtteXyEr62rpKKhqamog4GCeHl//fv2+vjz+vjz+/jymodzXkk3cmBSeGpfUkM8cWRaWlNPUE5QX19hdXV0goKDgH54fXx3dnh3dXZzgX1wLzchJjMcKzkiLDQgMDsfXmdLWmFffohvf4dygYp0VltQZmdo//32+ffz+/n09vTvg3t1TkZBZmBfnJeUmJSTs7OztbW1trW1tba3r7Gyra6wra+vq62tra+wqKyvoqaoNz01ERkPExwSExwPLDcpj5qalp+njJiciJSYfouRWWZdbnht/fr1+vjz+vjz+ffy1tjWys7N09bT19jW2dvZ1tjX2drZ0NLSzM/O29rX393Y3dvX3dvY29nV2NbR2dbQ0M7JxMO+tbOtubexy8rF2trY2tva2tra2Nrc2tzgt7mssrif/Pr1+vjz+vjz+ffz8fLw8fLw8fPw7/Hv7/Du8/Xx8vPw8PLv7/Hu+vn1//33//33//33//34//34//34//77///9///+///+///8//33//33//33//33//73///9/v79+vjz+vjz+vjz+ffy5OXj3t/e3d7e3+Hf4eLh4ePh297e4+Tj4OHg7+7r+/nz+Pfy+ffy+ffy+ffy+ffy8vPv8fLu8fLt8fLu8fLu8vPv8vPv8vPv8vPv8vPv8PLt8fPu+vjz+vjz+vjz+vjz9PPv8vHt8vHt8/Lu8/Lu8/Lu8vHt9PPv8/Lu9/Xx+vjz+vjz+vjz+vjz+vjz+vjz+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+vjz+vjz+vjz+vjz+/n0/Pr1/Pr1/Pn1/Pn0/Pn0/Pr0+/n0/Pn0+/jz+vjz+vjz+vjz+vjz+vjz+vjz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz",
-    "layoutSha256": "8312d016d27b1d1213e7e557dad811e421ec2b0cc1d263aca6e60b9c13af952b",
+    "path": "social/assets/7f95ed17e1193bec3c870125b491f80b16fe80e6af0d5648dac21eb93137a09c.jpg",
+    "sha256": "7f95ed17e1193bec3c870125b491f80b16fe80e6af0d5648dac21eb93137a09c",
+    "pixelHash": "4b73de1f4714819b0a03f25feaf7ce80af2598704584f0de7078a61efddd60b0",
+    "visualSignature": "rgb32:+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz9/bx9fXw9vby9vbx9vXx9vXx+Pfy+fjz+fjz+fjz+fjz+vn0+/r0+/r0+/nz+/n0+/n0+vn0+/r0+/n0+vnz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz/v76///+///5///6///8///8/Pv1+ffz+fjz+fjz+Pjz8fLu7/Ht7/Ht8/Tw8fPv8PLu8vPv7/Ht8PHt9vXx+vjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+PfywMXJrLK5uM7QwMjMu77Ds7vA4ePh/Pr1+Pfy+fjz+Pfy6ezp5unn5+ro7/Dt6uzq6Ovp6u3q5enn5+vo8vLu+fjz+Pfy+Pfy+Pfy9/by9/by9/fy+Pfy9/by9/by//33wcfKW2Z6jMTIV7O8cJCdV2V5o6y0///69/bx+fjz+fjz/v76/v76/v35/v35//35//76/v76//75/Pr2//76/fz3+/r2/Pv2/f33/v35/v76/v75/fz3/v34//749fXw4eTi0NXWzszOvMfKytPVusDE0dXW/Pv1+Pfy+vn09fXwwMbKzNHS09fX0NTWztPUx8zOx83P0dbX7e/swcfL2Nvb5Obk1djZ1NjYyM3Qv8XJxMrN2tzcys/R0tbX3N7d9vbx+vr1+vv3+/r19vXy+Pj09PTw+fjz+fjz+vn08/PvoKuzo621qLK5qrS6sbrAnKewo662vcTIv8bJlqOsp7G5vsXJtb3CqLO5rLa9r7e+rre9pa+3o621rre+w8nM5Obk2t3c4OLh3uHf9/bx+vnz+vnz+fjz+fjz+vn09PTwx8zOx8vOtbvBs7i/xcnMxMfLwsjM4uTjmKOuu8HGvsHG0NDTuLzCtbrArrW91Nfa2t3gvcHGtbzBtr7DqLK5rLW7oay0p7C4qrS63+Lg+fj0+Pjz+fjz+fjz+Pfy/Pr1zOLfyODdyOHdv9vZ4ezostTT+Pjz7vPuz+Xixd/cvtzZvtzZuNjWtdfVwN3auNfWtdbUt9jW3uvn/vv2/f33/Pv2/v34/v33/Pv1+Pfy+fjz+fjz+fjz+fjz+fjz+PjzvdnXs9TSuNfVqtDOsdPRn8rKyt/dxt7brtHQu9nWyN/cwtzZyN/cyd/cx97cxt7by+HezeHf1+bi9vbx+Pfy+Pfy+Pfy9/fy+Pfy+fjz+fjz+fjz+fjz+fjz+/n07/PutNbTttfVrNLRrNLRttfVsdXSt9jWt9jWx9/ctNbU+Pn0//76//75/v74//75/v74/v34/v74/v33+/r0+/n0+/r0+/r0+/n0+/r0+/r0+fjz+fjz+fjz+fjz+fjz+fjz6+nn6+nn7uzp7Ono4+Pi6unn5eTj6+nn6unn5+fl3+Lh5+nm5ujm4uXj4+Xk6Onn5efl5+jm4ePi4uTj5+jm6Orn4uTi6Onm4+Tj4+Tj8vLu+vn0+fjz+fjz+fjz9/fy2t7d2t3d1NjY0dXX0NTV3ODf2t3d09fX1dra2t3d0dbX2t7d1NjY1tnZ3uDf7e3q7Ozp7O3q8vLu9fXw9fTw9vXx9fTv9vXw9fXw9PTw9/fy+fjz+fjz+fjz+/n08PTv4ern6enm3eDf3uHg3N/e4+Xk4ePh3N/f5ufl3d/e29/e5ufl3+Hg5Obk3uHg1NjY3N/e4OLh9PTv+/r1+vn0+vnz+vn0+vnz+vn0+vn0+fjz+fjz+fjz+fjz+fjz+fjz+vn0+/r1/Pv1/Pv1+/r1+/n0/fr1/Pv1+/r0/Pr1/Pv2+/r0/Pr1+/r1/Pv2/fv1/Pv1/Pv1+vjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+Pfy+Pfy+Pfz+Pjz+fjz+fjz+Pfz+fjz+fjz+Pfz+fjz+Pfz+Pjz+Pfy+Pfy+fjz+Pfz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+Pjz9/bx9/bx9/bx9/bx9/by9vXw9vXw9vXw9vXw9fTw9fTw9vXw9vTw9fPu9fTv9vXw9/bx9fTv8fDr9PPu9fTv9PTv9fPv9fTv9fTv9fTv9fTv9fTv9fTv9fTv9fTv+Pbx5Ofs5Ofs4+fr5Oju4+bp2trY19jW1tfW1tbU2NjV2trV29nV3dvX397c4ODd4N/b1dTP4N7Z2NjTxsjCxsjCw8PAxMTAxMTAxMO/yMjDx8fCw8K9v7+4wcC7w8K+vLu1uszpuczru87swtf1p7G+nJ+gn6aunqasp6yvp62wq6+zsba5sbe7sLa7tLm9qKqqiImIpZ6RxcCzVlxVR0xFXWFgU1VVT1JSXWFjTVBMSk1IfIKEcnV3V1dYWFpccXNzlpSUl5aXo6OnrK+0j46Ke3x7eoCFgYmSjpihmaKpmaCmm6Kpoamxoaiwm6OphIiHZGVjkYh1qZqCa2RWODo0Oz04b3NzeH1/VF1pPkdKZGxqh5KYlqKtfIWOXWRpgImXln1hn4VmqJJ1oIxyoY52k4Vyd25gUk1ES0xOfoKIkZSWmJmanJ+joKSql5qfc3FrYWFXkYV0iXVWpZR2Z2RWR0Q5r6aYtq2ceHd4aG57sK6tq6mopqWjp6amj42MaWpykXlfcltIgm1ajHppY1RJXUs/aFpORTw5QD5ATU1OYGBef3+Ae3h1fHhxeHd0aWpnYWBZhHppTFAzLTYbLzsgLDgeOD4lOUMjWWA/SU9RdHtoho51hIl2h417UVRKP0FCjX90dmphamNgpJuWjYaFkImHube1p6Wkrq2ts7O1sbGxsbGzsLGysLCura6ssrW3sLS4s7e6cnVtSVFIU1tQUVtPUVlOVV5Rk52OnKKjl5+YnKSYlp+TkJqNi5KKhouI6Ojk6ejk4uTh4uXi8fPw8/Xx7e7r8fPv8vPv7e/s6+7r9fTw+fjy9/bx+Pfy9/Xx9fTv9/by8/Lt5uXg5+Xg5+bh6Ofh6ujj9PTz9/f19/b19PP09PP08fHy7ezq7u3p/fv2+/v16e3r5Onn5ejn5Ojn5enn6uzq5+vp5Ojm4ubm8/Pv+vn0+fjz+fjz+fjz+fjz+fjz+vn0/fz3/fv2/fz3/fv2/fz2+vnz+fjz+vnz+vnz+vnz+/nz+/r1+vn0+Pfy9/by5OXj3d/f3N7e3+Hg4ePh4OPh297d5OXj3+Hg7u/r+/r0+Pjz+fjz+fjz+fjz+fjz8vTv8PPu8PPu8PPu8PPu8PPu8fTv8fTv8fTv8fTv8fPv8vPv+Pfy+Pfy+fjz+fjz9/bx9fbx9vXx9/by9vbx9/by9vbx9vbx9vbx+Pfy+fjz+fjz+fjz+fjz+fjz+fjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+fjz+fjz+fjz+fjz+vjz+vnz+fnz+vnz+fjz+vjz+vjz+fjz+vjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz",
+    "layoutSha256": "fe5d89d0cf20c87e9535fde7bf9ab4d93df9b9749ee27ffb0013cd41ed2f1b44",
     "width": 1080,
     "height": 1920,
     "originFormat": "story",
-    "commit": "77d7375d3cdcef299b760918ff146b3a073ccfcb"
+    "commit": "28031c6674943f9cc68d7468e47d3cc85008819b"
   },
+  "revision": 2,
+  "approvalBasis": "automatic_after_qa",
   "review": {
-    "reviewer": "Codex final-export editorial review",
-    "reviewedAt": "2026-09-14T12:40:04.766Z",
-    "assetSha256": "17c2fcf3f028a094440d930c80b537a54ffed64555d2f877d9d0f50d615b6330",
+    "reviewer": "Codex final-export editorial and visual review",
+    "reviewedAt": "2026-09-16T13:39:17.250Z",
+    "assetSha256": "7f95ed17e1193bec3c870125b491f80b16fe80e6af0d5648dac21eb93137a09c",
     "captionSha256": "799f19f5f1cb82dde2a54e8a19ae80c1f26dc100993ff867a1eb0e53df831ba5",
+    "boundSha256": "fa13fad1605328d3f2df38425878e2a6aa1abfcd6c834d9d1b45b0c2a9058179",
     "checks": {
       "dimensions": true,
       "imageLoaded": true,
@@ -98,8 +102,6 @@
       "duplicatesChecked": true,
       "hashtagLimit": true,
       "finalExportInspected": true
-    },
-    "notes": "Actual final files visually inspected; actual text-region OCR, source semantics and comparison values verified; Republic-controlled photo and licence checked; recent history and within-batch duplicates checked. User approval is separate and still absent.",
-    "boundSha256": "73388d22040a6592b282cebce449d32178dce95061ee379239188de5febf516c"
+    }
   }
 }

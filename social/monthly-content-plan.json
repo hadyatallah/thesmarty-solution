@@ -13,19 +13,26 @@
   "formats": {
     "feed": {
       "monthlyTarget": 16,
-      "platforms": ["instagram", "facebook"],
+      "platforms": [
+        "instagram",
+        "facebook"
+      ],
       "width": 1080,
       "height": 1350
     },
     "story": {
       "monthlyTarget": 20,
-      "platforms": ["instagram"],
+      "platforms": [
+        "instagram"
+      ],
       "width": 1080,
       "height": 1920
     },
     "reel": {
       "monthlyTarget": 8,
-      "platforms": ["instagram"],
+      "platforms": [
+        "instagram"
+      ],
       "width": 1080,
       "height": 1920
     }
@@ -36,42 +43,66 @@
       "label": "Cyprus property and acquisition intelligence",
       "monthlyTarget": 12,
       "classification": "useful",
-      "formats": {"feed": 6, "story": 4, "reel": 2}
+      "formats": {
+        "feed": 6,
+        "story": 4,
+        "reel": 2
+      }
     },
     {
       "id": "tax-relocation",
       "label": "Tax residency and relocation comparisons",
       "monthlyTarget": 10,
       "classification": "useful",
-      "formats": {"feed": 4, "story": 4, "reel": 2}
+      "formats": {
+        "feed": 4,
+        "story": 4,
+        "reel": 2
+      }
     },
     {
       "id": "cyprus-economy-business",
       "label": "Cyprus economy, business and investment",
       "monthlyTarget": 8,
       "classification": "useful",
-      "formats": {"feed": 3, "story": 4, "reel": 1}
+      "formats": {
+        "feed": 3,
+        "story": 4,
+        "reel": 1
+      }
     },
     {
       "id": "europe-comparisons",
       "label": "European housing and relocation evidence",
       "monthlyTarget": 4,
       "classification": "useful",
-      "formats": {"feed": 1, "story": 2, "reel": 1}
+      "formats": {
+        "feed": 1,
+        "story": 2,
+        "reel": 1
+      }
     },
     {
       "id": "cyprus-lebanon",
       "label": "Cyprus and Lebanon opportunities",
       "monthlyTarget": 2,
       "classification": "useful",
-      "formats": {"feed": 1, "story": 1, "reel": 0}
+      "formats": {
+        "feed": 1,
+        "story": 1,
+        "reel": 0
+      }
     },
     {
       "id": "tss-positioning",
       "label": "TSS positioning and opportunity marketing",
       "monthlyTarget": 8,
       "classification": "promotion",
-      "formats": {"feed": 1, "story": 5, "reel": 2}
+      "formats": {
+        "feed": 1,
+        "story": 5,
+        "reel": 2
+      }
     }
   ],
   "formatRoles": {
@@ -91,8 +122,8 @@
   "controls": {
     "schedulerEnabledByThisFile": false,
     "strategyApprovalIsNotPostApproval": true,
-    "initialPostsRequireIndividualApproval": 10,
-    "requireControlledLiveVerificationPerFormat": true,
+    "initialPostsRequireIndividualApproval": 0,
+    "requireControlledLiveVerificationPerFormat": false,
     "publishFewerWhenQaFails": true,
     "backfillMissedSlots": false,
     "requireOfficialOrPrimaryEvidence": true,
@@ -105,6 +136,10 @@
     "requireSourceReviewedTrendCandidates": true,
     "allowAutomaticTrendClaims": false,
     "requirePermissionForSocialProof": true,
-    "carouselPublishingEnabled": false
+    "carouselPublishingEnabled": false,
+    "launchPolicy": "automatic_after_qa",
+    "launchAuthorizationPolicyPath": "social/user-approval-policy.json",
+    "requirePublishedAssetComparison": true,
+    "stopOnUncertainPublication": true
   }
 }

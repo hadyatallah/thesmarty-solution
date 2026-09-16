@@ -45,8 +45,11 @@ test('current adapter publication count is correct', () => {
 test('strategy cannot approve or activate publishing', () => {
   assert.equal(plan.controls.schedulerEnabledByThisFile, false);
   assert.equal(plan.controls.strategyApprovalIsNotPostApproval, true);
-  assert.equal(plan.controls.initialPostsRequireIndividualApproval, 10);
-  assert.equal(plan.controls.requireControlledLiveVerificationPerFormat, true);
+  assert.equal(plan.controls.initialPostsRequireIndividualApproval, 0);
+  assert.equal(plan.controls.requireControlledLiveVerificationPerFormat, false);
+  assert.equal(plan.controls.launchPolicy, 'automatic_after_qa');
+  assert.equal(plan.controls.requirePublishedAssetComparison, true);
+  assert.equal(plan.controls.stopOnUncertainPublication, true);
   assert.equal(plan.controls.publishFewerWhenQaFails, true);
   assert.equal(plan.controls.backfillMissedSlots, false);
   assert.equal(plan.controls.requireAudienceDecisionMappingForNewContent, true);
@@ -58,7 +61,7 @@ test('strategy cannot approve or activate publishing', () => {
 
 test('publishing caps match the approved monthly plan', () => {
   assert.equal(config.schedulerEnabled, true);
-  assert.equal(config.automationAuthorization.requireInitialTenVerified, true);
+  assert.equal(config.automationAuthorization.requireInitialTenVerified, false);
   assert.equal(config.controlledPublicationId, null);
   assert.equal(config.monthlyPlan.path, 'social/monthly-content-plan.json');
   assert.equal(config.monthlyPlan.calendarMonthCap, plan.targets.contentAssets);

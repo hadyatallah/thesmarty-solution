@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "requiredCount": 10,
   "approver": "Hady",
   "firstPostIds": [
@@ -46,5 +46,34 @@
       "authorizationReference": "Explicit instruction to publish Post 5 Revision 2 to Instagram and Facebook in the TSS Work chat."
     }
   },
-  "note": "Record explicit user approval only after the final asset, caption and sources are presented. QA approval is separate. Later posts become eligible for automation only after all ten approvals exist; existing live-format verification and scheduler gates still apply."
+  "note": "The first ten IDs and five recorded approvals preserve historical evidence. On 16 September 2026 Hady explicitly waived the initial manual approval and launch-test prerequisites. In automatic_after_qa mode, new eligible assets may publish only after all normal QA checks pass within the authorized platform/format scope. No individual approval is inferred or recorded for unapproved posts.",
+  "automationAuthorization": {
+    "authorizedBy": "Hady",
+    "authorizedAt": "2026-09-16T13:28:05Z",
+    "authorizationReference": "skip the agreed launch gates pass and proceed with automation starting today",
+    "mode": "automatic_after_qa",
+    "accounts": {
+      "instagramId": "17841424595983267",
+      "facebookId": "177672945439622"
+    },
+    "platformsByFormat": {
+      "feed": [
+        "instagram",
+        "facebook"
+      ],
+      "story": [
+        "instagram"
+      ],
+      "reel": [
+        "instagram"
+      ]
+    },
+    "waivedLaunchGates": [
+      "first_ten_individual_approval",
+      "first_ten_published_visual_review",
+      "prior_live_verification_per_format"
+    ],
+    "requireInitialTenVerified": false,
+    "note": "Explicit user waiver replaces the initial rollout prerequisites. Final-export QA, verified sources, account checks, duplicate protection, publication caps, actual published-asset comparison and uncertain-outcome quarantine remain required. Facebook vertical formats are not implemented or authorized by this scope."
+  }
 }

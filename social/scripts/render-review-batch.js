@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import sharp from 'sharp';
 import { execFileSync } from 'node:child_process';
 import { renderCreative } from '../lib/render.js';
 import { imageFingerprint, sha256, visualSignature } from '../lib/qa.js';
@@ -13,7 +14,10 @@ if (requested.length && files.length !== requested.length) throw new Error('One 
 await fs.mkdir('social/assets', { recursive: true });
 await fs.mkdir('social-results/reel-scenes', { recursive: true });
 async function saveFrame(creative) {
-  const { buffer, layout } = await renderCreative(creative), hash = sha256(buffer), extension = creative.assetFormat === 'jpg' ? 'jpg' : 'png', path = `social/assets/${hash}.${extension}`;
+  const { buffer, layout } = await renderCreative(creative), hash = sha256(buffer);
+  const format = (await sharp(buffer).metadata()).format;
+  if (!['png', 'jpeg'].includes(format)) throw new Error('Unexpected final image encoding');
+  const extension = format === 'jpeg' ? 'jpg' : 'png', path = `social/assets/${hash}.${extension}`;
   const layoutText = JSON.stringify(layout, null, 2) + '\n';
   await fs.writeFile(path, buffer); await fs.writeFile(`${path}.layout.json`, layoutText);
   return { path, sha256: hash, pixelHash: await imageFingerprint(buffer), visualSignature: await visualSignature(buffer), layoutSha256: sha256(layoutText), width: layout.width, height: layout.height, originFormat: creative.format, commit: null };

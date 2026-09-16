@@ -16,8 +16,8 @@ on:
     - cron: '15 9,14,19 * * *'
       timezone: 'Asia/Nicosia'
 
-# The schedule starts with readiness checks. Publishing is gated by all ten
-# exact approvals, inspected live results and enabled-format verification.
+# Explicit automatic-after-QA authorization replaces the first-ten rollout hold.
+# Actual content checks, supported adapters, duplicate protection and caps remain.
 permissions:
   contents: write
 
@@ -64,7 +64,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_SHA: ${{ github.sha }}
         run: node social/scripts/check-samples.js
-      - name: Verify final posts awaiting user approval without publishing
+      - name: Verify unpublished final review exports without publishing
         if: ${{ !cancelled() }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

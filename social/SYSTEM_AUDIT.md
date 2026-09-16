@@ -1,3 +1,9 @@
+> Policy update, 16 September 2026: Hady explicitly waived the initial-ten
+> individual approvals and prerequisite live-format launch gates. The automatic
+> publisher is authorized to start today after all content/asset/account QA.
+> The launch holds described below are historical audit findings and have been
+> superseded. Unresolved outcomes, factual/design QA and posting limits remain.
+
 # TSS system audit — 16 September 2026
 
 ## Verified working
@@ -50,7 +56,7 @@ The deployment workflow repeats these checks against the connected accounts.
 4. Facebook currently receives Feed images. Facebook Stories/Reels need separate
    adapters and controlled tests if the full format mix is wanted there too.
 
-The scheduled workflow is authorized and begins with readiness checks. It can
-publish due approved queue items automatically once the launch gates are all
-satisfied. It neither approves Posts 6–10 nor manufactures content to fill slots.
+The scheduled workflow now publishes QA-approved queue items under explicit
+automatic authorization. It does not manufacture content to fill slots, and the
+remaining content-supply and Facebook vertical-adapter limits still apply.
 The live state is `tss-social-state: social/automation-status.json`.

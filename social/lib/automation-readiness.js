@@ -1,16 +1,24 @@
-import { enforceUserApproval, schedulerProof } from './qa.js';
+import { automaticPublishingAuthorization, enforceUserApproval, schedulerProof } from './qa.js';
 import { unresolvedPublications } from './publication-run.js';
 
-// Authorization to automate does not waive the first-ten or live-format gates.
+// Preserve genuine approval/live-proof counts even when their launch gates have
+// been explicitly waived. Every asset still passes the publishing QA pipeline.
 export function automationReadiness(config, policy, queue, history, plan, now = Date.now()) {
   const blockers = [], initial = [];
+  let automatic = null;
+  try {
+    automatic = automaticPublishingAuthorization(config.automationAuthorization, now);
+    const policyAuthorization = automaticPublishingAuthorization(policy?.automationAuthorization, now);
+    if (JSON.stringify(automatic) !== JSON.stringify(policyAuthorization)) throw new Error('Scheduler and publisher automation authorizations do not match.');
+  } catch (error) { blockers.push(error.message); }
   if (policy?.firstPostIds?.length !== 10 || new Set(policy.firstPostIds).size !== 10) blockers.push('The initial ten-post policy is invalid.');
   for (const id of policy?.firstPostIds || []) {
     const item = queue.find(item => item.id === id), live = history.find(item => item.id === id);
     let approved = false, reason = null;
     try {
       if (!item) throw new Error('Queue manifest missing');
-      enforceUserApproval(item, policy, now);
+      // Count exact individual approvals only, never the automation waiver.
+      enforceUserApproval(item, { ...policy, version: 1, automationAuthorization: undefined }, now);
       approved = true;
     } catch (error) { reason = error.message; }
     const verified = live?.phase === 'verified' && item?.platforms?.every(platform => {
@@ -19,12 +27,16 @@ export function automationReadiness(config, policy, queue, history, plan, now = 
     });
     initial.push({ id, approved, verified: Boolean(verified), ...(reason ? { reason } : {}) });
   }
-  if (initial.some(item => !item.approved)) blockers.push('Each of the initial ten posts needs approval for its exact asset and caption.');
-  if (initial.some(item => !item.verified)) blockers.push('The initial ten published results need final visual verification.');
+  if (!automatic && initial.some(item => !item.approved)) blockers.push('Each of the initial ten posts needs approval for its exact asset and caption.');
+  if (!automatic && initial.some(item => !item.verified)) blockers.push('The initial ten published results need final visual verification.');
   const requiredFormats = Object.entries(plan.formats).filter(([, v]) => v.monthlyTarget > 0).map(([format]) => format);
   const missingFormats = requiredFormats.filter(format => !config.approvedFormats?.includes(format));
-  if (missingFormats.length) blockers.push(`Live format verification is pending: ${missingFormats.join(', ')}.`);
-  try { schedulerProof({ ...config, approvedFormats: requiredFormats }, history); }
+  if (missingFormats.length) blockers.push(`Formats are not enabled for scheduled publishing: ${missingFormats.join(', ')}.`);
+  const liveFormatVerificationPending = requiredFormats.filter(format => !history.some(i =>
+    i.id === config.formatVerifications?.[format] && i.phase === 'verified' && i.format === format && i.instagram?.mediaId &&
+    i.publishedReview?.instagram?.passed === true && i.publishedReview.instagram.reviewer && i.verification?.instagram?.sha256 &&
+    i.publishedReview.instagram.assetSha256 === i.verification.instagram.sha256));
+  try { schedulerProof({ ...config, approvedFormats: requiredFormats }, history, now); }
   catch (error) { blockers.push(error.message); }
   const unresolved = unresolvedPublications(history);
   if (unresolved.length) blockers.push('Unresolved publication outcomes need review before scheduled publishing.');
@@ -35,7 +47,10 @@ export function automationReadiness(config, policy, queue, history, plan, now = 
     authorized: config.schedulerEnabled === true,
     ready,
     publishingEnabled: config.schedulerEnabled === true && ready,
-    mode: config.schedulerEnabled !== true ? 'disabled' : ready ? 'publishing' : 'readiness-checks',
+    mode: config.schedulerEnabled !== true ? 'disabled' : ready ? automatic ? 'automatic_after_qa' : 'publishing' : 'readiness-checks',
+    manualInitialApprovalsRequired: !automatic,
+    waivedLaunchGates: automatic?.waivedLaunchGates || [],
+    liveFormatVerificationPending,
     initialApproved: initial.filter(item => item.approved).length,
     initialVerified: initial.filter(item => item.verified).length,
     requiredCount: 10, initial, requiredFormats, missingFormats, unresolvedIds: unresolved.map(item => item.id),

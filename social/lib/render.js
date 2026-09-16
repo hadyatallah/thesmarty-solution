@@ -480,6 +480,7 @@ async function renderLandmarkCreative(input) {
     requireThat(!(a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y), 'Text regions overlap');
   }
   for (const r of regions) requireThat(!(r.x < logoRegion.x + logoRegion.width && r.x + r.width > logoRegion.x && r.y < logoRegion.y + logoRegion.height && r.y + r.height > logoRegion.y), 'Text overlaps the TSS logo');
-  const buffer = await sharp({ create: { width, height, channels: 3, background: colors.cream } }).composite(layers).png().toBuffer();
+  const composed = sharp({ create: { width, height, channels: 3, background: colors.cream } }).composite(layers);
+  const buffer = await (input.assetFormat === 'jpg' ? composed.jpeg({ quality: 94, chromaSubsampling: '4:4:4', mozjpeg: true }) : composed.png()).toBuffer();
   return { buffer, layout: { designVersion: 2, format: input.format, width, height, textRegions: regions, logoSha256: LOGO_SHA, logoRegion, photoSha256, palette: colors, categoryRule: false, photoTransition: { y: photoTop, height: fadeHeight, mode: 'cream-to-photo-fade' }, photoRegion: { x: 0, y: photoTop + fadeHeight, width, height: photoHeight - fadeHeight - bottomFadeHeight }, safeArea: { left: 72, right: 1008, top, bottom } } };
 }

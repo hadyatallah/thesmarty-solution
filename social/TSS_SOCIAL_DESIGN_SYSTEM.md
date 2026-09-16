@@ -190,15 +190,15 @@ per-second frame comparisons, transitions and ending checks. Captions use no
 more than five relevant hashtags; Story captions remain below 120 characters.
 
 If any check fails, status remains draft and it must not enter the publishing queue.
-Passing QA sets the first ten posts to `awaiting_user_approval`. Notify Hady
-here when a final post or revision is ready. Only explicit user approval of
-the exact creative and caption can populate `social/user-approval-policy.json`.
-Technical QA cannot substitute for this approval. Content changes need revision
-approval; scheduling-only changes preserve content approval but require a fresh
-technical QA seal.
+Hady explicitly waived individual first-ten approvals and pre-launch format tests
+on 16 September 2026 and authorized `automatic_after_qa` publishing. After actual
+source, design and exported-asset inspection, an item can be marked `approved`
+under that automation authorization. Preserve the five historical individual
+approvals and do not invent additional individual approvals or live-test evidence.
+Notify Hady of new final exports/revisions without requesting the waived approvals.
+Every changed asset, caption or evidence set still needs a fresh technical QA seal.
 
-Full automatic publishing follows the ten approvals and inspected live rollout
-tests. Each enabled format needs its own actual live proof. The agreed calendar
+The agreed calendar
 month plan is 44 assets: 16 Feed, 20 Stories and 8 Reels, with at most 8 direct
 TSS promotions. Three daily slots are the maximum available capacity, not a
 requirement to create or publish three items every day. Skip any slot that cannot

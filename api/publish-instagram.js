@@ -58,7 +58,7 @@ async function inspect(c) {
   }
   const keys = ['TSS_PUBLISHER_KEY', 'INSTAGRAM_ACCESS_TOKEN', 'INSTAGRAM_USER_ID', 'FACEBOOK_PAGE_ACCESS_TOKEN', 'FACEBOOK_PAGE_TOKEN', 'META_PAGE_ACCESS_TOKEN', 'FB_PAGE_ACCESS_TOKEN', 'FACEBOOK_PAGE_ID', 'META_PAGE_ID', 'FB_PAGE_ID', 'FACEBOOK_USER_ACCESS_TOKEN', 'FACEBOOK_ACCESS_TOKEN', 'META_USER_ACCESS_TOKEN'];
   const environmentReferences = Object.fromEntries(keys.map(name => [name, Boolean(process.env[name])]));
-  return { ...accounts, recent, qaVersion: QA_VERSION, contractVersion: PUBLISHER_CONTRACT_VERSION, policyDigest: POLICY_DIGEST, environmentReferences, userApprovalPolicy: { requiredCount: approvalPolicy.requiredCount, recordedCount: approvalPolicy.firstPostIds.filter(id => approvalPolicy.approvals[id]).length } };
+  return { ...accounts, recent, qaVersion: QA_VERSION, contractVersion: PUBLISHER_CONTRACT_VERSION, policyDigest: POLICY_DIGEST, environmentReferences, userApprovalPolicy: { mode: approvalPolicy.automationAuthorization?.mode || 'initial_individual_approval', historicalRequiredCount: approvalPolicy.requiredCount, recordedCount: approvalPolicy.firstPostIds.filter(id => approvalPolicy.approvals[id]).length, manualInitialApprovalsRequired: approvalPolicy.automationAuthorization?.mode !== 'automatic_after_qa' } };
 }
 async function validate(item, c) {
   enforceEditorialPolicy(item, editorialIntelligence, audienceNeeds, editorialPolicy, proofRegistry);

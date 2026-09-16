@@ -11,22 +11,24 @@ Post 5 is [on Instagram](https://www.instagram.com/p/DdWJM1fHCXe/) and
 [Facebook](https://www.facebook.com/122301039992216133/posts/122301236666216133).
 The durable source of truth is `tss-social-state: social/history.json`.
 
-The user authorized recurring automation after this audit. The workflow checks
-at **09:15, 14:15 and 19:15 Asia/Nicosia**, including daylight saving changes.
-`schedulerEnabled: true` records that authorization; it is NOT proof of readiness.
-`automationReadiness()` computes the effective publishing permission on every run.
-Until all launch gates pass, these are readiness/account/QA checks only:
+On 16 September 2026 Hady explicitly replaced the initial rollout hold with:
+“skip the agreed launch gates pass and proceed with automation starting today”.
+The policy now uses `automatic_after_qa`. Individual approval of Posts 6–10,
+completion of the first ten and prerequisite live-format tests are no longer
+required to start. The five historical individual approvals remain unchanged.
+No individual approvals or live-test results are fabricated.
 
-1. Exact asset/caption approval for each of the first ten posts.
-2. Actual published-image/video inspection for those ten posts.
-3. Controlled, inspected Feed, Story and Reel results, bound to actual asset hashes.
-4. No unresolved or uncertain publication outcomes.
+The workflow runs at **09:15, 14:15 and 19:15 Asia/Nicosia**. It publishes only
+final queue items that pass all actual-file, fact/source, geography, design,
+caption, duplicate, account and technical review checks. Daily/monthly limits
+still apply. Uncertain publication outcomes stop the automatic queue.
 
-No more activation approval is needed after those already-agreed gates pass.
-Posts 6–10 remain awaiting individual approval. A controlled test is selected
-explicitly through `controlledPublicationId` and still requires its own approval.
-Scheduled events never execute a controlled-test exception. The current target is
-null. Feed is currently the only live-verified format.
+Supported scope is Feed on Instagram and Facebook, and dedicated Stories/Reels
+on Instagram. Existing format verification records describe actual evidence.
+First automatic vertical publications are checked against the exported assets
+and archived after publishing. A failed comparison is quarantined, not retried.
+`controlledPublicationId` remains null. This launch does not use a limit-bypassing
+controlled publication exception.
 
 Each workflow writes `social/automation-status.json` to the state branch. Its
 `publishingEnabled`, blockers, approval counts and unpublished queue counts
@@ -45,8 +47,8 @@ day, and three assets per local day. Only an explicitly authorized controlled
 rollout test may bypass normal daily/monthly limits.
 
 - Feed: Instagram + Facebook, dedicated 1080×1350 PNG/JPEG.
-- Story: Instagram adapter, dedicated 1080×1920; still awaits controlled live test.
-- Reel: Instagram adapter, dedicated 1080×1920 H.264 MP4; awaits controlled live test.
+- Story: Instagram adapter, dedicated 1080×1920; authorized for automatic publishing after final QA.
+- Reel: Instagram adapter, dedicated 1080×1920 H.264 MP4; authorized for automatic publishing after final QA.
 - Facebook Story/Reel adapters are not implemented or live-verified.
 
 Consequently the full planned mix currently represents **60 platform publications**:
@@ -103,9 +105,10 @@ footage/music rights. Commit content-addressed assets first, reference their
 immutable commit, inspect final files, then bind the review. No script may invent
 fresh inspection dates. Technical reviews expire after seven days.
 
-The exact first-ten user content approval is separate from QA. Changed content
-invalidates it; schedule/check-date updates preserve content approval but require
-a fresh technical seal. QA passage and strategy approval never imply post approval.
+Historical individual content approvals remain bound to their original exports.
+Newly released content uses the explicit automatic-publishing authorization, not
+a fabricated individual approval. Any asset, caption, evidence or schedule change
+still requires the appropriate fresh technical QA seal.
 The review index is `social/review-batches/2026-09-initial/index.json`.
 
 ## Publication history and recovery
@@ -130,8 +133,8 @@ known IDs before an explicit controlled recovery.
 
 Every published asset is downloaded, compared and permanently archived by hash
 on the state branch. Caption comparison preserves punctuation, numbers and signs.
-Controlled rollout results require actual visual review before `verified` status.
-Later scheduled results may be marked `automatically_verified` after exact-caption
+Explicit controlled tests retain their actual visual review records.
+Scheduled results are marked `automatically_verified` after exact-caption
 and image/video comparisons; this does not fabricate a human visual review.
 Their final exports must still have passed visual QA before publication.
 

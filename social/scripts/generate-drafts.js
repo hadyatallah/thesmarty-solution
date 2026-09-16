@@ -22,4 +22,4 @@ const result = planDrafts({ date, plan, config, bank, trends, intelligence, need
 if (!dryRun) for (const item of result.drafts) {
   await fs.writeFile(`content-queue/${item.id}.json`, JSON.stringify(item, null, 2) + '\n', { flag: 'wx' });
 }
-console.log(JSON.stringify({ ...result.report, dryRun, draftIds: result.drafts.map(item => item.id), message: 'Drafts remain unapproved. Research, composition, final export inspection and rollout approvals are still required.' }, null, 2));
+console.log(JSON.stringify({ ...result.report, dryRun, draftIds: result.drafts.map(item => item.id), message: 'Drafts remain unapproved. Verified research, composition, final export inspection and a complete QA seal are required before they can enter the authorized automatic publishing queue.' }, null, 2));
