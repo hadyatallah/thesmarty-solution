@@ -600,10 +600,11 @@
       "platform": "instagram",
       "classification": "promotion",
       "editorial": null,
-      "phase": "publishing_instagram",
+      "phase": "instagram_published",
       "qaBoundSha256": "072536a387dfd2dfe1350cb1af95d01a66866184aa11da4b4052377f141c9532",
       "instagram": {
-        "containerId": "18115776760819867"
+        "containerId": "18115776760819867",
+        "mediaId": "18026983037879458"
       },
       "facebook": null
     }
