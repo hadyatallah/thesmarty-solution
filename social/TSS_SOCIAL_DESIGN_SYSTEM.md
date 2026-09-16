@@ -15,7 +15,7 @@ Every TSS post should be recognisable as part of the same editorial publication 
 - Primary type: deep navy
 - Secondary accent: muted slate blue / restrained TSS teal
 - Avoid random gradients, saturated palettes and unrelated illustration styles
-- Generous margins and whitespace
+- Controlled whitespace that supports the hierarchy without leaving the post sparse
 - No text near crop edges
 
 ## Fixed anatomy
@@ -31,6 +31,10 @@ For feed Insight / Data posts, the user-selected GDP composition is the master:
 the real photograph runs full-width through the lower section, while the light
 upper section contains the headline, dominant verified figure and compact facts.
 Do not place the photograph inside an inset card or add rounded information boxes.
+The same composition is the primary direction for practical checklists and TSS
+service posts: a strong left-hand hook, two to four concise supporting points on
+the right and full-width verified landmark photography below. Large empty areas
+or oversized copy without supporting value are not acceptable.
 
 ## Template family
 Only these three template families are permitted. Each format is composed separately.

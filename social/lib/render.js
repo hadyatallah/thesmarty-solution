@@ -29,6 +29,7 @@ async function wrap(text, size, bold, width, maxLines) {
   return lines;
 }
 export async function renderCreative(input) {
+  if (input.designVersion === 2 && input.visualStyle === 'reference-checklist-editorial') return renderReferenceChecklistEditorial(input);
   if (input.designVersion === 2 && input.visualStyle === 'reference-data-editorial') return renderReferenceDataEditorial(input);
   if (input.designVersion === 2 && input.visualStyle === 'reference-integrated-editorial') return renderReferenceIntegratedEditorial(input);
   if (input.designVersion === 2) return renderLandmarkCreative(input);
@@ -95,6 +96,116 @@ export async function renderCreative(input) {
   }
   const buffer = await sharp({ create: { width, height, channels: 3, background: C.cream } }).composite(layers).png().toBuffer();
   return { buffer, layout: { format, width, height, textRegions: regions, logoSha256: LOGO_SHA, photoSha256, palette: C, safeArea: { left: 72, right: 1008, top, bottom } } };
+}
+
+// Practical checklist layout based on the user-selected TSS GDP reference.
+// It keeps the same strong headline, compact right-hand facts and full-width
+// landmark photograph, while replacing a numeric market claim with a short
+// decision checklist for service and investor-readiness content.
+async function renderReferenceChecklistEditorial(input) {
+  requireThat(input.format === 'feed', 'Reference checklist editorial is currently approved for feed only');
+  requireThat(input.template === 'place-opportunity', 'Reference checklist editorial requires the place/opportunity template');
+  const width = 1080, height = 1350, top = 48, bottom = 1320;
+  const colors = { ...C, cream: '#fbfaf6', white: '#ffffff' }, layers = [], regions = [];
+  function svgLayer(svg, x = 0, y = 0) {
+    layers.push({ input: Buffer.from(svg), left: x, top: y });
+  }
+  async function block(text, x, y, size, lineHeight, maxLines, color = C.navy, bold = true, w = 936, inverse = false) {
+    const lines = await wrap(text, size, bold, w, maxLines);
+    for (let i = 0; i < lines.length; i++) {
+      const r = await textImage(lines[i], size, bold, color), yy = y + i * lineHeight;
+      requireThat(x >= 48 && x + r.info.width <= 1032 && yy >= top && yy + r.info.height <= bottom, 'Text outside safe margins');
+      layers.push({ input: r.data, left: x, top: yy });
+      regions.push({ text: lines[i], x, y: yy, width: r.info.width, height: r.info.height, size, inverse });
+    }
+    return y + lines.length * lineHeight;
+  }
+
+  const catalog = JSON.parse(await fs.readFile(path.join(ROOT, 'photo-catalog.json'), 'utf8')), p = catalog.photos[input.photoKey];
+  requireThat(p?.approved === true && p.republicControlled === true && p.evidenceUrl && p.reviewNote && p.licence && p.licenceUrl, 'Photograph lacks geographic or rights QA');
+  requireThat(/^[a-zA-Z0-9._/-]+$/.test(p.path) && !p.path.includes('..'), 'Invalid photo path');
+  const photo = await fs.readFile(path.join(ROOT, '..', p.path)), photoSha256 = sha256(photo);
+  requireThat(photoSha256 === p.sha256, 'Approved photograph changed');
+  const oriented = sharp(photo, { failOn: 'warning' }).rotate(), stats = await oriented.stats();
+  requireThat(stats.entropy > 1 && stats.channels.some(c => c.stdev > 12), 'Blank or failed photograph');
+  const photoTop = 780;
+  const background = await oriented.resize(width, height - photoTop, { fit: 'cover', position: p.cropPosition || 'centre' }).modulate({ brightness: 0.92, saturation: 0.92 }).jpeg({ quality: 90 }).toBuffer();
+  layers.push({ input: background, left: 0, top: photoTop });
+  svgLayer(`<svg width="1080" height="260" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="shade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#082746" stop-opacity="0.02"/><stop offset="0.32" stop-color="#082746" stop-opacity="0.35"/><stop offset="1" stop-color="#04182b" stop-opacity="0.96"/></linearGradient></defs><rect width="1080" height="260" fill="url(#shade)"/><rect y="105" width="1080" height="155" fill="#04182b" fill-opacity="0.9"/></svg>`, 0, 1090);
+
+  const logo = await fs.readFile(path.join(ROOT, '..', 'logo-mark.png'));
+  requireThat(sha256(logo) === LOGO_SHA, 'Logo bytes do not match the approved TSS mark');
+  const logoImage = await sharp(logo).trim().resize({ width: 180 }).png().toBuffer({ resolveWithObject: true });
+  const logoRegion = { x: 832, y: 46, width: logoImage.info.width, height: logoImage.info.height };
+  layers.push({ input: logoImage.data, left: logoRegion.x, top: logoRegion.y });
+
+  const t = input.text || {};
+  await block(t.category, 60, 62, 20, 27, 1, C.slate, true, 470);
+  svgLayer(`<svg width="246" height="2" xmlns="http://www.w3.org/2000/svg"><rect width="246" height="2" fill="${C.navy}"/></svg>`, 314, 76);
+  const name = await textImage('The Smarty Solution', 21, false, C.navy);
+  const tagline = await textImage('Connect · Develop · Invest', 15, false, C.slate);
+  const nameX = 1012 - name.info.width, taglineX = 1012 - tagline.info.width;
+  layers.push({ input: name.data, left: nameX, top: 124 });
+  regions.push({ text: 'The Smarty Solution', x: nameX, y: 124, width: name.info.width, height: name.info.height, size: 21 });
+  layers.push({ input: tagline.data, left: taglineX, top: 158 });
+  regions.push({ text: 'Connect · Develop · Invest', x: taglineX, y: 158, width: tagline.info.width, height: tagline.info.height, size: 15 });
+
+  let y = await block(t.headline, 60, 162, 51, 59, 3, C.navy, true, 520);
+  y += 10;
+  y = await block(t.metric, 60, y, 88, 98, 1, C.teal, true, 520);
+  y = await block(t.metricLabel, 60, y - 3, 21, 28, 2, C.navy, true, 500);
+  y += 18;
+  await block(t.intro, 60, y, 22, 31, 3, C.navy, false, 500);
+
+  async function fact(number, label, body, y0, accent) {
+    svgLayer(`<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="31" fill="${accent}"/><text x="32" y="39" text-anchor="middle" font-family="DejaVu Sans" font-size="20" font-weight="700" fill="#fff">${number}</text></svg>`, 612, y0);
+    await block(label, 702, y0, 20, 27, 1, C.navy, true, 316);
+    await block(body, 702, y0 + 29, 16, 22, 3, C.navy, false, 316);
+  }
+  await fact('01', t.fact1Label, t.fact1Body, 230, C.teal);
+  await fact('02', t.fact2Label, t.fact2Body, 348, C.navy);
+  await fact('03', t.fact3Label, t.fact3Body, 466, C.teal);
+  await fact('04', t.fact4Label, t.fact4Body, 584, C.navy);
+
+  svgLayer(`<svg width="7" height="38" xmlns="http://www.w3.org/2000/svg"><rect width="7" height="38" rx="3.5" fill="${C.teal}"/></svg>`, 60, 712);
+  await block(t.question, 84, 715, 20, 27, 1, C.navy, true, 920);
+
+  await block(t.location, 60, 1190, 19, 26, 1, colors.white, true, 470, true);
+  await block(t.source, 60, 1254, 15, 21, 1, colors.white, false, 580, true);
+  const footerTagline = await textImage('CONNECT · DEVELOP · INVEST', 17, false, colors.white);
+  const footerSite = await textImage('THESMARTYSOLUTION.COM', 18, true, colors.white);
+  const footerTaglineX = 1020 - footerTagline.info.width, footerSiteX = 1020 - footerSite.info.width;
+  layers.push({ input: footerTagline.data, left: footerTaglineX, top: 1190 });
+  regions.push({ text: 'CONNECT · DEVELOP · INVEST', x: footerTaglineX, y: 1190, width: footerTagline.info.width, height: footerTagline.info.height, size: 17, inverse: true });
+  layers.push({ input: footerSite.data, left: footerSiteX, top: 1254 });
+  regions.push({ text: 'THESMARTYSOLUTION.COM', x: footerSiteX, y: 1254, width: footerSite.info.width, height: footerSite.info.height, size: 18, inverse: true });
+
+  for (let i = 0; i < regions.length; i++) for (let j = i + 1; j < regions.length; j++) {
+    const a = regions[i], b = regions[j];
+    requireThat(!(a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y), 'Text regions overlap');
+  }
+  for (const r of regions) requireThat(!(r.x < logoRegion.x + logoRegion.width && r.x + r.width > logoRegion.x && r.y < logoRegion.y + logoRegion.height && r.y + r.height > logoRegion.y), 'Text overlaps the TSS logo');
+  const buffer = await sharp({ create: { width, height, channels: 3, background: colors.cream } })
+    .composite(layers)
+    .jpeg({ quality: 90, chromaSubsampling: '4:4:4', mozjpeg: true })
+    .toBuffer();
+  return {
+    buffer,
+    layout: {
+      designVersion: 2,
+      visualStyle: input.visualStyle,
+      format: input.format,
+      width,
+      height,
+      textRegions: regions,
+      logoSha256: LOGO_SHA,
+      logoRegion,
+      photoSha256,
+      palette: colors,
+      photoRegion: { x: 0, y: photoTop, width, height: 360 },
+      safeArea: { left: 48, right: 1032, top, bottom }
+    }
+  };
 }
 
 // Data-led feed layout based on the approved TSS GDP reference. The upper

@@ -10,6 +10,11 @@
       "question-debate",
       "place-opportunity"
     ],
+    "primaryVisualStyles": [
+      "reference-data-editorial",
+      "reference-checklist-editorial",
+      "reference-integrated-editorial"
+    ],
     "plainFullFramePhotoAllowed": false
   },
   "vertical": {
@@ -35,7 +40,8 @@
     "tagline": "Connect \u00b7 Develop \u00b7 Invest",
     "footer": "THESMARTYSOLUTION.COM",
     "locationLabel": true,
-    "sourceLabel": true
+    "sourceLabel": true,
+    "fullWidthLowerPhotographyPreferred": true
   },
   "geography": {
     "occupiedCyprusImageryAllowed": false,

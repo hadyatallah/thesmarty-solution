@@ -44,7 +44,7 @@ export async function inspectRenderedImage(item, buffer) {
   requireThat(layout.format === item.format && layout.width === item.asset.width && layout.height === item.asset.height && layout.logoSha256 === item.creative.logoSha256, 'Incorrect layout evidence');
   const creativeText = Object.values(item.creative.text);
   const expectedText = item.creative.designVersion === 2
-    ? item.creative.visualStyle === 'reference-data-editorial'
+    ? ['reference-data-editorial', 'reference-checklist-editorial'].includes(item.creative.visualStyle)
       ? [
           creativeText[0],
           'The Smarty Solution',

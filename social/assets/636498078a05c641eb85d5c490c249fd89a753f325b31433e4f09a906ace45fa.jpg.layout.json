@@ -1,0 +1,260 @@
+{
+  "designVersion": 2,
+  "visualStyle": "reference-checklist-editorial",
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "TSS / INVESTOR READINESS",
+      "x": 60,
+      "y": 62,
+      "width": 309,
+      "height": 16,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "The Smarty Solution",
+      "x": 799,
+      "y": 124,
+      "width": 213,
+      "height": 20,
+      "size": 21
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 812,
+      "y": 158,
+      "width": 200,
+      "height": 15,
+      "size": 15
+    },
+    {
+      "text": "START WITH A",
+      "x": 60,
+      "y": 162,
+      "width": 405,
+      "height": 40,
+      "size": 51,
+      "inverse": false
+    },
+    {
+      "text": "CLEAR INVESTOR",
+      "x": 60,
+      "y": 221,
+      "width": 488,
+      "height": 40,
+      "size": 51,
+      "inverse": false
+    },
+    {
+      "text": "BRIEF.",
+      "x": 60,
+      "y": 280,
+      "width": 170,
+      "height": 38,
+      "size": 51,
+      "inverse": false
+    },
+    {
+      "text": "4 THINGS",
+      "x": 60,
+      "y": 349,
+      "width": 459,
+      "height": 66,
+      "size": 88,
+      "inverse": false
+    },
+    {
+      "text": "TO DEFINE FIRST",
+      "x": 60,
+      "y": 444,
+      "width": 199,
+      "height": 16,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "A focused introduction starts with useful",
+      "x": 60,
+      "y": 490,
+      "width": 444,
+      "height": 16,
+      "size": 22,
+      "inverse": false
+    },
+    {
+      "text": "context.",
+      "x": 60,
+      "y": 521,
+      "width": 87,
+      "height": 15,
+      "size": 22,
+      "inverse": false
+    },
+    {
+      "text": "OBJECTIVE",
+      "x": 702,
+      "y": 230,
+      "width": 116,
+      "height": 18,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "What result are you trying to achieve?",
+      "x": 702,
+      "y": 259,
+      "width": 303,
+      "height": 15,
+      "size": 16,
+      "inverse": false
+    },
+    {
+      "text": "BUDGET RANGE",
+      "x": 702,
+      "y": 348,
+      "width": 174,
+      "height": 14,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "What level of capital should guide the",
+      "x": 702,
+      "y": 377,
+      "width": 299,
+      "height": 15,
+      "size": 16,
+      "inverse": false
+    },
+    {
+      "text": "search?",
+      "x": 702,
+      "y": 399,
+      "width": 61,
+      "height": 12,
+      "size": 16,
+      "inverse": false
+    },
+    {
+      "text": "TIMEFRAME",
+      "x": 702,
+      "y": 466,
+      "width": 132,
+      "height": 14,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "When are you ready to evaluate or act?",
+      "x": 702,
+      "y": 495,
+      "width": 316,
+      "height": 15,
+      "size": 16,
+      "inverse": false
+    },
+    {
+      "text": "KEY QUESTIONS",
+      "x": 702,
+      "y": 584,
+      "width": 178,
+      "height": 17,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "What must be answered before you",
+      "x": 702,
+      "y": 613,
+      "width": 284,
+      "height": 15,
+      "size": 16,
+      "inverse": false
+    },
+    {
+      "text": "engage?",
+      "x": 702,
+      "y": 635,
+      "width": 68,
+      "height": 15,
+      "size": 16,
+      "inverse": false
+    },
+    {
+      "text": "WHAT ARE YOU LOOKING FOR IN CYPRUS?",
+      "x": 84,
+      "y": 715,
+      "width": 471,
+      "height": 14,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "PANO LEFKARA / CYPRUS",
+      "x": 60,
+      "y": 1190,
+      "width": 269,
+      "height": 16,
+      "size": 19,
+      "inverse": true
+    },
+    {
+      "text": "Source: TSS | Current services",
+      "x": 60,
+      "y": 1254,
+      "width": 229,
+      "height": 16,
+      "size": 15,
+      "inverse": true
+    },
+    {
+      "text": "CONNECT · DEVELOP · INVEST",
+      "x": 764,
+      "y": 1190,
+      "width": 256,
+      "height": 13,
+      "size": 17,
+      "inverse": true
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 743,
+      "y": 1254,
+      "width": 277,
+      "height": 13,
+      "size": 18,
+      "inverse": true
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 832,
+    "y": 46,
+    "width": 180,
+    "height": 69
+  },
+  "photoSha256": "5336ef1793e4772c1a32d9a1f2776b062203bcb8be0851b5e5f88b2538e981d4",
+  "palette": {
+    "cream": "#fbfaf6",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "white": "#ffffff"
+  },
+  "photoRegion": {
+    "x": 0,
+    "y": 780,
+    "width": 1080,
+    "height": 360
+  },
+  "safeArea": {
+    "left": 48,
+    "right": 1032,
+    "top": 48,
+    "bottom": 1320
+  }
+}

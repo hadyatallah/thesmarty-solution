@@ -123,6 +123,42 @@ test('reference data editorial renders the selected TSS data and landmark compos
   assert.match(layout.photoSha256, /^[a-f0-9]{64}$/);
   assert.equal(layout.logoSha256, LOGO_SHA);
 });
+test('reference checklist editorial renders four practical points and full-width landmark photography', async () => {
+  const c = {
+    designVersion: 2,
+    visualStyle: 'reference-checklist-editorial',
+    assetFormat: 'jpg',
+    format: 'feed',
+    template: 'place-opportunity',
+    photoKey: 'lefkara',
+    logoSha256: LOGO_SHA,
+    text: {
+      category: 'TSS / INVESTOR READINESS',
+      headline: 'START WITH A CLEAR INVESTOR BRIEF.',
+      metric: '4 THINGS',
+      metricLabel: 'TO DEFINE FIRST',
+      intro: 'A focused introduction starts with useful context.',
+      fact1Label: 'OBJECTIVE',
+      fact1Body: 'What result are you trying to achieve?',
+      fact2Label: 'BUDGET RANGE',
+      fact2Body: 'What level of capital should guide the search?',
+      fact3Label: 'TIMEFRAME',
+      fact3Body: 'When are you ready to evaluate or act?',
+      fact4Label: 'KEY QUESTIONS',
+      fact4Body: 'What must be answered before you engage?',
+      question: 'WHAT ARE YOU LOOKING FOR IN CYPRUS?',
+      location: 'PANO LEFKARA / CYPRUS',
+      source: 'The Smarty Solution | current approach'
+    }
+  };
+  const { buffer, layout } = await renderCreative(c), metadata = await sharp(buffer).metadata();
+  assert.equal(metadata.format, 'jpeg');
+  assert.deepEqual([metadata.width, metadata.height], [1080, 1350]);
+  assert.equal(layout.visualStyle, 'reference-checklist-editorial');
+  assert.deepEqual(layout.photoRegion, { x: 0, y: 780, width: 1080, height: 360 });
+  assert.equal(layout.logoSha256, LOGO_SHA);
+  assert.equal(layout.textRegions.filter(r => /^0[1-4]$/.test(r.text)).length, 0);
+});
 test('published-image check accepts compression and rejects cropping or a different final creative', async () => {
   const { buffer } = await fixture();
   await verifyPublishedImage(buffer, await sharp(buffer).jpeg({ quality: 85 }).toBuffer(), 4 / 5);
