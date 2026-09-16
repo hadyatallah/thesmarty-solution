@@ -1,0 +1,90 @@
+{
+  "checkedAt": "2026-09-16T13:16:37.628Z",
+  "authorized": true,
+  "ready": false,
+  "publishingEnabled": false,
+  "mode": "readiness-checks",
+  "initialApproved": 5,
+  "initialVerified": 5,
+  "requiredCount": 10,
+  "initial": [
+    {
+      "id": "tss-review-01-cyprus-property-seasonality-feed",
+      "approved": true,
+      "verified": true
+    },
+    {
+      "id": "tss-review-02-property-transfer-fees-feed",
+      "approved": true,
+      "verified": true
+    },
+    {
+      "id": "tss-review-03-housing-income-share-feed",
+      "approved": true,
+      "verified": true
+    },
+    {
+      "id": "tss-review-04-investor-brief-feed",
+      "approved": true,
+      "verified": true
+    },
+    {
+      "id": "tss-review-05-british-emigration-feed",
+      "approved": true,
+      "verified": true
+    },
+    {
+      "id": "tss-review-06-ireland-tax-residency-feed",
+      "approved": false,
+      "verified": false,
+      "reason": "Explicit user approval required before publication"
+    },
+    {
+      "id": "tss-review-07-europe-property-cycles-feed",
+      "approved": false,
+      "verified": false,
+      "reason": "Explicit user approval required before publication"
+    },
+    {
+      "id": "tss-review-08-europe-living-costs-story",
+      "approved": false,
+      "verified": false,
+      "reason": "Explicit user approval required before publication"
+    },
+    {
+      "id": "tss-review-09-property-title-checks-story",
+      "approved": false,
+      "verified": false,
+      "reason": "Explicit user approval required before publication"
+    },
+    {
+      "id": "tss-review-10-cyprus-relocation-priorities-reel",
+      "approved": false,
+      "verified": false,
+      "reason": "Explicit user approval required before publication"
+    }
+  ],
+  "requiredFormats": [
+    "feed",
+    "story",
+    "reel"
+  ],
+  "missingFormats": [
+    "story",
+    "reel"
+  ],
+  "unresolvedIds": [],
+  "blockers": [
+    "Each of the initial ten posts needs approval for its exact asset and caption.",
+    "The initial ten published results need final visual verification.",
+    "Live format verification is pending: story, reel.",
+    "No controlled live verification for story"
+  ],
+  "queue": {
+    "approvedUnpublished": 0,
+    "awaitingUserApproval": 5,
+    "drafts": 1,
+    "expiredReviews": []
+  },
+  "contentProduction": "Reviewed source briefs, dedicated final exports and actual visual QA are still required; the publisher does not research or approve new content."
+}
