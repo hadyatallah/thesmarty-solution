@@ -34,7 +34,7 @@
   },
   "fixedElements": {
     "categoryLabel": "top-left",
-    "rule": true,
+    "rule": false,
     "logo": "top-right-original-asset",
     "wordmark": "The Smarty Solution",
     "tagline": "Connect \u00b7 Develop \u00b7 Invest",

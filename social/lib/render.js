@@ -146,7 +146,6 @@ async function renderReferenceChecklistEditorial(input) {
 
   const t = input.text || {};
   await block(t.category, 60, 62, 20, 27, 1, C.slate, true, 470);
-  svgLayer(`<svg width="246" height="2" xmlns="http://www.w3.org/2000/svg"><rect width="246" height="2" fill="${C.navy}"/></svg>`, 314, 76);
   const name = await textImage('The Smarty Solution', 21, false, C.navy);
   const tagline = await textImage('Connect · Develop · Invest', 15, false, C.slate);
   const nameX = 1012 - name.info.width, taglineX = 1012 - tagline.info.width;
@@ -207,6 +206,7 @@ async function renderReferenceChecklistEditorial(input) {
       logoRegion,
       photoSha256,
       palette: colors,
+      categoryRule: false,
       photoRegion: { x: 0, y: 780, width, height: 360 },
       photoTransition,
       safeArea: { left: 48, right: 1032, top, bottom }
@@ -256,7 +256,6 @@ async function renderReferenceDataEditorial(input) {
 
   const t = input.text || {};
   await block(t.category, 60, 62, 20, 27, 1, C.slate, true, 470);
-  svgLayer(`<svg width="246" height="2" xmlns="http://www.w3.org/2000/svg"><rect width="246" height="2" fill="${C.navy}"/></svg>`, 314, 76);
   const name = await textImage('The Smarty Solution', 21, false, C.navy);
   const tagline = await textImage('Connect · Develop · Invest', 15, false, C.slate);
   const nameX = 1012 - name.info.width, taglineX = 1012 - tagline.info.width;
@@ -318,6 +317,7 @@ async function renderReferenceDataEditorial(input) {
       logoRegion,
       photoSha256,
       palette: colors,
+      categoryRule: false,
       photoRegion: { x: 0, y: photoTop, width, height: 330 },
       safeArea: { left: 48, right: 1032, top, bottom }
     }

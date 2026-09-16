@@ -32,6 +32,12 @@
       "approvedAt": "2026-09-15T22:45:55.064Z",
       "contentSha256": "57a5636caf65b8dac9fa37a90e36cd53356359fbbb4f7fcb39d1fdd23a18cb15",
       "authorizationReference": "Explicit approval to proceed with Post 3 in the TSS Work chat."
+    },
+    "tss-review-04-investor-brief-feed": {
+      "approvedBy": "Hady",
+      "approvedAt": "2026-09-16T06:47:54.884Z",
+      "contentSha256": "fda680b805faa0c27a049e6b758058bc2e6593c1c3a9523e09e1edff04b279d4",
+      "authorizationReference": "Explicit Instagram-only approval for Post 4 Revision 3 in the TSS Work chat."
     }
   },
   "note": "Record explicit user approval only after the final asset, caption and sources are presented. QA approval is separate. Later posts become eligible for automation only after all ten approvals exist; existing live-format verification and scheduler gates still apply."

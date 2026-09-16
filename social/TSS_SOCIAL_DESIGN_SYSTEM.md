@@ -20,7 +20,7 @@ Every TSS post should be recognisable as part of the same editorial publication 
 
 ## Fixed anatomy
 1. Small uppercase category label at top-left, e.g. `SMARTY INSIGHT / CYPRUS PROPERTY`
-2. Thin horizontal rule aligned with category label
+2. No horizontal rule extending from the category label; it can appear connected to or overlap the label at social-media display sizes
 3. Original TSS mark at top-right, then The Smarty Solution and Connect - Develop - Invest as real text with clear space
 4. Strong editorial headline, normally 2-5 lines
 5. One dominant fact, question or visual

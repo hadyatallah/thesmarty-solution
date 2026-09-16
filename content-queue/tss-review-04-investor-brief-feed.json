@@ -1,7 +1,7 @@
 {
   "qaVersion": 2,
   "id": "tss-review-04-investor-brief-feed",
-  "status": "awaiting_user_approval",
+  "status": "approved",
   "reviewBatch": "2026-09-initial",
   "reviewNumber": 4,
   "topic": "TSS: prepare a clear investor brief before introductions",
@@ -10,8 +10,7 @@
   "creativeKey": "tss-investor-brief-four-essentials-reference-v3-feed",
   "format": "feed",
   "platforms": [
-    "instagram",
-    "facebook"
+    "instagram"
   ],
   "publishAt": "2026-09-15T09:15:00+03:00",
   "caption": "Looking at a Cyprus property, business or development opportunity? Start with four things:\n\n• Objective\n• Budget range\n• Timeframe\n• Key questions\n\nTSS first works to understand the objective, commercial logic and expectations on both sides.\n\nWhat are you looking for in Cyprus?\n\nSource: The Smarty Solution, current services and approach.\nhttps://www.thesmartysolution.com/\n\nPhoto: Pano Lefkara, Cyprus, Qasinka, CC0.\nhttps://commons.wikimedia.org/wiki/File:2022_03_Pano_Lefkara_1.jpg\n\n#Cyprus #CyprusInvestment #CyprusBusiness #Investment #TheSmartySolution",
@@ -86,7 +85,7 @@
   },
   "review": {
     "reviewer": "Codex final-export editorial review",
-    "reviewedAt": "2026-09-16T05:57:37.921Z",
+    "reviewedAt": "2026-09-16T06:47:54.884Z",
     "assetSha256": "f8e91bb479c9514aa16182aa91605878d84e7c12d6707b21aecf9a78623a7ee2",
     "captionSha256": "c5bb864b83a633bd216e0383d94bd529017a3bfdf12de7501c9da5351c925310",
     "checks": {
@@ -108,7 +107,7 @@
       "hashtagLimit": true,
       "finalExportInspected": true
     },
-    "notes": "Actual final JPEG visually inspected after replacing the hard photo boundary with a controlled cream-to-photograph tonal blend. OCR, source meaning, geography, rights, safe margins, logo, crop and duplicate history verified. User approval remains separate.",
-    "boundSha256": "e74d531936fbc5d8ff7cab4132b341a959015e0e21bb7d26bc57dd20cca57806"
+    "notes": "The exact Revision 3 JPEG and caption were approved by Hady for Instagram-only publication. Final export, OCR, source meaning, geography, rights, safe margins, logo, crop, duplicate history and immutable hosting remain verified. Facebook is excluded.",
+    "boundSha256": "072536a387dfd2dfe1350cb1af95d01a66866184aa11da4b4052377f141c9532"
   }
 }
