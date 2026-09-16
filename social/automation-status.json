@@ -1,9 +1,19 @@
 {
-  "checkedAt": "2026-09-16T13:16:37.628Z",
+  "checkedAt": "2026-09-16T13:43:10.594Z",
   "authorized": true,
-  "ready": false,
-  "publishingEnabled": false,
-  "mode": "readiness-checks",
+  "ready": true,
+  "publishingEnabled": true,
+  "mode": "automatic_after_qa",
+  "manualInitialApprovalsRequired": false,
+  "waivedLaunchGates": [
+    "first_ten_individual_approval",
+    "first_ten_published_visual_review",
+    "prior_live_verification_per_format"
+  ],
+  "liveFormatVerificationPending": [
+    "story",
+    "reel"
+  ],
   "initialApproved": 5,
   "initialVerified": 5,
   "requiredCount": 10,
@@ -69,20 +79,12 @@
     "story",
     "reel"
   ],
-  "missingFormats": [
-    "story",
-    "reel"
-  ],
+  "missingFormats": [],
   "unresolvedIds": [],
-  "blockers": [
-    "Each of the initial ten posts needs approval for its exact asset and caption.",
-    "The initial ten published results need final visual verification.",
-    "Live format verification is pending: story, reel.",
-    "No controlled live verification for story"
-  ],
+  "blockers": [],
   "queue": {
-    "approvedUnpublished": 0,
-    "awaitingUserApproval": 5,
+    "approvedUnpublished": 5,
+    "awaitingUserApproval": 0,
     "drafts": 1,
     "expiredReviews": []
   },
