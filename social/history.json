@@ -737,7 +737,7 @@
       "platform": "instagram+facebook",
       "classification": "factual",
       "editorial": null,
-      "phase": "published",
+      "phase": "automatically_verified",
       "qaBoundSha256": "5975a9304e48f57e90afd06217880b93d266caaf8bcaebc42950d02d77b36fde",
       "instagram": {
         "containerId": "18116104303819867",
@@ -772,7 +772,8 @@
           "evidenceCommit": "d8f670f3ce31845649c2eb32b56977439a3e33e4",
           "evidencePath": "social/published-assets/b5f7c40037e7fa5fa57cd4a0515d75d6ed7f21145a8ec3fc930cd1e76ac9751a.jpg"
         }
-      }
+      },
+      "verificationMethod": "published-asset-comparison"
     }
   ],
   "qaFailures": {},
