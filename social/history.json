@@ -774,6 +774,25 @@
         }
       },
       "verificationMethod": "published-asset-comparison"
+    },
+    {
+      "id": "tss-review-08-europe-living-costs-story",
+      "date": "2026-09-17T12:29:49.993Z",
+      "topic": "European consumption price levels: Denmark versus Bulgaria",
+      "topicKey": "europe-living-costs-denmark-bulgaria-ppp",
+      "headline": "MOVING? COMPARE YOUR BASKET.",
+      "creativeKey": "europe-living-costs-denmark-bulgaria-ppp-landmark-v2-story-revision-2",
+      "assetSha256": "38e1e27583a4912f4a7d74f84a083f0d8b18f6f5918c0f887c275f7b12a7a7f3",
+      "pixelHash": "e0e20dc690c0951541f30c12545defff862a9e66d7ff0eab4af316a21955b0f3",
+      "visualSignature": "rgb32:+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz9/bx9fXw9vby9vbx9vXx9vXx+Pfy+fjz+fjz+fjz+fjz+/n0+/n0+/n0+/n0+vn0+vn0+/r0+vn0+/n0+vn0+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz/v76///+///5///6///8///8/Pv1+ffz+fjz+fjz+Pjz8fLu8fLu8fLu8PHt9PTw8/Pv8PHu8vPv8PHt9PTw+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+PfywMXJrLK5uM7QwMjMu77Ds7vA4ePh/Pr1+Pfy+fjz+Pfy6Ovp6Ovo6evp5+ro7e/r6+3q5uno7O3r6Ovp8PHu+fjz9/fy9/fy9/by+Pby9/fx9/by9/fy9/fy9/bx//74v8XIW2V5isPIVrK7b46bVmR4o620///69/bx+fjz+fj0/v76///7//76//76/v35/v36///7//75//75/Pv2/Pv2/fz3/v35///7/v76/v76///6/v76/v75///79PPv6uvo2d3c19TVxc7R1dzcwMXI0NTV/Pv1+Pfy+vn09PTwy8/SxMrNyc7QztPU0dXWys/RxszPzNDSzNDS4+Xk2Nvb0NTVxcvOwcbKw8jMu8LGxMrNxcvOvsXJxMnM5+jmwsrMwMfLxc3QzNHTt77D1tvb+vr19/by+fjz+/r08PDspK+2o661pbC3p7G4qLK5pbC3k6Cqnqmxys/R6Oro0NTVzNDSvMPHvcTIwcfLwMbKvcPHusHFu8PGusLG7e3qz9PUwsjLwcfLv8XJusLG0tbX//74+Pfy+fjz+vn08/Pvsbe+t73Cu7/EwcTIsbi/ur7EyszPzdDS9PTw//75/vz5/fz3/v75///6/v76/v76///6/v36/v76/v76+vn0/fz4/v75/f35/f35//76+/v3+Pfy+fjz+fjz+fjz+fjzyOHe0eTht9fVvNrX6/Pv0+XjyeHe7vPvuNbUvtvYxN3a/Pn09/by9/by+Pfy+Pfy+Pfy+Pfy+Pfy+Pjz+fjz+Pfy+Pfy+Pfy+Pfy+Pfz+Pfz+fjz+fjz+fjz+fjz+ffzzeHezuHfwdvZyeDd7PHszuHext7b5e3qzuLgzeLf0OLf+Pfy+Pfy+fjz9/by9PTw9vbx9vbx9vbx9vXx9vXx9/bx9/by9vbx9/by9vXw9/bx+fjz+fjz+fjz+vnz9vXx4N7e6Obl5eLi5OPh4+Tj4eDg4N/f1dfY5uXj4+Lh39/e4ePh3d/f2Nvb2t3d5+jm7u7r5+nm6Onm5Obk4uPi5ebk5+jm4+Xj6ero3+Lg6Orn+vn0+fjz+fjz+vn08/Xw3uXj2t3c19zb3eDf2t7d1tra3ODf1drZ3uLg1tra4eTi3d/f2dzb19va4ePi5Obk4+Xj7Ozp5+jm5+jm+/n0+/n0+vn0+vn0+vn0+vn0+vn0+fjz+fjz+fjz+vn08vXw6fDs5ubk5Obk7Ozq5ujl5+nm6uvp6Onm7e7r5ujl7e3q5ufl5efl5ujl6uvo4uTi4+Xj6uvo5ebl5+jm+Pjz+Pjz+fjz+Pfz+fjz+Pfy+fjz+fjz+fjz+fjz+fjz+fjz+/r1/vz2/vz2/Pr1/fz2/fz2/fv1/Pv2/Pr1/vz2/Pv1/fz2/fz2/fz2/Pv2/vz3/vz2/Pv1/fz2/fz2+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+Pjz+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+fjz+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+fjz+fjz+fjz+fjz+fjz+fjz+fjy+ffy+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz9vXw9PPu9fTw9vXw+fjy+Pfy+fjz+fjz+fjy+Pfy9PPu8vHt9PTv9vTx9PTx9PXz9fb19/n39fby9fXy9vbx9vTv9/Tv9/Xw9vXw9vXw9fTv9PPu9PPu9vPu9fPuzs7O1dXU3d3c5+fk6+vn2NjXx8fGwMC9wsG/xcTBx8fEzszI1dHLzsrAxsS51tXP4eDa2tbQz83M0+Hr0+Tx1eTw3tzW4uDY5eDW29bN0c3IzMrGxMXBx8fDwb65vbm0qa2ys7i9ub/Du8DCjpKYdHeAb3J4ZGVlYmJgYmNgXFxbYmJgYWJeW1tXX15Oh4JzyL2mtaOLfWFPhZqwk83/jsLwlcXrmq67qaOTnpSBenhzd3Z1Y2Rob29vZ2BWa2BUsLW5rre6gImTU1pnR0tXTVFdTlFaU1RYVFRRT09KSUhESUZAVFRPa2ZYa2JKd2xVsqOAnYJkVDotVmh5fa/Yfb3zf8X/eJ29g3trenFfPzo1TExOMDVBPT5FYFI9cFxAr7Ove4GGVFtnVVtlU1hiUldhVllgV1dZV1ZUYl5YbGdfdnJqtrWtsqSIuKJ6u6R8r5lwsZRwY0Q4V1JZjZ6totf6mtT+m9j/k6Kld2pVRUA6S0pKMzpEOTxDdmVKknpTS09VUlxqV19rVFxnUlljUllhUllkVlxlT09MKiciJyYibWliqaaaSUdCVFRScGxkh3tjqY5olGtQgmdfeIOOhKCxsNHhn7jDfoB5dGpYS0lES01QNz5IOT1IX1RGWEsoYWBbf4OIjJGYh4uRhoqQhIiNg4aNkJafeXd2VVBJR0VCcG9urq2ngoF+fX6AfYCGjI6OppeBoIt4qqKWg4B6cnqHuL/DqaWbkIyDop2Tjo+QkJWeg4mXg4qZjYqHd3BX6Ofi5+bg4OPh4OLg4ePh3uDf3eDf5ufl3+He2t3b4+Le6ujk8vHs9/bx8/Lt8vHs8vHt8PDt7urk6+nl7O3p7+/r6urm8O7o7uzm7+7o8O/r7u3p7uzq7Ozp7evl7erk/Pv2+vr15+vp5urp6u3r5ero5Ono7vHt6Ozr5urp7/Lv9/fz+/r1+fjz+vn0+vn0+vn0+/n0/Pv2/Pv2/Pr1+/r1/Pr2+/r1+/r1+/r1+/r1+/r1+/r1+/r1+/r1+/r2+Pfy9/by5Obk3N/e3N7d3+Hg4ePh3+Lg3N/d4+Tj3d/e7e3q+/n09/fy+Pfy+Pfy+Pfy+Pfy8vPv8fPv8fPv8fPv8fPv8fPv8fPv8fPv8fPv8fPv8fPv8vPv+Pfy+Pfy+fjz+fjz9/by9vbx9vXx9/bx9vbx9/bx9vXx9/bx9/bx+Pfy+fjz+fjz+fjz+fjz+fjz+fjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+fjz+fjz+fjz+fjz+vjz+vnz+fnz+vnz+fjz+vjz+vjz+fjz+vjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz",
+      "format": "story",
+      "platform": "instagram",
+      "classification": "factual",
+      "editorial": null,
+      "phase": "reserved",
+      "qaBoundSha256": "32dfb176aee1f26fdfeff3d5b42bc1501f578fa67af4a899d79ae98e37e61701",
+      "instagram": null,
+      "facebook": null
     }
   ],
   "qaFailures": {},
