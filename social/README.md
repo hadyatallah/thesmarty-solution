@@ -18,7 +18,11 @@ completion of the first ten and prerequisite live-format tests are no longer
 required to start. The five historical individual approvals remain unchanged.
 No individual approvals or live-test results are fabricated.
 
-The workflow runs at **09:15, 14:15 and 19:15 Asia/Nicosia**. It publishes only
+The intended posting slots are **09:15, 14:15 and 19:15 Asia/Nicosia**.
+UTC wake-ups at minutes 15 and 45 of hours 6, 7, 11, 12, 16 and 17 cover
+both Cyprus daylight-saving offsets and provide additional delivery attempts.
+The manifest's offset-aware `publishAt` prevents early posting. Durable history
+prevents a second publication on later wake-ups. It publishes only
 final queue items that pass all actual-file, fact/source, geography, design,
 caption, duplicate, account and technical review checks. Daily/monthly limits
 still apply. Uncertain publication outcomes stop the automatic queue.

@@ -13,7 +13,7 @@
     "instagram",
     "facebook"
   ],
-  "publishAt": "2026-09-17T09:15:00+03:00",
+  "publishAt": "2026-09-17T10:21:32.598Z",
   "caption": "Irish Revenue sets two presence tests: 183 days or more in a tax year, or 280 days or more across the current and preceding tax years together.\n\nFor these presence tests, 30 days or less in the tax year does not make you resident. A tax year runs from 1 January to 31 December. Revenue also allows some new arrivals to elect tax residence, subject to its conditions.\n\nThese are residence tests, not a calculation of all tax liabilities. Check the full rules before planning a move.\n\nSource: Irish Revenue: residence for tax purposes.\nhttps://www.revenue.ie/en/jobs-and-pensions/tax-residence/resident-for-tax-purposes.aspx\n\nPhoto: Paphos Castle, Cyprus, Bukvoed, CC BY 4.0 (cropped).\nhttps://commons.wikimedia.org/wiki/File:Cyprus-Paphos-Castle-0957.jpg\nhttps://creativecommons.org/licenses/by/4.0\n\n#Cyprus #Relocation #Tax #Ireland #TheSmartySolution",
   "creative": {
     "designVersion": 2,
@@ -95,7 +95,7 @@
     "reviewedAt": "2026-09-16T13:39:17.250Z",
     "assetSha256": "8f295ac815b0dc426bcb38203b866c66e13b8eaebd350fd8e2eaee32c0615c2f",
     "captionSha256": "e5de0b4d1b5260bf8b980aecded9e5158bf776b4d652712925e25cb76f5c07a6",
-    "boundSha256": "396f412f108b7022eb7afe8ecaf698c4ba1d0ee527a244a52e4009a57916908a",
+    "boundSha256": "5975a9304e48f57e90afd06217880b93d266caaf8bcaebc42950d02d77b36fde",
     "checks": {
       "dimensions": true,
       "imageLoaded": true,
@@ -115,5 +115,10 @@
       "hashtagLimit": true,
       "finalExportInspected": true
     }
+  },
+  "scheduleRecovery": {
+    "originalPublishAt": "2026-09-17T09:15:00+03:00",
+    "rescheduledAt": "2026-09-17T10:21:32.598Z",
+    "reason": "No scheduled run or publication recorded for the17September Cyprus morning slot. Recover this QA-approved post under the existing automatic publishing authorization."
   }
 }
