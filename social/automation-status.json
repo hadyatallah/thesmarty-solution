@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-17T12:29:44.802Z",
+  "checkedAt": "2026-09-17T12:30:08.139Z",
   "authorized": true,
   "ready": true,
   "publishingEnabled": true,
@@ -83,7 +83,7 @@
   "unresolvedIds": [],
   "blockers": [],
   "queue": {
-    "approvedUnpublished": 4,
+    "approvedUnpublished": 3,
     "awaitingUserApproval": 0,
     "drafts": 1,
     "expiredReviews": []
