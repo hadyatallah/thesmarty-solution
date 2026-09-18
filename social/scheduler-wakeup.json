@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "requestedAt": "2026-09-17T12:28:53.034Z",
-  "cyprusDay": "2026-09-17",
+  "requestedAt": "2026-09-18T12:09:00.000Z",
+  "cyprusDay": "2026-09-18",
   "pendingPostIds": [
-    "tss-review-08-europe-living-costs-story"
+    "tss-review-09-property-title-checks-story"
   ],
-  "reason": "Recover missing14:15 Story trigger. No scheduled publisher run or publication recorded. Reuse the existing approved manifest and all publishing checks."
+  "reason": "Recover missing 14:15 Story trigger. No scheduled publisher run or publication recorded. Reuse the existing approved manifest and all publishing checks."
 }
