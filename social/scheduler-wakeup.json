@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "requestedAt": "2026-09-18T12:09:00.000Z",
+  "requestedAt": "2026-09-18T16:38:00.000Z",
   "cyprusDay": "2026-09-18",
   "pendingPostIds": [
-    "tss-review-09-property-title-checks-story"
+    "tss-review-10-cyprus-relocation-priorities-reel"
   ],
-  "reason": "Recover missing 14:15 Story trigger. No scheduled publisher run or publication recorded. Reuse the existing approved manifest and all publishing checks."
+  "reason": "Recover the missed 19:15 Reel after refreshing the existing verified TSS website evidence. Use the approved manifest and all existing publishing checks."
 }
