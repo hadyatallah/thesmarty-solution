@@ -55,7 +55,26 @@ function notice(s){el('notice').textContent=s;setTimeout(()=>{if(el('notice').te
 function company(id){return state.records.Companies.find(r=>r.id===id)?.name||''}
 function done(r){return ['Done','Cancelled','Closed','Resolved','Won','Lost','Do not contact','Not suitable'].includes(r.status||r.stage)}
 function overdue(r){return !done(r)&&(r.dueDate||r.followUp)&&(r.dueDate||r.followUp)<today()}
-async function refresh(){try{state=await call('getState');if(state?.records?.Companies){state.records.Companies.forEach(r=>{if(classificationOverlay[r.id])r.classification=classificationOverlay[r.id]});}el('signOutButton').hidden=false;el('sync').textContent='Synced '+new Date(state.updatedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});render()}catch(e){if(/AUTH_REQUIRED|SESSION_CHANGED/.test(String(e.message)))return;if(!state)el('main').innerHTML='<div class="empty error">'+esc(e.message)+'<br><button onclick="refresh()">Retry</button></div>';else notice(e.message)}}
+function dataIssueView(message){
+ el('signOutButton').hidden=false;
+ el('sync').textContent='Signed in · data issue';
+ el('nav').innerHTML='';
+ el('main').innerHTML='<section class="panel" style="max-width:760px;margin:35px auto"><h2>CRM data check needs attention</h2><p>You are signed in. A data-quality issue is preventing the CRM records from loading, but your account access is still active.</p><p class="error">'+esc(message)+'</p><div class="toolbar"><button class="primary" onclick="refresh()">Retry data load</button><button onclick="logout()">Sign out</button></div><p class="muted" style="font-size:13px">The CRM will not treat a record-validation problem as a login failure. Fix the affected data, then retry.</p></section>';
+}
+function validateLoadedState(){
+ const problems=[];
+ for(const [entity,records] of Object.entries(state?.records||{})){
+  if(!Array.isArray(records))continue;
+  const seen=new Set();
+  for(const r of records){
+   if(!r?.id)continue;
+   if(seen.has(r.id))problems.push('Duplicate ID in '+entity+': '+r.id);
+   else seen.add(r.id);
+  }
+ }
+ return problems;
+}
+async function refresh(){try{state=await call('getState');const integrity=validateLoadedState();if(integrity.length){dataIssueView(integrity.join(' | '));return;}if(state?.records?.Companies){state.records.Companies.forEach(r=>{if(classificationOverlay[r.id])r.classification=classificationOverlay[r.id]});}el('signOutButton').hidden=false;el('sync').textContent='Synced '+new Date(state.updatedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});render()}catch(e){if(/AUTH_REQUIRED|SESSION_CHANGED/.test(String(e.message)))return;const msg=String(e.message||e);if(sessionToken&&/Duplicate ID|data|validation|record/i.test(msg)){dataIssueView(msg);return;}if(!state)el('main').innerHTML='<div class="empty error">'+esc(msg)+'<br><button onclick="refresh()">Retry</button></div>';else notice(msg)}}
 function go(v){view=v;query='';filter='';page=0;companyFilters={district:'',category:'',status:'',priority:'',researchLevel:'',classification:''};companySort='asc';render()}
 function render(){el('nav').innerHTML=['Today','Companies','Contacts','Opportunities','Tickets','Tasks','Reports','Assistant','Access'].map(v=>'<button class="'+(view===v?'active':'')+'" onclick="go(\''+v+'\')">'+(titles[v]||v)+'</button>').join('');if(view==='Today')dashboard();else if(view==='Reports')reports();else if(view==='Assistant')assistant();else if(view==='Access')accessSettings();else records()}
 function card(entity,r){return '<button class="record" onclick="detail(\''+entity+'\',\''+esc(r.id)+'\')"><div class="row"><strong>'+esc(r.name)+'</strong><span class="badge '+(overdue(r)?'warning':'')+'">'+esc(r.status||r.stage||'')+'</span></div><span class="muted">'+esc(company(r.companyId)||(entity==='Companies'?[r.classification,r.district,r.category].filter(Boolean).join(' · '):(r.district||r.category||'')))+'</span>'+(r.nextAction?'<div>'+esc(r.nextAction)+'</div>':'')+((r.dueDate||r.followUp)?'<small>'+esc(r.dueDate||r.followUp)+'</small>':'')+'</button>'}
