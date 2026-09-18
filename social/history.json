@@ -932,7 +932,121 @@
         "containerId": "18116481064819867",
         "mediaId": "18034894160654214"
       },
-      "facebook": null
+      "facebook": null,
+      "verification": {
+        "instagram": {
+          "width": 720,
+          "height": 1280,
+          "duration": 15,
+          "checkedFrames": 16,
+          "frameChecks": [
+            {
+              "time": 0.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.546
+            },
+            {
+              "time": 1.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.546
+            },
+            {
+              "time": 2.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.546
+            },
+            {
+              "time": 3.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.546
+            },
+            {
+              "time": 4.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.546
+            },
+            {
+              "time": 5.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.536
+            },
+            {
+              "time": 6.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.536
+            },
+            {
+              "time": 7.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.536
+            },
+            {
+              "time": 8.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.536
+            },
+            {
+              "time": 9.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.548
+            },
+            {
+              "time": 10.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.615
+            },
+            {
+              "time": 11.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.615
+            },
+            {
+              "time": 12.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.615
+            },
+            {
+              "time": 13.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.615
+            },
+            {
+              "time": 14.1,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.615
+            },
+            {
+              "time": 14.8,
+              "width": 720,
+              "height": 1280,
+              "meanPixelDifference": 0.615
+            }
+          ],
+          "fullDecodePassed": true,
+          "passed": true,
+          "id": "18034894160654214",
+          "sha256": "a2be65741638ad3678c4673df56f411d1a9a14141250c8abec97db0facb50663",
+          "permalink": "https://www.instagram.com/reel/Ddb-x8Tgd5N/",
+          "downloadedAsset": "social-results/tss-review-10-cyprus-relocation-priorities-reel-instagram.mp4",
+          "evidenceCommit": "bde2195006a4b85dc6a3b1a30a8e7d46f5343410",
+          "evidencePath": "social/published-assets/a2be65741638ad3678c4673df56f411d1a9a14141250c8abec97db0facb50663.mp4"
+        }
+      }
     }
   ],
   "qaFailures": {},
