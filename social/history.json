@@ -863,6 +863,25 @@
         }
       },
       "verificationMethod": "published-asset-comparison"
+    },
+    {
+      "id": "tss-review-09-property-title-checks-story",
+      "date": "2026-09-18T12:11:08.873Z",
+      "topic": "Cyprus property due diligence: independent document checks",
+      "topicKey": "cyprus-property-title-charges-permit-checklist",
+      "headline": "BUYING IN CYPRUS? CHECK BEFORE SIGNING.",
+      "creativeKey": "cyprus-property-title-charges-permit-checklist-landmark-v2-story-revision-2",
+      "assetSha256": "7f95ed17e1193bec3c870125b491f80b16fe80e6af0d5648dac21eb93137a09c",
+      "pixelHash": "4b73de1f4714819b0a03f25feaf7ce80af2598704584f0de7078a61efddd60b0",
+      "visualSignature": "rgb32:+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz9/bx9fXw9vby9vbx9vXx9vXx+Pfy+fjz+fjz+fjz+fjz+vn0+/r0+/r0+/nz+/n0+/n0+vn0+/r0+/n0+vnz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz/v76///+///5///6///8///8/Pv1+ffz+fjz+fjz+Pjz8fLu7/Ht7/Ht8/Tw8fPv8PLu8vPv7/Ht8PHt9vXx+vjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+PfywMXJrLK5uM7QwMjMu77Ds7vA4ePh/Pr1+Pfy+fjz+Pfy6ezp5unn5+ro7/Dt6uzq6Ovp6u3q5enn5+vo8vLu+fjz+Pfy+Pfy+Pfy9/by9/by9/fy+Pfy9/by9/by//33wcfKW2Z6jMTIV7O8cJCdV2V5o6y0///69/bx+fjz+fjz/v76/v76/v35/v35//35//76/v76//75/Pr2//76/fz3+/r2/Pv2/f33/v35/v76/v75/fz3/v34//749fXw4eTi0NXWzszOvMfKytPVusDE0dXW/Pv1+Pfy+vn09fXwwMbKzNHS09fX0NTWztPUx8zOx83P0dbX7e/swcfL2Nvb5Obk1djZ1NjYyM3Qv8XJxMrN2tzcys/R0tbX3N7d9vbx+vr1+vv3+/r19vXy+Pj09PTw+fjz+fjz+vn08/PvoKuzo621qLK5qrS6sbrAnKewo662vcTIv8bJlqOsp7G5vsXJtb3CqLO5rLa9r7e+rre9pa+3o621rre+w8nM5Obk2t3c4OLh3uHf9/bx+vnz+vnz+fjz+fjz+vn09PTwx8zOx8vOtbvBs7i/xcnMxMfLwsjM4uTjmKOuu8HGvsHG0NDTuLzCtbrArrW91Nfa2t3gvcHGtbzBtr7DqLK5rLW7oay0p7C4qrS63+Lg+fj0+Pjz+fjz+fjz+Pfy/Pr1zOLfyODdyOHdv9vZ4ezostTT+Pjz7vPuz+Xixd/cvtzZvtzZuNjWtdfVwN3auNfWtdbUt9jW3uvn/vv2/f33/Pv2/v34/v33/Pv1+Pfy+fjz+fjz+fjz+fjz+fjz+PjzvdnXs9TSuNfVqtDOsdPRn8rKyt/dxt7brtHQu9nWyN/cwtzZyN/cyd/cx97cxt7by+HezeHf1+bi9vbx+Pfy+Pfy+Pfy9/fy+Pfy+fjz+fjz+fjz+fjz+fjz+/n07/PutNbTttfVrNLRrNLRttfVsdXSt9jWt9jWx9/ctNbU+Pn0//76//75/v74//75/v74/v34/v74/v33+/r0+/n0+/r0+/r0+/n0+/r0+/r0+fjz+fjz+fjz+fjz+fjz+fjz6+nn6+nn7uzp7Ono4+Pi6unn5eTj6+nn6unn5+fl3+Lh5+nm5ujm4uXj4+Xk6Onn5efl5+jm4ePi4uTj5+jm6Orn4uTi6Onm4+Tj4+Tj8vLu+vn0+fjz+fjz+fjz9/fy2t7d2t3d1NjY0dXX0NTV3ODf2t3d09fX1dra2t3d0dbX2t7d1NjY1tnZ3uDf7e3q7Ozp7O3q8vLu9fXw9fTw9vXx9fTv9vXw9fXw9PTw9/fy+fjz+fjz+fjz+/n08PTv4ern6enm3eDf3uHg3N/e4+Xk4ePh3N/f5ufl3d/e29/e5ufl3+Hg5Obk3uHg1NjY3N/e4OLh9PTv+/r1+vn0+vnz+vn0+vnz+vn0+vn0+fjz+fjz+fjz+fjz+fjz+fjz+vn0+/r1/Pv1/Pv1+/r1+/n0/fr1/Pv1+/r0/Pr1/Pv2+/r0/Pr1+/r1/Pv2/fv1/Pv1/Pv1+vjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+Pfy+Pfy+Pfz+Pjz+fjz+fjz+Pfz+fjz+fjz+Pfz+fjz+Pfz+Pjz+Pfy+Pfy+fjz+Pfz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+Pjz9/bx9/bx9/bx9/bx9/by9vXw9vXw9vXw9vXw9fTw9fTw9vXw9vTw9fPu9fTv9vXw9/bx9fTv8fDr9PPu9fTv9PTv9fPv9fTv9fTv9fTv9fTv9fTv9fTv9fTv9fTv+Pbx5Ofs5Ofs4+fr5Oju4+bp2trY19jW1tfW1tbU2NjV2trV29nV3dvX397c4ODd4N/b1dTP4N7Z2NjTxsjCxsjCw8PAxMTAxMTAxMO/yMjDx8fCw8K9v7+4wcC7w8K+vLu1uszpuczru87swtf1p7G+nJ+gn6aunqasp6yvp62wq6+zsba5sbe7sLa7tLm9qKqqiImIpZ6RxcCzVlxVR0xFXWFgU1VVT1JSXWFjTVBMSk1IfIKEcnV3V1dYWFpccXNzlpSUl5aXo6OnrK+0j46Ke3x7eoCFgYmSjpihmaKpmaCmm6Kpoamxoaiwm6OphIiHZGVjkYh1qZqCa2RWODo0Oz04b3NzeH1/VF1pPkdKZGxqh5KYlqKtfIWOXWRpgImXln1hn4VmqJJ1oIxyoY52k4Vyd25gUk1ES0xOfoKIkZSWmJmanJ+joKSql5qfc3FrYWFXkYV0iXVWpZR2Z2RWR0Q5r6aYtq2ceHd4aG57sK6tq6mopqWjp6amj42MaWpykXlfcltIgm1ajHppY1RJXUs/aFpORTw5QD5ATU1OYGBef3+Ae3h1fHhxeHd0aWpnYWBZhHppTFAzLTYbLzsgLDgeOD4lOUMjWWA/SU9RdHtoho51hIl2h417UVRKP0FCjX90dmphamNgpJuWjYaFkImHube1p6Wkrq2ts7O1sbGxsbGzsLGysLCura6ssrW3sLS4s7e6cnVtSVFIU1tQUVtPUVlOVV5Rk52OnKKjl5+YnKSYlp+TkJqNi5KKhouI6Ojk6ejk4uTh4uXi8fPw8/Xx7e7r8fPv8vPv7e/s6+7r9fTw+fjy9/bx+Pfy9/Xx9fTv9/by8/Lt5uXg5+Xg5+bh6Ofh6ujj9PTz9/f19/b19PP09PP08fHy7ezq7u3p/fv2+/v16e3r5Onn5ejn5Ojn5enn6uzq5+vp5Ojm4ubm8/Pv+vn0+fjz+fjz+fjz+fjz+fjz+vn0/fz3/fv2/fz3/fv2/fz2+vnz+fjz+vnz+vnz+vnz+/nz+/r1+vn0+Pfy9/by5OXj3d/f3N7e3+Hg4ePh4OPh297d5OXj3+Hg7u/r+/r0+Pjz+fjz+fjz+fjz+fjz8vTv8PPu8PPu8PPu8PPu8PPu8fTv8fTv8fTv8fTv8fPv8vPv+Pfy+Pfy+fjz+fjz9/bx9fbx9vXx9/by9vbx9/by9vbx9vbx9vbx+Pfy+fjz+fjz+fjz+fjz+fjz+fjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+Pjz+fjz+fjz+fjz+fjz+vjz+vnz+fnz+vnz+fjz+vjz+vjz+fjz+vjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz+fjz",
+      "format": "story",
+      "platform": "instagram",
+      "classification": "factual",
+      "editorial": null,
+      "phase": "reserved",
+      "qaBoundSha256": "fa13fad1605328d3f2df38425878e2a6aa1abfcd6c834d9d1b45b0c2a9058179",
+      "instagram": null,
+      "facebook": null
     }
   ],
   "qaFailures": {},
