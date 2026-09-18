@@ -926,10 +926,11 @@
       "platform": "instagram",
       "classification": "promotion",
       "editorial": null,
-      "phase": "publishing_instagram",
+      "phase": "instagram_published",
       "qaBoundSha256": "2f41d0f59bde7f9eeafd00606d49f18bd451ef9624a1864a4558a0c095030f4b",
       "instagram": {
-        "containerId": "18116481064819867"
+        "containerId": "18116481064819867",
+        "mediaId": "18034894160654214"
       },
       "facebook": null
     }
