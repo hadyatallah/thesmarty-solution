@@ -848,6 +848,18 @@
           "downloadedAsset": "social-results/tss-review-07-europe-property-cycles-feed-instagram.png",
           "evidenceCommit": "83d72db12ec2b823c4c2a615f5eb0c6ebfee527d",
           "evidencePath": "social/published-assets/2db68e5522d338fcf74bce7aeae843d25ce43bb673ca0c8a56ec0222bcef4a5c.jpg"
+        },
+        "facebook": {
+          "width": 720,
+          "height": 900,
+          "meanPixelDifference": 1.834,
+          "passed": true,
+          "id": "177672945439622_122301530012216133",
+          "sha256": "cd6f7fbd90377ddfea3d74ddc50dadb50533b3847a0f4590146973d359ab7776",
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301530012216133",
+          "downloadedAsset": "social-results/tss-review-07-europe-property-cycles-feed-facebook.png",
+          "evidenceCommit": "83dc8f429bb3e75e139e376ea86ad7566e4cb66d",
+          "evidencePath": "social/published-assets/cd6f7fbd90377ddfea3d74ddc50dadb50533b3847a0f4590146973d359ab7776.jpg"
         }
       }
     }
