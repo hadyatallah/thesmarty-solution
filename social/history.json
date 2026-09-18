@@ -811,6 +811,25 @@
         }
       },
       "verificationMethod": "published-asset-comparison"
+    },
+    {
+      "id": "tss-review-07-europe-property-cycles-feed",
+      "date": "2026-09-18T06:35:39.053Z",
+      "topic": "Portugal versus Finland: different European residential price cycles",
+      "topicKey": "europe-property-cycles-portugal-finland-q1",
+      "headline": "EU PROPERTY. DIFFERENT CYCLES.",
+      "creativeKey": "europe-property-cycles-portugal-finland-data-editorial-r2-feed",
+      "assetSha256": "81d7e16dcbec9f49f24bbc5a7b6252e5f7b9a826ce099a1be302cfc381ba13c2",
+      "pixelHash": "c4aa25e3527bbfbefdea9d81693ee1562f2230c7c71e82d71d042fcfb5b72cb4",
+      "visualSignature": "rgb32:+/r2/Pv2/vz4/fz3/Pv3/Pv3/fz4/vz4/Pv2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/Pv38vPx3OLk3ePk4OXl6+7t4OXm2eDi6u3s/fv2+vn1+vn1+vn1+vr2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2+/r3+/v3+vr2+fj2/v77/Pz4+/r2/v76///7/v77///7///7/fz4+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/fv38fLv4eTk6erp7e7s1drb3+Li4+Xl2t3e3+Li3+Hh297f29/f7u7s/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39fXy4OPj4+bm3+Dh5t/g4ePj6Orp+fj0+/r2///719vcnaizsLjA0NXXlqKtnqmzoq22oay2rre+lqGtqLK6r7i/xcrO///6+vn1+/r2+/r2+fj1+Pfz+vr1+vn1+fn1+vn19/f09fbz+Pj18/bz+fn29fXz+vn2+/r2//753+LilKCrr7e/t7/GsLnBpK64qbO8p7G6naiyo6237e7s///8+Pj1+/r2+/r2+/r2+/r2/v78/////Pz4/v34//76///6/v34//75/v34/Pv3/Pv2/Pv2+/r2+/r2//755OblqrO7tLzDwsjNwsnOprC4rLa9zdPV2dze3uLi9vf0+fn1+vr2+vr2+/r2+vn1//75wsjNmKSv6+zq3eDh1dnbzdLV6evp3N/g4+Xl+/r2+fj0+vn1+/r2+/r2//755Oblx8zQvcTJwcbLxsnOsbnAtbrC6urq///9/v77//77/v36//76/v34+vn1+vn1///6Z3mMIz9cxcvP5Obmz9PW09bZ2t3e3eDg5Obl6erp5+jo8PDu/Pv3+/r2+vn1//347PPx+vz63+3rr9XU8Pb1pNHQs9XV////wNzamsnJvtvasNTT1+jl9fj2/Pr2/v347O3r19vc/Pv38fHv7u/t7+/t8fHv/vz4/fz4/Pv3/Pv3/Pv2+/r2+/r2/Pv29Pfzfru8qtHQ6fHtXqeq9/j0hL2/s9bV/vz4gby9RZ6hrNLSlMXGfrq8uNjX//75+fn1/Pv3/v77+vn1/fz4/fz3/fz3/fz3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+vj10uLh5Ozq4OrposvL2+flw9vb7vHvyd7dxt3cr9TT7fTy5vDtyODexN/d//35+vn1/v37///7/Pz4+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/fz37u/t19nb1Nfa1dja5uTm1dja2tvd2Nvd19ja4eHh///7+vr2/Pr2//36/f36+vn1//35rre/gpCg4eTk3eDg09fZys/TztPWytDT9fTx+vn1+Pf0+vn1+/r2+/r2/Pv38fHv4OLj3eHh3eDh3uLi2t7f3eDg5Obm4OPj6Orp4uTl4OPj5ufn4+Xl3N/g7u7t///6ipilYHSI1tnb4OPj1dnb1dja297f5efm6erp6erp6uvq8vLv/fv3+vr2/Pv38vLw4OPj4uTk4+Xl5efm4ePj5efm+Pj0+vn1+fn1+fj0+fj1+vn1+fj1+Pj0+vn1/Pv3+/r39/f0/fz59vXy9fXy9PTx+Pj0/v34/Pv3/Pv3/Pv3/Pv2+/r2+/r2+/r2/Pv3/vz4/v34/fz4/fz3/vz4/fz4/Pr2+/r2/Pv2/Pv2+/r2+/r2+/r2/Pr2+/r2+/r2+/r2/fv3+vn1/fv3/fz3/fz3+/v2+vr2+/r2+/r2+/r2+vr2+/r2+/r2+/r2+vr2+vn1+fj1+fn1+fn1+fj1+vn1+vn1+vn1+vn1+vn1+vn1+vn1+vn1+vn1+vn1+vn1+vn1+fj1+vr1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv3/v75//76/v35/v75///7/v34//75//75/v75/v35/v35///6/v75///6//76/v75//76///6/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/fv36vLv2uHh1Nfa3eDg2t3ezdLW3+Li19vc1tvc3+Hi3eDg3ODg1drb3eDh0tXY1trc3N7f1Nja09fZ8PHu/fz3+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pr17PLu7PHt8fHu8vPv8fLu7+/s8/Pw8fLu8PHu8vPv8/Pv8vPv8PHu8vPv7/Dt8PHu8fLv7/Ht7/Du9vfy+vn1+fn1+fn0+fn0+fn0+fn1+fn0+fn1+fn1+fn1+fn08PP08/T19fX29Pb28/X28/X29Pb38vX18/X19vb29/f29ff28/X29Pb28/X19Pb28/b28/T29PX28/b28vT18fT18fP08vT08fT08vT18vP18fP08vP08vT08fP08fL04Ofy4uny5Ory4+nz4+rz5evz5Ovz6O3z6e3z7vDz8PLz6e/z5ezz5Ovz5+7z5u3z5uzz6O3z5Ovz5ezz4+rz4+rz4urz4Onz4Ojz4Ojz4enz4ejz5+zz5uvz3ubz3ubzvtDvwNHwwNLxvtHxwNLxwtPywtTxxtfyxtfyxdfyxdbxxNbxw9Xxv9PwwtTxwtTwxNXwxNXwwNPvxNXwwtTvwdTwwdXwxNfw0d3wy9jv0Nzw0dzw2eDvy9bvvc/vtsvvcpDUc5PXdZTad5jdeZrfe5zifJ7ke5/lfJ/mfaHofaPpfqPqgKXrgabsf6Xsf6btgajtgafugqjuhavvh6zwia7wiK3wjbDwlLPvjrDvj7Hvj7HukLHuiq3shqrrgabqKVSQKleTKleVK1iYLFmZLVubL12eMl+hNGGkNmKmOGSpOWWqOWarOmeuO2evPGmyPWm0PWm1Pmy5PWq5Pmu6Pmy7R3G+Q2++QXDDQW/AQnDCQ3HDQnHGQ3LIQnDHR3LJZXmGZnqGZ3uJaX2Lan6Ma3+NbH+MbX+Mbn+McYCNcYCOcYCNcX+LcX+OcoCObnqIcX6Of39/Zmhwb3qNa3WJfISTq6OajoN6X2V2b3iPanOKY2yDYWh7XmFwXWJzYGFqaG57aW98a3B+bHGAbXKBbXKDbnKDbnODb3SEb3SGcHSFcXSEcHSFcHSGcXWFbXKCcnaKc3J+ZWRxcnSMcnSIe3mFe3Nydm9sVVFZamt2gYGNbWx0bWhpY1lVYlpUZltWWmRzW2Z0W2Z2XWh4XWd4Xmh5Xml7X2l7YGt9YGp9YGp8YWt8YWp/YWp+YGp9YWqAYGqCYGqEYWyGYGiCYGiAYGZ+YWR5YGR5YGV6W190XmV7X2V8XmR6Wl5zXGBzWlppIzNEJDVFJzdHJjdIJjdKJjZJJzhLJzhLJjZJJzdJKThKJzZJJTVHJjVIJjVIJTVIJTRIJTRHJTNGJTNGJDNGJTNHJTRIJjVIJTRIJjVJJTNHIzFHIzNIIzNIIDFGHy9GARUoECI0LD1MJDVFIzRFJTVGLDxNLT1MGy0+HS8/Lj5PITJDAhYpBBcqBBcqAxcqAxcqBBcqBBcqBBcqBBcrAhYpCBwvHC4/FSc5DyI0GSw9EyY4EyY3GCs8BhosAhYpCBouCxwwDiA0ECE1DiAzDyA0DiA0DyE0DyE1ESI1DyE1CRwwCBsuCBsuCRsvCRsvCRsvCRsvCBsvCRsvCRsvCx0wFic6Fyg7GCk8Fic6Fic6Fyg7FCU4Fyg7DR4xCBktBBgrCh0wFyg6FCY4EyY3FSc5EyU3Fig5EiQ2FCY5FCY4BhkrBhksBhksBhkrBhksBhksBhkrBhksBhksBRgrCBsuITJDKDhIKDlJHzBBJDVFIzRFITFDJjZIDiE0AxYqAxgqAhcpAhYoARYoARYoARYoARYoARUoAhYoAhUoAhYoBBcqBBcqBBcqBBgpBBgqBBgqBBgpBBgqBBcqAxcqAxcpABQmABMmABMmABQnABMnABMnABQnABMmAhYqAxgr",
+      "format": "feed",
+      "platform": "instagram+facebook",
+      "classification": "factual",
+      "editorial": null,
+      "phase": "reserved",
+      "qaBoundSha256": "a56a11d038e5755c402c631943e5290e019c39f125486e31b94c51bb6c2c3711",
+      "instagram": null,
+      "facebook": null
     }
   ],
   "qaFailures": {},
