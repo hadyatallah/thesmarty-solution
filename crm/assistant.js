@@ -103,36 +103,37 @@ function parseAssistantJson(text){
 }
 function aiSchemaSummary(){const entities=['Companies','Contacts','Opportunities','Tickets','Tasks'],out={};entities.forEach(function(e){out[e]={fields:(state.fields&&state.fields[e]||[]).filter(function(k){return !['id','version','createdAt','updatedAt','threadId'].includes(k);}),enums:(state.enums&&state.enums[e])||{}};});return out;}
 function compactPlannerContext(text){
-  const cand=lexicalCandidates(text).slice(0,6);
-  return cand.map(function(x){return {entity:x.entity,record:x.record};});
+  const cand=lexicalCandidates(text).slice(0,5);
+  return cand.map(function(x){
+    const r=x.record||{};
+    return {entity:x.entity,id:r.id||'',name:r.name||'',companyId:r.companyId||'',stage:r.stage||'',status:r.status||'',lifecycle:r.lifecycle||''};
+  });
 }
 async function compressLongAssistantInput(text){
   const src=String(text||'');
-  if(src.length<=1400)return src;
+  if(src.length<=700)return src;
   const chunks=[];
-  for(let i=0;i<src.length;i+=2200)chunks.push(src.slice(i,i+2200));
+  for(let i=0;i<src.length;i+=1500)chunks.push(src.slice(i,i+1500));
   const summaries=[];
   for(const chunk of chunks.slice(0,6)){
     const q='Summarize this CRM input using only explicit facts. Preserve names, company, emails, phones, dates, requests, commitments, issues and next steps. Do not infer. Text:\n'+chunk;
     const r=await call('askAssistant',q,'','');
-    summaries.push(String(r.answer||'').slice(0,700));
+    summaries.push(String(r.answer||'').slice(0,350));
   }
-  return ('Compressed from long pasted content:\n'+summaries.join('\n')).slice(0,1500);
+  return ('Compressed from long pasted content:\n'+summaries.join('\n')).slice(0,700);
 }
 function aiPlannerPrompt(userText){
-  const candidates=compactPlannerContext(userText);
-  const convo=recentConversation().slice(0,350);
-  const rules='Use normal language. Explain CRM questions instead of acting. Reads/searches may run. Writes require confirmation. Sensitive: Qualified, Won/Lost, Do not contact, payments, send/approve outreach, merge/delete. Positive reply alone is not Qualified. Never invent facts. Search existing records before create. Writable: Companies, Contacts, Opportunities, Tickets, Tasks only. Dates YYYY-MM-DD.';
-  const formats='Return JSON only: answer {"mode":"answer","message":"..."}; clarify {"mode":"clarify","message":"..."}; query {"mode":"query","message":"...","query":{"entity":"Companies|Contacts|Opportunities|Tickets|Tasks","conditions":[{"field":"field","op":"eq|neq|contains|gt|gte|lt|lte|empty|not_empty","value":"..."}],"limit":50}}; timeline {"mode":"timeline","message":"...","recordId":"company id"}; action {"mode":"action","message":"...","confidence":"high|medium","actions":[{"operation":"create|update","entity":"Companies|Contacts|Opportunities|Tickets|Tasks","recordId":"","recordName":"","data":{}}]}.';
+  const matches=compactPlannerContext(userText);
+  const rules='Natural language CRM planner. Explain questions instead of acting. Reads may run. Writes need confirmation. Sensitive: Qualified, Won/Lost, Do not contact, payments, outreach send/approve, merge/delete. Positive reply alone is not Qualified. Never invent facts. Search before create. Writable only: Companies, Contacts, Opportunities, Tickets, Tasks. Dates YYYY-MM-DD.';
+  const formats='JSON only. answer {"mode":"answer","message":"..."}; clarify {"mode":"clarify","message":"..."}; query {"mode":"query","message":"...","query":{"entity":"Companies|Contacts|Opportunities|Tickets|Tasks","conditions":[],"limit":50}}; timeline {"mode":"timeline","message":"...","recordId":"company id"}; action {"mode":"action","message":"...","actions":[{"operation":"create|update","entity":"Companies|Contacts|Opportunities|Tickets|Tasks","recordId":"","recordName":"","data":{}}]}.';
   const prompt=[
-    'TSS CRM planner. '+rules,
-    'Today '+today()+' Asia/Nicosia.',
-    'Likely matches: '+JSON.stringify(candidates),
-    convo?'Recent context: '+convo:'',
-    'User: '+String(userText).slice(0,1500),
+    rules,
+    'Today '+today()+'.',
+    matches.length?'Matches '+JSON.stringify(matches):'',
+    'User '+String(userText).slice(0,700),
     formats
   ].filter(Boolean).join('\n');
-  return prompt.slice(0,2950);
+  return prompt.slice(0,1400);
 }
 function actionIsSensitive(a){
   const d=a.data||{},txt=JSON.stringify(d);
