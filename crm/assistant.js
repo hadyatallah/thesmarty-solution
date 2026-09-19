@@ -108,6 +108,22 @@ function compactPlannerContext(text){
     return {entity:x.entity,id:r.id||'',name:r.name||'',companyId:r.companyId||'',stage:r.stage||'',status:r.status||'',lifecycle:r.lifecycle||''};
   });
 }
+function localCommunicationAnswer(text){
+  const q=String(text||'').toLowerCase();
+  const asksSent=(q.includes('sent')||q.includes('emailed')||q.includes('contacted')||q.includes('outreach'))&&(q.includes('email')||q.includes('customer')||q.includes('company')||q.includes('who')||q.includes('which'));
+  if(!asksSent)return '';
+  const ids=new Set();
+  (state.records.Activity||[]).forEach(function(a){
+    const action=String(a.action||'').toLowerCase(),summary=String(a.summary||'').toLowerCase();
+    if(a.entity==='Companies'&&(action.includes('contact')||action.includes('email')||summary.includes('email sent')||summary.includes('outreach sent')))ids.add(a.recordId);
+  });
+  (state.records.Companies||[]).forEach(function(r){
+    if(['Contacted','Awaiting response','Responded','Follow-up required','No response'].includes(r.communicationStatus)&&r.lastContact)ids.add(r.id);
+  });
+  const rows=(state.records.Companies||[]).filter(function(r){return ids.has(r.id);}).sort(function(a,b){return String(b.lastContact||'').localeCompare(String(a.lastContact||''));});
+  if(!rows.length)return 'I do not have any companies recorded as already contacted by email.';
+  return 'Companies already contacted by email:\n'+rows.map(function(r,i){return (i+1)+'. '+r.name+(r.lastContact?' — last contact '+r.lastContact:'')+(r.communicationStatus?' — '+r.communicationStatus:'');}).join('\n');
+}
 function primaryAssistantContext(text){
   const c=lexicalCandidates(text);
   if(!c.length)return {entity:'',id:''};
@@ -198,6 +214,13 @@ async function handleAssistantSubmit(e){
   const b=e.submitter,q=el('aiQuestion').value.trim();
   if(!q)return;
   if(q.length>3000){el('aiAnswer').innerHTML='<div class="assistant-message error">Please keep each message to 3,000 characters or less.</div>';return;}
+  const local=localCommunicationAnswer(q);
+  if(local){
+    aiConversation.push({role:'user',text:q},{role:'assistant',text:local});
+    saveAiState();
+    el('aiAnswer').innerHTML='<div class="assistant-message">'+esc(local)+'</div>';
+    return;
+  }
   b.disabled=true;
   aiConversation.push({role:'user',text:q});
   saveAiState();
