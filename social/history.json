@@ -1063,7 +1063,7 @@
       "platform": "instagram+facebook",
       "classification": "editorial-opinion",
       "editorial": null,
-      "phase": "published",
+      "phase": "automatically_verified",
       "qaBoundSha256": "e17af1f85192ecd52195d1e7efcd30b79a138c7d3e849a34a3388008099e7c93",
       "instagram": {
         "containerId": "18116693590819867",
@@ -1098,7 +1098,8 @@
           "evidenceCommit": "e7002add9f159158ae20bf04af315bbf5c714af3",
           "evidencePath": "social/published-assets/374f753128e388052ab2fdaa7120241427f8866e95feddf26df229568c8130a5.jpg"
         }
-      }
+      },
+      "verificationMethod": "published-asset-comparison"
     }
   ],
   "qaFailures": {},
