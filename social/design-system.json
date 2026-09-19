@@ -37,7 +37,7 @@
     "rule": false,
     "logo": "top-right-original-asset",
     "wordmark": "The Smarty Solution",
-    "tagline": "Connect \u00b7 Develop \u00b7 Invest",
+    "tagline": "Connect · Develop · Invest",
     "footer": "THESMARTYSOLUTION.COM",
     "locationLabel": true,
     "sourceLabel": true,
@@ -82,5 +82,14 @@
     "evidence": "official primary sources and credible original market studies; no unsupported forecasts or migration motives",
     "targetUsefulShare": 0.8,
     "targetPromotionShare": 0.2
+  },
+  "visualRequirement": {
+    "pictureRequiredForEveryPost": true,
+    "feedRequiresVerifiedRealPhoto": true,
+    "storyRequiresVerifiedRealPhoto": true,
+    "reelRequiresVerifiedRealPhotoOrVideo": true,
+    "textOnlyPostsAllowed": false,
+    "noLocationImageryAllowed": false,
+    "legacyTextOnlyReuseAllowed": false
   }
 }
