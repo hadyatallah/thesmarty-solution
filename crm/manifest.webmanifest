@@ -30,9 +30,9 @@
       ]
     },
     {
-      "name": "Prospect Queue",
-      "short_name": "Prospects",
-      "url": "/crm/?view=Prospect%20Queue",
+      "name": "Conversion",
+      "short_name": "Conversion",
+      "url": "/crm/?view=Conversion",
       "icons": [
         {
           "src": "/crm/icon.svg",
@@ -42,9 +42,9 @@
       ]
     },
     {
-      "name": "Conversion",
-      "short_name": "Conversion",
-      "url": "/crm/?view=Conversion",
+      "name": "Clients & Delivery",
+      "short_name": "Clients",
+      "url": "/crm/?view=Clients",
       "icons": [
         {
           "src": "/crm/icon.svg",
