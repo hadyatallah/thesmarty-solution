@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "requestedAt": "2026-09-18T17:31:00.000Z",
-  "cyprusDay": "2026-09-18",
+  "requestedAt": "2026-09-19T11:15:01.000Z",
+  "cyprusDay": "2026-09-19",
   "pendingPostIds": [
-    "tss-review-10-cyprus-relocation-priorities-reel"
+    "2026-09-14-cyprus-lebanon-customer-problem"
   ],
-  "reason": "Manual authorized trigger for the approved 19:15 Reel after confirming the current TSS website again contains the required investor-connections evidence. Use all existing publishing checks."
+  "reason": "Scheduled ChatGPT publishing trigger"
 }
