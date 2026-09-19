@@ -66,6 +66,16 @@ Use for Larnaca, Limassol, Paphos, Kiti and other locations/opportunities.
 - Location name / question in navy
 - Same category label, logo and footer as all other templates; no category rule
 
+## Mandatory picture standard
+- Every new TSS social post must include a real visual. Text-only social posts are not permitted.
+- Feed posts must include at least one verified real photograph integrated into the approved TSS editorial composition.
+- Stories must include a verified real photograph in the dedicated 1080x1920 design.
+- Reels must use verified real photography or rights-safe real video footage. A text-only Reel is not permitted.
+- The picture requirement applies to useful content, debates, checklists, data posts, TSS promotional posts and recovery content alike.
+- Queue shortages are never a reason to reuse an old no-location/text-only asset.
+- Legacy no-location-imagery assets must not be promoted into the live queue again.
+- Photography remains subject to the source, licence, Republic-controlled geography, duplicate and final visual QA rules below.
+
 ## Photography rules
 - Republic of Cyprus controlled areas only
 - Prioritise Larnaca, Limassol, Nicosia Republic-controlled side, Paphos, Paralimni, Protaras, Ayia Napa, Troodos, Platres, Lefkara and similar areas
