@@ -101,6 +101,7 @@ function parseAssistantJson(text){
   if(s<0||e<s)return null;
   try{return JSON.parse(raw.slice(s,e+1));}catch(err){return null;}
 }
+function aiSchemaSummary(){const entities=['Companies','Contacts','Opportunities','Tickets','Tasks'],out={};entities.forEach(function(e){out[e]={fields:(state.fields&&state.fields[e]||[]).filter(function(k){return !['id','version','createdAt','updatedAt','threadId'].includes(k);}),enums:(state.enums&&state.enums[e])||{}};});return out;}
 function aiPlannerPrompt(userText){
   const selected=aiContextSelection.id?compactRecord(aiContextSelection.entity,(state.records[aiContextSelection.entity]||[]).find(function(r){return r.id===aiContextSelection.id;})):null;
   const candidates=lexicalCandidates(userText);
@@ -111,6 +112,7 @@ function aiPlannerPrompt(userText){
     'Selected context: '+JSON.stringify(selected||null),
     'Likely CRM matches: '+JSON.stringify(candidates),
     'Working snapshot: '+JSON.stringify(workingSummary()),
+    'Live writable schema and allowed enum values: '+JSON.stringify(aiSchemaSummary()),
     'Recent conversation:',
     recentConversation(),
     'User input:',
@@ -130,6 +132,7 @@ function aiPlannerPrompt(userText){
     'For a new company plus contact, later action may set companyId to "$action0.id".',
     'For updates, include only fields that should change.',
     'Do not generate unsupported fields or invent missing facts.',
+    'For date fields use YYYY-MM-DD. For enum fields use an exact allowed value from the live schema.',
     'Do not mark Qualified from a positive reply alone.',
     'Workbook-only entities are guidance-only until backend support exists.'
   ].join('\n');
