@@ -15,5 +15,55 @@
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "Today",
+      "short_name": "Today",
+      "url": "/crm/?view=Today",
+      "icons": [
+        {
+          "src": "/crm/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Companies",
+      "short_name": "Companies",
+      "url": "/crm/?view=Companies",
+      "icons": [
+        {
+          "src": "/crm/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Follow-ups",
+      "short_name": "Tasks",
+      "url": "/crm/?view=Tasks",
+      "icons": [
+        {
+          "src": "/crm/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Assistant",
+      "short_name": "Assistant",
+      "url": "/crm/?view=Assistant",
+      "icons": [
+        {
+          "src": "/crm/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
   ]
 }
