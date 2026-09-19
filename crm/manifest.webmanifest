@@ -64,6 +64,18 @@
           "type": "image/svg+xml"
         }
       ]
+    },
+    {
+      "name": "Outreach",
+      "short_name": "Outreach",
+      "url": "/crm/?view=Outreach",
+      "icons": [
+        {
+          "src": "/crm/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
     }
   ]
 }
