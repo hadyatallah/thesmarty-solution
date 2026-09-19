@@ -30,9 +30,9 @@
       ]
     },
     {
-      "name": "Conversion",
-      "short_name": "Conversion",
-      "url": "/crm/?view=Conversion",
+      "name": "Management",
+      "short_name": "Management",
+      "url": "/crm/?view=Management",
       "icons": [
         {
           "src": "/crm/icon.svg",
