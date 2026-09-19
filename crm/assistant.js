@@ -108,6 +108,43 @@ function compactPlannerContext(text){
     return {entity:x.entity,id:r.id||'',name:r.name||'',companyId:r.companyId||'',stage:r.stage||'',status:r.status||'',lifecycle:r.lifecycle||''};
   });
 }
+function dossierRequest(text){
+  const q=String(text||'').toLowerCase();
+  const wants=/\b(all info|all information|all details|everything about|provide.*info|provide.*details|tell me everything|full details|full info)\b/i.test(q);
+  if(!wants)return null;
+  const match=lexicalCandidates(text).find(function(x){return x.entity==='Companies';});
+  if(!match||!match.record||!match.record.id)return null;
+  return (state.records.Companies||[]).find(function(r){return r.id===match.record.id;})||null;
+}
+function dossierValue(v){return v===undefined||v===null||v===''?'—':esc(v);}
+function companyDossierHtml(companyRec){
+  const id=companyRec.id;
+  const contacts=(state.records.Contacts||[]).filter(function(r){return r.companyId===id;});
+  const opps=(state.records.Opportunities||[]).filter(function(r){return r.companyId===id;});
+  const tasks=(state.records.Tasks||[]).filter(function(r){return r.companyId===id;}).sort(function(a,b){return String(a.dueDate||'9999').localeCompare(String(b.dueDate||'9999'));});
+  const tickets=(state.records.Tickets||[]).filter(function(r){return r.companyId===id;});
+  const linkedIds=new Set([id].concat(contacts.map(function(x){return x.id;}),opps.map(function(x){return x.id;}),tasks.map(function(x){return x.id;}),tickets.map(function(x){return x.id;})));
+  const activity=(state.records.Activity||[]).filter(function(a){return linkedIds.has(a.recordId);}).sort(function(a,b){return String(b.createdAt||'').localeCompare(String(a.createdAt||''));}).slice(0,12);
+  const companyItems=[
+    ['CRM ID',companyRec.id],['Category',companyRec.category],['District',companyRec.district],['Email',companyRec.email],['Phone',companyRec.phone],['Website',companyRec.website],
+    ['Lifecycle',companyRec.lifecycle||'Company'],['Communication',companyRec.communicationStatus],['Last contact',companyRec.lastContact],['Priority',companyRec.priority],['Lead score',companyRec.leadScore],['Score band',companyRec.scoreBand]
+  ];
+  const section=function(title,body){return '<section class="section"><h3>'+esc(title)+'</h3>'+body+'</section>';};
+  const list=function(items){return '<ul>'+items.filter(function(x){return x[1]!==undefined&&x[1]!==null&&x[1]!=='';}).map(function(x){return '<li><strong>'+esc(x[0])+':</strong> '+dossierValue(x[1])+'</li>';}).join('')+'</ul>';};
+  let html='<div class="assistant-message"><h3 style="margin-bottom:4px">'+esc(companyRec.name)+'</h3><span class="muted">Complete CRM dossier</span>';
+  html+=section('Company information',list(companyItems));
+  html+=section('Contacts',contacts.length?'<ul>'+contacts.map(function(x){return '<li><strong>'+esc(x.name||x.id)+'</strong>'+(x.role?' · '+esc(x.role):'')+(x.decisionMaker==='Yes'?' · Decision maker':'')+'<br><span class="muted">'+[x.email,x.phone].filter(Boolean).map(esc).join(' · ')+'</span></li>';}).join('')+'</ul>':'<p class="muted">No linked contacts.</p>');
+  html+=section('Commercial / opportunities',opps.length?'<ul>'+opps.map(function(x){return '<li><strong>'+esc(x.name||x.id)+'</strong> · '+esc(x.stage||'')+(x.qualificationStatus?' · '+esc(x.qualificationStatus):'')+(x.service?'<br>'+esc(x.service):'')+(x.nextAction?'<br><strong>Next action:</strong> '+esc(x.nextAction):'')+(x.followUp?'<br><strong>Follow-up:</strong> '+esc(x.followUp):'')+'</li>';}).join('')+'</ul>':'<p class="muted">No linked opportunities.</p>');
+  html+=section('Follow-ups',tasks.length?'<ul>'+tasks.map(function(x){return '<li><strong>'+esc(x.name||x.id)+'</strong> · '+esc(x.status||'')+(x.dueDate?' · due '+esc(x.dueDate):'')+(x.notes?'<br><span class="muted">'+esc(String(x.notes).slice(0,350))+'</span>':'')+'</li>';}).join('')+'</ul>':'<p class="muted">No linked follow-ups.</p>');
+  html+=section('Tickets / requests',tickets.length?'<ul>'+tickets.map(function(x){return '<li><strong>'+esc(x.name||x.id)+'</strong> · '+esc(x.status||'')+(x.priority?' · '+esc(x.priority):'')+(x.dueDate?' · due '+esc(x.dueDate):'')+'</li>';}).join('')+'</ul>':'<p class="muted">No linked tickets.</p>');
+  html+=section('Communication history',activity.length?'<ul>'+activity.map(function(x){return '<li><strong>'+esc(x.action||'Activity')+'</strong>'+(x.createdAt?' · '+esc(new Date(x.createdAt).toLocaleString()):'')+(x.summary?'<br>'+esc(x.summary):'')+'</li>';}).join('')+'</ul>':'<p class="muted">No communication/activity history recorded.</p>');
+  html+=section('Next action',list([['Company next action',companyRec.nextAction],['Company follow-up',companyRec.followUp]]));
+  html+='</div>';
+  return html;
+}
+function companyDossierText(companyRec){
+  return 'Displayed structured CRM dossier for '+companyRec.name+'.';
+}
 function localCommunicationAnswer(text){
   const q=String(text||'').toLowerCase();
   const asksSent=(q.includes('sent')||q.includes('emailed')||q.includes('contacted')||q.includes('outreach'))&&(q.includes('email')||q.includes('customer')||q.includes('company')||q.includes('who')||q.includes('which'));
@@ -214,6 +251,14 @@ async function handleAssistantSubmit(e){
   const b=e.submitter,q=el('aiQuestion').value.trim();
   if(!q)return;
   if(q.length>3000){el('aiAnswer').innerHTML='<div class="assistant-message error">Please keep each message to 3,000 characters or less.</div>';return;}
+  const dossier=dossierRequest(q);
+  if(dossier){
+    const txt=companyDossierText(dossier);
+    aiConversation.push({role:'user',text:q},{role:'assistant',text:txt});
+    saveAiState();
+    el('aiAnswer').innerHTML=companyDossierHtml(dossier);
+    return;
+  }
   const local=localCommunicationAnswer(q);
   if(local){
     aiConversation.push({role:'user',text:q},{role:'assistant',text:local});
