@@ -30,9 +30,9 @@
       ]
     },
     {
-      "name": "Companies",
-      "short_name": "Companies",
-      "url": "/crm/?view=Companies",
+      "name": "Prospect Queue",
+      "short_name": "Prospects",
+      "url": "/crm/?view=Prospect%20Queue",
       "icons": [
         {
           "src": "/crm/icon.svg",
@@ -43,32 +43,8 @@
     },
     {
       "name": "Commercial Intelligence",
-      "short_name": "Intel",
+      "short_name": "Intelligence",
       "url": "/crm/?view=Intelligence",
-      "icons": [
-        {
-          "src": "/crm/icon.svg",
-          "sizes": "any",
-          "type": "image/svg+xml"
-        }
-      ]
-    },
-    {
-      "name": "Follow-ups",
-      "short_name": "Tasks",
-      "url": "/crm/?view=Tasks",
-      "icons": [
-        {
-          "src": "/crm/icon.svg",
-          "sizes": "any",
-          "type": "image/svg+xml"
-        }
-      ]
-    },
-    {
-      "name": "Assistant",
-      "short_name": "Assistant",
-      "url": "/crm/?view=Assistant",
       "icons": [
         {
           "src": "/crm/icon.svg",
@@ -81,18 +57,6 @@
       "name": "Outreach",
       "short_name": "Outreach",
       "url": "/crm/?view=Outreach",
-      "icons": [
-        {
-          "src": "/crm/icon.svg",
-          "sizes": "any",
-          "type": "image/svg+xml"
-        }
-      ]
-    },
-    {
-      "name": "System Health",
-      "short_name": "Health",
-      "url": "/crm/?view=System%20Health",
       "icons": [
         {
           "src": "/crm/icon.svg",
