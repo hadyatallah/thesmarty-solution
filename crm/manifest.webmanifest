@@ -42,6 +42,18 @@
       ]
     },
     {
+      "name": "Commercial Intelligence",
+      "short_name": "Intel",
+      "url": "/crm/?view=Intelligence",
+      "icons": [
+        {
+          "src": "/crm/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
       "name": "Follow-ups",
       "short_name": "Tasks",
       "url": "/crm/?view=Tasks",
