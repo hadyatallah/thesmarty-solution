@@ -102,40 +102,37 @@ function parseAssistantJson(text){
   try{return JSON.parse(raw.slice(s,e+1));}catch(err){return null;}
 }
 function aiSchemaSummary(){const entities=['Companies','Contacts','Opportunities','Tickets','Tasks'],out={};entities.forEach(function(e){out[e]={fields:(state.fields&&state.fields[e]||[]).filter(function(k){return !['id','version','createdAt','updatedAt','threadId'].includes(k);}),enums:(state.enums&&state.enums[e])||{}};});return out;}
+function compactPlannerContext(text){
+  const cand=lexicalCandidates(text).slice(0,6);
+  return cand.map(function(x){return {entity:x.entity,record:x.record};});
+}
+async function compressLongAssistantInput(text){
+  const src=String(text||'');
+  if(src.length<=1400)return src;
+  const chunks=[];
+  for(let i=0;i<src.length;i+=2200)chunks.push(src.slice(i,i+2200));
+  const summaries=[];
+  for(const chunk of chunks.slice(0,6)){
+    const q='Summarize this CRM input using only explicit facts. Preserve names, company, emails, phones, dates, requests, commitments, issues and next steps. Do not infer. Text:\n'+chunk;
+    const r=await call('askAssistant',q,'','');
+    summaries.push(String(r.answer||'').slice(0,700));
+  }
+  return ('Compressed from long pasted content:\n'+summaries.join('\n')).slice(0,1500);
+}
 function aiPlannerPrompt(userText){
-  const selected=aiContextSelection.id?compactRecord(aiContextSelection.entity,(state.records[aiContextSelection.entity]||[]).find(function(r){return r.id===aiContextSelection.id;})):null;
-  const candidates=lexicalCandidates(userText);
-  return [
-    'You are the TSS CRM action planner. Interpret natural language, typos, shorthand, pasted emails, meeting notes and conversational follow-ups. Never require exact command wording.',
-    'Current date: '+today()+' Asia/Nicosia.',
-    AI_HELP_RULES,
-    'Selected context: '+JSON.stringify(selected||null),
-    'Likely CRM matches: '+JSON.stringify(candidates),
-    'Working snapshot: '+JSON.stringify(workingSummary()),
-    'Live writable schema and allowed enum values: '+JSON.stringify(aiSchemaSummary()),
-    'Recent conversation:',
-    recentConversation(),
-    'User input:',
-    String(userText).slice(0,12000),
-    '',
-    'Return JSON only using exactly one mode:',
-    '{"mode":"answer","message":"..."}',
-    '{"mode":"clarify","message":"..."}',
-    '{"mode":"query","message":"...","query":{"entity":"Companies|Contacts|Opportunities|Tickets|Tasks","conditions":[{"field":"field","op":"eq|neq|contains|gt|gte|lt|lte|empty|not_empty","value":"..."}],"sort":{"field":"field","direction":"asc|desc"},"limit":50}}',
-    '{"mode":"timeline","message":"...","entity":"Companies","recordId":"existing id"}',
-    '{"mode":"action","message":"short explanation","confidence":"high|medium","actions":[{"operation":"create|update","entity":"Companies|Contacts|Opportunities|Tickets|Tasks","recordId":"existing id or empty","recordName":"human label","data":{"field":"value"}}]}',
-    'Questions asking what something means or how to use CRM => answer mode, not action.',
-    'Search/list/show requests => query or timeline.',
-    'If ambiguity materially affects a write or confidence is low => clarify.',
-    'Search existing matches before create. Prefer update when a matching record already exists.',
-    'Pasted email: identify only supported facts, match existing records, and propose likely CRM implications.',
-    'For a new company plus contact, later action may set companyId to "$action0.id".',
-    'For updates, include only fields that should change.',
-    'Do not generate unsupported fields or invent missing facts.',
-    'For date fields use YYYY-MM-DD. For enum fields use an exact allowed value from the live schema.',
-    'Do not mark Qualified from a positive reply alone.',
-    'Workbook-only entities are guidance-only until backend support exists.'
-  ].join('\n');
+  const candidates=compactPlannerContext(userText);
+  const convo=recentConversation().slice(0,350);
+  const rules='Use normal language. Explain CRM questions instead of acting. Reads/searches may run. Writes require confirmation. Sensitive: Qualified, Won/Lost, Do not contact, payments, send/approve outreach, merge/delete. Positive reply alone is not Qualified. Never invent facts. Search existing records before create. Writable: Companies, Contacts, Opportunities, Tickets, Tasks only. Dates YYYY-MM-DD.';
+  const formats='Return JSON only: answer {"mode":"answer","message":"..."}; clarify {"mode":"clarify","message":"..."}; query {"mode":"query","message":"...","query":{"entity":"Companies|Contacts|Opportunities|Tickets|Tasks","conditions":[{"field":"field","op":"eq|neq|contains|gt|gte|lt|lte|empty|not_empty","value":"..."}],"limit":50}}; timeline {"mode":"timeline","message":"...","recordId":"company id"}; action {"mode":"action","message":"...","confidence":"high|medium","actions":[{"operation":"create|update","entity":"Companies|Contacts|Opportunities|Tickets|Tasks","recordId":"","recordName":"","data":{}}]}.';
+  const prompt=[
+    'TSS CRM planner. '+rules,
+    'Today '+today()+' Asia/Nicosia.',
+    'Likely matches: '+JSON.stringify(candidates),
+    convo?'Recent context: '+convo:'',
+    'User: '+String(userText).slice(0,1500),
+    formats
+  ].filter(Boolean).join('\n');
+  return prompt.slice(0,2950);
 }
 function actionIsSensitive(a){
   const d=a.data||{},txt=JSON.stringify(d);
@@ -207,7 +204,7 @@ function wireAssistantForm(){const form=el('aiForm');if(form)form.onsubmit=handl
 async function handleAssistantSubmit(e){
   e.preventDefault();const b=e.submitter,q=el('aiQuestion').value.trim();if(!q)return;b.disabled=true;aiConversation.push({role:'user',text:q});saveAiState();el('aiAnswer').innerHTML='<div class="assistant-message">Analyzing CRM context…</div>';
   try{
-    const result=await call('askAssistant',aiPlannerPrompt(q),aiContextSelection.entity||'',aiContextSelection.id||''),parsed=parseAssistantJson(result.answer),plan=validatePlan(parsed||{mode:'answer',message:result.answer});
+    const plannerInput=await compressLongAssistantInput(q);const result=await call('askAssistant',aiPlannerPrompt(plannerInput),'',''),parsed=parseAssistantJson(result.answer),plan=validatePlan(parsed||{mode:'answer',message:result.answer});
     if(plan.mode==='answer'||plan.mode==='clarify'){aiConversation.push({role:'assistant',text:plan.message||''});saveAiState();el('aiAnswer').innerHTML='<div class="assistant-message">'+esc(plan.message||'')+'</div>';}
     else if(plan.mode==='query'){aiConversation.push({role:'assistant',text:plan.message||'Search results'});saveAiState();el('aiAnswer').innerHTML=renderQueryResults(plan);}
     else if(plan.mode==='timeline'){aiConversation.push({role:'assistant',text:plan.message||'Timeline'});saveAiState();el('aiAnswer').innerHTML=renderTimeline(plan);}
