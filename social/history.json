@@ -1063,13 +1063,16 @@
       "platform": "instagram+facebook",
       "classification": "editorial-opinion",
       "editorial": null,
-      "phase": "publishing_facebook",
+      "phase": "published",
       "qaBoundSha256": "e17af1f85192ecd52195d1e7efcd30b79a138c7d3e849a34a3388008099e7c93",
       "instagram": {
         "containerId": "18116693590819867",
         "mediaId": "18085585196292304"
       },
-      "facebook": null
+      "facebook": {
+        "postId": "177672945439622_122301710270216133",
+        "photoId": "122301710252216133"
+      }
     }
   ],
   "qaFailures": {},
