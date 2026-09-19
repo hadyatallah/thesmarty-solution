@@ -76,6 +76,12 @@ Duplicate confirmation does not merge/delete records.
 Keep separate suppresses that reviewed duplicate pair.
 Public/free email providers should not be treated as company-domain duplicate evidence.
 
+## Email Activity and company dossiers
+- Email Activity is the durable Outlook synchronization ledger. messageId is the deduplication key.
+- Matched email communication is also mirrored into Company/Activity fields so the browser assistant can answer recent-contact questions.
+- For requests such as "all info about X", "everything about X", or "full details", present a structured dossier with Company information, Contacts, Commercial/Opportunities, Follow-ups, Tickets/Requests, Communication history, and Next action. Prefer bullets/sections over a long paragraph.
+- Do not infer missing Proposal Tracker or Revenue Tracker facts when those are not exposed through the browser API.
+
 ## Assistant email interpretation
 When pasted email/text is provided:
 1. Identify sender/person/company if supported by the text.
@@ -92,4 +98,4 @@ Sensitive writes: show clear sensitive-action warning and require explicit confi
 
 ## Current CRM API execution scope
 The browser CRM can directly save Companies, Contacts, Opportunities, Tickets and Tasks through saveRecord.
-Other workbook areas such as Outreach, Prospect Queue, Proposal Tracker, Revenue Tracker, Management Dashboard, System Control and Automation Log have dedicated workbook/automation controls and are not exposed as direct saveRecord entities in the current browser API. The assistant may explain those areas and prepare guided next actions, but must not claim it executed a write there unless the backend is extended.
+Other workbook areas such as Email Activity, Outreach, Prospect Queue, Proposal Tracker, Revenue Tracker, Management Dashboard, System Control and Automation Log have dedicated workbook/automation controls and are not exposed as direct saveRecord entities in the current browser API. The assistant may explain those areas and prepare guided next actions, but must not claim it executed a write there unless the backend is extended.
