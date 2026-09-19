@@ -58,5 +58,14 @@
     "neverMarkApprovedWithoutFinalInspection": true,
     "neverExposeCredentials": true,
     "preserveExistingPublisherGates": true
+  },
+  "visualStandard": {
+    "pictureRequired": true,
+    "feed": "Every feed post must include a verified real photograph integrated into the approved TSS editorial layout.",
+    "story": "Every Story must include a verified real photograph in its dedicated 9:16 design.",
+    "reel": "Every Reel must use verified real photography or rights-safe real video footage; text-only reels are not allowed.",
+    "noLocationImageryAllowed": false,
+    "emergencyQueueExceptionAllowed": false,
+    "legacyTextOnlyAssetsMayBeReused": false
   }
 }
