@@ -1085,6 +1085,18 @@
           "downloadedAsset": "social-results/2026-09-14-cyprus-lebanon-customer-problem-instagram.png",
           "evidenceCommit": "3cf8d9e0b60f8c84811e8b89eb0226df876238f6",
           "evidencePath": "social/published-assets/7afae241fc2e7463ed443a45f2a389d07205536ada9943c8e5d85c3db6bd0c2e.jpg"
+        },
+        "facebook": {
+          "width": 720,
+          "height": 900,
+          "meanPixelDifference": 1.216,
+          "passed": true,
+          "id": "177672945439622_122301710270216133",
+          "sha256": "374f753128e388052ab2fdaa7120241427f8866e95feddf26df229568c8130a5",
+          "permalink": "https://www.facebook.com/122301039992216133/posts/122301710270216133",
+          "downloadedAsset": "social-results/2026-09-14-cyprus-lebanon-customer-problem-facebook.png",
+          "evidenceCommit": "e7002add9f159158ae20bf04af315bbf5c714af3",
+          "evidencePath": "social/published-assets/374f753128e388052ab2fdaa7120241427f8866e95feddf26df229568c8130a5.jpg"
         }
       }
     }
