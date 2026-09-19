@@ -103,37 +103,28 @@ function parseAssistantJson(text){
 }
 function aiSchemaSummary(){const entities=['Companies','Contacts','Opportunities','Tickets','Tasks'],out={};entities.forEach(function(e){out[e]={fields:(state.fields&&state.fields[e]||[]).filter(function(k){return !['id','version','createdAt','updatedAt','threadId'].includes(k);}),enums:(state.enums&&state.enums[e])||{}};});return out;}
 function compactPlannerContext(text){
-  const cand=lexicalCandidates(text).slice(0,5);
-  return cand.map(function(x){
+  return lexicalCandidates(text).slice(0,5).map(function(x){
     const r=x.record||{};
     return {entity:x.entity,id:r.id||'',name:r.name||'',companyId:r.companyId||'',stage:r.stage||'',status:r.status||'',lifecycle:r.lifecycle||''};
   });
 }
-async function compressLongAssistantInput(text){
-  const src=String(text||'');
-  if(src.length<=700)return src;
-  const chunks=[];
-  for(let i=0;i<src.length;i+=1500)chunks.push(src.slice(i,i+1500));
-  const summaries=[];
-  for(const chunk of chunks.slice(0,6)){
-    const q='Summarize this CRM input using only explicit facts. Preserve names, company, emails, phones, dates, requests, commitments, issues and next steps. Do not infer. Text:\n'+chunk;
-    const r=await call('askAssistant',q,'','');
-    summaries.push(String(r.answer||'').slice(0,350));
-  }
-  return ('Compressed from long pasted content:\n'+summaries.join('\n')).slice(0,700);
+function primaryAssistantContext(text){
+  const c=lexicalCandidates(text);
+  if(!c.length)return {entity:'',id:''};
+  const x=c[0],r=x.record||{};
+  return {entity:x.entity||'',id:r.id||''};
 }
-function aiPlannerPrompt(userText){
-  const matches=compactPlannerContext(userText);
-  const rules='Natural language CRM planner. Explain questions instead of acting. Reads may run. Writes need confirmation. Sensitive: Qualified, Won/Lost, Do not contact, payments, outreach send/approve, merge/delete. Positive reply alone is not Qualified. Never invent facts. Search before create. Writable only: Companies, Contacts, Opportunities, Tickets, Tasks. Dates YYYY-MM-DD.';
-  const formats='JSON only. answer {"mode":"answer","message":"..."}; clarify {"mode":"clarify","message":"..."}; query {"mode":"query","message":"...","query":{"entity":"Companies|Contacts|Opportunities|Tickets|Tasks","conditions":[],"limit":50}}; timeline {"mode":"timeline","message":"...","recordId":"company id"}; action {"mode":"action","message":"...","actions":[{"operation":"create|update","entity":"Companies|Contacts|Opportunities|Tickets|Tasks","recordId":"","recordName":"","data":{}}]}.';
-  const prompt=[
+function aiPlannerPromptFromInterpretation(originalText,interpretation){
+  const matches=compactPlannerContext(originalText);
+  const rules='Classify the CRM result. Questions/explanations => answer. Searches/lists => query or timeline. Writes => action and need confirmation. Sensitive: Qualified, Won/Lost, Do not contact, payments, outreach send/approve, merge/delete. Positive reply alone is not Qualified. Never invent facts. Writable only: Companies, Contacts, Opportunities, Tickets, Tasks.';
+  const formats='JSON only: answer {"mode":"answer","message":"..."}; clarify {"mode":"clarify","message":"..."}; query {"mode":"query","message":"...","query":{"entity":"Companies|Contacts|Opportunities|Tickets|Tasks","conditions":[],"limit":50}}; timeline {"mode":"timeline","message":"...","recordId":"company id"}; action {"mode":"action","message":"...","actions":[{"operation":"create|update","entity":"Companies|Contacts|Opportunities|Tickets|Tasks","recordId":"","recordName":"","data":{}}]}.';
+  return [
     rules,
-    'Today '+today()+'.',
     matches.length?'Matches '+JSON.stringify(matches):'',
-    'User '+String(userText).slice(0,700),
+    'Original intent '+String(originalText).slice(0,220),
+    'AI interpretation '+String(interpretation||'').slice(0,1200),
     formats
-  ].filter(Boolean).join('\n');
-  return prompt.slice(0,1400);
+  ].filter(Boolean).join('\n').slice(0,2400);
 }
 function actionIsSensitive(a){
   const d=a.data||{},txt=JSON.stringify(d);
@@ -199,18 +190,46 @@ function assistantHistoryHtml(){
 }
 function assistantWorkspaceHtml(){
   loadAiState();
-  return '<section class="panel assistant-panel"><div class="row"><div><h3>CRM Assistant</h3><p class="muted">Your one-stop shop for everything in the CRM.</p></div><span class="assistant-status">'+(state.aiEnabled?'AI connected':'AI unavailable')+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="12000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary" '+(!state.aiEnabled?'disabled':'')+'>Send</button></div></form><div id="aiAnswer" class="assistant-response" role="status">'+aiConversation.slice(-4).map(function(m){return'<div class="assistant-message '+(m.role==='user'?'user':'')+'"><strong>'+(m.role==='user'?'You':'Assistant')+'</strong><br>'+esc(m.text)+'</div>';}).join('')+'</div>'+assistantHistoryHtml()+'</section>';
+  return '<section class="panel assistant-panel"><div class="row"><div><h3>CRM Assistant</h3><p class="muted">Your one-stop shop for everything in the CRM.</p></div><span class="assistant-status">'+(state.aiEnabled?'AI connected':'AI unavailable')+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="3000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary" '+(!state.aiEnabled?'disabled':'')+'>Send</button></div></form><div id="aiAnswer" class="assistant-response" role="status">'+aiConversation.slice(-4).map(function(m){return'<div class="assistant-message '+(m.role==='user'?'user':'')+'"><strong>'+(m.role==='user'?'You':'Assistant')+'</strong><br>'+esc(m.text)+'</div>';}).join('')+'</div>'+assistantHistoryHtml()+'</section>';
 }
 function wireAssistantForm(){const form=el('aiForm');if(form)form.onsubmit=handleAssistantSubmit;}
 async function handleAssistantSubmit(e){
-  e.preventDefault();const b=e.submitter,q=el('aiQuestion').value.trim();if(!q)return;b.disabled=true;aiConversation.push({role:'user',text:q});saveAiState();el('aiAnswer').innerHTML='<div class="assistant-message">Analyzing CRM context…</div>';
+  e.preventDefault();
+  const b=e.submitter,q=el('aiQuestion').value.trim();
+  if(!q)return;
+  if(q.length>3000){el('aiAnswer').innerHTML='<div class="assistant-message error">Please keep each message to 3,000 characters or less.</div>';return;}
+  b.disabled=true;
+  aiConversation.push({role:'user',text:q});
+  saveAiState();
+  el('aiAnswer').innerHTML='<div class="assistant-message">Analyzing CRM context…</div>';
   try{
-    const plannerInput=await compressLongAssistantInput(q);const result=await call('askAssistant',aiPlannerPrompt(plannerInput),'',''),parsed=parseAssistantJson(result.answer),plan=validatePlan(parsed||{mode:'answer',message:result.answer});
-    if(plan.mode==='answer'||plan.mode==='clarify'){aiConversation.push({role:'assistant',text:plan.message||''});saveAiState();el('aiAnswer').innerHTML='<div class="assistant-message">'+esc(plan.message||'')+'</div>';}
-    else if(plan.mode==='query'){aiConversation.push({role:'assistant',text:plan.message||'Search results'});saveAiState();el('aiAnswer').innerHTML=renderQueryResults(plan);}
-    else if(plan.mode==='timeline'){aiConversation.push({role:'assistant',text:plan.message||'Timeline'});saveAiState();el('aiAnswer').innerHTML=renderTimeline(plan);}
-    else if(plan.mode==='action'){aiPendingPlan=Object.assign({},plan,{_originalRequest:q});saveAiState();el('aiAnswer').innerHTML=planHtml(aiPendingPlan);}
-  }catch(err){el('aiAnswer').innerHTML='<div class="assistant-message error">'+esc(err.message)+'</div>';}finally{b.disabled=false;}
+    const ctx=primaryAssistantContext(q);
+    const first=await call('askAssistant',q,ctx.entity,ctx.id);
+    const interpretation=String(first.answer||'').trim();
+    const second=await call('askAssistant',aiPlannerPromptFromInterpretation(q,interpretation),'','');
+    const parsed=parseAssistantJson(second.answer);
+    const plan=validatePlan(parsed||{mode:'answer',message:interpretation||second.answer});
+    if(plan.mode==='answer'||plan.mode==='clarify'){
+      const message=plan.message||interpretation;
+      aiConversation.push({role:'assistant',text:message});
+      saveAiState();
+      el('aiAnswer').innerHTML='<div class="assistant-message">'+esc(message)+'</div>';
+    }else if(plan.mode==='query'){
+      aiConversation.push({role:'assistant',text:plan.message||'Search results'});
+      saveAiState();
+      el('aiAnswer').innerHTML=renderQueryResults(plan);
+    }else if(plan.mode==='timeline'){
+      aiConversation.push({role:'assistant',text:plan.message||'Timeline'});
+      saveAiState();
+      el('aiAnswer').innerHTML=renderTimeline(plan);
+    }else if(plan.mode==='action'){
+      aiPendingPlan=Object.assign({},plan,{_originalRequest:q,_interpretation:interpretation});
+      saveAiState();
+      el('aiAnswer').innerHTML=planHtml(aiPendingPlan);
+    }
+  }catch(err){
+    el('aiAnswer').innerHTML='<div class="assistant-message error">'+esc(err.message)+'</div>';
+  }finally{b.disabled=false;}
 }
 function showPendingAiPlan(){if(aiPendingPlan)showDialog('Pending CRM changes',planHtml(aiPendingPlan));}
 function cancelAiPlan(){aiPendingPlan=null;saveAiState();if(el('dialog').open)el('dialog').close();if(el('aiAnswer'))el('aiAnswer').innerHTML='<div class="assistant-message">Proposed changes cancelled.</div>';if(view==='Today'||view==='Assistant')render();}
