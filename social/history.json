@@ -1063,9 +1063,11 @@
       "platform": "instagram+facebook",
       "classification": "editorial-opinion",
       "editorial": null,
-      "phase": "preparing_instagram",
+      "phase": "prepared",
       "qaBoundSha256": "e17af1f85192ecd52195d1e7efcd30b79a138c7d3e849a34a3388008099e7c93",
-      "instagram": null,
+      "instagram": {
+        "containerId": "18116693590819867"
+      },
       "facebook": null
     }
   ],
