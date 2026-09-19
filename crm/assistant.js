@@ -161,6 +161,66 @@ function localCommunicationAnswer(text){
   if(!rows.length)return 'I do not have any companies recorded as already contacted by email.';
   return 'Companies already contacted by email:\n'+rows.map(function(r,i){return (i+1)+'. '+r.name+(r.lastContact?' — last contact '+r.lastContact:'')+(r.communicationStatus?' — '+r.communicationStatus:'');}).join('\n');
 }
+
+function isoDateAdd(base,days){
+  const d=new Date(base+'T12:00:00+03:00');d.setDate(d.getDate()+days);
+  return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Nicosia',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
+}
+function nextWeekRange(){
+  const now=today(),d=new Date(now+'T12:00:00+03:00'),dow=d.getDay();
+  const toMonday=((8-dow)%7)||7;
+  const start=isoDateAdd(now,toMonday),end=isoDateAdd(start,6);
+  return {start:start,end:end};
+}
+function localDuePeriodAnswer(text){
+  const q=String(text||'').toLowerCase();
+  if(!(q.includes('next week')||q.includes('this week')||q.includes('next 7 days')||q.includes('next seven days')))return '';
+  const r=state.records,range=q.includes('this week')?{start:today(),end:isoDateAdd(today(),7-new Date(today()+'T12:00:00+03:00').getDay())}:q.includes('next week')?nextWeekRange():{start:today(),end:isoDateAdd(today(),7)};
+  const byCompany=new Map();
+  function add(companyId,date,action,source){
+    if(!companyId||!date||date<range.start||date>range.end)return;
+    const comp=(r.Companies||[]).find(function(x){return x.id===companyId;});
+    if(!comp)return;
+    if(!byCompany.has(companyId))byCompany.set(companyId,{company:comp,items:[]});
+    byCompany.get(companyId).items.push({date:date,action:action||'Follow up',source:source});
+  }
+  (r.Tasks||[]).forEach(function(t){if(!done(t))add(t.companyId,t.dueDate,t.name||t.notes,'Task');});
+  (r.Companies||[]).forEach(function(x){
+    if(x.followUp&&x.communicationStatus!=='Do not contact')add(x.id,x.followUp,x.nextAction||'Company follow-up','Company');
+  });
+  (r.Opportunities||[]).forEach(function(o){
+    if(!done(o))add(o.companyId,o.followUp,o.nextAction||('Opportunity: '+(o.name||o.id)),'Opportunity');
+  });
+  const rows=Array.from(byCompany.values()).sort(function(a,b){
+    const ad=a.items.map(function(i){return i.date;}).sort()[0],bd=b.items.map(function(i){return i.date;}).sort()[0];
+    return String(ad).localeCompare(String(bd));
+  });
+  if(!rows.length)return 'No CRM follow-ups or open opportunity actions are scheduled between '+range.start+' and '+range.end+'.';
+  return 'Companies requiring attention '+range.start+' to '+range.end+':\n'+rows.map(function(x,i){
+    const items=x.items.sort(function(a,b){return a.date.localeCompare(b.date);});
+    return (i+1)+'. '+x.company.name+'\n   • '+items.map(function(it){return it.date+' — '+it.action;}).join('\n   • ');
+  }).join('\n');
+}
+function formatAssistantText(text){
+  const raw=String(text||'').trim();
+  if(!raw)return '';
+  const lines=raw.split(/\r?\n/),html=[];
+  let inList=false;
+  function closeList(){if(inList){html.push('</ul>');inList=false;}}
+  lines.forEach(function(line){
+    const s=line.trim();
+    if(!s){closeList();return;}
+    if(/^#{1,3}\s+/.test(s)){closeList();html.push('<h3>'+esc(s.replace(/^#{1,3}\s+/,''))+'</h3>');return;}
+    if(/^\d+\.\s+/.test(s)||/^[-•]\s+/.test(s)){
+      if(!inList){html.push('<ul>');inList=true;}
+      html.push('<li>'+esc(s.replace(/^(?:\d+\.|[-•])\s+/,''))+'</li>');return;
+    }
+    if(/^[A-Za-z][A-Za-z /&-]{2,40}:$/.test(s)){closeList();html.push('<h3>'+esc(s.slice(0,-1))+'</h3>');return;}
+    closeList();html.push('<p>'+esc(s)+'</p>');
+  });
+  closeList();
+  return html.join('');
+}
 function primaryAssistantContext(text){
   const c=lexicalCandidates(text);
   if(!c.length)return {entity:'',id:''};
@@ -251,6 +311,13 @@ async function handleAssistantSubmit(e){
   const b=e.submitter,q=el('aiQuestion').value.trim();
   if(!q)return;
   if(q.length>3000){el('aiAnswer').innerHTML='<div class="assistant-message error">Please keep each message to 3,000 characters or less.</div>';return;}
+  const dueAnswer=localDuePeriodAnswer(q);
+  if(dueAnswer){
+    aiConversation.push({role:'user',text:q},{role:'assistant',text:dueAnswer});
+    saveAiState();
+    el('aiAnswer').innerHTML='<div class="assistant-message">'+formatAssistantText(dueAnswer)+'</div>';
+    return;
+  }
   const dossier=dossierRequest(q);
   if(dossier){
     const txt=companyDossierText(dossier);
@@ -263,7 +330,7 @@ async function handleAssistantSubmit(e){
   if(local){
     aiConversation.push({role:'user',text:q},{role:'assistant',text:local});
     saveAiState();
-    el('aiAnswer').innerHTML='<div class="assistant-message">'+esc(local)+'</div>';
+    el('aiAnswer').innerHTML='<div class="assistant-message">'+formatAssistantText(local)+'</div>';
     return;
   }
   b.disabled=true;
@@ -281,7 +348,7 @@ async function handleAssistantSubmit(e){
       const message=plan.message||interpretation;
       aiConversation.push({role:'assistant',text:message});
       saveAiState();
-      el('aiAnswer').innerHTML='<div class="assistant-message">'+esc(message)+'</div>';
+      el('aiAnswer').innerHTML='<div class="assistant-message">'+formatAssistantText(message)+'</div>';
     }else if(plan.mode==='query'){
       aiConversation.push({role:'assistant',text:plan.message||'Search results'});
       saveAiState();
@@ -309,23 +376,47 @@ function resolveActionRefs(data,results){
 }
 function snapshotForUndo(entity,r){const data={};(state.fields&&state.fields[entity]||[]).forEach(function(k){if(!['id','version','createdAt','updatedAt','threadId'].includes(k))data[k]=r[k]||'';});return{entity:entity,id:r.id,data:data};}
 async function executeAiPlan(){
-  if(!aiPendingPlan||busy)return;const plan=aiPendingPlan;if((plan.actions||[]).some(function(a){return a._duplicate;})){notice('Resolve the duplicate match before creating the record.');return;}
-  busy=true;const results=[],undo=[];
+  if(!aiPendingPlan||busy)return;
+  const plan=aiPendingPlan;
+  if((plan.actions||[]).some(function(a){return a._duplicate;})){notice('Resolve the duplicate match before creating the record.');return;}
+  busy=true;
+  const results=[],undo=[],completed=[];
   try{
     for(let i=0;i<plan.actions.length;i++){
       const a=plan.actions[i],data=resolveActionRefs(a.data||{},results);
       if(a.operation==='update'){
-        const r=(state.records[a.entity]||[]).find(function(x){return x.id===a.recordId;});if(!r)throw Error('Record not found: '+a.recordId);undo.push(snapshotForUndo(a.entity,r));
-        const payload={},allowed=writableFields(a.entity);allowed.forEach(function(k){payload[k]=r[k]||'';});Object.assign(payload,data,{id:r.id,version:r.version});if(r.threadId)payload.threadId=r.threadId;
-        const saved=await call('saveRecord',a.entity,payload);Object.assign(r,payload);if(saved&&typeof saved==='object')Object.assign(r,saved);results.push(saved||r);
+        const r=(state.records[a.entity]||[]).find(function(x){return x.id===a.recordId;});
+        if(!r)throw Error('Record not found: '+a.recordId);
+        undo.push(snapshotForUndo(a.entity,r));
+        const payload={},allowed=writableFields(a.entity);
+        allowed.forEach(function(k){payload[k]=r[k]||'';});
+        Object.assign(payload,data,{id:r.id,version:r.version});
+        if(r.threadId)payload.threadId=r.threadId;
+        const saved=await call('saveRecord',a.entity,payload);
+        Object.assign(r,payload);if(saved&&typeof saved==='object')Object.assign(r,saved);
+        results.push(saved||r);
       }else{
-        const saved=await call('saveRecord',a.entity,data);if(!saved||!saved.id)throw Error('The new '+a.entity+' record was not returned by the CRM.');results.push(saved);if(state.records[a.entity])state.records[a.entity].push(saved);
+        const saved=await call('saveRecord',a.entity,data);
+        if(!saved||!saved.id)throw Error('The new '+a.entity+' record was not returned by the CRM.');
+        results.push(saved);if(state.records[a.entity])state.records[a.entity].push(saved);
       }
+      completed.push((a.operation==='create'?'Created ':'Updated ')+(a.recordName||a.recordId||a.entity));
     }
-    if(undo.length===plan.actions.length&&plan.actions.every(function(a){return a.operation==='update';})){try{localStorage.setItem(AI_UNDO_KEY,JSON.stringify({items:undo,at:Date.now()}));}catch(e){}}else{try{localStorage.removeItem(AI_UNDO_KEY);}catch(e){}}
-    const summary=plan.actions.map(function(a){return(a.operation==='create'?'Created ':'Updated ')+(a.recordName||a.recordId||a.entity);}).join('; ');
-    recordAiAction({summary:summary});aiConversation.push({role:'assistant',text:'Completed: '+summary});aiPendingPlan=null;saveAiState();if(el('dialog').open)el('dialog').close();await refresh();notice('CRM updated');if(view==='Today'||view==='Assistant')render();
-  }catch(err){notice(err.message);if(el('aiAnswer'))el('aiAnswer').innerHTML='<div class="assistant-message error">'+esc(err.message)+'</div>';}finally{busy=false;}
+    if(undo.length===plan.actions.length&&plan.actions.every(function(a){return a.operation==='update';})){
+      try{localStorage.setItem(AI_UNDO_KEY,JSON.stringify({items:undo,at:Date.now()}));}catch(e){}
+    }else{try{localStorage.removeItem(AI_UNDO_KEY);}catch(e){}}
+    const summary=completed.join('; ');
+    recordAiAction({summary:summary});aiConversation.push({role:'assistant',text:'Completed: '+summary});
+    aiPendingPlan=null;saveAiState();if(el('dialog').open)el('dialog').close();
+    await refresh();notice('CRM updated');if(view==='Today'||view==='Assistant')render();
+  }catch(err){
+    const pending=(plan.actions||[]).slice(completed.length).map(function(a){return (a.operation==='create'?'Create ':'Update ')+(a.recordName||a.recordId||a.entity);});
+    const msg=(completed.length?'Completed before the error:\n• '+completed.join('\n• ')+'\n\n':'')+'Failed: '+err.message+(pending.length?'\n\nStill pending:\n• '+pending.join('\n• '):'');
+    recordAiAction({summary:'Partial AI action failure: '+err.message});
+    if(el('aiAnswer'))el('aiAnswer').innerHTML='<div class="assistant-message error">'+formatAssistantText(msg)+'</div>';
+    notice('CRM action did not fully complete');
+    await refresh();
+  }finally{busy=false;}
 }
 async function undoLastAiUpdate(){
   let u;try{u=JSON.parse(localStorage.getItem(AI_UNDO_KEY)||'null');}catch(e){}
