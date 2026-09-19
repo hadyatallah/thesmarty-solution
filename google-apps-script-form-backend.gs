@@ -5,6 +5,11 @@
 
 const TSS_ENQUIRY_SHEET_ID = '1Hq-pYK4XSKyIcKsKg6IjOQKI-CvKaYrRmmtY80Zojao';
 const TSS_ENQUIRY_SHEET_NAME = 'Sheet1';
+const TSS_CRM_SHEET_ID = '1mZ7vd2UoGXlyxzwZ8Man593UhlLGt2uS1kIS3ZAWPsU';
+const TSS_CRM_COMPANIES_SHEET = 'Companies';
+const TSS_CRM_CONTACTS_SHEET = 'Contacts';
+const TSS_CRM_TASKS_SHEET = 'Tasks';
+const TSS_CRM_ACTIVITY_SHEET = 'Activity';
 const TSS_TIMEZONE = 'Asia/Nicosia';
 const TSS_MIN_FORM_TIME_MS = 3500;
 const TSS_MAX_FORM_TIME_MS = 6 * 60 * 60 * 1000;
@@ -173,6 +178,13 @@ function doPost(e) {
       lock.releaseLock();
     }
 
+    let crmSync = { synced: false };
+    try {
+      crmSync = syncEnquiryToCrm_(lead, enquiryId, priority, followUpDue);
+    } catch (crmError) {
+      console.error('CRM sync error: ' + (crmError && crmError.stack ? crmError.stack : crmError));
+    }
+
     let internalNotificationSent = false;
     let confirmationSent = false;
     let token = null;
@@ -206,7 +218,11 @@ function doPost(e) {
       priority,
       duplicate: false,
       internalNotificationSent,
-      confirmationSent
+      confirmationSent,
+      crmSynced: crmSync.synced === true,
+      crmCompanyId: crmSync.companyId || '',
+      crmContactId: crmSync.contactId || '',
+      crmTaskId: crmSync.taskId || ''
     });
   } catch (err) {
     console.error(err && err.stack ? err.stack : err);
@@ -216,6 +232,217 @@ function doPost(e) {
       error: 'Submission could not be recorded'
     });
   }
+}
+
+
+function syncEnquiryToCrm_(lead, enquiryId, priority, followUpDue) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try {
+    const ss = SpreadsheetApp.openById(TSS_CRM_SHEET_ID);
+    const companies = getCrmTable_(ss, TSS_CRM_COMPANIES_SHEET);
+    const contacts = getCrmTable_(ss, TSS_CRM_CONTACTS_SHEET);
+    const tasks = getCrmTable_(ss, TSS_CRM_TASKS_SHEET);
+    const activity = getCrmTable_(ss, TSS_CRM_ACTIVITY_SHEET);
+    const now = new Date().toISOString();
+    const due = Utilities.formatDate(followUpDue, TSS_TIMEZONE, 'yyyy-MM-dd');
+    const sourceNote = 'Inbound website enquiry ' + enquiryId +
+      (lead.enquiryType ? ' | ' + lead.enquiryType : '') +
+      (lead.sourcePage ? ' | Source: ' + lead.sourcePage : '') +
+      (lead.message ? '\n' + lead.message : '');
+
+    let companyId = '';
+    if (lead.company) {
+      const companyMatch = findCrmCompany_(companies, lead);
+      if (companyMatch) {
+        companyId = String(companyMatch.record.id || '');
+        const updates = {};
+        if (!companyMatch.record.email && lead.email) updates.email = lead.email;
+        if (!companyMatch.record.phone && lead.phone) updates.phone = lead.phone;
+        updates.notes = appendCrmNote_(companyMatch.record.notes, sourceNote);
+        updates.updatedAt = now;
+        updates.version = String((Number(companyMatch.record.version) || 0) + 1);
+        if (!companyMatch.record.nextAction) updates.nextAction = 'Review inbound enquiry and respond';
+        if (!companyMatch.record.followUp || due < String(companyMatch.record.followUp)) updates.followUp = due;
+        if (!companyMatch.record.communicationStatus || companyMatch.record.communicationStatus === 'Not contacted') {
+          updates.communicationStatus = 'Inbound enquiry';
+        }
+        updateCrmRow_(companies, companyMatch.rowNumber, updates);
+      } else {
+        companyId = 'TSS-WEB-' + enquiryId.replace(/^TSS-/, '');
+        appendCrmRow_(companies, {
+          id: companyId,
+          name: lead.company,
+          email: lead.email,
+          phone: lead.phone,
+          status: 'Needs review',
+          priority: priority,
+          researchLevel: 'Needs review',
+          source1: lead.sourcePage,
+          notes: sourceNote,
+          nextAction: 'Review inbound enquiry and respond',
+          followUp: due,
+          createdAt: now,
+          updatedAt: now,
+          version: '1',
+          lifecycle: 'Company',
+          communicationStatus: 'Inbound enquiry'
+        });
+      }
+    }
+
+    let contactId = '';
+    const contactMatch = findCrmContact_(contacts, lead.email, companyId);
+    if (contactMatch) {
+      contactId = String(contactMatch.record.id || '');
+      const updates = {
+        updatedAt: now,
+        lastInteraction: Utilities.formatDate(new Date(), TSS_TIMEZONE, 'yyyy-MM-dd'),
+        notes: appendCrmNote_(contactMatch.record.notes, 'Inbound enquiry ' + enquiryId + (lead.enquiryType ? ' | ' + lead.enquiryType : ''))
+      };
+      if (!contactMatch.record.phone && lead.phone) updates.phone = lead.phone;
+      if (!contactMatch.record.companyId && companyId) updates.companyId = companyId;
+      updates.version = String((Number(contactMatch.record.version) || 0) + 1);
+      updateCrmRow_(contacts, contactMatch.rowNumber, updates);
+    } else {
+      contactId = 'CON-WEB-' + enquiryId.replace(/^TSS-/, '');
+      appendCrmRow_(contacts, {
+        id: contactId,
+        name: lead.name,
+        companyId: companyId,
+        role: 'Website enquiry contact',
+        email: lead.email,
+        phone: lead.phone,
+        notes: 'Inbound enquiry ' + enquiryId + (lead.enquiryType ? ' | ' + lead.enquiryType : ''),
+        createdAt: now,
+        updatedAt: now,
+        version: '1',
+        primaryContact: companyId ? 'Yes' : '',
+        lastInteraction: Utilities.formatDate(new Date(), TSS_TIMEZONE, 'yyyy-MM-dd')
+      });
+    }
+
+    let taskId = '';
+    if (!crmRowContains_(tasks, enquiryId)) {
+      taskId = 'TSK-WEB-' + enquiryId.replace(/^TSS-/, '');
+      appendCrmRow_(tasks, {
+        id: taskId,
+        name: 'Review website enquiry ' + enquiryId,
+        companyId: companyId,
+        dueDate: due,
+        status: 'Open',
+        notes: 'Website enquiry ' + enquiryId + ' from ' + lead.name +
+          (lead.company ? ' at ' + lead.company : '') +
+          (lead.enquiryType ? '. Type: ' + lead.enquiryType : '') +
+          '. Reply to ' + lead.email + (lead.phone ? ' / ' + lead.phone : '') + '.',
+        createdAt: now,
+        updatedAt: now,
+        version: '1'
+      });
+    }
+
+    if (!crmRowContains_(activity, enquiryId)) {
+      appendCrmRow_(activity, {
+        id: Utilities.getUuid(),
+        entity: companyId ? 'Companies' : 'Contacts',
+        recordId: companyId || contactId,
+        action: 'Inbound enquiry',
+        summary: 'Website enquiry ' + enquiryId + (lead.enquiryType ? ' | ' + lead.enquiryType : ''),
+        createdAt: now,
+        actor: 'thesmartysolution.com'
+      });
+    }
+
+    return { synced: true, companyId: companyId, contactId: contactId, taskId: taskId };
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function getCrmTable_(ss, name) {
+  const sheet = ss.getSheetByName(name);
+  if (!sheet) throw new Error('CRM sheet not found: ' + name);
+  const lastColumn = sheet.getLastColumn();
+  const headers = sheet.getRange(1, 1, 1, lastColumn).getDisplayValues()[0];
+  const headerIndex = {};
+  headers.forEach((h, i) => { if (h) headerIndex[h] = i; });
+  return { sheet, headers, headerIndex };
+}
+
+function getCrmRecords_(table) {
+  const lastRow = table.sheet.getLastRow();
+  if (lastRow < 2) return [];
+  const values = table.sheet.getRange(2, 1, lastRow - 1, table.headers.length).getDisplayValues();
+  return values.map((row, i) => {
+    const record = {};
+    table.headers.forEach((h, j) => { if (h) record[h] = row[j]; });
+    return { record, rowNumber: i + 2 };
+  });
+}
+
+function findCrmCompany_(table, lead) {
+  const email = normalizeCrmEmail_(lead.email);
+  const phone = normalizeCrmPhone_(lead.phone);
+  const name = normalizeCrmName_(lead.company);
+  const records = getCrmRecords_(table);
+  return records.find(x =>
+    (email && normalizeCrmEmail_(x.record.email) === email) ||
+    (phone && phone.length >= 7 && normalizeCrmPhone_(x.record.phone) === phone) ||
+    (name && normalizeCrmName_(x.record.name) === name)
+  ) || null;
+}
+
+function findCrmContact_(table, email, companyId) {
+  const normalized = normalizeCrmEmail_(email);
+  return getCrmRecords_(table).find(x =>
+    normalized &&
+    normalizeCrmEmail_(x.record.email) === normalized &&
+    (!companyId || !x.record.companyId || x.record.companyId === companyId)
+  ) || null;
+}
+
+function appendCrmRow_(table, data) {
+  const row = table.headers.map(h => safeSheetValue_(data[h] === undefined ? '' : data[h]));
+  table.sheet.getRange(table.sheet.getLastRow() + 1, 1, 1, row.length).setValues([row]);
+}
+
+function updateCrmRow_(table, rowNumber, updates) {
+  Object.keys(updates).forEach(key => {
+    if (table.headerIndex[key] === undefined) return;
+    table.sheet.getRange(rowNumber, table.headerIndex[key] + 1).setValue(safeSheetValue_(updates[key]));
+  });
+}
+
+function crmRowContains_(table, text) {
+  const needle = String(text || '').toLowerCase();
+  if (!needle) return false;
+  return getCrmRecords_(table).some(x =>
+    Object.keys(x.record).some(k => String(x.record[k] || '').toLowerCase().includes(needle))
+  );
+}
+
+function appendCrmNote_(existing, note) {
+  const a = String(existing || '').trim();
+  const b = String(note || '').trim();
+  if (!a) return b;
+  if (!b || a.includes(b)) return a;
+  return (a + '\n\n' + b).slice(0, 12000);
+}
+
+function normalizeCrmEmail_(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+function normalizeCrmPhone_(value) {
+  return String(value || '').replace(/\D/g, '');
+}
+
+function normalizeCrmName_(value) {
+  return String(value || '').toLowerCase()
+    .replace(/\b(ltd|limited|llc|plc|company|co)\b/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 function sendInternalNotification_(token, lead, enquiryId, priority, followUpDue) {
