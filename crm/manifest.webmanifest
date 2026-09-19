@@ -42,9 +42,9 @@
       ]
     },
     {
-      "name": "Commercial Intelligence",
-      "short_name": "Intelligence",
-      "url": "/crm/?view=Intelligence",
+      "name": "Conversion",
+      "short_name": "Conversion",
+      "url": "/crm/?view=Conversion",
       "icons": [
         {
           "src": "/crm/icon.svg",
