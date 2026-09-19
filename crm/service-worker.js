@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tss-crm-pwa-v2';
+const CACHE_NAME = 'tss-crm-pwa-v3';
 const STATIC_ASSETS = [
   '/crm/manifest.webmanifest',
   '/crm/icon.svg'
