@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "status": "active",
+  "timezone": "Asia/Nicosia",
+  "approvedBuffer": {
+    "minimum": 9,
+    "target": 12,
+    "lookaheadDays": 5,
+    "healthyCoverageDays": 3
+  },
+  "publishingWindows": [
+    "09:15",
+    "14:15",
+    "19:15"
+  ],
+  "windowsAreAvailabilityNotQuota": true,
+  "monthlyPlanPath": "social/monthly-content-plan.json",
+  "designSystemPath": "social/TSS_SOCIAL_DESIGN_SYSTEM.md",
+  "durableHistory": {
+    "branch": "tss-social-state",
+    "path": "social/history.json"
+  },
+  "productionStages": [
+    "research",
+    "editorial-brief",
+    "dedicated-format-composition",
+    "final-export",
+    "technical-qa",
+    "source-geography-duplicate-qa",
+    "final-visual-inspection",
+    "review-seal",
+    "approved-queue",
+    "publish"
+  ],
+  "replenishment": {
+    "triggerBelowApprovedCount": 9,
+    "replenishTowardApprovedCount": 12,
+    "noBackfillMissedSlots": true,
+    "requireCurrentPrimaryEvidenceForFactualClaims": true,
+    "allowEditorialOpinionWithoutSourcesOnlyWhenNoFactualClaims": true,
+    "maxHashtags": 5,
+    "duplicateWindowDays": 30
+  },
+  "publishing": {
+    "path": "ChatGPT trigger -> GitHub wake-up -> existing TSS publisher -> Meta",
+    "metricoolPublishingAllowed": false,
+    "directMetaPublishingAllowed": false,
+    "maxAssetsPerDay": 3,
+    "maxPerFormatPerDay": {
+      "feed": 1,
+      "story": 1,
+      "reel": 1
+    }
+  },
+  "safety": {
+    "neverFabricateQa": true,
+    "neverRenewSourceChecksWithoutRecheck": true,
+    "neverMarkApprovedWithoutFinalInspection": true,
+    "neverExposeCredentials": true,
+    "preserveExistingPublisherGates": true
+  }
+}
