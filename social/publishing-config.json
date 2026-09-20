@@ -1,6 +1,6 @@
 {
   "qaVersion": 2,
-  "schedulerEnabled": true,
+  "schedulerEnabled": false,
   "timezone": "Asia/Nicosia",
   "slots": [
     "09:15",
@@ -50,33 +50,11 @@
   "verifiedLivePublication": "tss-review-01-cyprus-property-seasonality-feed",
   "stateBranch": "tss-social-state",
   "publisherUrl": "https://thesmarty-solution-agent.vercel.app/api/publish-instagram",
-  "automationAuthorization": {
-    "authorizedBy": "Hady",
-    "authorizedAt": "2026-09-16T13:28:05Z",
-    "authorizationReference": "skip the agreed launch gates pass and proceed with automation starting today",
-    "mode": "automatic_after_qa",
-    "accounts": {
-      "instagramId": "17841424595983267",
-      "facebookId": "177672945439622"
-    },
-    "platformsByFormat": {
-      "feed": [
-        "instagram",
-        "facebook"
-      ],
-      "story": [
-        "instagram"
-      ],
-      "reel": [
-        "instagram"
-      ]
-    },
-    "waivedLaunchGates": [
-      "first_ten_individual_approval",
-      "first_ten_published_visual_review",
-      "prior_live_verification_per_format"
-    ],
-    "requireInitialTenVerified": false,
-    "note": "Explicit user waiver replaces the initial rollout prerequisites. Final-export QA, verified sources, account checks, duplicate protection, publication caps, actual published-asset comparison and uncertain-outcome quarantine remain required. Facebook vertical formats are not implemented or authorized by this scope."
+  "automationAuthorization": null,
+  "semiAutomatedMode": {
+    "enabled": true,
+    "activatedAt": "2026-09-20T17:39:00Z",
+    "approver": "Hady",
+    "rule": "Prepare and review content first. Publish only after explicit approval of the exact final post."
   }
 }
