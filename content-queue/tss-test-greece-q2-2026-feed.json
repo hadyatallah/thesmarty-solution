@@ -1,7 +1,7 @@
 {
   "qaVersion": 2,
   "id": "tss-test-greece-q2-2026-feed",
-  "status": "approved",
+  "status": "published",
   "topic": "Greece Q2 2026 economic growth and business opportunity",
   "topicKey": "greece-q2-2026-economic-growth",
   "headline": "GREECE IS GROWING. BUT WHAT IS DRIVING THE MOMENTUM?",
@@ -150,5 +150,15 @@
     "notes": "Exact 1080x1350 final asset shown to and explicitly approved by Hady with the instruction “Approve and post”. Facts and official source were reviewed before approval.",
     "boundSha256": "b5c5efc3428160b9a03a729d18d259c7725c33f5b3878c59899b15186cb3269e"
   },
-  "manualPublishTriggerAt": "2026-09-20T18:43:30.000Z"
+  "publishedAt": "2026-09-20T18:49:24.469Z",
+  "mediaId": "18148195912546684",
+  "instagramPermalink": "https://www.instagram.com/p/DdhREKhnajn/",
+  "facebookPostId": "177672945439622_122301907856216133",
+  "facebookPhotoId": "122301907832216133",
+  "facebookPermalink": "https://www.facebook.com/122301039992216133/posts/122301907856216133",
+  "publicationVerification": {
+    "instagramCaption": true,
+    "facebookCaption": true,
+    "verifiedAt": "2026-09-20T18:49:24.469Z"
+  }
 }
