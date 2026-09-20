@@ -5,15 +5,115 @@
   "topic": "Cyprus building permits activity in May 2026",
   "topicKey": "building-permits",
   "headline": "BUILDING PERMITS ARE NOT PROPERTY SALES.",
-  "creativeKey": "building-permits-feed-v2-pending-photo",
+  "creativeKey": "building-permits-feed-v2-larnaca-castle",
   "format": "feed",
-  "platforms": ["instagram","facebook"],
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
   "publishAt": null,
   "requestedLocalSlot": "09:15",
-  "planning": {"month":"2026-09","pillar":"cyprus-property","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "planning": {
+    "month": "2026-09",
+    "pillar": "cyprus-property",
+    "researchReviewedAt": "2026-09-20T04:30:00Z",
+    "requiresComposition": false,
+    "requiresPhotoSelection": false,
+    "requiresSourceLabel": false,
+    "requiresFinalExportReview": true,
+    "note": "Dedicated mandatory-picture export created. Final visual inspection and QA seal still required before approval."
+  },
   "caption": "BUILDING PERMITS ARE NOT PROPERTY SALES.\n\nCYSTAT reports the number of building permits authorised in May 2026 was 21.1% higher than a year earlier. Permits measure authorised construction activity, not completed sales or rental demand.\n\nDoes your plan still work under this test?\n\nSources:\nCYSTAT: Building Permits, May 2026\nhttps://www.cystat.gov.cy/el/PressRelease?id=73351\n\n#Cyprus #CyprusProperty #Construction #PropertyResearch #TheSmartySolution",
-  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"jpg","format":"feed","template":"insight-data","text":{"category":"CYPRUS PROPERTY","headline":"BUILDING PERMITS ARE NOT PROPERTY SALES.","body":"CYSTAT reports the number of building permits authorised in May 2026 was 21.1% higher than a year earlier. Permits measure authorised construction activity, not completed sales or rental demand.","question":"Does your plan still work under this test?","source":"CYSTAT | MAY 2026"}},
-  "facts": {"classification":"factual","claims":[{"text":"The number of building permits authorised in Cyprus in May 2026 was 21.1% higher year-on-year.","sourceIds":["cystat-building-permits-may-2026"]}],"sources":[{"id":"cystat-building-permits-may-2026","title":"CYSTAT: Building Permits, May 2026","url":"https://www.cystat.gov.cy/el/PressRelease?id=73351","expectedText":"21,1%","reviewNote":"May 2026 building-permit count annual change. Treat permits as construction-pipeline evidence only; do not present them as transactions, buyer demand or a forecast.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z"}]},
-  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
-  "editorial": {"version":1,"audienceNeedIds":["investor-downside-resilience"],"pillar":"cyprus-property","hook":{"type":"myth-vs-fact","text":"BUILDING PERMITS ARE NOT PROPERTY SALES.","wordCount":6},"objective":"self-assess","cta":{"id":"assess-plan-test","text":"Does your plan still work under this test?"},"contentFamilyId":"building-permits","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"building-permits","reviewedAt":"2026-09-20T04:30:00Z"}}
+  "creative": {
+    "designVersion": 2,
+    "visualStyle": "reference-data-editorial",
+    "compositionReady": true,
+    "assetFormat": "jpg",
+    "format": "feed",
+    "template": "insight-data",
+    "text": {
+      "category": "CYPRUS PROPERTY",
+      "headline": "BUILDING PERMITS ARE NOT PROPERTY SALES.",
+      "body": "Authorised construction activity, not completed sales or rental demand.",
+      "question": "Does your plan still work under this test?",
+      "source": "CYSTAT | MAY 2026",
+      "metric": "+21.1%",
+      "metricLabel": "BUILDING PERMITS | MAY 2026 YOY",
+      "fact1Label": "WHAT IT MEASURES",
+      "fact1Body": "Authorised construction activity.",
+      "fact2Label": "WHAT IT DOES NOT",
+      "fact2Body": "Property sales or rental demand.",
+      "location": "LARNACA CASTLE, CYPRUS"
+    },
+    "photoKey": "larnaca-castle",
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "The number of building permits authorised in Cyprus in May 2026 was 21.1% higher year-on-year.",
+        "sourceIds": [
+          "cystat-building-permits-may-2026"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "cystat-building-permits-may-2026",
+        "title": "CYSTAT: Building Permits, May 2026",
+        "url": "https://www.cystat.gov.cy/el/PressRelease?id=73351",
+        "expectedText": "21,1%",
+        "reviewNote": "May 2026 building-permit count annual change. Treat permits as construction-pipeline evidence only; do not present them as transactions, buyer demand or a forecast.",
+        "authorityType": "official-statistics",
+        "sourceType": "official-statistics",
+        "checkedAt": "2026-09-20T04:30:00Z",
+        "validUntil": "2026-09-27T04:30:00Z"
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Larnaca Castle, Cyprus",
+    "photoSha256": "c6a4caacaaf97e1a5277d7b26d285e56f149d32da590cf93623c783482b11bcc",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:2022_Larnaca_castle_courtyard.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "editorial": {
+    "version": 1,
+    "audienceNeedIds": [
+      "investor-downside-resilience"
+    ],
+    "pillar": "cyprus-property",
+    "hook": {
+      "type": "myth-vs-fact",
+      "text": "BUILDING PERMITS ARE NOT PROPERTY SALES.",
+      "wordCount": 6
+    },
+    "objective": "self-assess",
+    "cta": {
+      "id": "assess-plan-test",
+      "text": "Does your plan still work under this test?"
+    },
+    "contentFamilyId": "building-permits",
+    "editorialType": "trend",
+    "repurpose": null,
+    "socialProofId": null,
+    "trend": {
+      "candidateId": "building-permits",
+      "reviewedAt": "2026-09-20T04:30:00Z"
+    }
+  },
+  "asset": {
+    "path": "social/assets/06e0c998f1923a559896f11c42283cf35ccb5cd96beb109c08ee08b25aceaf36.jpg",
+    "sha256": "06e0c998f1923a559896f11c42283cf35ccb5cd96beb109c08ee08b25aceaf36",
+    "pixelHash": "b6c0d5cf22833c8a11e6fd48db96daf89b607c42751d405a0ab8d34693bf573b",
+    "visualSignature": "rgb32:+/r2+/r2/Pz3/vz4/fv3/vz4/fz3/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/Pv29fXy4OXm3uPl4+fo3eLk3eLk4ebm+Pf0+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2/Pv3/f35+vr2+/r3+vn1/Pv3/Pz4//76//76+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/fv38vLv297e6Orp4+Xk6uvq4uTj3+Hh4OLi5Obm+fj0+vn1+fn2+vr2+vn1+vj1+vn1+/r2+/r2+/r2+/r2+/r2/Pv39fXy4OPj4+bm3+Dh5t/g4ePj6Orp+fj0+/r2///62t3eiZeks7vCprC5q7S8q7O8mKSvl6Oupa+5+fr5///8/v36/Pv3/v77/f36/fz5+/r3+fj1+Pf0+vr2+vn1+vn1+/r29vbz9fXy9/j18vXy+fn29fXz+vn2+/r2//753+Lio623pK23rLW9o623pq+5t7/FsbrB4uTkn6q0p7C5qrS71djap7G6qbO7p7G53eDg/////v///Pz4/v75//76/v34//76///6///6///7/Pv2/Pv2+/r2+/r2//753+Lioq22n6q0srrBp7K6prG5sLrBprC4uMDFtb7Etr/Fp7G6xszQt7/Fn6qzwMbM/fz3xszQoay17O3r2Nzdz9TW4uPj09ja0NbY0NXX0NTX9vbz+/r2+/r2+/r2//754eTjsrnAq7S7srrBtbrBwsfMrbS9t77FwMfM297h0NTZrLG7u7/Gu8HHrLW+v8bL//75dYWWNk9px83Q6uvp19rc4ePj3+Hh2Nzd297f3uDh5ebm7u/s/Pv3+/r2+vn1/v358Pf2+fz64/DtqtTS4u/tsNfW7vX0////0eblvNza2uzqtdjW3+3q+v37/fz5/fz37u/t3uDh/Pv3/v34//35/fz4/v34//75//75//35/Pv3+/r2+/r2+/r2/Pv29Pfzfbm8q9HR3eroXqqt3ezodbS1v9rZ+fr2zOLgbbCy1+flisDCgLu9uNjX//34+fn1/Pv3/v35+vn1+vn1+vn1+/r2+/r2+vn1+vn1+/r2+/r2+/r2+/r2+/r2+/r2+vj10OLg5u3rxdzbnsjJ4uropszMwtvbzd/e0eLgn8nJ6vDu3+nnw93cwt3c//35+vn1/v37///8/Pz5/fv3/Pv3+vn1+/r2+/r2/Pv3+/r2/Pr2/Pr2+/r2+/r2/fz47e7s19jb1NfZ2tzd4d/g0NTX397f6+no19ja4eHi4uDg3uDh2tvd+vj2/v76+fj1///6o662bH2P3+Hi1tncyc/S3uHh0tXYy9DT1djb09fZ+fj0+fj0+/r2+/r2/Pv38/Pw2Nzd3N/g297f4OPj3uDh3+Li3N/g3uHi4OPj2t7e4uTk5Obm8/Pw+/r2+vn1///6eIiYOVJrztPW8PDu3+Hi6uvq5efm6Orp5ujn5ebm5ujn7O3r+/r2+/r2/Pv39PTx4eTk3uDh4OPj5OXl3+Hi5ufn5ujn4eTk4uTk4uTj4OLj7O3r/Pv3+/r2+/r2/Pv3+fn28/Px/fz5/fz3/vz4/fv3/fz3/fz3/fz3/fz4/fz3/fv3+/r2+/r2+/r2/Pv3/vz4/vz4/fz4/fz4/v34/fz3/vz3/vz4/v34/vz4/vz4/Pv3+/r2+/r2+/r2+/r2+/r2/v34+vn1+vr2+vn2+vr2+vr2+/r2+/r2+vr2+/r2+/r2+/r2+/r2+/r2+vr2+vn1+vn1+vn1+vn1+fj1+vn1+fn1+vn1+vn1+vn1+vn1+vn1+vn1+vn1+/r2+/r2+/r2+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv3/v35//35//34/v34/v75//75/v75/v35/v75//75//75/v75/v75//75/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/fv36fLv2eDg3uDg4ePj3+Hi2t3e3+Li2tze3+Hi3eDg3N7f3eDg3uDh3uHh2t3e8PDu/fv3+vn2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r17PLu7O/s8/Pv8vLv8vLv8PHt8vLv8fHu8/Px8/Tx8/Pw8/Pw8/Pw8/Tw8vLv9/fz+vr1+fn0+vn1+fj0+fj0+fj0+fj0+Pj0+fj0+fj0+fj0+fj0+fj0+Pf0+Pfz8vTx9vbz9/bz9vbz9vb09vb09/f09/f19/f19PTx8/Pv8fHt8PDs8PDt8PHt8vLu8/Tx6Onj5+jj5+nj6Onk6+vm6+zm6uvl6+zm6erl6uvl6erl6unl7Ovn7u3n8O7p5+nt5uns5+nt6Ovu5unr3+Dg4OHh4uLi3t/e19jY2djW3Nza3NzZ2dnX3t7c4ODd3t/d1dfVyMnEzc/I0dPNz9HO0NDN0dHO09TP09TN0dPNztDLy8zIzs7J1NPN2tjRz9bkz9fk0Njk09rnz9bgur2+tbi6sra5trq8vL6+vb69vr68wMC/wMHAw8PBxsbEt7i0yMjEqayplZqUl5yXkZSSk5SUlpeXlpiVmZqXmpyYlJaRl5qUk5SQj5GNmJiTrbzXqrrWqLnUrb7cn6q6kJWYj5efjJObjpKUkpWVmJmZnZ+doKOhpqqvqq+1oKKjfHx6mpaNsrCoVlxUS1JKVFhXTU9PS0xOT1FTT1RSS01LX2JgSEpGRUVFUlFSPT48nLLTnbPXorjbq8PlhY+beX1+foeQfoWNi5KXjZWbkJiflp+mlZ6nkpqilZuihIeIYmRkhXxsqaKRJCskDxMOLTExJCcpHyQlNDo/FhsYGBwXYmtwXmJmLS4vLC80YmRpioiHi4uNl5mcoqaqhoeGb3J0dHp/f4mVipWfjpifjpSakZiflp2mlZujkJedfYCAX2Feh39woJSBaGJVMTYvNjozam5vc3p+SlNgNj9CW2Vle4ePjpysfYqXT1hfc36OcGRVc2dXeXBjd25jdW1ha2hiV1hYQ0VHRU1VanR9cnuDcnqBeYKKfoiUdn+KXGJlS1FSb29qa2BRfnZsV1hZPkBDhomJkZGRZm53W2Z0i5CUgoiLfoOGen+CeoCFX2hyZ2NcaWRebmtla2llZ2ZkXmBdUlVUNTxCLDZCSFRiWGNuY255Ym15Y255Xml0SVFXQkxPXV9dU1VLWl5SNUA8JzIwYGNgXmNeQ0tQN0NVY211aXN7aHN6anV+S1NcN0FQJDA7Hys1KDU+KjdBHSw4IC05ITA8FSY1FSY1GCg3Gyw7IzREITFAITJAITJBHS49Gio3IzA7GCs0DiMrEygvFCkxEyYtEicsGCkzGSs9IzRDKDlHJjlHKDpIEiMzDiAyAhUoDB8yJzhJLj5PIjJEITFDLT1OHC4/JDZGM0RUHS9AAhYqBRksBRgrBBgrBRktBRktBBktAhUpAhUpARYqABQoBxouGiw+Fik6DyM1GCs8EiY3ESU2Fys7CBwuBBkrBhgsCBsvEiM2EiQ2EyQ3FCY4DiE0Cx4xCh0xCRwwCh0xCRwwCRwwCRwwCRwwCRwwCRwvCRwwBxotAxcqAxcqBRksESQ2EyY3Fio7FSk7FSg7Fik8EyY5Fik7CR0xBBksBxktCh0wFik6FSg5FCc5Fyk7DiAzBRkrBxosBxotBxosBxosBxotBxotBhotBhktBhotBxosBhksBhksBRcrBxotIDJCKDhIKTpKIDFCJTZGJDVGITNEJjhIDiEzAxYnBRgqBBgqAhYoAxYpAxYpAhYoBBcpBBgqBRgqBBgqBBgqBBgqBBgqBBgqBBgqBBgqBBgqBBgrAxgrBBgqBBgqBBcqARQmARMmABQmARQnABQnABQoARUoABQnAxcqBBgp",
+    "layoutSha256": "c52e410440411763e0c3512fc1dae57262e969c23f03012e393005bd79a69eb0",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
 }

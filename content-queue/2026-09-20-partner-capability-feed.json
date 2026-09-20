@@ -5,15 +5,86 @@
   "topic": "Partner capability before market expansion",
   "topicKey": "partner-capability",
   "headline": "YOUR PARTNER NEEDS TO BRING MORE THAN CONTACTS.",
-  "creativeKey": "partner-capability-feed-v2-pending-photo",
+  "creativeKey": "partner-capability-feed-v2-lefkara",
   "format": "feed",
-  "platforms": ["instagram","facebook"],
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
   "publishAt": null,
   "requestedLocalSlot": "09:15",
-  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "planning": {
+    "month": "2026-09",
+    "pillar": "cyprus-economy-business",
+    "researchReviewedAt": "2026-09-20T04:30:00Z",
+    "requiresComposition": false,
+    "requiresPhotoSelection": false,
+    "requiresSourceLabel": false,
+    "requiresFinalExportReview": true,
+    "note": "Dedicated mandatory-picture export created. Final visual inspection and QA seal still required before approval."
+  },
   "caption": "YOUR PARTNER NEEDS TO BRING MORE THAN CONTACTS.\n\nBefore expanding, define what the partner must actually deliver: access, execution, technical capability, local knowledge, follow-up or capital. A long contact list is not a capability plan.\n\nDoes your plan still work under this test?\n\n#Cyprus #BusinessDevelopment #Partnerships #Entrepreneurship #TheSmartySolution",
-  "creative": {"designVersion":2,"visualStyle":"reference-integrated-editorial","compositionReady":false,"assetFormat":"jpg","format":"feed","template":"question-debate","text":{"category":"CYPRUS BUSINESS","headline":"YOUR PARTNER NEEDS TO BRING MORE THAN CONTACTS.","body":"Before expanding, define what the partner must actually deliver: access, execution, technical capability, local knowledge, follow-up or capital. A long contact list is not a capability plan.","question":"Does your plan still work under this test?","source":"EDITORIAL VIEW / NOT A FORECAST"}},
-  "facts": {"classification":"editorial-opinion","claims":[],"sources":[]},
-  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
-  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-partner-capability"],"pillar":"cyprus-economy-business","hook":{"type":"decision-risk","text":"YOUR PARTNER NEEDS TO BRING MORE THAN CONTACTS.","wordCount":8},"objective":"self-assess","cta":{"id":"assess-plan-test","text":"Does your plan still work under this test?"},"contentFamilyId":"partner-capability","editorialType":"evergreen","repurpose":null,"socialProofId":null}
+  "creative": {
+    "designVersion": 2,
+    "visualStyle": "reference-integrated-editorial",
+    "compositionReady": true,
+    "assetFormat": "jpg",
+    "format": "feed",
+    "template": "question-debate",
+    "text": {
+      "category": "CYPRUS BUSINESS",
+      "headline": "YOUR PARTNER NEEDS TO BRING MORE THAN CONTACTS.",
+      "body": "Before expanding, define what the partner must actually deliver: access, execution, technical capability, local knowledge, follow-up or capital. A long contact list is not a capability plan.",
+      "question": "Does your plan still work under this test?",
+      "source": "EDITORIAL VIEW / NOT A FORECAST",
+      "location": "PANO LEFKARA, CYPRUS"
+    },
+    "photoKey": "lefkara",
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "editorial-opinion",
+    "claims": [],
+    "sources": []
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Pano Lefkara, Cyprus",
+    "photoSha256": "5336ef1793e4772c1a32d9a1f2776b062203bcb8be0851b5e5f88b2538e981d4",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:2022_03_Pano_Lefkara_1.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "editorial": {
+    "version": 1,
+    "audienceNeedIds": [
+      "entrepreneur-partner-capability"
+    ],
+    "pillar": "cyprus-economy-business",
+    "hook": {
+      "type": "decision-risk",
+      "text": "YOUR PARTNER NEEDS TO BRING MORE THAN CONTACTS.",
+      "wordCount": 8
+    },
+    "objective": "self-assess",
+    "cta": {
+      "id": "assess-plan-test",
+      "text": "Does your plan still work under this test?"
+    },
+    "contentFamilyId": "partner-capability",
+    "editorialType": "evergreen",
+    "repurpose": null,
+    "socialProofId": null
+  },
+  "asset": {
+    "path": "social/assets/97c82ed88e8ec836516bd0ac426ca1ba9c76d3b5b08c225e6070d7eb46ff1f0a.jpg",
+    "sha256": "97c82ed88e8ec836516bd0ac426ca1ba9c76d3b5b08c225e6070d7eb46ff1f0a",
+    "pixelHash": "4177b4a00389ceeed37ec4c96cf25c1d59041385f705ac88be811ed658276b8b",
+    "visualSignature": "rgb32:2MzB1ce53tfO4d7Y3dbO2NHL1NPS1dHQ1M/JycK7xbuyy8fD0d3r0Nzq0Nvoz9voz9vn0Nzn0d3p0t3oy8nFzMnCz8zF0c3G0s7F29fM3NLH39TI3dbMxcO+y8rG2tnWu6+ku6ufpp+bpqKenJiVs7Kxq7C1oaWsnaGmoKCgqKCZrJ+VtLa6vdPrvM/lu8/ku8/ju8/kvNDlv9Pnt7q6t7OsvbmywLyzxL+2h4uPeZeaf46RfYGIpKKfpKCbtLOwpaKhwruz1M7Hxb21tKuj1NHNycrLoaGopKSpp6SioJqTjoJ6lYZ8oKu5qsnpqMLgp8PgqMPgqcPfrcrpo6uxopyUqqefq6eftK+ke3x/WX+DWYGGS1NiiImGkI6KgoF9xsfJx8jG1dPO1tPN3NvW5ubh293aoqCjpZ2ZoJ6hmpSPgnp0dmZcf3FojabClbzlkrTak7XclbfcmL7mk6a4kY6Gko+JlJCJl5KJl5KKm4p9o5WGc3R0dHRzeHh4Xl1cv8DDv8DBwcHAwMC80M/Mzs/NiomLeHNzq6CWlZSXh4OEhn56Y1hSa089cV9UfJ/Hf6zcf6jXgarYhbHfgqnQYWFkcWFXcGBXgnhwZmFgin1phHxwUVRYXF5hWltfODc2qq2xr7O2srW4sLGyycrJxcbFaGZoRz48qqScinxwZFxbeHZ1aWJda3WBaH6baZbJap3WapzSbJ7TcabebJXAWlNSaWFea2NecWljaWFYg3Fba2NZNTlARklOPD1BEA8PpKeso6arqayxqKyvxMfHvsHAZWBjTUE+kn5wgWVSVz4sYF1ik5CMgKjOYKLlYpnVYJbQX5bQYpjQZp7Yap3QaGpocW5nendvg35xfXRjg3BXWlVQKS85P0FIKCktAAAAqayxpaitp6uvqKywxMfIwMPCWlZaQjYtalA7VDovWkIwODEurqulhKjMXZjTYZjSX5bQXpXOYZfQZJvVaqLcZ3B0bWNSc21bdm5cc2hTinddVFFPKy86QkNHISIkAAAArrK1rLC0rrG1rLCyzM/Ptrm5ZGJjPDcxkYV4i4J0a1tFSkA5fnlzhKnKb6ribqDUbJ7Sa53QbJ/Sb6DUdKzkdYOLc2hVeXFhgXlpgnVhkoNsX1xcQEJJVVVXNDM0ERAQt7u+uLu9uLu9ury+tba3oqKigH99XVhWtq6mnJWHbmtaYlxVhIB7eYiae5i3ha/ahK7Ygq3Wg63Xha7YiLXjjaS5jIuBkZCHko1/nJB6opWDdHFwXl9mcG9yUk5MPTs4xMbHxsfIu73AnqGlrKyszMzIl5eUcm5poZyTpZ2NenNldG9omJaQjoqLgnJtk7XWmr/il7rdlrrcl7rdmb/knbHKj5agmKm3mpiSr6WTrKSVhYSDdXd8gYGCaWhjXl1YyszMu72+qKqsuLm60dHP0NDNtLW0qaimnZ2ctbOvqaqtlZOPlZKMnaCilJmforbKrc3nrMrlrMvnqsfhqsnmrsXYurSnwrywyMCxurOksauhm5iViouKj4qFjYB7fnd1u7y9tbW3wsLC1dXT2dnWy8vLsLGxtLSztbW0r6+tra2tq6ikrKehqqaYp6WZtLOvx8jEwcLBvMXMvtPmvdPpv9Tly8m/0cm61c29xsCzt7KssK2poaKeqaeho5qVmZKPy8rI2NjW4eDc5uPf3tvYycfFwb+7tbKttLKuuLayvLq1xsO+zcnCxcG4vbut0c7E5d7R2tDCxLaszdTa0eHu0N/r1dzf2Nza3NjO1c/EyMW/xsO+vr25wsG8u7iyu7av6ejk5+fj3ODc1dzZzdLPy8/Nyc7Myc7L0dHM1dLN0c7Jz83IzszIz83I08/I2dXN6uXb5+DW2M/I2dra3ujv3ubs3efv3+Hh4t7W39rS19XO2NXQ1NDN19PP19HK2dLK6+nl6enlydrXtc3Kvc/Nu8/Muc/MwtDN4uDa5+Pa5uLZ5uHZ5eDY6eTb6eTa6+Xb9O3h8Ofc6N/W5uTh7vHx7vP18PX35+nn6uPa7Ofd4NzU3NnU2NXS2tfS4NrR49vS7+3m6+njqLW4lqWslqWsprO3h5ih0M/Np6yxqq+yqK2xpqywsba6uLu8rLCxsLS1x8fEwMC+oaSpp62ypq61s77FqbbA0Nfdv8THpaqutbe449/Z29rV3tvX5eHX6ePY6+nj6efhvsHDqrC2n6atqK6zlZ6nx8nIqK6yn6askZqjqa+0vsPEnaSrk5ykpaywv8LAvsC/lZyjqK2zn6iyp7K6oa23y9LUztDQoaitr7S35+Td4N/Z4d/a6OTb6uXb6ebh3d7blZ+phpOeqK+1kJuklaCpr7W5xsjHkJqinaWrnaWsg4+aoait19fUoKeumaKonaWqlZyjkJmi8e7o9vTu+/r09PPu8u7n9fDm7urj6Obf5uTf5uTf6ubf6OXb6+fh5+bisbi8rbS6r7a7rLK4p661rLS5wcTGtbm8pKqvsbe6y87Ow8XG4+Lc1tbUzM/NyszJycvKy83N6OXf6efj8O7p7+vm7Oni7erj7Onk7evm6+rl7Ovm7evk6+fe7+vk6+njs7m+qrK4kZynmKKrqbC2lZ+plqCptLq9rrS4nKWt5ubi//zz9vPt+fbw/Pjx/vry/fbu+/fv9fPt9PHs9fPt+PTs9fLq9fLr9vPu9fLt8fDr8O7p8e3n8Ozl8u/o8O3m2NnY29za4+Pg4+Lf4ODe4ODe3Nza4uHd3t3a2tvY4uLe39/c5ubi4eDd5eTh39/d397b5+Xi4eHf5eXh5OTg4uHd4eHc5eTg4N/c4eDe7+3q9fPu8u/p8u7n9PDp8O3n1dbU0dPS2NnX1tfWzM/P09XUzM/P2trYztDP0dPS19nX1tjX09XUy83NzdDP0tPS2djX19jX1NbW1NXV0dPSzM/PzM7N2NnXy83NztHQ2tva7+3p9PHq8e7n9PHq8u/o397b39/d0dLS2trY4eHe2tva09TU4eDd1NXU2drY3d7b39/d3t7c29vY29va39/c1tfVz9LS0dPT1dbV0dPS4+Le7erk8e/o7ezn7evl6+rm8e/q9PHq8u/o9fLr7u7n4eTg2drY3N7b3t7b4eDd2tza3N3a2trY29vZ2drY5eTg3N3b4uHe29rY39/d3t7b397a8u7o8O3n7+3n8u/p9/Tt+/fw9/Tt9/Tt9fLr9/Tt9fLt9PHr8u/o9/Lr5+zl1eDc29rY4OHd3t7b3d7b2NnX4eHe29vZ397b29vZ5OPg29za4ODe2tvY39/c3t3b5+bh+PTu+PXu+vfw+PXu9vPr9fLr9vLr9vLs9PHq9fLs9fPs9fLs8/Dp9fLr9fLr+PTt+/jw+PXu+PXu+fbu+vfv+PTt+vbv+PXu+/fw+/jw/fry/Pjw+vbu+/fv/Pjw/Pjw9/Tt9vPs9vPs9fLr9PHr9PHr9fLs9/Tt9fLr9vPs9vPs9vPs9PHq9vPs9vPs+PTu+PTt9/Ps9/Tt9vPs9vTt9/Tt9PHr8/Dq9fLr9/Tt9vTt9vPs9vPt9/Tt9/Tu9/Tu9vPs9fLr9fLr9PHr9PHq9PHr9PLr9vPs9PHr9fLs9fLs9vPt9PHr9/Tt9vPt5ufj5ufj5ubi4uPg6url5ufj4uTh7+7o9fLr9PLr9vPt9fPs9fPs9vPt9vPt9vPt9vPt9fPt9PHq9PLr+PXu+PXt+PTt+PXt+PXu+PXt+PXu+fbv9/Tt9fLr9/Tt9fPs3uHf3ODf3+Lg29/e4ePh4+Ti3eDf5ufl8/Hs+vfv+fbv+fbv+fbv+fbv+fbv+fbv+fbv9/Tt+PXt7uzn19jX2tvZ2tvZ29za4ODd2tvZ3t/c3d7c9/Tt9vPs9/Tt9/Tt9fPs9PLs9PHs9fLs9PLr9PLt9/Tu9PLs9vTt+fbv+fbv+fbv+PXv9/Tt9/Tu9/Tu9/Tt9/Tt9/Tt8/Dq5+bi5+bi6Ofj6Ofj6+rl6Ojj6unk6ujj9/Tt9vPt+PXu+PXu+PXu+PXt+PXu+PXu+PTt+PTt+PXu+/fw+vfv+fbv+fbv+PXu9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt+PXu+/fw+vfv+vfv+vfv+vfw+vfv+/fw+vfv9/Tu+PXu",
+    "layoutSha256": "8ea33c941ed8cf953fe0cecb6d5b86ca7d2f1cbe16b12db5a4dc842c8903fcb4",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
 }

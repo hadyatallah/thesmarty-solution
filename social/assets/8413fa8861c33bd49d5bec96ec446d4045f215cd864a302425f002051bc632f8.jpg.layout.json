@@ -1,0 +1,124 @@
+{
+  "designVersion": 2,
+  "visualStyle": "reference-integrated-editorial",
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 72,
+      "y": 62,
+      "width": 265,
+      "height": 23,
+      "size": 23
+    },
+    {
+      "text": "CYPRUS BUSINESS",
+      "x": 72,
+      "y": 628,
+      "width": 205,
+      "height": 14,
+      "size": 20
+    },
+    {
+      "text": "TEST THE IDEA BEFORE YOU",
+      "x": 72,
+      "y": 696,
+      "width": 896,
+      "height": 44,
+      "size": 57
+    },
+    {
+      "text": "SCALE IT.",
+      "x": 72,
+      "y": 764,
+      "width": 285,
+      "height": 43,
+      "size": 57
+    },
+    {
+      "text": "A small pilot can expose weak assumptions before a larger",
+      "x": 72,
+      "y": 840,
+      "width": 811,
+      "height": 26,
+      "size": 27
+    },
+    {
+      "text": "commitment. Define the customer, offer, success measure and",
+      "x": 72,
+      "y": 878,
+      "width": 863,
+      "height": 23,
+      "size": 27
+    },
+    {
+      "text": "stop condition before spending more.",
+      "x": 72,
+      "y": 916,
+      "width": 511,
+      "height": 26,
+      "size": 27
+    },
+    {
+      "text": "Which assumption would you stress-test first?",
+      "x": 98,
+      "y": 974,
+      "width": 601,
+      "height": 23,
+      "size": 23
+    },
+    {
+      "text": "PETRA TOU ROMIOU, CYPRUS",
+      "x": 72,
+      "y": 1210,
+      "width": 295,
+      "height": 16,
+      "size": 18
+    },
+    {
+      "text": "EDITORIAL VIEW / NOT A FORECAST",
+      "x": 72,
+      "y": 1246,
+      "width": 288,
+      "height": 13,
+      "size": 16
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 731,
+      "y": 1246,
+      "width": 277,
+      "height": 13,
+      "size": 18
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 842,
+    "y": 62,
+    "width": 138,
+    "height": 53
+  },
+  "photoSha256": "71c16cfb45d2b453ab0f88d87d131d5218e345ab77cca71cfb8d871138a8f7c5",
+  "palette": {
+    "cream": "#fbf8f1",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1"
+  },
+  "photoRegion": {
+    "x": 250,
+    "y": 170,
+    "width": 758,
+    "height": 430
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 48,
+    "bottom": 1302
+  }
+}

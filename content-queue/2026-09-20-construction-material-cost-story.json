@@ -5,15 +5,108 @@
   "topic": "Cyprus construction material cost pressure in August 2026",
   "topicKey": "construction-material-cost",
   "headline": "BUILDING IN CYPRUS? WATCH MATERIAL COSTS.",
-  "creativeKey": "construction-material-cost-story-v2-pending-photo",
+  "creativeKey": "construction-material-cost-story-v2-petra-tou-romiou",
   "format": "story",
-  "platforms": ["instagram"],
+  "platforms": [
+    "instagram"
+  ],
   "publishAt": null,
   "requestedLocalSlot": "14:15",
-  "planning": {"month":"2026-09","pillar":"cyprus-property","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "planning": {
+    "month": "2026-09",
+    "pillar": "cyprus-property",
+    "researchReviewedAt": "2026-09-20T04:30:00Z",
+    "requiresComposition": false,
+    "requiresPhotoSelection": false,
+    "requiresSourceLabel": false,
+    "requiresFinalExportReview": true,
+    "note": "Dedicated mandatory-picture export created. Final visual inspection and QA seal still required before approval."
+  },
   "caption": "Save this for your next property review.",
-  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"png","format":"story","template":"insight-data","text":{"category":"CYPRUS PROPERTY","headline":"BUILDING IN CYPRUS? WATCH MATERIAL COSTS.","body":"CYSTAT reports the construction materials price index was 3.39% higher in August 2026 than a year earlier. This is an input-cost index, not a property-price forecast.","question":"Save this for your next property review.","source":"CYSTAT | AUG 2026"}},
-  "facts": {"classification":"factual","claims":[{"text":"Cyprus construction materials price index annual change was +3.39% in August 2026.","sourceIds":["cystat-construction-materials-aug-2026"]}],"sources":[{"id":"cystat-construction-materials-aug-2026","title":"CYSTAT: Price Index of Construction Materials, August 2026","url":"https://www.cystat.gov.cy/el/PressRelease?id=73357","expectedText":"+3,39%","reviewNote":"Annual change for the Cyprus construction materials price index in August 2026. Use only as an input-cost measure, not as a house-price or investment-return forecast.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z"}]},
-  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
-  "editorial": {"version":1,"audienceNeedIds":["investor-full-acquisition-cost"],"pillar":"cyprus-property","hook":{"type":"decision-risk","text":"BUILDING IN CYPRUS? WATCH MATERIAL COSTS.","wordCount":6},"objective":"save","cta":{"id":"save-property-review","text":"Save this for your next property review."},"contentFamilyId":"construction-material-cost","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"construction-material-cost","reviewedAt":"2026-09-20T04:30:00Z"}}
+  "creative": {
+    "designVersion": 2,
+    "visualStyle": "reference-vertical-photo",
+    "compositionReady": true,
+    "assetFormat": "png",
+    "format": "story",
+    "template": "place-opportunity",
+    "text": {
+      "category": "CYPRUS PROPERTY",
+      "headline": "BUILDING IN CYPRUS? WATCH MATERIAL COSTS.",
+      "body": "Construction materials prices were 3.39% higher year on year in August 2026. Input costs are not a property-price forecast.",
+      "question": "Save this for your next property review.",
+      "source": "CYSTAT | AUG 2026",
+      "location": "PETRA TOU ROMIOU, CYPRUS"
+    },
+    "photoKey": "petra-tou-romiou",
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "Cyprus construction materials price index annual change was +3.39% in August 2026.",
+        "sourceIds": [
+          "cystat-construction-materials-aug-2026"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "cystat-construction-materials-aug-2026",
+        "title": "CYSTAT: Price Index of Construction Materials, August 2026",
+        "url": "https://www.cystat.gov.cy/el/PressRelease?id=73357",
+        "expectedText": "+3,39%",
+        "reviewNote": "Annual change for the Cyprus construction materials price index in August 2026. Use only as an input-cost measure, not as a house-price or investment-return forecast.",
+        "authorityType": "official-statistics",
+        "sourceType": "official-statistics",
+        "checkedAt": "2026-09-20T04:30:00Z",
+        "validUntil": "2026-09-27T04:30:00Z"
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Petra tou Romiou, Cyprus",
+    "photoSha256": "71c16cfb45d2b453ab0f88d87d131d5218e345ab77cca71cfb8d871138a8f7c5",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Petra_Tou_Romiou_(October_2006).jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "editorial": {
+    "version": 1,
+    "audienceNeedIds": [
+      "investor-full-acquisition-cost"
+    ],
+    "pillar": "cyprus-property",
+    "hook": {
+      "type": "decision-risk",
+      "text": "BUILDING IN CYPRUS? WATCH MATERIAL COSTS.",
+      "wordCount": 6
+    },
+    "objective": "save",
+    "cta": {
+      "id": "save-property-review",
+      "text": "Save this for your next property review."
+    },
+    "contentFamilyId": "construction-material-cost",
+    "editorialType": "trend",
+    "repurpose": null,
+    "socialProofId": null,
+    "trend": {
+      "candidateId": "construction-material-cost",
+      "reviewedAt": "2026-09-20T04:30:00Z"
+    }
+  },
+  "asset": {
+    "path": "social/assets/6e9a7f5d4596c414942c21c38e2eb77f9236342d0d7bb2303c3de1ac21b5d677.png",
+    "sha256": "6e9a7f5d4596c414942c21c38e2eb77f9236342d0d7bb2303c3de1ac21b5d677",
+    "pixelHash": "863df7a051fb9c20443d077ed3d1c27bf0dcc5326db80f4bc62f6f02284534ba",
+    "visualSignature": "rgb32:+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+Pbx9/Xx9/by9/bx9/bx9/Xx+Pfy+vjz+vjz+vjz+vjz+/n0/Pn0+/n0/Pn0/Pn0/Pn0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz/v76///9//75///5///8///9/Pv2+vfz+vjz+vjz+vjz9PPv8fHu8/Pv8/Lv8fHu8fHu9/Xx+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffyvcPHqK+2tMnMusTHubrAqbG43uDf/fv1+ffy+vjz+ffy7O3q5uno6uzq6evp5unn6Oro8/Lu+ffy+Pby+ffy+vfz+Pby+ffy+ffy+ffy+Pby+Pby+Pbx+Pby+Pbx//33xsrNYGx+kcrNX7e+dJKeXmt+p7C3///5+Pbx+vjz+vjz/v37/v36/fz5/fz5/vz4/v77/fz4/v36/v36/v73+vj0/v37/Pv3+/r1/v34/v34/v35/v35/v35/vz5+fj16+vp1dnZ0c7Qv8zOzdfYw8bK09fX/fr1+ffy+/n09vTwwMbKzNDSztPVz9PV2t3dw8nMztPVwsjLxMvO293d7u/svMLH19rb5+jm1NfXztLUyc7QwsjLwsjL0dXWx8zPxszP1dna+Pn09/by9/Xx9PTw8vLv+vjz+vjz+/n09fTwnKewo6y0o621oau0pa+3qLG5qbK5qrO6n6qyprC3zdHTj5ynqLK5v8XJrra9vsXIqbK5srq/vMPHrLS7rLW7q7O6xMnM3d/f293d4+Ti+vjz+/n0+vjz+vjz+ffy/vv2w8jMsLm/tb3CwMbKyc7Q0dXXucDF3ODixcvQsrq/sbrAyM3QvcTJsbrAs7vBvcTItLzCvMPH7/Dvz9PVy8/Rv8TJtLvBxszOw8jLuL/E8O/s/Pr1+ffy+vjz+vjz+Pby6Ojm5Obk5ufk5ufk4uPi5ufl5OXj4OHg5ufk6Onm5ufl5eXk6urn4OHg7Ovp6Ojm4OLh4+Ti2dzc3d/f4uTi3+Hg4+Xj5+jm6Onm5ubl6urn9fTv+/n0+vjz+/jz9/bx3eDf0dXW2Nvb2dvb0dTV4ePi1tnZ1tnZ3eDf1djY2tzc2tzc2dzc2Nvb293d2t3c0dXW19ra3+Hf4OLh4uTi4uPh4OHg3+Df6uro9fTw9vXx+Pby+vjz+vjz/Pn08vTw4+vo4ODf5+jm4OLh4uTj4uTi5ufk4OLh6enn4uPi4uTi5ebk3N7d3uDf4uTi5ebk4uTj3uDf9vTw//33/fv1/fv2/fv2/vv2/fr1+/nz+/n0+vjz+vjz+vjz+vjz+vjz+vjz/fv2/Pr0/Pr2/Pr1/fr1/Pr1/fv2/Pr1/fv2/Pv1/Pr1/fv2/fv2/Pr1/Pv1/fv1/vv2+vjz+ffy+ffy+ffy+ffy+ffy+ffz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy+ffy+ffy+ffy+ffy+fjz+ffy+ffy+ffy+ffy+ffz+ffy+ffy+ffy+ffy+ffy+ffy+ffz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz9/by+Pby+Pby9/by9/by+Pby9/by+ffy+Pfy+ffy+ffy+Pby9/by9/by9/by9/by9/by+Pby9/by+Pby9/by9/by9/Xy9vXy9vXy9vXy9/Xy9/Xy+Pby+Pby9vXy9vXy2eL12uP22uP32uT32+T43OX53eb53uj63ej63uj63un63un63un63ej63un63un63+n63un63ej53+n53un53+n53ej44Or55u344ur45ez45ev45+334ej23Ob22OP2Xoa/YInCYYrFYozGY43JZY/KZpHNZ5LPaJPQaZXRa5XUa5bVbJfWbZjYbJjZbZjbbpjcb5jdcZzgcJrfcpvfc5zheaDkeJ/jeqPneKDkdp/kd6DmeKHnd6HpdqDpeKDqZHqOZXyOZ3ySaH6UaX+VaoCXbIGWbYGXbYGYcIOacYOacYOacYKYcoObc4Scb36Wc4SdfIGOY2t9cYGebn6af4yjpKKii4eIW2d/bHybcYGgZ3WTY2+JYGd9X2d+ZGl7i4qSjIuTjo2WkI+ZkJCakZGbkpGck5KdlJOflZShlZOflpOdlpOflpOelZOfk5KhlpSnmJOikYqblZGpl5Gkm5Gem4uLmYiJgXR8jIOMoJiikomQk4aJh3VyiXhyiHNphYKHhoSJh4SIiYeOioiPi4iQjImTjYqTj4qUkIuVkIuVkIuVkIuXkYyYkYqWj4mWjoiXjYaYjYeWjISSi4OSi4KSi4KUioKTjISWiYCThnyOhHuQgXuRfniPfHaOeHKOp6GbqKKcqqWfrKijrKekraimr6mlsaqnsKmnsKmosqqpsaqpr6ior6insKior6iqr6irr6eqr6aor6aprqerrqesraasraWqrKOoq6OqqaGppp+opJ2noZqmnZelm5ap8O7o7+3n4ePg3uDe4+Pg4+Ph4ODe3N7c4uPg5uXh3d/d4+Ph8e7p8e7p8e/q8e/q8e/q8e/q8u/r8u/r8u/q8e7q8e7q8e7q8e7q8e7q8e7q8O7q8O3p8O3p8O3p8O3p/Pr1+/n08PHu7vDt8vPw7/Hu7e/t8/Tw+fn1+fj09/fz9vby/Pr1/Pr1+/r1+/r1+/r1+/r0/Pr1/Pr1/Pr1/Pr1/Pr1/Pr1/Pr1/fr1/fr1/fr1/fr1/fr1/Pr1/Pr1+ffy+Pby5ebk3+Df3uDf4OLg4uPh5OTj4OHg5ubk4+Pi8fDs+/nz+ffy+ffz+ffz+ffz+ffz9PTv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv9PTv+ffy+ffy+vjz+vjz9PPv8vHt8vHt8/Lu8/Lu8/Lu8fHt9PLu8vHt9/bx+/jz+vjz+vjz+vjz+vjz+vjz+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+vjz+vjz+vjz+vjz+/n0/Pr0/Pr0/Pr0/Pn0/Pn0/Pr0+/n0/Pr0+/nz+vjz+vjz+vjz+vjz+vjz+vjz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz",
+    "layoutSha256": "cd332255fef89626c2dc9f54f2b45723d95eb96121c9cebc2ac17db526b6333c",
+    "width": 1080,
+    "height": 1920,
+    "originFormat": "story",
+    "commit": null
+  }
 }

@@ -5,15 +5,86 @@
   "topic": "Using a small pilot to test a Cyprus business idea",
   "topicKey": "small-pilot",
   "headline": "TEST THE IDEA BEFORE YOU SCALE IT.",
-  "creativeKey": "small-pilot-feed-v2-pending-photo",
+  "creativeKey": "small-pilot-feed-v2-petra-tou-romiou",
   "format": "feed",
-  "platforms": ["instagram","facebook"],
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
   "publishAt": null,
   "requestedLocalSlot": "09:15",
-  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "planning": {
+    "month": "2026-09",
+    "pillar": "cyprus-economy-business",
+    "researchReviewedAt": "2026-09-20T04:30:00Z",
+    "requiresComposition": false,
+    "requiresPhotoSelection": false,
+    "requiresSourceLabel": false,
+    "requiresFinalExportReview": true,
+    "note": "Dedicated mandatory-picture export created. Final visual inspection and QA seal still required before approval."
+  },
   "caption": "TEST THE IDEA BEFORE YOU SCALE IT.\n\nA small pilot can expose weak assumptions before a larger commitment. Define the customer, offer, success measure and stop condition before spending more.\n\nWhich assumption would you stress-test first?\n\n#Cyprus #Entrepreneurship #BusinessDevelopment #Pilot #TheSmartySolution",
-  "creative": {"designVersion":2,"visualStyle":"reference-integrated-editorial","compositionReady":false,"assetFormat":"jpg","format":"feed","template":"question-debate","text":{"category":"CYPRUS BUSINESS","headline":"TEST THE IDEA BEFORE YOU SCALE IT.","body":"A small pilot can expose weak assumptions before a larger commitment. Define the customer, offer, success measure and stop condition before spending more.","question":"Which assumption would you stress-test first?","source":"EDITORIAL VIEW / NOT A FORECAST"}},
-  "facts": {"classification":"editorial-opinion","claims":[],"sources":[]},
-  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
-  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-demand-validation"],"pillar":"cyprus-economy-business","hook":{"type":"decision-risk","text":"TEST THE IDEA BEFORE YOU SCALE IT.","wordCount":7},"objective":"self-assess","cta":{"id":"assess-stress-test","text":"Which assumption would you stress-test first?"},"contentFamilyId":"small-pilot","editorialType":"evergreen","repurpose":null,"socialProofId":null}
+  "creative": {
+    "designVersion": 2,
+    "visualStyle": "reference-integrated-editorial",
+    "compositionReady": true,
+    "assetFormat": "jpg",
+    "format": "feed",
+    "template": "question-debate",
+    "text": {
+      "category": "CYPRUS BUSINESS",
+      "headline": "TEST THE IDEA BEFORE YOU SCALE IT.",
+      "body": "A small pilot can expose weak assumptions before a larger commitment. Define the customer, offer, success measure and stop condition before spending more.",
+      "question": "Which assumption would you stress-test first?",
+      "source": "EDITORIAL VIEW / NOT A FORECAST",
+      "location": "PETRA TOU ROMIOU, CYPRUS"
+    },
+    "photoKey": "petra-tou-romiou",
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "editorial-opinion",
+    "claims": [],
+    "sources": []
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Petra tou Romiou, Cyprus",
+    "photoSha256": "71c16cfb45d2b453ab0f88d87d131d5218e345ab77cca71cfb8d871138a8f7c5",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Petra_Tou_Romiou_(October_2006).jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "editorial": {
+    "version": 1,
+    "audienceNeedIds": [
+      "entrepreneur-demand-validation"
+    ],
+    "pillar": "cyprus-economy-business",
+    "hook": {
+      "type": "decision-risk",
+      "text": "TEST THE IDEA BEFORE YOU SCALE IT.",
+      "wordCount": 7
+    },
+    "objective": "self-assess",
+    "cta": {
+      "id": "assess-stress-test",
+      "text": "Which assumption would you stress-test first?"
+    },
+    "contentFamilyId": "small-pilot",
+    "editorialType": "evergreen",
+    "repurpose": null,
+    "socialProofId": null
+  },
+  "asset": {
+    "path": "social/assets/8413fa8861c33bd49d5bec96ec446d4045f215cd864a302425f002051bc632f8.jpg",
+    "sha256": "8413fa8861c33bd49d5bec96ec446d4045f215cd864a302425f002051bc632f8",
+    "pixelHash": "d311358a6d8f486be0020e8307f01fc2ec0d170a4a127c8c3653fb0e01d8ae3c",
+    "visualSignature": "rgb32:z9zv0N3v0t/x0uDy1ODy0+Dy0d/x0N/x0eDz0N/yzNvvzNvvzNzvzNvvzNvvy9vvy9vvy9vuy9vuy9vvy9vvytvvytvvytvvytnu0eH30t710uD20OH3yNjvyNjvyNjvytjvytjtr8DWrr/YqLrTp7vUrb/YqbzWoLTPpbrVvdPtvtPuvdPuu9HuutHuutHuuNHut9DuttDuts/tts/ttc/utc/utc7uts/vfJSzcqK/dZi2fZW0s83us8zus8vtuM7tuc/ttcvos8ror8fnr8fnr8fmr8joq8XmqcXorcrtrcrursvursvtrMrtqcjtqMjtpsftpcftpsbtpMbto8Xso8XsocPrqMv0dJK6VpK1T46wWHSbnsHqoMPun8HtmL/slr/smcDtmMHtmcHumcHum8LuncLuncPun8PuoMPsoMPsnsLsm8HsmcDsmcDtl7/slb/slr/tlr/sk73skbzskLzskLzsj7vslL/xlLrslLvulL/xjrjsjbjsi7fso8Pso8PtoMLsn8HsmsDrm8Dsm8DsnMDrnsHsoMLsn8LsncHsmb/slL3rkbvsjLnriLfsh7brh7frh7brhrbshbXshLXsgbTsgbTsgbPrgLPsf7LrfrDqf7DrgLHrgbDrp8TspMPspMPspMPspcTspcTtnL/sr8rsx9nsn8Hrm8DsmL/skbvsjbrrjLjrirfrk7zrkrvrgLLqfbHrgrPrgbLrf7HrfbDrea7rfq/qfq/reK3rdKvrdKvqhLDrhrDrnb7snb7snb/snsDtnb/soMDsscvtw9jtudLtmLzrmL3rlrzsk7vskrvslLvsm77spcTsm73rkLfrjLbrjLbri7briLTrirbrjLbrjbXsjrXsjLTri7Tri7PribLrjLLrmLrsl7rrlbrrl7vrm77rydnt1eLutM/sqsjsmLvrmL3sl7zslrvslbvrlrvrmLzsl7zrmbzrmrzsm7zrmbzsl7rtlbjsl7rsl7ntlrjslbfsl7nsl7jslrjslrfrl7fsn77rsMjstc3sqsbrvtLszt3sz93txdjttc7soMLsm8Drmb7sn8PspsbspcXspMTsocHsosLsq8fsnb7smrvsmrvsnLzsmbrsm7vrnLzrmrrrmLnsl7jslbbrk7XrkrXrpr7sucvsu83tt8zstMnsscjstcvss8ntscnsssrsrsfso8DsrcbstcvtrcXtrsbstMrsssnsus7sr8ftpMDsssnst8vsoL7snr7sob/snb7smr3smbzsnL3sr8fsqMLspLzrpLzspL3rpL3spr7spr/spL7spb7spL7sor3spr/so77soLzsob3to77spr/sp8Dsp8HspL7sqMDspb7sp8DsrsTsrMPsqcLsr8Xtq8Ttrcbss8nswNDtzdjtwc/tssjtssftssftscfuscfuscfuscfuscfuscbusMbtscfusMbuscbursXursTtrsTtrcTtrMTtrMPtq8PtrsTtrsTtrcPtr8XtsMXtr8XtscbtssbttMjtucrtuMnssMXsrLvdrrzfr73fr77gsL/gsMDiscHjssLks8PktMPltcTmtcXntsbntsbnt8fot8fouMjpucnpusrqusrqusrru8vru8zru8zsvM3svc3svc3svM3su83svM3tvM3tvM3tu8XVu8XVvcbWvsfXvcbXvsfYv8fYv8fZvMbXu8XYu8bYvMbYvMbZvMbZu8bZvMbavMbavMbbu8XbvMbbvMbcvcbcvcbcvcfcvcfdvsjevsnev8jev8nfwMrgwMrfwMrg3eDe3eDe1NvZztjX09vZ0dvZ0NrYz9nY2N3b3d/d3d/d3+De3d/e3d/d3d/e3d/e3t/e3N7d39/d3tza297d297e293e293d293d3N7e5ePg5+Pe393Z2tvc29zd2tvd5eLg4+HeyNjVvdTSw9bUwtbTudHPydjV6efj8Ovm7url6OXh7+vm8ezn7enk7enk6ebi8ezn9vDo6eHZ7Obh7+rm8Orm8Ovm6OTh9u/p+/Pp+vLo9evg5t/Y4t3a6OTh6ebi6ebiqbW6l6auorC2m6uyr7q+x8jKrbK5sre8rLG32NfXq7G3rLK4sra8uLzA1NTToqmxrrK3qa6yr7S4q7C4rbK4qrC31tXVtrm8sLO3rrG1x8fG5N/a4NzX5uLd6ujj7evmxsjKqrC2sba8t7u/0dHS09XTsLa7nqevn6iw1tfWmKKqmaKrpa20nqewys3PkJumnaavsri+tLrAmaOtoqqzmqOt29vas7i+qrC3maKrtLm97uvn6+fj5uPe8O3o6efjpq60oquytLq+jJejub7Co6uy0dLSmaKr29vZ+PPt+PTt+fbv9vLt+fXu8/Dr+/fw9/Tu9vPt9/Pt+fXv+fXu9/Lt8e3p+PTt9vLs9/Tt9PDq7uvm7uzn7+zn8e7p8O3ozM7PyMrMzM7PxcfJw8bIyMvM3d3b0NLS3NzZ7erm6+jk6efj7Orl6ujj6ujj6ebj6ufj6+jk6ebj6Obi6+nk7erl6ujk6ejj8O7o8e7o7+zn8O3o8O3o8O3n8/Dq8e7p4eHd2NnX19fW3d3a19fW4+Lf1tfW19jX0NLS1tfW2NnXztDQ1tfW09XU1tfWxcjK1dbV1dbWz9HSztDR19jX1dbVzM7Pzc/Q6Ofj6ujl8/Dr8/Dr8/Dr8/Dr9fLs8/Hr1tjX0dLT19jXz9HSzc/Q3d3b0dPTy87P19jX19jW2drYzc/Q0NLS2NnX2tva29va6+nl5OPg5OPg4OHe5eTh3N3b39/d5OPg4ODe4eDe9fLs9fLs9fLs9fLt9vLs9vLs5OPf3t7c5eTg4uHe39/c5eTg4eHe4OHd5uXh39/c4eDd4N/d4eDd5uXh4N/d9PHr9PHr9fHr9vPt+fbu+fXv+vbv+fXv+PXu+fbv+fbu9vPs9vPt9vPs9vPs+vTt5+zm1eHczc3Oz9LR2tvZ09XU0NPSyczM1NbV2tvYztDP1dbV1NbV2dnYz9HR2tzZzdDQ0dPSzc/Q29va9/Tt9vPt9vPs9vPt9vPs9vPt9fPs9vPt9vPs9vPt9vPt9/Ps9PHr8vHq+vXu+PTt+PTt+PXt+PXt9/Tt+PXt9/Tt+PXu9/Tt9/Ts+PXt+PXu+PXt+fXu+fXu+fXu+PTt9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9/Tt9fPs9vPs9vPs9fLs9vPs9vPs9vPs9vPs9vLs9vPs9vPs9vPs9vPs9vPs9fPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9vPs9/Pt9/Pt9vPs9/Ps9/Ls9/Ps9/Ps9/Ps9/Ps9/Ps9/Ps9/Tt9/Tt9/Tt9/Ts9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9/Tt9vPs9vPt9/Pt+PPt+vXu+vXu+fXu+fXu+/bv+vbv+fXu+vbu+vbu9/Tt9/Tt9/Tt+PTu9/Pt9/Pt9/Tu9/Tt9/Tu9/Pt9vPt9vPs9vPs9vPt9vPt9vPt9fPs9vPs9vPs9vPs9/Tt9/Tt9vPs5ujk5ufk6Ojk6Ojl4+Xh5ufj7ezn4+Th6Ojk9PLr9PLr9PLr9PLr9PLr9PLr9PLr9PLr9PLr9PLr9vPs+fbv+fbu+fXu+fbu+fXu+fXu+fbu+fbu9/Tt+PXu+fXu9/Tt4OPh3uHg4eTi4ePh3uHf4OPh5ebj297e5Obk+fXu+PXu+PTu+PTu+PTu+fTu+PTu+PXu+PTu+fbv8O7o2NnX3Nza29za3N3a4eHe3N3a3+Dd39/c+fbv+fbv+fXu+PXu9fPs9fPs9PPs9fPs9/Pt9vPt9fLs9fLs+PTu+fXu+PTu+PTt+PTu+PTu+fXu+PTu+PTt+PTu+fXu9vLs6efj6ejk6url6url7evm6+nl6+rl6unk+PXu+PXu+PXu+PXu+fbu+fbu+fbu+fbu+PXu+PXu+fbv+fbv+PXu+PXu+PXu+PXu+PXu+PXu+PXu+PXu+PXu+fbv+fbv+vfv/Pnx/Pnx/Pjx/Pjx/Pjx/Pjx+/jw/Pjx+PXu+fbv",
+    "layoutSha256": "f299888407378cd1dd8308788cc0a6fcc012635cd9e6981a3d6fb8537cd8daa8",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
 }

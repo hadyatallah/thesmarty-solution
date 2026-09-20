@@ -5,15 +5,112 @@
   "topic": "Cyprus tourist arrivals in August 2026",
   "topicKey": "tourist-arrivals",
   "headline": "AUGUST ARRIVALS FELL 3.3% YEAR ON YEAR.",
-  "creativeKey": "tourist-arrivals-story-v2-pending-photo",
+  "creativeKey": "tourist-arrivals-story-v2-paphos-castle",
   "format": "story",
-  "platforms": ["instagram"],
+  "platforms": [
+    "instagram"
+  ],
   "publishAt": null,
   "requestedLocalSlot": "14:15",
-  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "planning": {
+    "month": "2026-09",
+    "pillar": "cyprus-economy-business",
+    "researchReviewedAt": "2026-09-20T04:30:00Z",
+    "requiresComposition": false,
+    "requiresPhotoSelection": false,
+    "requiresSourceLabel": false,
+    "requiresFinalExportReview": true,
+    "note": "Dedicated mandatory-picture export created. Final visual inspection and QA seal still required before approval."
+  },
   "caption": "Which assumption would you stress-test first?",
-  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"png","format":"story","template":"insight-data","text":{"category":"CYPRUS ECONOMY","headline":"AUGUST ARRIVALS FELL 3.3% YEAR ON YEAR.","body":"CYSTAT reports 581,880 tourist arrivals in August 2026 versus 602,026 in August 2025, a 3.3% annual decrease. One month does not establish a long-term tourism or property trend.","question":"Which assumption would you stress-test first?","source":"CYSTAT | AUG 2026"}},
-  "facts": {"classification":"factual","claims":[{"text":"Tourist arrivals in Cyprus were 581,880 in August 2026 versus 602,026 in August 2025, a 3.3% decrease.","sourceIds":["cystat-tourist-arrivals-aug-2026"]}],"sources":[{"id":"cystat-tourist-arrivals-aug-2026","title":"CYSTAT: Tourist Arrivals, August 2026","url":"https://www.cystat.gov.cy/en/Default","expectedText":"Tourist Arrivals -3,3%","reviewNote":"Official August 2026 tourist-arrival count and annual change. Use this as a one-month tourism measure only and do not infer property demand, investment returns or a long-term trend.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z","additionalEvidence":["581.880","602.026"]}]},
-  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
-  "editorial": {"version":1,"audienceNeedIds":["investor-downside-resilience"],"pillar":"cyprus-economy-business","hook":{"type":"evidence-comparison","text":"AUGUST ARRIVALS FELL 3.3% YEAR ON YEAR.","wordCount":8},"objective":"self-assess","cta":{"id":"assess-stress-test","text":"Which assumption would you stress-test first?"},"contentFamilyId":"tourist-arrivals","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"tourist-arrivals","reviewedAt":"2026-09-20T04:30:00Z"}}
+  "creative": {
+    "designVersion": 2,
+    "visualStyle": "reference-vertical-photo",
+    "compositionReady": true,
+    "assetFormat": "png",
+    "format": "story",
+    "template": "place-opportunity",
+    "text": {
+      "category": "CYPRUS ECONOMY",
+      "headline": "AUGUST ARRIVALS FELL 3.3% YEAR ON YEAR.",
+      "body": "August 2026 arrivals were 581,880, down 3.3% year on year. One month does not establish a long-term trend.",
+      "question": "Which assumption would you stress-test first?",
+      "source": "CYSTAT | AUG 2026",
+      "location": "PAPHOS CASTLE, CYPRUS"
+    },
+    "photoKey": "paphos-castle",
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "Tourist arrivals in Cyprus were 581,880 in August 2026 versus 602,026 in August 2025, a 3.3% decrease.",
+        "sourceIds": [
+          "cystat-tourist-arrivals-aug-2026"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "cystat-tourist-arrivals-aug-2026",
+        "title": "CYSTAT: Tourist Arrivals, August 2026",
+        "url": "https://www.cystat.gov.cy/en/Default",
+        "expectedText": "Tourist Arrivals -3,3%",
+        "reviewNote": "Official August 2026 tourist-arrival count and annual change. Use this as a one-month tourism measure only and do not infer property demand, investment returns or a long-term trend.",
+        "authorityType": "official-statistics",
+        "sourceType": "official-statistics",
+        "checkedAt": "2026-09-20T04:30:00Z",
+        "validUntil": "2026-09-27T04:30:00Z",
+        "additionalEvidence": [
+          "581.880",
+          "602.026"
+        ]
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Paphos Castle, Cyprus",
+    "photoSha256": "560965147a1c035ae48c9155079dfe8b8f8ae8a5a1fe9a2ad5f7435a3c809c6f",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Cyprus-Paphos-Castle-0957.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "editorial": {
+    "version": 1,
+    "audienceNeedIds": [
+      "investor-downside-resilience"
+    ],
+    "pillar": "cyprus-economy-business",
+    "hook": {
+      "type": "evidence-comparison",
+      "text": "AUGUST ARRIVALS FELL 3.3% YEAR ON YEAR.",
+      "wordCount": 8
+    },
+    "objective": "self-assess",
+    "cta": {
+      "id": "assess-stress-test",
+      "text": "Which assumption would you stress-test first?"
+    },
+    "contentFamilyId": "tourist-arrivals",
+    "editorialType": "trend",
+    "repurpose": null,
+    "socialProofId": null,
+    "trend": {
+      "candidateId": "tourist-arrivals",
+      "reviewedAt": "2026-09-20T04:30:00Z"
+    }
+  },
+  "asset": {
+    "path": "social/assets/7e935bdbc155585bd92128bbd5aaec3d0e98c558076877fb2a9041d0ffb2bd3c.png",
+    "sha256": "7e935bdbc155585bd92128bbd5aaec3d0e98c558076877fb2a9041d0ffb2bd3c",
+    "pixelHash": "c660f35d80794b4b9cbd67b29ccddffb645594038ccc752a906f03e02a083046",
+    "visualSignature": "rgb32:+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+Pbx9/Xx9/by9/bx9/bx9/Xx+Pfy+vjz+vjz+vjz+vjz+/n0/Pn0+/n0/Pn0/Pn0/Pn0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz/v76///9//75///5///8///9/Pv2+vfz+vjz+vjz+vjz9PPv8fHu8/Pv8/Pv8vLu8vLu+Pby+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffyvcPHqK+2tMnMusTHubrAqbG43uDf/fv1+ffy+vjz+ffy7O7r5+nn6uvp6+zq5+no5+nn8/Lv+ffz+ffy+ffy+ffy+ffx+ffy+ffy+Pfy+Pby+ffy+ffz+Pby+ffy//z3xcnMYGx+kMnNXra+dJKeXmt+p7C3///5+Pbx+vjz+vjz/v35//76/vz5/v76/v36/v36/v75/vz4/Pr1/fz3/v35/v36/v36/fz4/v34//76/v35/Pv2/f34/fv29/b07Ozq2dzc2dTVxNDSzdfYw8fK09bX/fr1+ffy+ffy/vv20tXWyM3PzdLTzdHT0dXVy8/RyM3Qz9LU5efl297dys/RwsjMxcrNztLUz9PVyM3Pys/R3+HgztLU7e3qzdLUtr7DwsjMztTW2tzd9vPv9PPw8vLv+vjz+vjz+ffy/fv1qbO6sbq/qrO6o621rLW7vcPHo6y0rLW70dXWr7e9l6Kstr3CnqmxqbK5q7O6sbi/nKewrba8rLS7wcfKr7i9xsvOv8XIx8zO1NjY/Pn0+vjz+/nz+vjz+vjz+vjz/Pr0xszP3+LjzNHTxszPz9PV8/Txw8nNvcPIt77DsrrAt77E6evrv8XKt77Du8LH7vDtwcbKvMPHu8LGsLi+srrA9PTy/v76/v35/v75+/n0/Pr1/Pr0+vjz+vjz+vjz+Pbx4uLh2tzc4ePh5+jm3d/e4+Ti6urn4ePh4uPi5ufl5ubk5OXj3+Hg4OLh4uTi6enn4uPh5OXj6uvp7e3q7O3q4OHg6ern6Onm4+Tj7Ovp5ufl6uro+vjz+vjz+vjz+Pfy3uDg09bY19ra2tzc1tnZ2tzc2Nvb19ra0dXW1djY2dzc3uDf1tnZ1dfZ1tnZ3N7d19na1tnZ5OXk7Ozp6+vo9PLu9fTw9fPv9PPu9vTw9PPv9fTv+vjz+vjz/Pn08fTv5ezp3t7e293d6Onm4uTi4OLg3N7d3d7e5ufl5ubl3+Df4OHh5ebk4+Tj4uTj3uDf5+jm3+Hg4OLh3d7e4OHg+Pbx/Pr0+/n0/Pr0+/nz+/n0+/n0+vjz+vjz+vjz+vjz+vjz/fv2/Pv2/Pr1/fr2/fv1/fz2/fv2/Pr1/fv1/fv2/Pr1/Pr0/Pv1/fv1/vv2/fr1/vv1/fv1/fz2/fv2+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffz+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+vfy+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz9fXx9fXx9vXw9fTw9fTw9fTx9fTx9vXx9fTx9fTw9fTw9fTw9/bw9vTv9fTv9/Tv9/Xw9vTv9vTu9/Tv9vTu9vTv9/Tv9/Xv9fTw9fTw9fTw9fTw9fTw9fTw9fTw9fTw1trY19vY1dnb1tzg2N3d2Nza1tva1dna2dza2N3d19zd1tzg3dfQ39TI3dPJ39TI4NXI5NjL4dfK4NbJ39bK39XI3dTG29PGztTYy9Pby9PazNPaytPZytPZytLZy9PZaXmpanuvdXeAcXJ3c32dc4GufYuzipW1dYW1fIeph4+scHmXoIt8tJV8r491uZl6tJR2m4FpqY1wp4ptpoptpIhroYdpnIZucXyQZXaQaXiRYXONYXONX3GLXnCKWWuGXWOERUtpWldScG1bU1dbN0NcNztTNzRFIyZEFRMlDw0eAAALcVM6qINhflxDg2FFm3NPjm1NiGZGhGFCfWBDg2ZIgmlMhnBRgXdjdW1ecmpbamVXaGRYZWFVZ2RWZGJXblxDlYxxpp+Fzb6i0siynaORbHxtKikkOCwjVEg9ZVpLZFZGl35jr5d7n455mIVvn4hxqpiCmop2no55kYJuiHhjmYx1mI11k4dslYpuhntgjoNjZF1JTkg4W1E7XFM/jYNwrJ+DsaaIy7iR1MGg0sKry8GtpqCNnpaCtqCFsZh7rpN3spd6ppN6spl5tZ5+p5Z7sp19qJNzk4Jpjn1kcGRTgXRfd21cfXNidm5eiYBqmo9xhHxkkYxwhn5hWlE8urCbr6WQxLid3c+w2c2z0MOr3My06da60Mm2kYyAnYt62cSr4syz0Luh48yuxrCXuaeOvKmOl4l1f3dqenRqiIF2kot/dnNtmpOEsamWp6KSsKqUkIl5paGSs62XsKmQ8u/n7uvl4uPe4OHd5ubi6Oji5+fj7Ovl6+ni1djX4+Le+PTt9vPs+PTs+fXt9vLq9fHq7+zn4+Lg4N/d4uHe5+bh5OPf5OTg6+jj+PTs7erk5ePg5OLe5OLe4+Lf6+rl+/n1/Pr17/Du7u/t8fHv7vDt7O7s9PXx+Pj0+Pjz+/r2/Pr1+vn0+vn0+vj0+vn0+/n1/Pr1/vz2//33//33/vz3//z2/vz3/fv2+/n1/fr1/vz2//z3/vz3/vz2/Pr1+vjy+ffy5ufk3+Df3uDf4eLh4+Pi4+Ti4OLg5+fk4uPh8PDs/Pr0+fjz+vjz+vjz+vjy+ffy8/Pv8vPv8vPv8vPv8vPv8vPv8vTv8/Tv8/Tv8vTv8vPv8/Tv+ffy+ffy+vjz+vjz9PPv8vHt8vHt8/Lu8/Lu8/Lu8vHt8/Lu8vHt9/bx+vjz+vjz+vjz+vjz+vjz+vjz+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+vjz+vjz+vjz+vjz+/n0/Pr0/Pr0/Pr0/Pn0/Pn0/Pr0+/n0/Pr0+/nz+vjz+vjz+vjz+vjz+vjz+vjz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz",
+    "layoutSha256": "bea5aade5ed9d38a4fd9f81ed5d66db3e285baac2810131909c16dc622f7b498",
+    "width": 1080,
+    "height": 1920,
+    "originFormat": "story",
+    "commit": null
+  }
 }

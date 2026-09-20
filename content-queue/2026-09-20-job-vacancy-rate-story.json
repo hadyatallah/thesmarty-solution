@@ -5,15 +5,108 @@
   "topic": "Cyprus job vacancy rate in Q2 2026",
   "topicKey": "job-vacancy-rate",
   "headline": "HIRING IN CYPRUS? CHECK THE VACANCY RATE.",
-  "creativeKey": "job-vacancy-rate-story-v2-pending-photo",
+  "creativeKey": "job-vacancy-rate-story-v2-lefkara",
   "format": "story",
-  "platforms": ["instagram"],
+  "platforms": [
+    "instagram"
+  ],
   "publishAt": null,
   "requestedLocalSlot": "14:15",
-  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "planning": {
+    "month": "2026-09",
+    "pillar": "cyprus-economy-business",
+    "researchReviewedAt": "2026-09-20T04:30:00Z",
+    "requiresComposition": false,
+    "requiresPhotoSelection": false,
+    "requiresSourceLabel": false,
+    "requiresFinalExportReview": true,
+    "note": "Dedicated mandatory-picture export created. Final visual inspection and QA seal still required before approval."
+  },
   "caption": "Does your plan still work under this test?",
-  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"png","format":"story","template":"insight-data","text":{"category":"CYPRUS BUSINESS","headline":"HIRING IN CYPRUS? CHECK THE VACANCY RATE.","body":"CYSTAT reports a 2.6% job vacancy rate in Q2 2026. It is a labour-market indicator, not proof that a particular role will be easy or difficult to hire.","question":"Does your plan still work under this test?","source":"CYSTAT | Q2 2026"}},
-  "facts": {"classification":"factual","claims":[{"text":"Cyprus job vacancy rate was 2.6% in Q2 2026.","sourceIds":["cystat-job-vacancies-q2-2026"]}],"sources":[{"id":"cystat-job-vacancies-q2-2026","title":"CYSTAT: Job Vacancies, Q2 2026","url":"https://www.cystat.gov.cy/el/PressRelease?id=73345","expectedText":"2,6%","reviewNote":"Official Q2 2026 job-vacancy rate. Use as a broad labour-market measure only; do not infer conditions for a specific occupation without occupation-level evidence.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z"}]},
-  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
-  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-operating-cost"],"pillar":"cyprus-economy-business","hook":{"type":"decision-risk","text":"HIRING IN CYPRUS? CHECK THE VACANCY RATE.","wordCount":7},"objective":"self-assess","cta":{"id":"assess-plan-test","text":"Does your plan still work under this test?"},"contentFamilyId":"job-vacancy-rate","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"job-vacancy-rate","reviewedAt":"2026-09-20T04:30:00Z"}}
+  "creative": {
+    "designVersion": 2,
+    "visualStyle": "reference-vertical-photo",
+    "compositionReady": true,
+    "assetFormat": "png",
+    "format": "story",
+    "template": "place-opportunity",
+    "text": {
+      "category": "CYPRUS BUSINESS",
+      "headline": "HIRING IN CYPRUS? CHECK THE VACANCY RATE.",
+      "body": "CYSTAT reports a 2.6% job vacancy rate in Q2 2026. It does not predict hiring difficulty for a specific role.",
+      "question": "Does your plan still work under this test?",
+      "source": "CYSTAT | Q2 2026",
+      "location": "PANO LEFKARA, CYPRUS"
+    },
+    "photoKey": "lefkara",
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "Cyprus job vacancy rate was 2.6% in Q2 2026.",
+        "sourceIds": [
+          "cystat-job-vacancies-q2-2026"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "cystat-job-vacancies-q2-2026",
+        "title": "CYSTAT: Job Vacancies, Q2 2026",
+        "url": "https://www.cystat.gov.cy/el/PressRelease?id=73345",
+        "expectedText": "2,6%",
+        "reviewNote": "Official Q2 2026 job-vacancy rate. Use as a broad labour-market measure only; do not infer conditions for a specific occupation without occupation-level evidence.",
+        "authorityType": "official-statistics",
+        "sourceType": "official-statistics",
+        "checkedAt": "2026-09-20T04:30:00Z",
+        "validUntil": "2026-09-27T04:30:00Z"
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Pano Lefkara, Cyprus",
+    "photoSha256": "5336ef1793e4772c1a32d9a1f2776b062203bcb8be0851b5e5f88b2538e981d4",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:2022_03_Pano_Lefkara_1.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "editorial": {
+    "version": 1,
+    "audienceNeedIds": [
+      "entrepreneur-operating-cost"
+    ],
+    "pillar": "cyprus-economy-business",
+    "hook": {
+      "type": "decision-risk",
+      "text": "HIRING IN CYPRUS? CHECK THE VACANCY RATE.",
+      "wordCount": 7
+    },
+    "objective": "self-assess",
+    "cta": {
+      "id": "assess-plan-test",
+      "text": "Does your plan still work under this test?"
+    },
+    "contentFamilyId": "job-vacancy-rate",
+    "editorialType": "trend",
+    "repurpose": null,
+    "socialProofId": null,
+    "trend": {
+      "candidateId": "job-vacancy-rate",
+      "reviewedAt": "2026-09-20T04:30:00Z"
+    }
+  },
+  "asset": {
+    "path": "social/assets/a58ddbfda2303d072036686877586b4dbe118874cc61b1f1e7505874df669fd3.png",
+    "sha256": "a58ddbfda2303d072036686877586b4dbe118874cc61b1f1e7505874df669fd3",
+    "pixelHash": "c88e266530f91b6e844a230a142f4a3cdde0c50246e7d323cde0368f91b4d416",
+    "visualSignature": "rgb32:+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+Pbx9/Xx9/by9/bx9/bx9/Xx+Pfy+vjz+vjz+vjz+vjz+/n0/Pn0+/n0/Pn0/Pn0/Pn0+/nz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz/v76///9//75///5///8///9/Pv2+vfz+vjz+vjz+vjz9PPv8fHu8/Pv8/Pv8fHu8vLu+Pby+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffyvcPHqK+2tMnMusTHubrAqbG43uDf/fv1+ffy+vjz+ffy7e3q5unn6uzp6Orp5ujn5+ro9PTv+vjz+Pby+Pby+vjy+Pfy+ffy+Pby+ffy+Pbx+ffy+ffy+Pby+Pby//73xcrMYGx+j8jMXbW9c5GdXGp8pq+2///5+Pbx+vjz+vj0/fz5/fz5/v77/v36/v36/v76//76+/n1/Pv4/v36+/n1/v34/v34/v35/v35/v36/Pv4/Pz5/f34//349vXw6uvp2dzc3NfYytXX1d7ezM/R2t3d/Pr1+ffz+/n09fTvzdHTz9PUwcfKzNDSw8jLyc/RzNDS7u7rz9PVw8nL6ero1djZ1NfYxsvOyM3PwMbK09bXztLTy8/R3d/e4+XjwMfLxczPusPIusHGyc3QvsXJy9HT/fr1+ffz+/n09fTvoqy0pK62m6evo621tbzBpK62nKewxMrMu8HGmqWuxcnNsbm/wcfKqrO6v8bKn6qyqrO6prC4nKewr7e94uPizdHTyMzPvMLGu8LGzNDSwMbJ0NTV/fv1+ffy+ffy/fv21dnaxMrNtr7DuMDF8fLwvcPIt77Dsbm/1NfYucDFsLi+rLW7ztPUzdLU5ebmyM7Str3DtbzCztLUrbW82dzd///7/v35/v36/v77/v75//77/vz4+vjz+vjz+vjz+Pby6Ojm4uPi4uPi5OXj3t/e5ebk6Onn6Onn3N7e5+jn4+Xj7u7q3+Hf4uPi6enn6enn4OLh8fHt6+vo6ern3+Hg5OXj6+vo4ePi4+Tj6Onm6enn+ffy+vjz+vjz+/nz9vXx29/e09bX2dvb2t3c1tna2dvb09bX1tjZ1tjZ3N7e19ra3uDg19vb0tbX2tzc3N7e1djY6urn7ezp9fTv9PPv9PPv9vTw8/Lu9PPv9fPv9fTw+vjz+vjz+vjz/Pn08vXw4urn3t/e5ebk4uTi5OXj5ebj297d6Onm3d/e5ebk4eLh4uPi5ebk3N7e5ufm3+Df5OXk3N7d4+Ti/fr0+/n0+/n0+/nz+/n0/Pn0+/n0+/n0+vjz+vjz+vjz+vjz+vjz+vj0/vz2/fr1/fr1/fv1/Pr1/fv2/Pr1/fv2/Pr1/fv1/fv1/Pr1/fz2/Pr1/fv2/Pv1/vz2/fv2+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy+ffy+ffy+ffy+ffy+ffy+ffz+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy+vfy+ffy+ffy+ffy+vjz+vjz+/jz+vjz+vjz+/jz+/jz+vjy+vfx+vjy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+fjz9vXw9PPu9vTw9/Xw+vjz+Pfy+vj0+vjz+vjz+Pfy9PPu8/Hs9fPv9vXx9fTx9fbz9fb09/n49vby9vby9vbx9/Xv9/Tu9/Xv9/Xv9/Xv9vTv9fPu9fPu9vPu9fPuzs7O1NXU3d3c5+fk6uvn19jXyMfGwcC9wsG/w8PAxsbEzszH1dLLz8zBx8W51tTP4eDZ2tfQz83L1OHs1OTx1eTw3t3W4uHZ5OHW29fM0M3IzMrGxMTAx8fDwL25vLi0qa2ysrm9ub/Cur/CjpKYdHeAb3J4ZGVlY2NgZGRiXV1cYmJfX19bV1dTXFxMh4J0yL6mtqSLfWFPg5iuk87/jsPwlsbsm666qaOTnpSBe3h0eHd1Y2VocG9vaGBXbWNWsLa6rra6gIqTVFtnR0tXTVFdTlFaU1RYVFRST05KSkhESkdBV1dRbmlbbGNMeGxVs6SBnYJkVTovV2l7fa7Xfb3yf8X/eJ6+g3ppenJgPjo1TExOMDZCPj9GYVI9cFxAr7Ove4GGVFtnVVtmU1hhUldgVVlgVldZV1ZUYl5Za2dfdXJqtrWssaWIuKJ5uqR9rphwsZVwY0Q3WFJajZ2sodf6m9X+nNj/lKWnd2pURUA6S0pJNDpDOTxDdWVKk3xTS1BVU1xrWF9sVV1nUlpjUllhUlpkVlxlUE9NKycjKCcjbGljqaaaSUhCVVZUcW1lhnpiqY5olWxSgWZdd4KNhqS1stPkn7fCfn94dWtaTUpFTE5SOT9KOj5KYFZHWkwpYmFcgISJjJGYh4yRhoqQhYiNg4aNkJafenh2VVBLRkVCcW9vrq2ngoF+fH6AfICFjpCQp5iCn4p3q6OYhIF8bnaBtrvAqqedkY6EoZ2TjY6Oj5SbgYiUgomYjIqFdW5W6ebh6Obg3N/e3N7e3uDf2d3c2tzc5eXk2dva1dnX4+Hd6ufj8/Hs9/Xw8/Ht8/Ht8fDs8O/s7urk6+rm7u3q8fDt6+vn7+3n7erk7+3n8O/q7uzp7u3r7ezq7uvl7uvj/fv2/fv28PHu7/Hu8fLv7vDt7vDt+vn0+fn1+Pfz/fz3/vz3+/n0+vj0+/n0/Pn0/Pn0/Pr0/fv2/vv2/fr1/Pr1/fv2/Pr1/fv2/Pr1/fr1/Pr1/fr1/fr1/Pr1/Pr1+ffy+Pbx5ebk3uDf3uDf4eLh4uPh4+Ti4OHg5ubk4OLg7+7r/Pn0+ffy+ffy+ffy+ffy+ffz9PTv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv9PTv+ffy+ffy+vjz+vjz9PPv8vHt8vHt8/Lu8/Lu8/Lu8vHt8/Lu8vHt9/bx+vjz+vjz+vjz+vjz+vjz+vjz+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+vjz+vjz+vjz+vjz+/n0/Pr0/Pr0/Pn0/Pn0/Pr0/Pr0+/n0/Pr0+/nz+vjz+vjz+vjz+vjz+vjz+vjz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz",
+    "layoutSha256": "5832a2cf6b4bf2582242f9087b6356cb8265ddbc496119f27f686e401ddab2ba",
+    "width": 1080,
+    "height": 1920,
+    "originFormat": "story",
+    "commit": null
+  }
 }

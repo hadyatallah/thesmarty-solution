@@ -5,15 +5,115 @@
   "topic": "Central Bank of Cyprus Q1 2026 residential property price trend and cited drivers",
   "topicKey": "rppi-drivers",
   "headline": "WHAT'S DRIVING CYPRUS HOME PRICES?",
-  "creativeKey": "rppi-drivers-feed-v2-pending-photo",
+  "creativeKey": "rppi-drivers-feed-v2-finikoudes",
   "format": "feed",
-  "platforms": ["instagram","facebook"],
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
   "publishAt": null,
   "requestedLocalSlot": "09:15",
-  "planning": {"month":"2026-09","pillar":"cyprus-property","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "planning": {
+    "month": "2026-09",
+    "pillar": "cyprus-property",
+    "researchReviewedAt": "2026-09-20T04:30:00Z",
+    "requiresComposition": false,
+    "requiresPhotoSelection": false,
+    "requiresSourceLabel": false,
+    "requiresFinalExportReview": true,
+    "note": "Dedicated mandatory-picture export created. Final visual inspection and QA seal still required before approval."
+  },
   "caption": "WHAT'S DRIVING CYPRUS HOME PRICES?\n\nThe Central Bank of Cyprus says its residential property price index continued upward in Q1 2026. It cited strong purchase demand, mainly from foreign buyers, rising construction costs and gradually increasing housing supply.\n\nWhich market deserves the next evidence check?\n\nSources:\nCentral Bank of Cyprus: Residential Property Price Index, Q1 2026\nhttps://www.centralbank.cy/en/announcements/residential-property-price-index-23-06-2026\n\n#Cyprus #CyprusProperty #RealEstate #PropertyData #TheSmartySolution",
-  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"jpg","format":"feed","template":"insight-data","text":{"category":"CYPRUS PROPERTY","headline":"WHAT'S DRIVING CYPRUS HOME PRICES?","body":"The Central Bank of Cyprus says its residential property price index continued upward in Q1 2026. It cited strong purchase demand, mainly from foreign buyers, rising construction costs and gradually increasing housing supply.","question":"Which market deserves the next evidence check?","source":"CENTRAL BANK OF CYPRUS | Q1 2026"}},
-  "facts": {"classification":"factual","claims":[{"text":"CBC states the RPPI continued its upward trend in Q1 2026 and attributes this to strong purchase demand, mainly foreign buyers, increasing construction costs and gradually increasing supply.","sourceIds":["cbc-rppi-q1-2026"]}],"sources":[{"id":"cbc-rppi-q1-2026","title":"Central Bank of Cyprus: Residential Property Price Index, Q1 2026","url":"https://www.centralbank.cy/en/announcements/residential-property-price-index-23-06-2026","expectedText":"continued its upward trend","reviewNote":"CBC's own Q1 2026 explanation of RPPI direction and cited market drivers. Attribute the explanation to CBC and do not convert it into a yield, return or future-price forecast.","authorityType":"primary","sourceType":"primary","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z"}]},
-  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
-  "editorial": {"version":1,"audienceNeedIds":["investor-market-comparison"],"pillar":"cyprus-property","hook":{"type":"direct-question","text":"WHAT'S DRIVING CYPRUS HOME PRICES?","wordCount":5},"objective":"compare","cta":{"id":"compare-next-market","text":"Which market deserves the next evidence check?"},"contentFamilyId":"rppi-drivers","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"rppi-drivers","reviewedAt":"2026-09-20T04:30:00Z"}}
+  "creative": {
+    "designVersion": 2,
+    "visualStyle": "reference-data-editorial",
+    "compositionReady": true,
+    "assetFormat": "jpg",
+    "format": "feed",
+    "template": "insight-data",
+    "text": {
+      "category": "CYPRUS PROPERTY",
+      "headline": "WHAT'S DRIVING CYPRUS HOME PRICES?",
+      "body": "CBC links the trend to demand, costs and gradually increasing supply.",
+      "question": "Which market deserves the next evidence check?",
+      "source": "CENTRAL BANK OF CYPRUS | Q1 2026",
+      "metric": "Q1 2026",
+      "metricLabel": "RPPI CONTINUED UPWARD TREND",
+      "fact1Label": "DEMAND",
+      "fact1Body": "Strong purchase demand, mainly foreign buyers.",
+      "fact2Label": "SUPPLY + COSTS",
+      "fact2Body": "Construction costs rose while supply increased gradually.",
+      "location": "FINIKOUDES, LARNACA, CYPRUS"
+    },
+    "photoKey": "finikoudes",
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "CBC states the RPPI continued its upward trend in Q1 2026 and attributes this to strong purchase demand, mainly foreign buyers, increasing construction costs and gradually increasing supply.",
+        "sourceIds": [
+          "cbc-rppi-q1-2026"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "cbc-rppi-q1-2026",
+        "title": "Central Bank of Cyprus: Residential Property Price Index, Q1 2026",
+        "url": "https://www.centralbank.cy/en/announcements/residential-property-price-index-23-06-2026",
+        "expectedText": "continued its upward trend",
+        "reviewNote": "CBC's own Q1 2026 explanation of RPPI direction and cited market drivers. Attribute the explanation to CBC and do not convert it into a yield, return or future-price forecast.",
+        "authorityType": "primary",
+        "sourceType": "primary",
+        "checkedAt": "2026-09-20T04:30:00Z",
+        "validUntil": "2026-09-27T04:30:00Z"
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Finikoudes, Larnaca, Cyprus",
+    "photoSha256": "e2ea620d908b8365fe8d9a82811d5a15cfcfe6efbfaab525f5127522509d6dee",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Finikoudes_by_Georgy_-_panoramio.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "editorial": {
+    "version": 1,
+    "audienceNeedIds": [
+      "investor-market-comparison"
+    ],
+    "pillar": "cyprus-property",
+    "hook": {
+      "type": "direct-question",
+      "text": "WHAT'S DRIVING CYPRUS HOME PRICES?",
+      "wordCount": 5
+    },
+    "objective": "compare",
+    "cta": {
+      "id": "compare-next-market",
+      "text": "Which market deserves the next evidence check?"
+    },
+    "contentFamilyId": "rppi-drivers",
+    "editorialType": "trend",
+    "repurpose": null,
+    "socialProofId": null,
+    "trend": {
+      "candidateId": "rppi-drivers",
+      "reviewedAt": "2026-09-20T04:30:00Z"
+    }
+  },
+  "asset": {
+    "path": "social/assets/27cb9bf366d697160395a33b3ee6210151e2effba9c552afbad0e7b15aa96a9d.jpg",
+    "sha256": "27cb9bf366d697160395a33b3ee6210151e2effba9c552afbad0e7b15aa96a9d",
+    "pixelHash": "f9782d886954a342db8f2d4e0e9ad512831483b7945ee31d619992f38532d2f9",
+    "visualSignature": "rgb32:+/r2+/r2/Pz3/vz4/fv3/vz4/fz3/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/Pv29fXy4OXm3uTl4+jo3ePk3eLk4ebm+fj0+vn1+vn1+vn2+vn2+vn1+vn1+vn1+/r2+/r2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2+vr2/f35+/v2+vr3+/v3/Pv4+/v3/Pz4/v76//77/v37/fz5//77//76//76/Pv2+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/Pv39vXy2t7e5Obl5ujn3+Hh3uHh5ebm7+/t4OPj3eDg297f6Oro2t3e4uTk4OPj9/bz/Pv3+/r2+/r2+/r2+/r2/Pv39fXy4OPj4+bm3+Dh5t/g4ePj6Orp+fj0+/r2//356+3ripekprG6oKu0oKu1wcfMv8XKyM3RqrO7n6q0nKeyvcTJoKq0mqWwlKCs5efm//75+Pf0+Pf0+vr2+vn1+vn1+vn19/f09vbz+Pn28/bz+fn29fXz+vn2+/r2//755efmwcjMusHHsrvBlqKtv8bMp7G5yc7SvsTJoKq0qrO7laGslaCs6evp/v34+fj1+/r2/v78/////Pz4/v75///6///6/Pz3/Pr3/Pv3/fv3/Pr2/Pv2+/r2+/r2//764OPjo663rbe+v8bLp7K6p7G5q7S8xMrP5Obl0NXY1tvc2Nvdy9DT7u/t/Pv3+fj1//75xsvPoay26+zq2d3e0tbYzdLV8/Pw/Pr2+fj1+fn1+vn1+vn1+/r2+/r2//355OXlt7zDrbK7v8TJvsHHs7vCvcTJ3d/g/////v79///+///9///9/v37/v76/fz4//75dYaWNk9qxsvP3uDhz9PW09fZ3N7f5ujn5ufn6uvp6erp6Orp+/r2+/r2/fv39Pj0tNrYs9nX5PHur9bU8/n3///8xuDerdHRz+PhoMvL2+nnqdDQyeHfvdvavdva//757u7t3uDh/Pv38fHu7e7s8PDu7e7s+/r2/Pv3/Pv3/Pv3+/r2+/r2+/r2///7wNzaeri6f7u8s9XVd7S2z+Ph///9pc/Pfbu8isHCZq6xp8/Ph8DAlsbHWaeqb7O18PTx//z4/f35+vn1/fz4/fz4/fz4/fz4+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vfzr9DQhr2+3ujmosrKzN/e/fn1osrLudbV0+Tip8zN0OHgm8jI3uvpxd/dtNbV+Pn1//78///8/Pz5+/r1+vn1+/r2+/r2+vn1+vn1+/r2/Pv2+/r2+/r2+/r2/fz37+/s19fZ4eLj1tnb29rb09bY1tnb4uDg1NXX19jb4eHi0NLV7uzs//75/fz5/v36///6o662bH6P3uHh3N/fyc/S3uHh6uvqztLV2t3e+fj0+fj0+vr2+/r2+/r2/fv38PHv2d3f3+Hi3uDh3uHi3+Li3uHi4eTk3eHh3N/g4OTj6+3q4eTk5Obl4+bl9vbz///7eIiYOVJrztPW5ufn0tbY2t3e2Nzd1dnb2t3e1trc4+Xl/Pr2+/r2+/r2/fv38vLv3N/g4ePj4ePj5ufn4uTk4OLi5OXl4OLi3eDg8vLw+vn1+fj0+fj1+vn1+/r2/Pv3+fn28/Px/f369PPw8/Pw9/bz8/Pw8/Pw8/Px8vLw+fn1/Pr2+/r2+/r2+/r2/Pr3/v34/vz3/fz3/fz3/vz4/fz4/fz3/fz3/fz4/Pr2+/r2/Pv2+/r2+/r2+/r2+/r2+/r2/v34+vn1/fv3/fz3/Pv3/fv3/fz3/fz3/fz3+/r2+/r2+/r2+/r2+/r2+vr2+vn1+fj1+vn1+fj1+fn1+vn1+vn1+vn1+vn1+vn1+vn1+vn1+vn1+vn1+vn1+vn2+vn1+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv3/v75//76/v34//75//75/v35//75//35/v35/v35//35/v34//75//76/v34/v75//75/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/fv36vLv2uHh19nb4uTk2dzd2t7f3uHh29/f3eDg4OPj3uHh3uHh4uTk2d3e19vd4+Xl3uDh3N/g9PTx/Pv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/n17PLv7PDu8vLv8/Pw8fHu8fHu8vLu8fHu8fHu8vLu8fHu8vLv8/Pv8PDu8PDt9PPw8vLw8vLv+Pf0+fj0+fj0+fj0+Pfz+fj0+fn1+fn1+fj0+fj0+fj0+fj0+fj07Ovm8O3n8O7o8O/p7u3o7+7p7Ozn7Ovl7u7o8O/q7u3o7Ovm6uvm6+rl7Ovm7e3n7Ovm6+vm7evm7evn7u7p7+/q8PDs6+vm6+rl7u7p6erk5uXg5+bh6Ofi6eji6Ofh19XM2dXL1tPIz9DFz87G1dLL09PJzc/Izs7IzMzG1dXQ09PP09TP0tLNz8/Iz9DJ0tPK1tXLz87Izs3I0tHM0dHNy8zFzMzF19fT5ufk5+bj2tnU0dLM1dnS1tnT1tjSoqCSr6mXraiZoaCPpqOTsq+kxL+y0tHKxMbFuLm0mpuWlpaUoKCWrK+gpqubsK+hsK6ep6aWqKaXpqOcpKOfubi2xcbF2tzc59/h7efq7vHy////zczKlZOOmJaRlpOOdW5cc2xcZV5UaWFQb2ZTb32GYX6PY4GVZIWbipeeb3NwZWlnaWhaZGhcZ25ec3VehX5ldHNcgXxidHFednp0ipqfjJ6jhZSbg4yTi5GWjZGSn6SlkZKSnJmTq6mjpqKaYlZGW05BPjMrSz03UD42P0FFCRYnDxsrJS43TFBXREhISk5KUlA+QUA2Skw6U1I+YVhJa1xNYFRFXlRFTEo/RUk9T09HNDMxR0xKJSooJykoEhMSLzIzUFdbQEdPQ0pQVlNQSUlHQDczS0I/Tj42TkxNLDtEQ1FbVWRwfoeMcWZiX05IXlpVdVtPdG5lbHByk4yQlY6SQjk8YE1HVTk5aVpeQjxCLTpCNTs7ISckIyIjGhcUKywrJi4yLDM5KzE2OT9HPEhWP0JHR0dHNDI1O0NKP09aSFVeQlNdUl1mUlFWTUZGPj5EYFdWd2xvYGdwgI6cgISQLSUpLS40Ly00MjVHFiExDSQxFxojHBwiFx8nDBMaTVJYmqCijI2HmpqQP0VOR0NIPzs+QUZNJSszOEJMNEJPMzE4WzstP0tXHC9ALzM6KzA5TFBXS01UN0JMWnJ8Vl5kMjE3KS47LDRANzxHMjpGHik1HyUxJyw1OkBIICs4MTtFNTxDbG9vjZGNGik4GiEtIio1FiY2DR0sGis6DyAvEB0qLysuIC06FCMyHCk3Gio5ICs4KTlGKDlHJztKKjtJJTVDJS46KDdEJzhFJzdFJzhFIzRDIzRCHzE/DB8wFCU0ChspJzZCNURPAhYpDyEzLz5OLDxMMEFPIjNEITJDNERUKDxOHC5AKTpKM0NTGy0+BBcqBRkrBRgrBRcqBRgqBRksBRksBBgrAxcqCRwvHC5AFig6ECM1Giw9Fik7FSY5GSs8BxosAxcpBxktChsuFCU2EyQ3EyM3EyU4EiQ3EyQ3ESI2EiQ3DyE0CBsuCRwwCBsvCRsvCBsvCBwvCBsvCBsvCRsvCRsvCx0wFyg6Fyk7GCk8Fig6Fig7Fyk7FCY5Fic6DR8yCRwvBRgrCh0wGCo8GCk7GCk8Fig6EiU3Fyk7EyU3FCU3EyU4BhksBhksBhksBhksBhksBhksBhksBhksBhksBRgrCRsuIjNDKDhJKTlJHzBCJDVGJDVFIjNCJjdGDyEzBBcpBBcqBBcqAhUoAhYoAhYoAhYoAhcpAhYoAxYoAhYoAxcpBRgqBRgqBBgqBRgqBRgqBRgqBRgqBRgqBBgqBBgqBBcqARQnABMmABQmABQmABQmABQnARQoABMmAxcpBBgp",
+    "layoutSha256": "f7d734f1f109ab9a0a6353076304a9405766bcf494bfc1af7902730b2eff45d2",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
 }

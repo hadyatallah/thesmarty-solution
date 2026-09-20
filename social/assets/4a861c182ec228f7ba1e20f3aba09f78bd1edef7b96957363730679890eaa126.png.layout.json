@@ -1,0 +1,130 @@
+{
+  "designVersion": 2,
+  "format": "reel",
+  "width": 1080,
+  "height": 1920,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 763,
+      "y": 324,
+      "width": 245,
+      "height": 24,
+      "size": 24
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 771,
+      "y": 364,
+      "width": 237,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "CYPRUS BUSINESS",
+      "x": 72,
+      "y": 238,
+      "width": 205,
+      "height": 14,
+      "size": 20
+    },
+    {
+      "text": "BUILD FROM THE",
+      "x": 72,
+      "y": 398,
+      "width": 587,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "EVIDENCE.",
+      "x": 72,
+      "y": 472,
+      "width": 359,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "Use national indicators as context, then verify the specific hiring",
+      "x": 72,
+      "y": 568,
+      "width": 907,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "market.",
+      "x": 72,
+      "y": 606,
+      "width": 103,
+      "height": 22,
+      "size": 28
+    },
+    {
+      "text": "THE SMARTY SOLUTION",
+      "x": 97,
+      "y": 666,
+      "width": 345,
+      "height": 20,
+      "size": 26
+    },
+    {
+      "text": "PAPHOS / CYPRUS",
+      "x": 72,
+      "y": 1488,
+      "width": 199,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "CONNECT · DEVELOP · INVEST",
+      "x": 72,
+      "y": 1527,
+      "width": 269,
+      "height": 13,
+      "size": 18
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 72,
+      "y": 1592,
+      "width": 310,
+      "height": 14,
+      "size": 20
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 774,
+    "y": 220,
+    "width": 230,
+    "height": 88
+  },
+  "photoSha256": "560965147a1c035ae48c9155079dfe8b8f8ae8a5a1fe9a2ad5f7435a3c809c6f",
+  "palette": {
+    "cream": "#faf8f3",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "sky": "#e9f1f7"
+  },
+  "categoryRule": false,
+  "photoTransition": {
+    "y": 1040,
+    "height": 160,
+    "mode": "cream-to-photo-fade"
+  },
+  "photoRegion": {
+    "x": 0,
+    "y": 1200,
+    "width": 1080,
+    "height": 190
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 220,
+    "bottom": 1620
+  }
+}

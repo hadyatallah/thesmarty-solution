@@ -5,15 +5,119 @@
   "topic": "Cyprus non-household electricity prices in H2 2025",
   "topicKey": "business-electricity",
   "headline": "OPERATING COSTS: CYPRUS ELECTRICITY IN CONTEXT.",
-  "creativeKey": "business-electricity-feed-v2-pending-photo",
+  "creativeKey": "business-electricity-feed-v2-paphos-castle",
   "format": "feed",
-  "platforms": ["instagram","facebook"],
+  "platforms": [
+    "instagram",
+    "facebook"
+  ],
   "publishAt": null,
   "requestedLocalSlot": "09:15",
-  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "planning": {
+    "month": "2026-09",
+    "pillar": "cyprus-economy-business",
+    "researchReviewedAt": "2026-09-20T04:30:00Z",
+    "requiresComposition": false,
+    "requiresPhotoSelection": false,
+    "requiresSourceLabel": false,
+    "requiresFinalExportReview": true,
+    "note": "Dedicated mandatory-picture export created. Final visual inspection and QA seal still required before approval."
+  },
   "caption": "OPERATING COSTS: CYPRUS ELECTRICITY IN CONTEXT.\n\nEurostat reports €24.29 per 100 kWh for Cyprus non-household consumers in H2 2025 versus an EU average of €18.37. The comparison covers annual consumption of 500 to 2,000 MWh, so it is not a small-business bill quote.\n\nWhich country should we compare next?\n\nSources:\nEurostat: Non-household electricity prices, second half of 2025\nhttps://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20260508-2\n\n#Cyprus #CyprusBusiness #EnergyCosts #BusinessCosts #TheSmartySolution",
-  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"jpg","format":"feed","template":"insight-data","text":{"category":"CYPRUS BUSINESS","headline":"OPERATING COSTS: CYPRUS ELECTRICITY IN CONTEXT.","body":"Eurostat reports €24.29 per 100 kWh for Cyprus non-household consumers in H2 2025 versus an EU average of €18.37. The comparison covers annual consumption of 500 to 2,000 MWh, so it is not a small-business bill quote.","question":"Which country should we compare next?","source":"EUROSTAT | H2 2025"}},
-  "facts": {"classification":"factual","claims":[{"text":"For non-household consumers using 500-2,000 MWh annually, Eurostat reports Cyprus at €24.29/100 kWh and the EU average at €18.37/100 kWh in H2 2025.","sourceIds":["eurostat-nonhousehold-electricity-h2-2025"]}],"sources":[{"id":"eurostat-nonhousehold-electricity-h2-2025","title":"Eurostat: Non-household electricity prices, second half of 2025","url":"https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20260508-2","expectedText":"Cyprus (€24.29)","reviewNote":"Eurostat comparison for non-household electricity consumers using 500-2,000 MWh annually. Cyprus €24.29/100 kWh; EU average €18.37/100 kWh. Do not generalise to every business or household.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z","additionalEvidence":["€18.37 per 100 Kilowatt-hours","500 Megawatt-hours (MWh) and 2 000 MWh"]}]},
-  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
-  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-operating-cost"],"pillar":"cyprus-economy-business","hook":{"type":"evidence-comparison","text":"OPERATING COSTS: CYPRUS ELECTRICITY IN CONTEXT.","wordCount":6},"objective":"compare","cta":{"id":"compare-next-country","text":"Which country should we compare next?"},"contentFamilyId":"business-electricity","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"business-electricity","reviewedAt":"2026-09-20T04:30:00Z"}}
+  "creative": {
+    "designVersion": 2,
+    "visualStyle": "reference-data-editorial",
+    "compositionReady": true,
+    "assetFormat": "jpg",
+    "format": "feed",
+    "template": "insight-data",
+    "text": {
+      "category": "CYPRUS BUSINESS",
+      "headline": "CYPRUS ELECTRICITY: BUSINESS COSTS.",
+      "body": "A business electricity benchmark, not a small-business bill quote.",
+      "question": "Which country should we compare next?",
+      "source": "EUROSTAT | H2 2025",
+      "metric": "€24.29",
+      "metricLabel": "PER 100 KWH | CYPRUS NON-HOUSEHOLD",
+      "fact1Label": "EU AVERAGE",
+      "fact1Body": "€18.37 per 100 kWh in H2 2025.",
+      "fact2Label": "SCOPE",
+      "fact2Body": "Annual use of 500 to 2,000 MWh.",
+      "location": "PAPHOS CASTLE, CYPRUS"
+    },
+    "photoKey": "paphos-castle",
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "For non-household consumers using 500-2,000 MWh annually, Eurostat reports Cyprus at €24.29/100 kWh and the EU average at €18.37/100 kWh in H2 2025.",
+        "sourceIds": [
+          "eurostat-nonhousehold-electricity-h2-2025"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "eurostat-nonhousehold-electricity-h2-2025",
+        "title": "Eurostat: Non-household electricity prices, second half of 2025",
+        "url": "https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20260508-2",
+        "expectedText": "Cyprus (€24.29)",
+        "reviewNote": "Eurostat comparison for non-household electricity consumers using 500-2,000 MWh annually. Cyprus €24.29/100 kWh; EU average €18.37/100 kWh. Do not generalise to every business or household.",
+        "authorityType": "official-statistics",
+        "sourceType": "official-statistics",
+        "checkedAt": "2026-09-20T04:30:00Z",
+        "validUntil": "2026-09-27T04:30:00Z",
+        "additionalEvidence": [
+          "€18.37 per 100 Kilowatt-hours",
+          "500 Megawatt-hours (MWh) and 2 000 MWh"
+        ]
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Paphos Castle, Cyprus",
+    "photoSha256": "560965147a1c035ae48c9155079dfe8b8f8ae8a5a1fe9a2ad5f7435a3c809c6f",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Cyprus-Paphos-Castle-0957.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "editorial": {
+    "version": 1,
+    "audienceNeedIds": [
+      "entrepreneur-operating-cost"
+    ],
+    "pillar": "cyprus-economy-business",
+    "hook": {
+      "type": "evidence-comparison",
+      "text": "OPERATING COSTS: CYPRUS ELECTRICITY IN CONTEXT.",
+      "wordCount": 6
+    },
+    "objective": "compare",
+    "cta": {
+      "id": "compare-next-country",
+      "text": "Which country should we compare next?"
+    },
+    "contentFamilyId": "business-electricity",
+    "editorialType": "trend",
+    "repurpose": null,
+    "socialProofId": null,
+    "trend": {
+      "candidateId": "business-electricity",
+      "reviewedAt": "2026-09-20T04:30:00Z"
+    }
+  },
+  "asset": {
+    "path": "social/assets/f3ee4db5077115f4d3fab843fe92610c7a2898e02efae8dbefc7553c4c458861.jpg",
+    "sha256": "f3ee4db5077115f4d3fab843fe92610c7a2898e02efae8dbefc7553c4c458861",
+    "pixelHash": "fe6009dcfd4f716b7d4fe3deda801b548cd8b1cf2571babbb4e8abfea33a33bf",
+    "visualSignature": "rgb32:+/r2+/r2/Pz3/vz4/fv3/vz4/fz4/fv3+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39vXy8fHu9e/t9ezr9fTx9vXy+/r2+/r2/Pv29fXy4OXm3uPl4ebn3uTl3OLk4ufn+fj1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+vn1/v348fLvbneIb6OveLO8Z3SGkp2o/v35+vn1+/r2+/r2/Pv3/Pv3/Pv4/f35+fn2/Pz4/f34+/n2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv29fTx/fz5qrC4ora9ebnChpunh5Ge+/r2+/r2/Pv39PTx4uTj4OLi3eDh19vc6uvp4ePj7O3r/Pv3+fj1+vn2+vn2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv39fXy4OPj4+bm3+Dh5t/g4ePj6Orp+fj0+/r2//754uTkuL/GtbzDs7vCj5yorre+nqmzxcvQ///++/v4/Pv3/Pz4+fj1+vn1+fj1+/r2+/r2+fj1+Pf0+vn1+vr2+vn1+vn19vbz9vXz+Pn28/bz+fn29fXz+vn2+/r2///63N/fr7i/wsnOrba9zNHUt77Fnaiyq7W9yM7RqbK6srrByM3Q/////v36///9/Pz4+/r1/v78/////fz4/v74/v75///6///7/f35/Pr2/Pv3/Pr2/Pv2+/r2+/r2///6297fmKWwsbrBoq22sbrBu8LInamyqrS8s7vDzdLUv8fLusLIy9HU0NXXx83Q6erp///7xcvPoay26evp4uTj1trbztPWztLV5efm/fv3+fj0+fj1+vn1+/r2+/r2//753+Lioqq0v8TJt77FrbK7rbW8sbW9vMHHrbe/3eDgv8PJwsXLrrO8x8vQrbe/ytDT//75dYaWNk9qxszP6uvq297f3N/g2d3e3eDg6uvq6+zr5ujn7e7s/Pv3+/r2+vn1//35w+HfutvZ3e7qp9LR8/n2vN3b0+jn////0ubkrNTUzuXjqtTT4e7s////+/v3/fz47u/t3uDh/Pv3/v34/v34//35//35/fz4/Pv3/Pv3/Pv3/Pv3+/r2+/r2//z46fHuLpGWp8/P0eXjaK+xttfWRZyglMTF+fr1v9vabrK1rdLSTKGklMbG///9+Pj1+/r1/Pv3/v35+vn1+/r2+vn1+vn1+vn1+vn1+/r2+/n2+vn2+vr2+/r2+/r2+/r2/Pn2u9bWu9jYu9fXo8rL5e3qwNrZvtjYz+HgsdLSq8/P5OzqqM3O3+nn+fbz+Pj0+/r2/v37///8/fz5/Pr2+/r2+/r2/Pv3/Pv3/Pv3/Pv3/Pv3/Pv3+/r2+/r2/fz47e7r3Nze4+Pk3d3e29rc4uTk6ufn2Njb2tvd3t3e3t3e1dnb2tnc1dbYz9TX6uzq///7oq22bH6P3uDh3eDgxsvQ5+jo+vr29fXy+Pf09/bz9fTy9/bz+/r2+/r2/Pv39fTx29/f3ODg3eDg3+Li297f29/f3uHi3uDh4+Xl4eTk4uXk6+3r4+Xl+Pj0+/r2///6eIiYOVJrztPW8fHv4+Xk6erp6uvq6Ono6+vq6+vq5Obm6evp/Pv3+/r2/Pv39fTx3+Li4uTk4eTj4ePj4+Tk4uTk4OPj4ePj9PPx+/n1+Pf0+fn1+Pj0+vr2+/r2/Pv3+fn28/Px/fz5/fv3/fz4/fz3/fz3/fv3/fv3/fz3/fz4/fz3+/r2+/r2+/r2+/v3/vz4/vz4/fz3/fz4/fz4/fz4/fz3/fz4+/r2+/r2/Pr2+/r2/Pv2+/r2+/r2+/r2+/r2/v34+vn1+/r2+/r2+vr2+/r2+vn2+/r2+/n2+vn1+vn1+/r2+/r2+/r2+vr2+vn1+fn1+vn1+vn1+vn1+vj1+vn1+fn1+vn1+vn1+vn1+vn1+vn1+vn1+/r2+/r2+/r2+vn1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/Pv3/v75//76/v34//75//35/v35//75/v75/v35/v34///6/v35/v35//75+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2/fv36vLv2uHh19rb4+Xl3N/f3N/g4ePj2dzd297f3uHi4+Xl1trb4OLj4OLi297f+fj1+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r2+/r16/Lu6/Ds8fHu8/Tw8fLu8fHu8vLv8fHu8fLu8vLv8/Pw7/Dt8vPv8vPv8fLv+Pj0+fn0+fj0+fn0+fj0+fj1+fn1+fj1+fj0+fj0+fj0+fj0+fj0+fj0+fj0+fj07O7t7+/v7/Dw7vDv7e/v7vDv7vDw7e/v7vDv7vDw7fDv7e/v7fDx7fDx7fDw8fDs8e/p8e/p8vDp7evm7uzm7+7o6+vo7Orm7Ozs6ezt6uzt6ezt6evt6uvs6uvs6evs1tvf1tzg1dzf1tzg1t3g1t3g1d3g1d3h1dzh1d3h1d3h1dzh3t7b3drV19TR3tjQ5d7T4drR39nQ39nP39jO39nP3tjO39nO09jcz9ff0dfe0Nfez9bez9bdz9bdz9bcsbvDsbzDs77Hsr3Fr7zEsL3Fsb3Fsr7Gs77Hsr3IsL3Hr77JwruxvrGjwLKjx7inyrmnxbWkw7Wkx7inxLamw7SjwbOhwbOiqLK9o7HCpLG/o7C+oa++n669n668n627eYSZd4SddX2Ie4aXgY6jgYyfgo6ggIuhgYyihJCmg5Cle4mel4R6podvoYNrpYVpoYRnpohspYltnoRonYRpnIJnmH9jkXtja3uSZHqZY3iVY3iVYHeUX3eUX3WSX3WRNUWIN0iPRkVOQD0+QEh0O0yOSFiVXWiWOUuWQkx9UleANTxjfmNRmXdakWpNnHhWl3NRblI5g2JEhGBAgV8/gF9AgGFAe2JGQ05jM0NgPEpjLT9bL0BcKjtZKzpYJTVVUVmCQEVjU1FOXV1MRUhGOD5QNjZHOzdBMS9BHhojFxMeAAAFYEczlXRYb1E8d1lBkm5OiGpMhGRGfF1Bel5DemBFcFlBe2ZLhXhic2lXcmhWamRTaGJTbWdWZ2NTXFhNbmNKZGJVcHFmnJmNjZGMU2RfQE1JFBQZFBIWFxYcHh4iIiMjbV5NintobWRaZFlQcmFTdGpgZl1VbGNZYFpTZF5Ue3VpdHFjbWpcdHFiY2JUbWxZV1dMRUY+VVRGaGdWNTpDbXFvd3tzhIJ4lZKMiI6PYXV4OkZMRUhMYmNgcW9rcGpmbmljbWtodnRwdXRucXBte3p0dXVwc3NwampkWlpXXmBdXmFfXmJdXmFcW19aWl1XPUNENTw/Njs6JCovKDdDLDpELz1HNEFJM0BIN0NOOUZTKTpGNkNLNUBKKDRBJDA9JjI9LTpEKDQ+LztEM0BJMj9IKjdCIC46JjM9IjA8IS88IjE9JDI+Hy47ITA8JjZAKDdBLjxEJTQ+FyYyAhYoECI0LT1NKjtLHzFCKDlJJjdHGis8JzlKKz1ODiAyBBcpCBstBRgqBxksBBcqAxYoAxYoAxYpAxcpAhUpAhUoCBwuGiw9FCc4ECM0Giw9FSc4EyU3GCo8CBsuBhorCBosCx0vEyU2FCY2ESM1FCY2EyU2DB4wCx0uBxouCBouCxwvCh0vCx0uCx0uChwuChwuCRotBhgsBBcrBBcrBxotFCU3FSU4Fyc6Fig5FSY4FSc5ESI1FSY4ChwvBhksBhkqDB8vGSs7Fig4EiM0Fig4EyQ2BhkqCBosBRgqBBcqBhkrBxksBxorBxorBhkrBhkrBRgqBBcqAxcqAhYqBRksHjFBJTZHJTdIHjBBJTVFIzRDHzFBJDVGDSAxAxYpBRgqBBcpAxUoAxYnAxYnAxYoAxYoBRgqBRgqBRcqBRcpBRgpBRcpBRcpBRcpBRcpBRcpBBcpAxYpAxcqAhcpAhcqABMnABImABMmARQnARUmARUmARQmABMlAhYoAxcp",
+    "layoutSha256": "6df193f4579aae5af3060f6fd78087c345204e5649e67816c45ba3e34e4377b5",
+    "width": 1080,
+    "height": 1350,
+    "originFormat": "feed",
+    "commit": null
+  }
 }

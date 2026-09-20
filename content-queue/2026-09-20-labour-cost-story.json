@@ -5,15 +5,108 @@
   "topic": "Cyprus Labour Cost Index annual change in Q2 2026",
   "topicKey": "labour-cost",
   "headline": "LABOUR COSTS MOVED 3.8% YEAR ON YEAR.",
-  "creativeKey": "labour-cost-story-v2-pending-photo",
+  "creativeKey": "labour-cost-story-v2-petra-tou-romiou",
   "format": "story",
-  "platforms": ["instagram"],
+  "platforms": [
+    "instagram"
+  ],
   "publishAt": null,
   "requestedLocalSlot": "14:15",
-  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "planning": {
+    "month": "2026-09",
+    "pillar": "cyprus-economy-business",
+    "researchReviewedAt": "2026-09-20T04:30:00Z",
+    "requiresComposition": false,
+    "requiresPhotoSelection": false,
+    "requiresSourceLabel": false,
+    "requiresFinalExportReview": true,
+    "note": "Dedicated mandatory-picture export created. Final visual inspection and QA seal still required before approval."
+  },
   "caption": "Keep this checklist before comparing options.",
-  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"png","format":"story","template":"insight-data","text":{"category":"CYPRUS BUSINESS","headline":"LABOUR COSTS MOVED 3.8% YEAR ON YEAR.","body":"CYSTAT's provisional Labour Cost Index for Q2 2026 was 3.8% higher than a year earlier. An index change is not the same as a salary quote for a specific job.","question":"Keep this checklist before comparing options.","source":"CYSTAT | Q2 2026"}},
-  "facts": {"classification":"factual","claims":[{"text":"Cyprus Labour Cost Index annual change was +3.8% in Q2 2026, based on provisional CYSTAT data.","sourceIds":["cystat-labour-cost-q2-2026"]}],"sources":[{"id":"cystat-labour-cost-q2-2026","title":"CYSTAT: Labour Cost Index, Q2 2026","url":"https://www.cystat.gov.cy/el/PressRelease?id=73349","expectedText":"3,8%","reviewNote":"Provisional annual change in the Labour Cost Index for Q2 2026. Keep the index scope separate from specific salary levels or recruitment quotes.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z"}]},
-  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
-  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-operating-cost"],"pillar":"cyprus-economy-business","hook":{"type":"evidence-comparison","text":"LABOUR COSTS MOVED 3.8% YEAR ON YEAR.","wordCount":8},"objective":"save","cta":{"id":"save-comparison-checklist","text":"Keep this checklist before comparing options."},"contentFamilyId":"labour-cost","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"labour-cost","reviewedAt":"2026-09-20T04:30:00Z"}}
+  "creative": {
+    "designVersion": 2,
+    "visualStyle": "reference-vertical-photo",
+    "compositionReady": true,
+    "assetFormat": "png",
+    "format": "story",
+    "template": "place-opportunity",
+    "text": {
+      "category": "CYPRUS BUSINESS",
+      "headline": "LABOUR COSTS MOVED 3.8% YEAR ON YEAR.",
+      "body": "The provisional Labour Cost Index was 3.8% higher year on year in Q2 2026. An index change is not a salary quote.",
+      "question": "Keep this checklist before comparing options.",
+      "source": "CYSTAT | Q2 2026",
+      "location": "PETRA TOU ROMIOU, CYPRUS"
+    },
+    "photoKey": "petra-tou-romiou",
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "Cyprus Labour Cost Index annual change was +3.8% in Q2 2026, based on provisional CYSTAT data.",
+        "sourceIds": [
+          "cystat-labour-cost-q2-2026"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "cystat-labour-cost-q2-2026",
+        "title": "CYSTAT: Labour Cost Index, Q2 2026",
+        "url": "https://www.cystat.gov.cy/el/PressRelease?id=73349",
+        "expectedText": "3,8%",
+        "reviewNote": "Provisional annual change in the Labour Cost Index for Q2 2026. Keep the index scope separate from specific salary levels or recruitment quotes.",
+        "authorityType": "official-statistics",
+        "sourceType": "official-statistics",
+        "checkedAt": "2026-09-20T04:30:00Z",
+        "validUntil": "2026-09-27T04:30:00Z"
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Petra tou Romiou, Cyprus",
+    "photoSha256": "71c16cfb45d2b453ab0f88d87d131d5218e345ab77cca71cfb8d871138a8f7c5",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:Petra_Tou_Romiou_(October_2006).jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "editorial": {
+    "version": 1,
+    "audienceNeedIds": [
+      "entrepreneur-operating-cost"
+    ],
+    "pillar": "cyprus-economy-business",
+    "hook": {
+      "type": "evidence-comparison",
+      "text": "LABOUR COSTS MOVED 3.8% YEAR ON YEAR.",
+      "wordCount": 8
+    },
+    "objective": "save",
+    "cta": {
+      "id": "save-comparison-checklist",
+      "text": "Keep this checklist before comparing options."
+    },
+    "contentFamilyId": "labour-cost",
+    "editorialType": "trend",
+    "repurpose": null,
+    "socialProofId": null,
+    "trend": {
+      "candidateId": "labour-cost",
+      "reviewedAt": "2026-09-20T04:30:00Z"
+    }
+  },
+  "asset": {
+    "path": "social/assets/4bd96109fd9e74efd0bb851b60e7a39c329f59cb77b85629feb6822cb54ed64e.png",
+    "sha256": "4bd96109fd9e74efd0bb851b60e7a39c329f59cb77b85629feb6822cb54ed64e",
+    "pixelHash": "fed66bbfac4d885dc97d2c6cf320caa543b53999ff8ea7cc53c8fa8060b4eae9",
+    "visualSignature": "rgb32:+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+Pbx9/Xx9/by9/bx9/bx9/Xx+Pfy+vjz+vjz+vjz+vjz+/n0/Pn0+/n0/Pn0/Pn0/Pn0+/nz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz/v76///9//75///5///8///9/Pv2+vfz+vjz+vjz+vjz9PPv8fHu8/Pv8/Pv8fHu8vLu+Pby+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffyvcPHqK+2tMnMusTHubrAqbG43uDf/fv1+ffy+vjz+ffy7e7r5+no6uvp6Oro5ujn5+no9fPw+Pby+ffz+ffy+ffy+Pby+Pby+Pby+Pfy+Pfy+ffy+Pby+Pby+Pbx//z3xcrMX2t+j8jMXre+dJKeXmt+p7C3///5+Pbx+vjz+vj0/fv3/v76/v36/v77/v76//76/fz4/v36+/r1/fz3/v34/v75/v75/vz4/v35/fz4+/n1/v35/fz5///6+Pj07e3r2t3d3dfYwc3PzdfYw8fK09bX/fr1+ffy/Pr08fDs3+Hg0tbWyc3PwMbKy8/SxsvO0tbXvcTI6ero2Nzb09bXx8zPyc7Q0tXWx8zP1dnZ6ennwcfLyM3Qyc7Qz9PVtb3Du8LGusPH7Ozq9fPv9PTw8vLv+vjz+vjz/Pn08/LutbzCuL/Em6avl6Kss7vBucDEpa+2l6KsyM3Ptb3CqLG4vcPHoqy0rba9t77Eu8HGxMrMoKuzpK62qLG4o621w8jMusHGv8XJ8/Lu/Pr1+vjy+/nz+vjz+vjz+ffy/fv1xcrN2t3fucDGyc7RzdHT8/Tyw8nMwcfKuL/Esrm/tbzC5+rqvsTJtr3Ctr7F6uzstr3DvMPJu8LHtLzCtb3D8/Ty//77//77/Pv1+/n0/fv1+vjz+vjz+vjz+vjz+vfy4+Ti4OLh5OXj5eXk4ePh4OLh6enn4ePh4ePi7Ozp5ujl4uTi5OXj4+Tj6+vo4uPi7ezp3uDf5+jm5ebl3d/e5ebk5OXk5ufl6uro6+vp4uPi9fTv+/n0+vjz+vjz+Pfy4ePi1djY3N7d0dXW2Nvb3d/e2tzc1dfY1tna3N7e1NfY1NfY3uDf2dzc2Nvb3N7d1djZ2Nvb2dvb1tnZ1djY8/Lu9PPv9PPv9fTw9vTw8/Lu+Pfy+vjz+vjz/Pn08vXw4ern3d7d4ePi4ePh4+Tj5OXk3+Hf3t/f4eLh4uPi3d/e4uPi6Ojm3+Hg3N7e4ePh3uDg5ebk2Nvb3eDf7Ozp/Pr1/Pn0+/nz+/n0+/nz/Pr0+vjz+vjz+vjz+vjz+vjz+vj0/fz2/Pv1/Pv1/Pr1/fr1/fv2/fv2/fv2/fv2/fz2/fv1/Pr1/vv2/vv2/fv2/Pv1/Pr1/fz2/fz2/Pn0+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz9/by+Pby+Pby9/by9/by+Pby9/by+ffy+Pfy+ffy+ffy+Pby9/by9/by9/by9/by9/by+Pby9/by+Pby9/by9/by9/Xy9vXy9vXy9vXy9/Xy9/Xy+Pby+Pby9vXy9vXy2eL12uP22uP32uT32+T43OX53eb53uj63ej63uj63un63un63un63ej63un63un63+n63un63ej53+n53un53+n53ej44Or55u344ur45ez45ev45+334ej23Ob22OP2Xoa/YInCYYrFYozGY43JZY/KZpHNZ5LPaJPQaZXRa5XUa5bVbJfWbZjYbJjZbZjbbpjcb5jdcZzgcJrfcpvfc5zheaDkeJ/jeqPneKDkdp/kd6DmeKHnd6HpdqDpeKDqZHqOZXyOZ3ySaH6UaX+VaoCXbIGWbYGXbYGYcIOacYOacYOacYKYcoObc4Scb36Wc4SdfIGOY2t9cYGebn6af4yjpKKii4eIW2d/bHybcYGgZ3WTY2+JYGd9X2d+ZGl7i4qSjIuTjo2WkI+ZkJCakZGbkpGck5KdlJOflZShlZOflpOdlpOflpOelZOfk5KhlpSnmJOikYqblZGpl5Gkm5Gem4uLmYiJgXR8jIOMoJiikomQk4aJh3VyiXhyiHNphYKHhoSJh4SIiYeOioiPi4iQjImTjYqTj4qUkIuVkIuVkIuVkIuXkYyYkYqWj4mWjoiXjYaYjYeWjISSi4OSi4KSi4KUioKTjISWiYCThnyOhHuQgXuRfniPfHaOeHKOp6GbqKKcqqWfrKijrKekraimr6mlsaqnsKmnsKmosqqpsaqpr6ior6insKior6iqr6irr6eqr6aor6aprqerrqesraasraWqrKOoq6OqqaGppp+opJ2noZqmnZelm5ap8O7o7+3n4ePg3uDe4+Pg4+Pg3+He3N7c4uPg5uXh3d/d4+Ph8e7p8e7p8e/q8e/q8e/q8e/q8u/r8u/r8u/q8e7q8e7q8e7q8e7q8e7q8e7q8O7q8O3p8O3p8O3p8O3p/Pr1+/n08PHu7vDt8fLw7/Hu7vDu9vby+Pj0+fj09/fz9vby/Pr1/Pr1+/r1+/r1+/r1+/r0/Pr1/Pr1/Pr1/Pr1/Pr1/Pr1/Pr1/fr1/fr1/fr1/fr1/fr1/Pr1/Pr1+ffy+Pby5ebk3+Df3uDf4eLh4uPi5OXj4OHg5ubk4+Pi8fDs+/nz+ffy+ffz+ffz+ffz+ffz9PTv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv9PTv+ffy+ffy+vjz+vjz9PPv8vHt8vHt8/Lu8/Lu8vLu8fHt9PLu8vHt9/bx+/jz+vjz+vjz+vjz+vjz+vjz+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+vjz+vjz+vjz+vjz+/n0/Pr0/Pr0/Pn0/Pn0/Pr0/Pr0+/n0/Pr0+/nz+vjz+vjz+vjz+vjz+vjz+vjz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz",
+    "layoutSha256": "22c075e7d2e76b6278cae40cf39fac0baafafea9d95028fd9f68e8061acf084e",
+    "width": 1080,
+    "height": 1920,
+    "originFormat": "story",
+    "commit": null
+  }
 }

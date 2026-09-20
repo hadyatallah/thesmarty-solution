@@ -5,15 +5,114 @@
   "topic": "Cyprus official registration costs and liability categories by business entity type",
   "topicKey": "business-entity-choice",
   "headline": "STARTING IN CYPRUS? ENTITY CHOICE MATTERS.",
-  "creativeKey": "business-entity-choice-story-v2-pending-photo",
+  "creativeKey": "business-entity-choice-story-v2-lefkara",
   "format": "story",
-  "platforms": ["instagram"],
+  "platforms": [
+    "instagram"
+  ],
   "publishAt": null,
   "requestedLocalSlot": "14:15",
-  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "planning": {
+    "month": "2026-09",
+    "pillar": "cyprus-economy-business",
+    "researchReviewedAt": "2026-09-20T04:30:00Z",
+    "requiresComposition": false,
+    "requiresPhotoSelection": false,
+    "requiresSourceLabel": false,
+    "requiresFinalExportReview": true,
+    "note": "Dedicated mandatory-picture export created. Final visual inspection and QA seal still required before approval."
+  },
   "caption": "Keep this checklist before comparing options.",
-  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"png","format":"story","template":"insight-data","text":{"category":"CYPRUS BUSINESS","headline":"STARTING IN CYPRUS? ENTITY CHOICE MATTERS.","body":"The Cyprus Registrar lists different registration costs and liability structures for a company, partnership, business name and an overseas company's place of business. Cost is only one part of the choice, so legal and tax advice may still be needed.","question":"Keep this checklist before comparing options.","source":"REGISTRAR OF COMPANIES"}},
-  "facts": {"classification":"factual","claims":[{"text":"The Cyprus Registrar lists registration costs of €165 for a company with share capital (€235 without), €120 for a partnership, €80 for a business name and €380 for a place of business of an overseas company.","sourceIds":["cy-registrar-business-entity-choice"]}],"sources":[{"id":"cy-registrar-business-entity-choice","title":"Cyprus Registrar: Choosing the right type of Business Entity","url":"https://www.companies.gov.cy/en/business-entities/2-company/10-understanding/choosing-the-right-type-of-business-entity","expectedText":"Registration Cost","reviewNote":"Official comparison table: company €165 with share capital or €235 without; partnership €120; business name €80; overseas-company place of business €380. The page also distinguishes liability. Present as official filing information, not personalised legal advice.","authorityType":"primary","sourceType":"primary","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z","additionalEvidence":["Personal Liability","€120","€80","€380"]}]},
-  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
-  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-operating-cost"],"pillar":"cyprus-economy-business","hook":{"type":"decision-risk","text":"STARTING IN CYPRUS? ENTITY CHOICE MATTERS.","wordCount":6},"objective":"save","cta":{"id":"save-comparison-checklist","text":"Keep this checklist before comparing options."},"contentFamilyId":"business-entity-choice","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"business-entity-choice","reviewedAt":"2026-09-20T04:30:00Z"}}
+  "creative": {
+    "designVersion": 2,
+    "visualStyle": "reference-vertical-photo",
+    "compositionReady": true,
+    "assetFormat": "png",
+    "format": "story",
+    "template": "place-opportunity",
+    "text": {
+      "category": "CYPRUS BUSINESS",
+      "headline": "STARTING IN CYPRUS? ENTITY CHOICE MATTERS.",
+      "body": "Company, partnership, business name and overseas place of business carry different registration costs and liability structures.",
+      "question": "Keep this checklist before comparing options.",
+      "source": "REGISTRAR OF COMPANIES",
+      "location": "PANO LEFKARA, CYPRUS"
+    },
+    "photoKey": "lefkara",
+    "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459"
+  },
+  "facts": {
+    "classification": "factual",
+    "claims": [
+      {
+        "text": "The Cyprus Registrar lists registration costs of €165 for a company with share capital (€235 without), €120 for a partnership, €80 for a business name and €380 for a place of business of an overseas company.",
+        "sourceIds": [
+          "cy-registrar-business-entity-choice"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "cy-registrar-business-entity-choice",
+        "title": "Cyprus Registrar: Choosing the right type of Business Entity",
+        "url": "https://www.companies.gov.cy/en/business-entities/2-company/10-understanding/choosing-the-right-type-of-business-entity",
+        "expectedText": "Registration Cost",
+        "reviewNote": "Official comparison table: company €165 with share capital or €235 without; partnership €120; business name €80; overseas-company place of business €380. The page also distinguishes liability. Present as official filing information, not personalised legal advice.",
+        "authorityType": "primary",
+        "sourceType": "primary",
+        "checkedAt": "2026-09-20T04:30:00Z",
+        "validUntil": "2026-09-27T04:30:00Z",
+        "additionalEvidence": [
+          "Personal Liability",
+          "€120",
+          "€80",
+          "€380"
+        ]
+      }
+    ]
+  },
+  "geography": {
+    "mode": "verified-republic-location",
+    "location": "Pano Lefkara, Cyprus",
+    "photoSha256": "5336ef1793e4772c1a32d9a1f2776b062203bcb8be0851b5e5f88b2538e981d4",
+    "evidenceUrl": "https://commons.wikimedia.org/wiki/File:2022_03_Pano_Lefkara_1.jpg",
+    "republicControlled": true,
+    "reviewNote": "Real photograph visually checked against the named landmark in the Republic-controlled location. Illustrative location image, not a current property listing."
+  },
+  "editorial": {
+    "version": 1,
+    "audienceNeedIds": [
+      "entrepreneur-operating-cost"
+    ],
+    "pillar": "cyprus-economy-business",
+    "hook": {
+      "type": "decision-risk",
+      "text": "STARTING IN CYPRUS? ENTITY CHOICE MATTERS.",
+      "wordCount": 6
+    },
+    "objective": "save",
+    "cta": {
+      "id": "save-comparison-checklist",
+      "text": "Keep this checklist before comparing options."
+    },
+    "contentFamilyId": "business-entity-choice",
+    "editorialType": "trend",
+    "repurpose": null,
+    "socialProofId": null,
+    "trend": {
+      "candidateId": "business-entity-choice",
+      "reviewedAt": "2026-09-20T04:30:00Z"
+    }
+  },
+  "asset": {
+    "path": "social/assets/7fe59cf61bcc392a858a0e6484537f7e570a4b8db11db544265f28295c39ab61.png",
+    "sha256": "7fe59cf61bcc392a858a0e6484537f7e570a4b8db11db544265f28295c39ab61",
+    "pixelHash": "b86f73b293bbe2deefc0a0ef5f56caa6791dfaf0de99eeaa4fb39f39e74aa51a",
+    "visualSignature": "rgb32:+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+Pbx9/Xx9/by9/bx9/bx9/Xx+Pfy+vjz+vjz+vjz+vjz+/n0/Pn0+/n0/Pn0/Pn0/Pn0+/nz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz/v76///9//75///5///8///9/Pv2+vfz+vjz+vjz+vjz9PPv8fHu8/Pv8/Pv8fHu8vLu+Pby+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffyvcPHqK+2tMnMusTHubrAqbG43uDf/fv1+ffy+vjz+ffy7O7r5+nn6uvp6Orp5ujn5+ro9PPv+ffy+Pby+ffy+ffz+Pby+Pfy+ffy+Pfy+ffy+Pbx+Pfy+Pbx+Pby//z3xcnMYGx+kcnNX7e+dJKeXmt+p7C3///5+Pbx+vjz+vjz/f35//75///6/v76/v77/v75/fz5/v36/v35/v75+/n1/fz5/v35+/n1/v34/v34/v35/v35/v36/fz5+Pf06+vp1tnZ0s/RvsvOzdfYw8bK09fX/fr1+ffy+vjz9/bxz9PU0dXWxcrNzdHTxcrNyc7Qy8/RwsjLys/R0NPV7u/syM3Qy9DS6Onn09bX0tXWxcrNys/RwcfL1tnayM3PwcjM1dnZ8fLv+ffz9/Xx9PTw8vLv+vjz+vjz+/n09vXwqLG4sbm+oauzl6OtnKewqbK5r7i9sbi+pa+2pq+3xsvOpq+3o621xsvOsrvAw8nMsbm/qrO6oKqzoqy0o621nqmxuL7D2t3c4OLg4uPi+vjz+/n0+vjz+vjz/Pr08fDsvMLHtr3Cv8XKzdHUyM7QztPUy8/S6OrqzdLUyM3Rsbi+usHFv8bKwMbKvMPI0NXY19rbrbW8uMDGuL/E3uHf09bXr7e9tLvBsLi+uL/E7Ozp+/n0+fjz+vjz+vjz+ffy5OXj4+Tj4eLh6Onm6Onn4+Tj5+fl4ePh3N7e5+fl6uvo3+Hg4uPi5+fl5OXj4eLh5+fl6uvo5ufk5+jl4uPi4OHg4uPi4uTi6enn5ebj8fHt+ffy+vjz+vjz+/nz9vXw3ODf1NfX1NfX293d293d19rb2tzczdHT1tnZ293d19ra0dXW2Nvb1djZ2dzb3N7e1NfY3N7d1NjY2Nva1NjY3N7d4+Ti4eLh4uPh4ePh5ufl9fTw+/n0+vjz/Pn08vXw4urn3d7e4uTj4OLg4uPi5OXk3+Dg3+Hg4eLh4uPi3N7d4uTi6Onn3+Hg3d7e4ePh3uDf5OXj2tzc3uDf7Ozp/vz3/Pr1/fv2/vv2/fv2/fv1+/jz+vjz+vjz+vjz+vjz+vj0/fz2/Pr1/fv1/Pv2/fv1/fv2/fv2/fv2/fv1/fz2/fv1/Pr0/fv2/fv2/fv2/Pr1/Pr1/fz2/fz2/Pn0+ffy+vjz+ffy+fjz+ffy+ffy+vjz+vjz+vjz+vjz+vjz+vjz+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+ffy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+ffy+vfy+ffy+ffy+ffy+vjz+vjz+/jz+vjz+vjz+/jz+/jz+vjy+vfx+vjy+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+fjz9vXw9PPu9vTw9/Xw+vjz+Pfy+vj0+vjz+vjz+Pfy9PPu8/Hs9fPv9vXx9fTx9fbz9fb09/n49vby9vby9vbx9/Xv9/Tu9/Xv9/Xv9/Xv9vTv9fPu9fPu9vPu9fPuzs7O1NXU3d3c5+fk6uvn19jXyMfGwcC9wsG/w8PAxsbEzszH1dLLz8zBx8W51tTP4eDZ2tfQz83L1OHs1OTx1eTw3t3W4uHZ5OHW29fM0M3IzMrGxMTAx8fDwL25vLi0qa2ysrm9ub/Cur/CjpKYdHeAb3J4ZGVlY2NgZGRiXV1cYmJfX19bV1dTXFxMh4J0yL6mtqSLfWFPg5iuk87/jsPwlsbsm666qaOTnpSBe3h0eHd1Y2VocG9vaGBXbWNWsLa6rra6gIqTVFtnR0tXTVFdTlFaU1RYVFRST05KSkhESkdBV1dRbmlbbGNMeGxVs6SBnYJkVTovV2l7fa7Xfb3yf8X/eJ6+g3ppenJgPjo1TExOMDZCPj9GYVI9cFxAr7Ove4GGVFtnVVtmU1hhUldgVVlgVldZV1ZUYl5Za2dfdXJqtrWssaWIuKJ5uqR9rphwsZVwY0Q3WFJajZ2sodf6m9X+nNj/lKWnd2pURUA6S0pJNDpDOTxDdWVKk3xTS1BVU1xrWF9sVV1nUlpjUllhUlpkVlxlUE9NKycjKCcjbGljqaaaSUhCVVZUcW1lhnpiqY5olWxSgWZdd4KNhqS1stPkn7fCfn94dWtaTUpFTE5SOT9KOj5KYFZHWkwpYmFcgISJjJGYh4yRhoqQhYiNg4aNkJafenh2VVBLRkVCcW9vrq2ngoF+fH6AfICFjpCQp5iCn4p3q6OYhIF8bnaBtrvAqqedkY6EoZ2TjY6Oj5SbgYiUgomYjIqFdW5W6ebh6Obg3N/e3N7e3uDf2dzc2dzc5ebk2dva1dnX4+Hd6ufj8/Hs9/Xw8/Ht8/Ht8fDs8O/s7urk6+rm7u3q8fDt6+vn7+3n7erk7+3n8O/q7uzp7u3r7ezq7uvl7uvj/fv2/Pr27u/t7e/t7u/t8PHu7u/t7vDt7fDu8/Tx/vz4/vz3+/n0+vj0+/n0/Pn0/Pn0/Pr0/fv2/vv2/fr1/Pr1/fv2/Pr1/fv2/Pr1/fr1/Pr1/fr1/fr1/Pr1/Pr1+ffy+Pbx5ebk3uDf3d/f4ePh4uTi4eLh3d/e5ebk4eLg7+7r/Pn0+ffy+ffy+ffy+ffy+ffz9PTv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv8/Tv9PTv+ffy+ffy+vjz+vjz9PPv8vHt8vHt8/Lu8/Lu8/Lu8vHt9PPu8vHt9/bx+vjz+vjz+vjz+vjz+vjz+vjz+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+Pfy+vjz+vjz+vjz+vjz+/n0/Pr1/Pr0/Pr0/Pn0/Pn0/Pr0+/n0/Pr0+/nz+vjz+vjz+vjz+vjz+vjz+vjz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+/jz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz+vjz",
+    "layoutSha256": "d7ed3ef917990872220d7e54afcb24b09ef15cd6e7d34dd4dded86c284c73fc2",
+    "width": 1080,
+    "height": 1920,
+    "originFormat": "story",
+    "commit": null
+  }
 }
