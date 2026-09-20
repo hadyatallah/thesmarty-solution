@@ -113,7 +113,8 @@ jobs:
             item.creative.compositionReady=true;
             item.creativeKey=item.creativeKey.replace('pending-photo',key);
 
-            console.log('BUILDING', item.id, item.format);\n            if(item.format==='feed' && dataFeed[item.id]){
+            console.log('BUILDING', item.id, item.format);
+            if(item.format==='feed' && dataFeed[item.id]){
               item.creative.visualStyle='reference-data-editorial';
               item.creative.template='insight-data';
               Object.assign(item.creative.text,dataFeed[item.id],{location:p.location.toUpperCase()});
