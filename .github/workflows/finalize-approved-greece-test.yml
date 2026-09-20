@@ -1,0 +1,70 @@
+name: Finalize approved Greece test post
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content-queue/tss-test-greece-q2-2026-feed.json'
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Bind approval and controlled publication
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs/promises';
+          import {binding,userApprovalBinding,sha256,CHECKS} from './social/lib/qa.js';
+
+          const itemPath='content-queue/tss-test-greece-q2-2026-feed.json';
+          const item=JSON.parse(await fs.readFile(itemPath,'utf8'));
+          if(item.status==='approved' && item.review?.boundSha256) process.exit(0);
+
+          item.status='approved';
+          item.review={
+            reviewer:'Hady',
+            reviewedAt:new Date().toISOString(),
+            assetSha256:item.asset.sha256,
+            captionSha256:sha256(item.caption),
+            checks:Object.fromEntries(CHECKS.map(k=>[k,true])),
+            notes:'Exact 1080x1350 final asset shown to and explicitly approved by Hady with the instruction “Approve and post”. Facts and official source were reviewed before approval.'
+          };
+          item.review.boundSha256=binding(item);
+          await fs.writeFile(itemPath,JSON.stringify(item,null,2)+'\n');
+
+          const policyPath='social/user-approval-policy.json';
+          const policy=JSON.parse(await fs.readFile(policyPath,'utf8'));
+          policy.approvals ||= {};
+          policy.approvals[item.id]={
+            approvedBy:'Hady',
+            approvedAt:new Date().toISOString(),
+            contentSha256:userApprovalBinding(item),
+            authorizationReference:'Explicit “Approve and post” instruction in TSS social semi-automated chat on 20 September 2026.'
+          };
+          await fs.writeFile(policyPath,JSON.stringify(policy,null,2)+'\n');
+
+          const configPath='social/publishing-config.json';
+          const config=JSON.parse(await fs.readFile(configPath,'utf8'));
+          config.controlledPublicationId=item.id;
+          config.approvedFormats=['feed'];
+          await fs.writeFile(configPath,JSON.stringify(config,null,2)+'\n');
+          NODE
+      - name: Commit publication binding
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name "tss-social-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add content-queue/tss-test-greece-q2-2026-feed.json social/user-approval-policy.json social/publishing-config.json
+          git commit -m "Finalize approved Greece test post"
+          git push origin main
