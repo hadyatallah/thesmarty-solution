@@ -1,0 +1,60 @@
+name: TSS tiny visual inspection sheets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tss-tiny-visual-inspection.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  tiny:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Build tiny inspection images
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs/promises';
+          import sharp from 'sharp';
+          const manifests=(await fs.readdir('content-queue')).filter(f=>f.startsWith('2026-09-20-')&&f.endsWith('.json')).sort();
+          const entries=[];
+          for(const f of manifests){
+            const x=JSON.parse(await fs.readFile('content-queue/'+f,'utf8'));
+            if(!x.asset?.path) continue;
+            if(x.format==='reel'){
+              let n=1;
+              for(const a of x.asset.sceneAssets||[]) entries.push({label:x.id+' S'+n++,path:a.path});
+            } else entries.push({label:x.id,path:x.asset.path});
+          }
+          await fs.mkdir('social/inspection-tiny',{recursive:true});
+          for(let start=0,part=1;start<entries.length;start+=4,part++){
+            const batch=entries.slice(start,start+4), W=480,H=680, comps=[];
+            const canvas=sharp({create:{width:W,height:H,channels:3,background:'#f2f2ee'}});
+            for(let i=0;i<batch.length;i++){
+              const e=batch[i], col=i%2,row=Math.floor(i/2),x=5+col*238,y=5+row*335;
+              const img=await sharp(e.path).resize({width:228,height:285,fit:'inside',background:'#ffffff'}).jpeg({quality:18}).toBuffer();
+              const meta=await sharp(img).metadata();
+              comps.push({input:img,left:x+Math.floor((228-meta.width)/2),top:y});
+              const safe=e.label.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+              comps.push({input:Buffer.from('<svg width="228" height="38" xmlns="http://www.w3.org/2000/svg"><rect width="228" height="38" fill="#fff"/><text x="4" y="13" font-family="Arial" font-size="8" fill="#082746">'+safe+'</text></svg>'),left:x,top:y+290});
+            }
+            await canvas.composite(comps).jpeg({quality:12}).toFile('social/inspection-tiny/tiny-'+part+'.jpg');
+          }
+          NODE
+      - name: Commit tiny inspection images
+        run: |
+          git config user.name "TSS Social Automation"
+          git config user.email "actions@users.noreply.github.com"
+          git add social/inspection-tiny/tiny-*.jpg
+          git commit -m "Add tiny TSS visual inspection images"
+          git push origin HEAD:main
