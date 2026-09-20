@@ -60,7 +60,6 @@ export async function renderCreative(input) {
   layers.push({ input: await sharp(logo).trim().resize({ width: 146 }).png().toBuffer(), left: 860, top });
   const t = input.text || {};
   await block(t.category, 72, top + 10, 22, 28, 1, C.slate, true, 720);
-  box(72, top + 104, 936, 2, C.navy);
   let y = top + (vertical ? 195 : 170), photoSha256 = null;
   if (input.template === 'place-opportunity') {
     requireThat(input.photoKey, 'Photo template has no approved photograph');
@@ -86,7 +85,8 @@ export async function renderCreative(input) {
     await block(t.question, 100, y + 22, 34, 46, 3, C.navy, true, 880);
   }
   const footerY = bottom - 57;
-  box(72, footerY - 26, 936, 2, C.navy);
+  if (t.location) await block(t.location, 72, footerY - 104, 18, 24, 1, C.slate, true, 520);
+  if (t.source) await block(t.source, 72, footerY - 72, 16, 22, 1, C.slate, false, 620);
   await block('CONNECT · DEVELOP · INVEST', 72, footerY, 22, 28, 1, C.slate, false);
   const footer = await textImage('THE SMARTY SOLUTION', 20, true, C.navy);
   layers.push({ input: footer.data, left: 1008 - footer.info.width, top: footerY });
