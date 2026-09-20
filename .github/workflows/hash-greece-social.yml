@@ -1,0 +1,31 @@
+name: Hash Greece social asset
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hash-greece-social.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  hash:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Hash asset
+        run: |
+          node --input-type=module -e "import fs from 'node:fs/promises'; import {sha256,imageFingerprint,visualSignature} from './social/lib/qa.js'; const b=await fs.readFile('social/review-assets/tss-greece-q2-2026-feed.jpg'); const o={sha256:sha256(b),pixelHash:await imageFingerprint(b),visualSignature:await visualSignature(b)}; await fs.mkdir('social/tmp',{recursive:true}); await fs.writeFile('social/tmp/greece-asset-hashes.json',JSON.stringify(o,null,2)+'\n'); console.log(JSON.stringify(o));"
+      - name: Commit hashes
+        run: |
+          git config user.name "tss-social-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add social/tmp/greece-asset-hashes.json
+          git commit -m "Record Greece social asset hashes"
+          git push origin main
