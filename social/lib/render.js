@@ -12,7 +12,7 @@ const C = { cream: '#f6f1e8', navy: '#082746', teal: '#14848b', slate: '#456f8a'
 const esc = value => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 async function textImage(text, size, bold, color) {
   cleanText(text);
-  requireThat(/^[\x20-\x7E\n·’“”↔]+$/.test(text), 'Creative text must use the approved English glyph set');
+  requireThat(/^[\x20-\x7E\n·’“”↔€]+$/.test(text), 'Creative text must use the approved English glyph set');
   return sharp({ text: { text: `<span foreground="${color}">${esc(text)}</span>`, font: `DejaVu Sans ${bold ? 'Bold ' : ''}${size}`, fontfile: bold ? FONTS.bold : FONTS.regular, rgba: true, dpi: 72 } }).png().toBuffer({ resolveWithObject: true });
 }
 async function wrap(text, size, bold, width, maxLines) {
