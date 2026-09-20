@@ -1,0 +1,64 @@
+name: TSS visual batch contact sheet
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tss-visual-batch-contact-sheet.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  sheet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Build inspection sheet
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs/promises';
+          import sharp from 'sharp';
+          const manifests=(await fs.readdir('content-queue')).filter(f=>f.startsWith('2026-09-20-')&&f.endsWith('.json')).sort();
+          const panels=[];
+          for(const f of manifests){
+            const x=JSON.parse(await fs.readFile('content-queue/'+f,'utf8'));
+            if(!x.asset?.path) continue;
+            if(x.format==='reel'){
+              let n=1;
+              for(const a of x.asset.sceneAssets||[]){
+                const img=await sharp(a.path).resize({width:270,height:480,fit:'inside',background:'#ffffff'}).jpeg({quality:82}).toBuffer();
+                panels.push({label:x.id+' scene '+n,img,w:270,h:480}); n++;
+              }
+            } else {
+              const h=x.format==='feed'?338:480;
+              const img=await sharp(x.asset.path).resize({width:270,height:h,fit:'inside',background:'#ffffff'}).jpeg({quality:82}).toBuffer();
+              panels.push({label:x.id,img,w:270,h});
+            }
+          }
+          const cols=4, cellW=300, cellH=560, rows=Math.ceil(panels.length/cols);
+          const canvas=sharp({create:{width:cols*cellW,height:rows*cellH,channels:3,background:'#f4f4f2'}});
+          const comps=[];
+          for(let i=0;i<panels.length;i++){
+            const p=panels[i], col=i%cols,row=Math.floor(i/cols),x=col*cellW+15,y=row*cellH+15;
+            comps.push({input:p.img,left:x,top:y});
+            const svg=Buffer.from('<svg width="270" height="62" xmlns="http://www.w3.org/2000/svg"><rect width="270" height="62" fill="#ffffff"/><text x="8" y="20" font-family="Arial" font-size="12" fill="#082746">'+p.label.replaceAll('&','&amp;')+'</text></svg>');
+            comps.push({input:svg,left:x,top:row*cellH+490});
+          }
+          await fs.mkdir('social-results',{recursive:true});
+          await canvas.composite(comps).jpeg({quality:86}).toFile('social-results/visual-batch-contact-sheet.jpg');
+          NODE
+      - name: Commit contact sheet
+        run: |
+          git config user.name "TSS Social Automation"
+          git config user.email "actions@users.noreply.github.com"
+          git add social-results/visual-batch-contact-sheet.jpg
+          git commit -m "Add visual batch inspection sheet"
+          git push origin HEAD:main
