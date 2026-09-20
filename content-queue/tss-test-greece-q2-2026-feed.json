@@ -1,7 +1,7 @@
 {
   "qaVersion": 2,
   "id": "tss-test-greece-q2-2026-feed",
-  "status": "draft",
+  "status": "approved",
   "topic": "Greece Q2 2026 economic growth and business opportunity",
   "topicKey": "greece-q2-2026-economic-growth",
   "headline": "GREECE IS GROWING. BUT WHAT IS DRIVING THE MOMENTUM?",
@@ -122,5 +122,32 @@
     "height": 1350,
     "originFormat": "feed",
     "commit": "87bc24198c49175b19c38acaed52df5b3d754eba"
+  },
+  "review": {
+    "reviewer": "Hady",
+    "reviewedAt": "2026-09-20T18:42:33.600Z",
+    "assetSha256": "8a7fd715022398703c79e0a8cd96526b183240ef00dd46abc06dfd04451681bc",
+    "captionSha256": "521e9308290b49e3da62004c181ca624c55d8037392feddd46aca75c1776290c",
+    "checks": {
+      "dimensions": true,
+      "imageLoaded": true,
+      "noPlaceholders": true,
+      "noBlankPanels": true,
+      "readableText": true,
+      "validCharacters": true,
+      "noClippedText": true,
+      "correctLogo": true,
+      "brandPalette": true,
+      "safeMargins": true,
+      "visualHierarchy": true,
+      "factsVerified": true,
+      "sourcesChecked": true,
+      "geographyVerified": true,
+      "duplicatesChecked": true,
+      "hashtagLimit": true,
+      "finalExportInspected": true
+    },
+    "notes": "Exact 1080x1350 final asset shown to and explicitly approved by Hady with the instruction “Approve and post”. Facts and official source were reviewed before approval.",
+    "boundSha256": "b5c5efc3428160b9a03a729d18d259c7725c33f5b3878c59899b15186cb3269e"
   }
 }

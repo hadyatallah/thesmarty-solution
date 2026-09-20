@@ -44,6 +44,12 @@
       "approvedAt": "2026-09-16T11:05:30.000Z",
       "contentSha256": "cda7e8eea41c00f3bfbaddceadfd988565c2f07a3d50c72fea1676b3b827ae0e",
       "authorizationReference": "Explicit instruction to publish Post 5 Revision 2 to Instagram and Facebook in the TSS Work chat."
+    },
+    "tss-test-greece-q2-2026-feed": {
+      "approvedBy": "Hady",
+      "approvedAt": "2026-09-20T18:42:33.601Z",
+      "contentSha256": "c6ac85958891cf8d69d21960513eb0c8afb36d347ed8b7cd4fbb7c10b3d6c6ba",
+      "authorizationReference": "Explicit “Approve and post” instruction in TSS social semi-automated chat on 20 September 2026."
     }
   },
   "note": "Semi-automated mode activated 20 September 2026. No TSS social post may publish without Hady's explicit approval of the exact final content. Historical approvals are preserved. Automatic-after-QA authorization is disabled.",
