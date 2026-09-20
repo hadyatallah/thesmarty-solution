@@ -67,7 +67,7 @@ jobs:
               fact2Label:'WHAT IT DOES NOT', fact2Body:'Property sales or rental demand.', body:'Authorised construction activity, not completed sales or rental demand.'
             },
             '2026-09-20-business-electricity-feed': {
-              metric:'€24.29', metricLabel:'PER 100 KWH | CYPRUS NON-HOUSEHOLD',
+              headline:'CYPRUS ELECTRICITY: BUSINESS COSTS.', metric:'€24.29', metricLabel:'PER 100 KWH | CYPRUS NON-HOUSEHOLD',
               fact1Label:'EU AVERAGE', fact1Body:'€18.37 per 100 kWh in H2 2025.',
               fact2Label:'SCOPE', fact2Body:'Annual use of 500 to 2,000 MWh.', body:'A business electricity benchmark, not a small-business bill quote.'
             },
