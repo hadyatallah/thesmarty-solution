@@ -64,17 +64,17 @@ jobs:
             '2026-09-20-building-permits-feed': {
               metric:'+21.1%', metricLabel:'BUILDING PERMITS | MAY 2026 YOY',
               fact1Label:'WHAT IT MEASURES', fact1Body:'Authorised construction activity.',
-              fact2Label:'WHAT IT DOES NOT', fact2Body:'Property sales or rental demand.'
+              fact2Label:'WHAT IT DOES NOT', fact2Body:'Property sales or rental demand.', body:'Authorised construction activity, not completed sales or rental demand.'
             },
             '2026-09-20-business-electricity-feed': {
               metric:'€24.29', metricLabel:'PER 100 KWH | CYPRUS NON-HOUSEHOLD',
               fact1Label:'EU AVERAGE', fact1Body:'€18.37 per 100 kWh in H2 2025.',
-              fact2Label:'SCOPE', fact2Body:'Annual use of 500 to 2,000 MWh.'
+              fact2Label:'SCOPE', fact2Body:'Annual use of 500 to 2,000 MWh.', body:'A business electricity benchmark, not a small-business bill quote.'
             },
             '2026-09-20-rppi-drivers-feed': {
               metric:'Q1 2026', metricLabel:'RPPI CONTINUED UPWARD TREND',
               fact1Label:'DEMAND', fact1Body:'Strong purchase demand, mainly foreign buyers.',
-              fact2Label:'SUPPLY + COSTS', fact2Body:'Construction costs rose while supply increased gradually.'
+              fact2Label:'SUPPLY + COSTS', fact2Body:'Construction costs rose while supply increased gradually.', body:'CBC links the trend to demand, costs and gradually increasing supply.'
             }
           };
           const shortBody = {
