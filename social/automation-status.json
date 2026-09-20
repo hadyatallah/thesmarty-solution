@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-19T18:38:46.873Z",
+  "checkedAt": "2026-09-20T04:40:19.898Z",
   "authorized": true,
   "ready": true,
   "publishingEnabled": true,
@@ -85,7 +85,7 @@
   "queue": {
     "approvedUnpublished": 0,
     "awaitingUserApproval": 0,
-    "drafts": 0,
+    "drafts": 12,
     "expiredReviews": []
   },
   "contentProduction": "Reviewed source briefs, dedicated final exports and actual visual QA are still required; the publisher does not research or approve new content."
