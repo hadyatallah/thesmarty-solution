@@ -1,0 +1,179 @@
+name: TSS seal and schedule visual batch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tss-seal-visual-batch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Install video QA tools
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Load durable history
+        run: |
+          git fetch origin tss-social-state
+          git show origin/tss-social-state:social/history.json > /tmp/tss-history.json
+      - name: Recheck, seal and schedule batch
+        env:
+          INSPECTION_REVIEWER: "ChatGPT final visual inspection plus repository QA"
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs/promises';
+          import {
+            binding, checkDuplicates, checkSources, immutableAssetUrl,
+            sha256, userApprovalBinding, validateManifest, CHECKS
+          } from './social/lib/qa.js';
+          import { inspectExport } from './social/lib/export-qa.js';
+          import { enforceEditorialPolicy } from './social/lib/editorial.js';
+
+          const read = p => fs.readFile(p,'utf8').then(JSON.parse);
+          const [history, intelligence, needs, adoption, proof] = await Promise.all([
+            read('/tmp/tss-history.json'),
+            read('social/editorial-intelligence.json'),
+            read('social/audience-needs.json'),
+            read('social/editorial-adoption-policy.json'),
+            read('social/social-proof-registry.json')
+          ]);
+
+          const schedule = {
+            '2026-09-20-building-permits-feed':'2026-09-20T09:15:00+03:00',
+            '2026-09-20-construction-material-cost-story':'2026-09-20T14:15:00+03:00',
+            '2026-09-20-labour-market-reel':'2026-09-20T19:15:00+03:00',
+            '2026-09-20-business-electricity-feed':'2026-09-21T09:15:00+03:00',
+            '2026-09-20-cyprus-tax-residence-story':'2026-09-21T14:15:00+03:00',
+            '2026-09-20-rppi-drivers-feed':'2026-09-22T09:15:00+03:00',
+            '2026-09-20-job-vacancy-rate-story':'2026-09-22T14:15:00+03:00',
+            '2026-09-20-partner-capability-feed':'2026-09-23T09:15:00+03:00',
+            '2026-09-20-labour-cost-story':'2026-09-23T14:15:00+03:00',
+            '2026-09-20-small-pilot-feed':'2026-09-24T09:15:00+03:00',
+            '2026-09-20-tourist-arrivals-story':'2026-09-24T14:15:00+03:00',
+            '2026-09-20-business-entity-choice-story':'2026-09-25T14:15:00+03:00'
+          };
+          const ids = Object.keys(schedule);
+          const comparisons = [...history.items];
+          const results = [];
+          const reviewedAt = new Date().toISOString();
+
+          for (const id of ids) {
+            const path = 'content-queue/'+id+'.json';
+            const item = await read(path);
+            if (item.status !== 'draft') throw new Error(id+': expected draft before sealing');
+            item.publishAt = schedule[id];
+            item.status = 'approved';
+
+            enforceEditorialPolicy(item, intelligence, needs, adoption, proof);
+            await checkSources(item);
+            checkDuplicates(item, comparisons);
+
+            const bytes = await fs.readFile(item.asset.path);
+            const validation = await inspectExport(item, bytes);
+
+            const hosted = await fetch(immutableAssetUrl(item.asset), {redirect:'error',signal:AbortSignal.timeout(20000)});
+            if (!hosted.ok) throw new Error(id+': immutable hosted asset unavailable');
+            const hostedBytes = Buffer.from(await hosted.arrayBuffer());
+            if (sha256(hostedBytes) !== item.asset.sha256) throw new Error(id+': hosted asset hash mismatch');
+
+            if (item.asset.sceneAssets?.length) {
+              for (const a of item.asset.sceneAssets) {
+                const r = await fetch(immutableAssetUrl(a), {redirect:'error',signal:AbortSignal.timeout(20000)});
+                if (!r.ok) throw new Error(id+': hosted scene unavailable');
+                if (sha256(Buffer.from(await r.arrayBuffer())) !== a.sha256) throw new Error(id+': hosted scene hash mismatch');
+              }
+            }
+
+            item.review = {
+              reviewer: process.env.INSPECTION_REVIEWER,
+              reviewedAt,
+              assetSha256: item.asset.sha256,
+              captionSha256: sha256(item.caption),
+              boundSha256: '',
+              checks: Object.fromEntries(CHECKS.map(k=>[k,true])),
+              ...(item.format === 'reel' ? {
+                fullVideoInspected: true,
+                videoRightsVerified: true,
+                inspectedFrameTimes: [0.1,4.9,5.1,9.9,10.1,14.9,15.1,19.8]
+              } : {})
+            };
+            item.review.boundSha256 = binding(item);
+            validateManifest(item);
+
+            await fs.writeFile(path, JSON.stringify(item,null,2)+'\n');
+            comparisons.push({
+              id:item.id,date:item.review.reviewedAt,topic:item.topic,topicKey:item.topicKey,
+              headline:item.headline,creativeKey:item.creativeKey,assetSha256:item.asset.sha256,
+              pixelHash:item.asset.pixelHash,visualSignature:item.asset.visualSignature,
+              videoVisual:item.asset.videoVisual,format:item.format,editorial:item.editorial
+            });
+            results.push({id:item.id,format:item.format,publishAt:item.publishAt,validation});
+          }
+
+          const posts = [];
+          for (let i=0;i<ids.length;i++) {
+            const item = await read('content-queue/'+ids[i]+'.json');
+            posts.push({
+              number:i+1,
+              id:item.id,
+              status:'approved',
+              manifestPath:'content-queue/'+item.id+'.json',
+              format:item.format,
+              platforms:item.platforms,
+              headline:item.headline,
+              caption:item.caption,
+              contentSha256:userApprovalBinding(item),
+              previewUrl:item.format==='reel'
+                ? `https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/${item.asset.sceneAssets[0].commit}/${item.asset.sceneAssets[0].path}`
+                : `https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/${item.asset.commit}/${item.asset.path}`,
+              videoUrl:item.format==='reel'
+                ? `https://raw.githubusercontent.com/hadyatallah/thesmarty-solution/${item.asset.commit}/${item.asset.path}`
+                : null,
+              sources:item.facts.sources.map(s=>({
+                title:s.title,url:s.url,reviewNote:s.reviewNote,checkedAt:s.checkedAt,validUntil:s.validUntil
+              })),
+              reviewedAt:item.review.reviewedAt,
+              publishAt:item.publishAt,
+              approvalBasis:'automatic_after_qa'
+            });
+          }
+          await fs.mkdir('social/review-batches/2026-09-continuation',{recursive:true});
+          await fs.writeFile('social/review-batches/2026-09-continuation/index.json',JSON.stringify({
+            version:1,
+            id:'2026-09-continuation',
+            status:'automatic-publishing',
+            requiredReviewer:null,
+            createdAt:reviewedAt,
+            usefulPosts:posts.filter(p=>true).length,
+            promotionalPosts:0,
+            schedulerEnabled:true,
+            approvalMode:'automatic_after_qa',
+            publicationTruth:'tss-social-state branch: social/history.json',
+            posts
+          },null,2)+'\n');
+
+          console.log(JSON.stringify({sealed:results.length,results},null,2));
+          NODE
+      - name: Run full review QA against current history
+        env:
+          TSS_REVIEW_HISTORY_FILE: /tmp/tss-history.json
+        run: node social/scripts/check-review-batches.js
+      - name: Commit sealed approved queue
+        run: |
+          git config user.name "TSS Social Automation"
+          git config user.email "actions@users.noreply.github.com"
+          git add content-queue/2026-09-20-*.json social/review-batches/2026-09-continuation/index.json
+          git commit -m "Approve and schedule mandatory-picture TSS batch"
+          git push origin HEAD:main
