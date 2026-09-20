@@ -173,7 +173,7 @@
     "width": 1080,
     "height": 1920,
     "originFormat": "reel",
-    "commit": null,
+    "commit": "912a27cda4aa42a1e8db8e0b669a7371ac01ed49",
     "sceneAssets": [
       {
         "path": "social/assets/d179bf31bc961eff523029cd49a021442126e22be2ba17ef1cc854e75743b019.png",
@@ -184,7 +184,7 @@
         "width": 1080,
         "height": 1920,
         "originFormat": "reel",
-        "commit": null
+        "commit": "912a27cda4aa42a1e8db8e0b669a7371ac01ed49"
       },
       {
         "path": "social/assets/f2bf858da241b147791ee0e41e9a7864eff6cfcc2d99fd6778c832a87ab06f9c.png",
@@ -195,7 +195,7 @@
         "width": 1080,
         "height": 1920,
         "originFormat": "reel",
-        "commit": null
+        "commit": "912a27cda4aa42a1e8db8e0b669a7371ac01ed49"
       },
       {
         "path": "social/assets/f32e32b03e6b91bc5f27fbb79894fdabaf915302abfa7b3be8eff8955f5f4490.png",
@@ -206,7 +206,7 @@
         "width": 1080,
         "height": 1920,
         "originFormat": "reel",
-        "commit": null
+        "commit": "912a27cda4aa42a1e8db8e0b669a7371ac01ed49"
       },
       {
         "path": "social/assets/4a861c182ec228f7ba1e20f3aba09f78bd1edef7b96957363730679890eaa126.png",
@@ -217,7 +217,7 @@
         "width": 1080,
         "height": 1920,
         "originFormat": "reel",
-        "commit": null
+        "commit": "912a27cda4aa42a1e8db8e0b669a7371ac01ed49"
       }
     ]
   }
