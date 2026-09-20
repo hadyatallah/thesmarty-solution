@@ -1,0 +1,19 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-20-business-entity-choice-story",
+  "status": "draft",
+  "topic": "Cyprus official registration costs and liability categories by business entity type",
+  "topicKey": "business-entity-choice",
+  "headline": "STARTING IN CYPRUS? ENTITY CHOICE MATTERS.",
+  "creativeKey": "business-entity-choice-story-v2-pending-photo",
+  "format": "story",
+  "platforms": ["instagram"],
+  "publishAt": null,
+  "requestedLocalSlot": "14:15",
+  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "caption": "Keep this checklist before comparing options.",
+  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"png","format":"story","template":"insight-data","text":{"category":"CYPRUS BUSINESS","headline":"STARTING IN CYPRUS? ENTITY CHOICE MATTERS.","body":"The Cyprus Registrar lists different registration costs and liability structures for a company, partnership, business name and an overseas company's place of business. Cost is only one part of the choice, so legal and tax advice may still be needed.","question":"Keep this checklist before comparing options.","source":"REGISTRAR OF COMPANIES"}},
+  "facts": {"classification":"factual","claims":[{"text":"The Cyprus Registrar lists registration costs of €165 for a company with share capital (€235 without), €120 for a partnership, €80 for a business name and €380 for a place of business of an overseas company.","sourceIds":["cy-registrar-business-entity-choice"]}],"sources":[{"id":"cy-registrar-business-entity-choice","title":"Cyprus Registrar: Choosing the right type of Business Entity","url":"https://www.companies.gov.cy/en/business-entities/2-company/10-understanding/choosing-the-right-type-of-business-entity","expectedText":"Registration Cost","reviewNote":"Official comparison table: company €165 with share capital or €235 without; partnership €120; business name €80; overseas-company place of business €380. The page also distinguishes liability. Present as official filing information, not personalised legal advice.","authorityType":"primary","sourceType":"primary","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z","additionalEvidence":["Personal Liability","€120","€80","€380"]}]},
+  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
+  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-operating-cost"],"pillar":"cyprus-economy-business","hook":{"type":"decision-risk","text":"STARTING IN CYPRUS? ENTITY CHOICE MATTERS.","wordCount":6},"objective":"save","cta":{"id":"save-comparison-checklist","text":"Keep this checklist before comparing options."},"contentFamilyId":"business-entity-choice","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"business-entity-choice","reviewedAt":"2026-09-20T04:30:00Z"}}
+}

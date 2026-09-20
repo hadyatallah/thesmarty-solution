@@ -1,0 +1,19 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-20-business-electricity-feed",
+  "status": "draft",
+  "topic": "Cyprus non-household electricity prices in H2 2025",
+  "topicKey": "business-electricity",
+  "headline": "OPERATING COSTS: CYPRUS ELECTRICITY IN CONTEXT.",
+  "creativeKey": "business-electricity-feed-v2-pending-photo",
+  "format": "feed",
+  "platforms": ["instagram","facebook"],
+  "publishAt": null,
+  "requestedLocalSlot": "09:15",
+  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "caption": "OPERATING COSTS: CYPRUS ELECTRICITY IN CONTEXT.\n\nEurostat reports €24.29 per 100 kWh for Cyprus non-household consumers in H2 2025 versus an EU average of €18.37. The comparison covers annual consumption of 500 to 2,000 MWh, so it is not a small-business bill quote.\n\nWhich country should we compare next?\n\nSources:\nEurostat: Non-household electricity prices, second half of 2025\nhttps://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20260508-2\n\n#Cyprus #CyprusBusiness #EnergyCosts #BusinessCosts #TheSmartySolution",
+  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"jpg","format":"feed","template":"insight-data","text":{"category":"CYPRUS BUSINESS","headline":"OPERATING COSTS: CYPRUS ELECTRICITY IN CONTEXT.","body":"Eurostat reports €24.29 per 100 kWh for Cyprus non-household consumers in H2 2025 versus an EU average of €18.37. The comparison covers annual consumption of 500 to 2,000 MWh, so it is not a small-business bill quote.","question":"Which country should we compare next?","source":"EUROSTAT | H2 2025"}},
+  "facts": {"classification":"factual","claims":[{"text":"For non-household consumers using 500-2,000 MWh annually, Eurostat reports Cyprus at €24.29/100 kWh and the EU average at €18.37/100 kWh in H2 2025.","sourceIds":["eurostat-nonhousehold-electricity-h2-2025"]}],"sources":[{"id":"eurostat-nonhousehold-electricity-h2-2025","title":"Eurostat: Non-household electricity prices, second half of 2025","url":"https://ec.europa.eu/eurostat/en/web/products-eurostat-news/w/ddn-20260508-2","expectedText":"Cyprus (€24.29)","reviewNote":"Eurostat comparison for non-household electricity consumers using 500-2,000 MWh annually. Cyprus €24.29/100 kWh; EU average €18.37/100 kWh. Do not generalise to every business or household.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z","additionalEvidence":["€18.37 per 100 Kilowatt-hours","500 Megawatt-hours (MWh) and 2 000 MWh"]}]},
+  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
+  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-operating-cost"],"pillar":"cyprus-economy-business","hook":{"type":"evidence-comparison","text":"OPERATING COSTS: CYPRUS ELECTRICITY IN CONTEXT.","wordCount":6},"objective":"compare","cta":{"id":"compare-next-country","text":"Which country should we compare next?"},"contentFamilyId":"business-electricity","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"business-electricity","reviewedAt":"2026-09-20T04:30:00Z"}}
+}

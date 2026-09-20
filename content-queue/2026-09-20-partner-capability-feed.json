@@ -1,0 +1,19 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-20-partner-capability-feed",
+  "status": "draft",
+  "topic": "Partner capability before market expansion",
+  "topicKey": "partner-capability",
+  "headline": "YOUR PARTNER NEEDS TO BRING MORE THAN CONTACTS.",
+  "creativeKey": "partner-capability-feed-v2-pending-photo",
+  "format": "feed",
+  "platforms": ["instagram","facebook"],
+  "publishAt": null,
+  "requestedLocalSlot": "09:15",
+  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "caption": "YOUR PARTNER NEEDS TO BRING MORE THAN CONTACTS.\n\nBefore expanding, define what the partner must actually deliver: access, execution, technical capability, local knowledge, follow-up or capital. A long contact list is not a capability plan.\n\nDoes your plan still work under this test?\n\n#Cyprus #BusinessDevelopment #Partnerships #Entrepreneurship #TheSmartySolution",
+  "creative": {"designVersion":2,"visualStyle":"reference-integrated-editorial","compositionReady":false,"assetFormat":"jpg","format":"feed","template":"question-debate","text":{"category":"CYPRUS BUSINESS","headline":"YOUR PARTNER NEEDS TO BRING MORE THAN CONTACTS.","body":"Before expanding, define what the partner must actually deliver: access, execution, technical capability, local knowledge, follow-up or capital. A long contact list is not a capability plan.","question":"Does your plan still work under this test?","source":"EDITORIAL VIEW / NOT A FORECAST"}},
+  "facts": {"classification":"editorial-opinion","claims":[],"sources":[]},
+  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
+  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-partner-capability"],"pillar":"cyprus-economy-business","hook":{"type":"decision-risk","text":"YOUR PARTNER NEEDS TO BRING MORE THAN CONTACTS.","wordCount":8},"objective":"self-assess","cta":{"id":"assess-plan-test","text":"Does your plan still work under this test?"},"contentFamilyId":"partner-capability","editorialType":"evergreen","repurpose":null,"socialProofId":null}
+}

@@ -1,0 +1,19 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-20-construction-material-cost-story",
+  "status": "draft",
+  "topic": "Cyprus construction material cost pressure in August 2026",
+  "topicKey": "construction-material-cost",
+  "headline": "BUILDING IN CYPRUS? WATCH MATERIAL COSTS.",
+  "creativeKey": "construction-material-cost-story-v2-pending-photo",
+  "format": "story",
+  "platforms": ["instagram"],
+  "publishAt": null,
+  "requestedLocalSlot": "14:15",
+  "planning": {"month":"2026-09","pillar":"cyprus-property","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "caption": "Save this for your next property review.",
+  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"png","format":"story","template":"insight-data","text":{"category":"CYPRUS PROPERTY","headline":"BUILDING IN CYPRUS? WATCH MATERIAL COSTS.","body":"CYSTAT reports the construction materials price index was 3.39% higher in August 2026 than a year earlier. This is an input-cost index, not a property-price forecast.","question":"Save this for your next property review.","source":"CYSTAT | AUG 2026"}},
+  "facts": {"classification":"factual","claims":[{"text":"Cyprus construction materials price index annual change was +3.39% in August 2026.","sourceIds":["cystat-construction-materials-aug-2026"]}],"sources":[{"id":"cystat-construction-materials-aug-2026","title":"CYSTAT: Price Index of Construction Materials, August 2026","url":"https://www.cystat.gov.cy/el/PressRelease?id=73357","expectedText":"+3,39%","reviewNote":"Annual change for the Cyprus construction materials price index in August 2026. Use only as an input-cost measure, not as a house-price or investment-return forecast.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z"}]},
+  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
+  "editorial": {"version":1,"audienceNeedIds":["investor-full-acquisition-cost"],"pillar":"cyprus-property","hook":{"type":"decision-risk","text":"BUILDING IN CYPRUS? WATCH MATERIAL COSTS.","wordCount":6},"objective":"save","cta":{"id":"save-property-review","text":"Save this for your next property review."},"contentFamilyId":"construction-material-cost","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"construction-material-cost","reviewedAt":"2026-09-20T04:30:00Z"}}
+}

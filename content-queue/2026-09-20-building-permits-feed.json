@@ -1,0 +1,19 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-20-building-permits-feed",
+  "status": "draft",
+  "topic": "Cyprus building permits activity in May 2026",
+  "topicKey": "building-permits",
+  "headline": "BUILDING PERMITS ARE NOT PROPERTY SALES.",
+  "creativeKey": "building-permits-feed-v2-pending-photo",
+  "format": "feed",
+  "platforms": ["instagram","facebook"],
+  "publishAt": null,
+  "requestedLocalSlot": "09:15",
+  "planning": {"month":"2026-09","pillar":"cyprus-property","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "caption": "BUILDING PERMITS ARE NOT PROPERTY SALES.\n\nCYSTAT reports the number of building permits authorised in May 2026 was 21.1% higher than a year earlier. Permits measure authorised construction activity, not completed sales or rental demand.\n\nDoes your plan still work under this test?\n\nSources:\nCYSTAT: Building Permits, May 2026\nhttps://www.cystat.gov.cy/el/PressRelease?id=73351\n\n#Cyprus #CyprusProperty #Construction #PropertyResearch #TheSmartySolution",
+  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"jpg","format":"feed","template":"insight-data","text":{"category":"CYPRUS PROPERTY","headline":"BUILDING PERMITS ARE NOT PROPERTY SALES.","body":"CYSTAT reports the number of building permits authorised in May 2026 was 21.1% higher than a year earlier. Permits measure authorised construction activity, not completed sales or rental demand.","question":"Does your plan still work under this test?","source":"CYSTAT | MAY 2026"}},
+  "facts": {"classification":"factual","claims":[{"text":"The number of building permits authorised in Cyprus in May 2026 was 21.1% higher year-on-year.","sourceIds":["cystat-building-permits-may-2026"]}],"sources":[{"id":"cystat-building-permits-may-2026","title":"CYSTAT: Building Permits, May 2026","url":"https://www.cystat.gov.cy/el/PressRelease?id=73351","expectedText":"21,1%","reviewNote":"May 2026 building-permit count annual change. Treat permits as construction-pipeline evidence only; do not present them as transactions, buyer demand or a forecast.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z"}]},
+  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
+  "editorial": {"version":1,"audienceNeedIds":["investor-downside-resilience"],"pillar":"cyprus-property","hook":{"type":"myth-vs-fact","text":"BUILDING PERMITS ARE NOT PROPERTY SALES.","wordCount":6},"objective":"self-assess","cta":{"id":"assess-plan-test","text":"Does your plan still work under this test?"},"contentFamilyId":"building-permits","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"building-permits","reviewedAt":"2026-09-20T04:30:00Z"}}
+}

@@ -1,0 +1,19 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-20-labour-market-reel",
+  "status": "draft",
+  "topic": "Cyprus unemployment rate in Q2 2026",
+  "topicKey": "labour-market",
+  "headline": "CYPRUS UNEMPLOYMENT: 3.6% IN Q2.",
+  "creativeKey": "labour-market-reel-v2-pending-photo",
+  "format": "reel",
+  "platforms": ["instagram"],
+  "publishAt": null,
+  "requestedLocalSlot": "19:15",
+  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "caption": "CYPRUS UNEMPLOYMENT: 3.6% IN Q2.\n\nCYSTAT's Labour Force Survey reports a 3.6% unemployment rate in Q2 2026. That is a national labour-market measure, not evidence about the availability or cost of a specific skill set.\n\nWhich factor would you check first?\n\nSources:\nCYSTAT: Labour Force Survey, Q2 2026\nhttps://beta.cystat.gov.cy/el/PressRelease?id=73312\n\n#Cyprus #CyprusBusiness #LabourMarket #Economy #TheSmartySolution",
+  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"mp4","format":"reel","template":"insight-data","text":{"category":"CYPRUS BUSINESS","headline":"CYPRUS UNEMPLOYMENT: 3.6% IN Q2.","body":"CYSTAT's Labour Force Survey reports a 3.6% unemployment rate in Q2 2026. That is a national labour-market measure, not evidence about the availability or cost of a specific skill set.","question":"Which factor would you check first?","source":"CYSTAT | Q2 2026"}},
+  "facts": {"classification":"factual","claims":[{"text":"Cyprus unemployment rate was 3.6% in Q2 2026 according to CYSTAT's Labour Force Survey.","sourceIds":["cystat-lfs-q2-2026"]}],"sources":[{"id":"cystat-lfs-q2-2026","title":"CYSTAT: Labour Force Survey, Q2 2026","url":"https://beta.cystat.gov.cy/el/PressRelease?id=73312","expectedText":"3,6%","reviewNote":"Official Labour Force Survey unemployment rate for Q2 2026. Do not infer role-specific hiring availability, wage levels or future labour conditions from the national unemployment rate alone.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z"}]},
+  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
+  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-operating-cost"],"pillar":"cyprus-economy-business","hook":{"type":"evidence-comparison","text":"CYPRUS UNEMPLOYMENT: 3.6% IN Q2.","wordCount":6},"objective":"comment","cta":{"id":"comment-first-factor","text":"Which factor would you check first?"},"contentFamilyId":"labour-market","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"labour-market","reviewedAt":"2026-09-20T04:30:00Z"},"reelScript":{"durationSeconds":20,"hook":"CYPRUS UNEMPLOYMENT: 3.6% IN Q2.","beats":["CYSTAT's Labour Force Survey reports a 3.6% unemployment rate in Q2 2026.","That is a national labour-market measure, not evidence about the availability or cost of a specific skill set."],"close":"Which factor would you check first?"}}
+}

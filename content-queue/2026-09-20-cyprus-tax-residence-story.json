@@ -1,0 +1,19 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-20-cyprus-tax-residence-story",
+  "status": "draft",
+  "topic": "Cyprus individual tax residence 183-day and 60-day routes",
+  "topicKey": "cyprus-tax-residence",
+  "headline": "CYPRUS TAX RESIDENCE: 60 DAYS ISN'T ENOUGH.",
+  "creativeKey": "cyprus-tax-residence-story-v2-pending-photo",
+  "format": "story",
+  "platforms": ["instagram"],
+  "publishAt": null,
+  "requestedLocalSlot": "14:15",
+  "planning": {"month":"2026-09","pillar":"tax-relocation","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "caption": "Keep this checklist before comparing options.",
+  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"png","format":"story","template":"insight-data","text":{"category":"CYPRUS TAX / RELOCATION","headline":"CYPRUS TAX RESIDENCE: 60 DAYS ISN'T ENOUGH.","body":"The Cyprus Tax Department says an individual may qualify under the 183-day rule or the 60-day rule. The 60-day route requires all listed conditions, including at least 60 days in Cyprus, limits on days in another country, a Cyprus business/employment/office condition and a permanent Cyprus residence.","question":"Keep this checklist before comparing options.","source":"CYPRUS TAX DEPARTMENT"}},
+  "facts": {"classification":"factual","claims":[{"text":"Cyprus Tax Department states individual tax residence can arise under either the 183-day rule or the conditional 60-day rule.","sourceIds":["cy-tax-residency"]}],"sources":[{"id":"cy-tax-residency","title":"Cyprus Tax Department: Tax Residency/Domicility","url":"https://www.gov.cy/mof-tax/en/documents/tax-residency-domicility/","expectedText":"60-day rule","reviewNote":"Current official summary of individual tax-residence tests. The 60-day route is conditional and all listed criteria must be checked. This draft does not calculate personal tax liability or treaty outcomes.","authorityType":"primary","sourceType":"primary","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z","additionalEvidence":["183-day rule","at least 60 days","permanent residence in Cyprus"]}]},
+  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
+  "editorial": {"version":1,"audienceNeedIds":["relocator-tax-residence"],"pillar":"tax-relocation","hook":{"type":"myth-vs-fact","text":"CYPRUS TAX RESIDENCE: 60 DAYS ISN'T ENOUGH.","wordCount":7},"objective":"save","cta":{"id":"save-comparison-checklist","text":"Keep this checklist before comparing options."},"contentFamilyId":"cyprus-tax-residence","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"cyprus-tax-residence","reviewedAt":"2026-09-20T04:30:00Z"}}
+}

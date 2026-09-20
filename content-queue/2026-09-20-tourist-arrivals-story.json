@@ -1,0 +1,19 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-20-tourist-arrivals-story",
+  "status": "draft",
+  "topic": "Cyprus tourist arrivals in August 2026",
+  "topicKey": "tourist-arrivals",
+  "headline": "AUGUST ARRIVALS FELL 3.3% YEAR ON YEAR.",
+  "creativeKey": "tourist-arrivals-story-v2-pending-photo",
+  "format": "story",
+  "platforms": ["instagram"],
+  "publishAt": null,
+  "requestedLocalSlot": "14:15",
+  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "caption": "Which assumption would you stress-test first?",
+  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"png","format":"story","template":"insight-data","text":{"category":"CYPRUS ECONOMY","headline":"AUGUST ARRIVALS FELL 3.3% YEAR ON YEAR.","body":"CYSTAT reports 581,880 tourist arrivals in August 2026 versus 602,026 in August 2025, a 3.3% annual decrease. One month does not establish a long-term tourism or property trend.","question":"Which assumption would you stress-test first?","source":"CYSTAT | AUG 2026"}},
+  "facts": {"classification":"factual","claims":[{"text":"Tourist arrivals in Cyprus were 581,880 in August 2026 versus 602,026 in August 2025, a 3.3% decrease.","sourceIds":["cystat-tourist-arrivals-aug-2026"]}],"sources":[{"id":"cystat-tourist-arrivals-aug-2026","title":"CYSTAT: Tourist Arrivals, August 2026","url":"https://www.cystat.gov.cy/en/Default","expectedText":"Tourist Arrivals -3,3%","reviewNote":"Official August 2026 tourist-arrival count and annual change. Use this as a one-month tourism measure only and do not infer property demand, investment returns or a long-term trend.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z","additionalEvidence":["581.880","602.026"]}]},
+  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
+  "editorial": {"version":1,"audienceNeedIds":["investor-downside-resilience"],"pillar":"cyprus-economy-business","hook":{"type":"evidence-comparison","text":"AUGUST ARRIVALS FELL 3.3% YEAR ON YEAR.","wordCount":8},"objective":"self-assess","cta":{"id":"assess-stress-test","text":"Which assumption would you stress-test first?"},"contentFamilyId":"tourist-arrivals","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"tourist-arrivals","reviewedAt":"2026-09-20T04:30:00Z"}}
+}

@@ -1,0 +1,19 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-20-rppi-drivers-feed",
+  "status": "draft",
+  "topic": "Central Bank of Cyprus Q1 2026 residential property price trend and cited drivers",
+  "topicKey": "rppi-drivers",
+  "headline": "WHAT'S DRIVING CYPRUS HOME PRICES?",
+  "creativeKey": "rppi-drivers-feed-v2-pending-photo",
+  "format": "feed",
+  "platforms": ["instagram","facebook"],
+  "publishAt": null,
+  "requestedLocalSlot": "09:15",
+  "planning": {"month":"2026-09","pillar":"cyprus-property","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "caption": "WHAT'S DRIVING CYPRUS HOME PRICES?\n\nThe Central Bank of Cyprus says its residential property price index continued upward in Q1 2026. It cited strong purchase demand, mainly from foreign buyers, rising construction costs and gradually increasing housing supply.\n\nWhich market deserves the next evidence check?\n\nSources:\nCentral Bank of Cyprus: Residential Property Price Index, Q1 2026\nhttps://www.centralbank.cy/en/announcements/residential-property-price-index-23-06-2026\n\n#Cyprus #CyprusProperty #RealEstate #PropertyData #TheSmartySolution",
+  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"jpg","format":"feed","template":"insight-data","text":{"category":"CYPRUS PROPERTY","headline":"WHAT'S DRIVING CYPRUS HOME PRICES?","body":"The Central Bank of Cyprus says its residential property price index continued upward in Q1 2026. It cited strong purchase demand, mainly from foreign buyers, rising construction costs and gradually increasing housing supply.","question":"Which market deserves the next evidence check?","source":"CENTRAL BANK OF CYPRUS | Q1 2026"}},
+  "facts": {"classification":"factual","claims":[{"text":"CBC states the RPPI continued its upward trend in Q1 2026 and attributes this to strong purchase demand, mainly foreign buyers, increasing construction costs and gradually increasing supply.","sourceIds":["cbc-rppi-q1-2026"]}],"sources":[{"id":"cbc-rppi-q1-2026","title":"Central Bank of Cyprus: Residential Property Price Index, Q1 2026","url":"https://www.centralbank.cy/en/announcements/residential-property-price-index-23-06-2026","expectedText":"continued its upward trend","reviewNote":"CBC's own Q1 2026 explanation of RPPI direction and cited market drivers. Attribute the explanation to CBC and do not convert it into a yield, return or future-price forecast.","authorityType":"primary","sourceType":"primary","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z"}]},
+  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
+  "editorial": {"version":1,"audienceNeedIds":["investor-market-comparison"],"pillar":"cyprus-property","hook":{"type":"direct-question","text":"WHAT'S DRIVING CYPRUS HOME PRICES?","wordCount":5},"objective":"compare","cta":{"id":"compare-next-market","text":"Which market deserves the next evidence check?"},"contentFamilyId":"rppi-drivers","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"rppi-drivers","reviewedAt":"2026-09-20T04:30:00Z"}}
+}

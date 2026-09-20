@@ -1,0 +1,19 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-20-small-pilot-feed",
+  "status": "draft",
+  "topic": "Using a small pilot to test a Cyprus business idea",
+  "topicKey": "small-pilot",
+  "headline": "TEST THE IDEA BEFORE YOU SCALE IT.",
+  "creativeKey": "small-pilot-feed-v2-pending-photo",
+  "format": "feed",
+  "platforms": ["instagram","facebook"],
+  "publishAt": null,
+  "requestedLocalSlot": "09:15",
+  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "caption": "TEST THE IDEA BEFORE YOU SCALE IT.\n\nA small pilot can expose weak assumptions before a larger commitment. Define the customer, offer, success measure and stop condition before spending more.\n\nWhich assumption would you stress-test first?\n\n#Cyprus #Entrepreneurship #BusinessDevelopment #Pilot #TheSmartySolution",
+  "creative": {"designVersion":2,"visualStyle":"reference-integrated-editorial","compositionReady":false,"assetFormat":"jpg","format":"feed","template":"question-debate","text":{"category":"CYPRUS BUSINESS","headline":"TEST THE IDEA BEFORE YOU SCALE IT.","body":"A small pilot can expose weak assumptions before a larger commitment. Define the customer, offer, success measure and stop condition before spending more.","question":"Which assumption would you stress-test first?","source":"EDITORIAL VIEW / NOT A FORECAST"}},
+  "facts": {"classification":"editorial-opinion","claims":[],"sources":[]},
+  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
+  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-demand-validation"],"pillar":"cyprus-economy-business","hook":{"type":"decision-risk","text":"TEST THE IDEA BEFORE YOU SCALE IT.","wordCount":7},"objective":"self-assess","cta":{"id":"assess-stress-test","text":"Which assumption would you stress-test first?"},"contentFamilyId":"small-pilot","editorialType":"evergreen","repurpose":null,"socialProofId":null}
+}

@@ -1,0 +1,19 @@
+{
+  "qaVersion": 2,
+  "id": "2026-09-20-labour-cost-story",
+  "status": "draft",
+  "topic": "Cyprus Labour Cost Index annual change in Q2 2026",
+  "topicKey": "labour-cost",
+  "headline": "LABOUR COSTS MOVED 3.8% YEAR ON YEAR.",
+  "creativeKey": "labour-cost-story-v2-pending-photo",
+  "format": "story",
+  "platforms": ["instagram"],
+  "publishAt": null,
+  "requestedLocalSlot": "14:15",
+  "planning": {"month":"2026-09","pillar":"cyprus-economy-business","researchReviewedAt":"2026-09-20T04:30:00Z","requiresComposition":true,"requiresPhotoSelection":true,"requiresSourceLabel":false,"requiresFinalExportReview":true,"note":"Research brief only. Mandatory real picture/video, dedicated composition, final export, technical QA, duplicate/geography checks and actual final visual inspection are still required before approval."},
+  "caption": "Keep this checklist before comparing options.",
+  "creative": {"designVersion":2,"visualStyle":"reference-data-editorial","compositionReady":false,"assetFormat":"png","format":"story","template":"insight-data","text":{"category":"CYPRUS BUSINESS","headline":"LABOUR COSTS MOVED 3.8% YEAR ON YEAR.","body":"CYSTAT's provisional Labour Cost Index for Q2 2026 was 3.8% higher than a year earlier. An index change is not the same as a salary quote for a specific job.","question":"Keep this checklist before comparing options.","source":"CYSTAT | Q2 2026"}},
+  "facts": {"classification":"factual","claims":[{"text":"Cyprus Labour Cost Index annual change was +3.8% in Q2 2026, based on provisional CYSTAT data.","sourceIds":["cystat-labour-cost-q2-2026"]}],"sources":[{"id":"cystat-labour-cost-q2-2026","title":"CYSTAT: Labour Cost Index, Q2 2026","url":"https://www.cystat.gov.cy/el/PressRelease?id=73349","expectedText":"3,8%","reviewNote":"Provisional annual change in the Labour Cost Index for Q2 2026. Keep the index scope separate from specific salary levels or recruitment quotes.","authorityType":"official-statistics","sourceType":"official-statistics","checkedAt":"2026-09-20T04:30:00Z","validUntil":"2026-09-27T04:30:00Z"}]},
+  "geography": {"mode":"pending-photo-selection","requireRealVisual":true,"requireRepublicControlled":true,"note":"No visual is approved yet. Text-only/no-location imagery is prohibited."},
+  "editorial": {"version":1,"audienceNeedIds":["entrepreneur-operating-cost"],"pillar":"cyprus-economy-business","hook":{"type":"evidence-comparison","text":"LABOUR COSTS MOVED 3.8% YEAR ON YEAR.","wordCount":8},"objective":"save","cta":{"id":"save-comparison-checklist","text":"Keep this checklist before comparing options."},"contentFamilyId":"labour-cost","editorialType":"trend","repurpose":null,"socialProofId":null,"trend":{"candidateId":"labour-cost","reviewedAt":"2026-09-20T04:30:00Z"}}
+}
