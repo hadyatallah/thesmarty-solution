@@ -12,12 +12,6 @@ on:
       - '.github/workflows/publish-instagram.yml'
       - 'package-lock.json'
   workflow_dispatch:
-  schedule:
-    # UTC wake-ups cover Cyprus summer (+03) and winter (+02) time.
-    # Each publishing slot gets several wake-ups. The queue's offset-aware
-    # publishAt prevents early publication and history prevents duplicates.
-    # This reduces reliance on any single delayed or missed GitHub schedule event.
-    - cron: '15,20,25,30 6,7,11,12,16,17 * * *'
 
 # Explicit automatic-after-QA authorization replaces the first-ten rollout hold.
 # Actual content checks, supported adapters, duplicate protection and caps remain.
