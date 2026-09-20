@@ -78,7 +78,7 @@ jobs:
 
             <circle cx="30" cy="210" r="30" fill="${teal}"/>
             <text x="79" y="200" class="sans navy" font-size="22" font-weight="800">EXPORTS</text>
-            <text x="79" y="230" class="sans slate" font-size="20">Goods & services +2.2% YoY</text>
+            <text x="79" y="230" class="sans slate" font-size="20">Goods &amp; services +2.2% YoY</text>
           </g>
 
           <defs>
