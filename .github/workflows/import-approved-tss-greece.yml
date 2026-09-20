@@ -1,4 +1,4 @@
-name: Import approved TSS Greece asset
+name: Probe approved TSS Greece asset
 
 on:
   push:
@@ -7,10 +7,10 @@ on:
       - '.github/workflows/import-approved-tss-greece.yml'
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  import:
+  probe:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,45 +19,14 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci --no-audit --no-fund
-      - name: Download exact approved Canva page render
+      - name: Probe direct Canva fallback render
         env:
-          ASSET_URL: "https://export-download.canva.com/a1dad124-3535-46f6-9cea-26d2bb80b3a6/0/0001-5976793213246074608.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH5AO7UJ26%2F20260919%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260919T195706Z&X-Amz-Expires=87075&X-Amz-Signature=d410b1664f5f46a8f0cf979f96540c603ce6f90ea4be984e888ec6779e36ab12&X-Amz-SignedHeaders=host%3Bx-amz-expected-bucket-owner&response-expires=Sun%2C%2020%20Sep%202026%2020%3A08%3A21%20GMT"
+          ASSET_URL: "https://s3.amazonaws.com/document-export.canva.com/43tt0/DAHUr143tt0/1/thumbnail/0001.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQYCGKMUH4GDRW44L%2F20260920%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260920T114151Z&X-Amz-Expires=27960&X-Amz-Signature=6384692b354c1c0185c7531834a30ce06217f634e4d545c1723d862b21b655b4&X-Amz-SignedHeaders=host&response-expires=Sun%2C%2020%20Sep%202026%2019%3A27%3A51%20GMT"
         run: |
           set -euo pipefail
-          mkdir -p social/assets social/imported-assets
           curl --fail --location --silent --show-error "$ASSET_URL" -o /tmp/tss-greece.png
           node --input-type=module <<'NODE'
-          import fs from 'node:fs/promises';
           import sharp from 'sharp';
-          import { sha256, imageFingerprint, visualSignature } from './social/lib/qa.js';
-          const bytes = await fs.readFile('/tmp/tss-greece.png');
-          const meta = await sharp(bytes).metadata();
-          if (meta.width !== 1080 || meta.height !== 1350) throw new Error(`Expected 1080x1350, got ${meta.width}x${meta.height}`);
-          if (!['png','jpeg'].includes(meta.format)) throw new Error(`Unexpected format ${meta.format}`);
-          const sha = sha256(bytes);
-          const ext = meta.format === 'jpeg' ? 'jpg' : 'png';
-          const assetPath = `social/assets/${sha}.${ext}`;
-          await fs.writeFile(assetPath, bytes);
-          const record = {
-            id: 'tss-test-greece-q2-2026-feed',
-            asset: {
-              path: assetPath,
-              sha256: sha,
-              pixelHash: await imageFingerprint(bytes),
-              visualSignature: await visualSignature(bytes),
-              width: meta.width,
-              height: meta.height,
-              originFormat: 'feed',
-              commit: null
-            }
-          };
-          await fs.writeFile('social/imported-assets/tss-test-greece-q2-2026-feed.json', JSON.stringify(record, null, 2) + '\n');
-          console.log(JSON.stringify(record));
+          const m=await sharp('/tmp/tss-greece.png').metadata();
+          console.log(JSON.stringify({width:m.width,height:m.height,format:m.format}));
           NODE
-      - name: Commit imported asset
-        run: |
-          git config user.name "tss-social-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add social/assets social/imported-assets/tss-test-greece-q2-2026-feed.json
-          git commit -m "Import approved Greece social test asset"
-          git push origin main
