@@ -42,8 +42,10 @@ async function call(fn,...args){return rpc(fn,sessionToken,...args)}
 async function loadGoogleIdentity(){if(window.google?.accounts?.id)return;await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=resolve;s.onerror=()=>reject(Error('Google sign-in could not load.'));document.head.appendChild(s)})}
 function googleEmailFromCredential(credential){
   try{
-    const payload=String(credential||'').split('.')[1];
-    return payload?String(JSON.parse(atob(payload.replace(/-/g,'+').replace(/_/g,'/'))).email||''):'';
+    const payload=String(credential||'').split('.')[1]||'';
+    const normalized=payload.replace(/-/g,'+').replace(/_/g,'/');
+    const padded=normalized+'='.repeat((4-normalized.length%4)%4);
+    return payload?String(JSON.parse(atob(padded)).email||''):'';
   }catch(error){return ''}
 }
 async function showLogin(message=''){
@@ -180,7 +182,8 @@ async function loadGa(){
 async function discoverSearchConsole(){
  const data=await gfetch('https://www.googleapis.com/webmasters/v3/sites');
  const sites=(data.siteEntry||[]).map(x=>x.siteUrl);
- scSite=sites.find(x=>/thesmarty-solution\.com|thesmartysolution\.com/i.test(x))||sites[0]||'';
+ const preferredUrl='https://www.thesmartysolution.com/';
+ scSite=sites.find(x=>x===preferredUrl)||sites.find(x=>/^https:\/\/www\.thesmartysolution\.com\//i.test(x))||sites.find(x=>/^https:\/\/thesmartysolution\.com\//i.test(x))||sites.find(x=>/thesmarty-solution\.com|thesmartysolution\.com/i.test(x))||sites[0]||'';
  if(!scSite)throw Error('No Search Console property is available to this Google account.');
  setStatus('scStatus','good','Connected: '+scSite.replace(/^sc-domain:/,''));
 }
