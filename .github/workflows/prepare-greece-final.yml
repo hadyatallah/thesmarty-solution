@@ -1,10 +1,8 @@
 name: Prepare Greece final post
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/prepare-greece-final.yml'
+  # One-off preparation: never queue a post as a side effect of a code update.
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -88,17 +86,17 @@ jobs:
             requestedLocalSlot:'manual-approved',
             caption:`Greece’s economy continued to expand in Q2 2026.
 
-Real GDP increased 1.9% year on year. Over the same period, total final consumption expenditure increased 1.3%, gross fixed capital formation increased 6.1%, and exports of goods and services increased 2.2% compared with Q2 2025.
+          Real GDP increased 1.9% year on year. Over the same period, total final consumption expenditure increased 1.3%, gross fixed capital formation increased 6.1%, and exports of goods and services increased 2.2% compared with Q2 2025.
 
-These are provisional, seasonally adjusted volume figures published by the Hellenic Statistical Authority.
+          These are provisional, seasonally adjusted volume figures published by the Hellenic Statistical Authority.
 
-Growth is one signal. The more useful business question is where that momentum creates a realistic fit for your company.
+          Growth is one signal. The more useful business question is where that momentum creates a realistic fit for your company.
 
-The Smarty Solution works around market intelligence, prospecting, outreach and strategic business connections.
+          The Smarty Solution works around market intelligence, prospecting, outreach and strategic business connections.
 
-Explore more at thesmartysolution.com
+          Explore more at thesmartysolution.com
 
-#GreeceBusiness #MarketIntelligence #BusinessDevelopment #SMEGrowth #TheSmartySolution`,
+          #GreeceBusiness #MarketIntelligence #BusinessDevelopment #SMEGrowth #TheSmartySolution`,
             creative:{
               designVersion:2,visualStyle:'reference-data-editorial',compositionReady:true,assetFormat:'jpg',format:'feed',template:'insight-data',
               photoKey:'pexels-athens-acropolis-6924327',logoSha256:LOGO_SHA,
