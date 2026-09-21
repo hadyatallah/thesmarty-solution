@@ -79,17 +79,25 @@ function compactRecord(entity,r){
   return out;
 }
 function lexicalCandidates(text){
-  const q=String(text||'').toLowerCase();
-  const tokens=q.split(/[^\p{L}\p{N}@.+-]+/u).filter(function(x){return x.length>2;});
-  const groups=['Companies','Contacts','Opportunities','Tickets','Tasks'],out=[];
-  groups.forEach(function(entity){
-    (state.records[entity]||[]).forEach(function(r){
-      const cn=r.companyId?company(r.companyId):'',hay=[r.name,r.id,cn,r.email,r.phone,r.website].filter(Boolean).join(' ').toLowerCase();
-      let score=0;tokens.forEach(function(t){if(hay.includes(t))score+=t.includes('@')?5:1;});
-      if(score)out.push({entity:entity,r:r,score:score});
+  const q=String(text||'').toLowerCase(),normalized=normalizeForMatch(q);
+  const stop=new Set('give me everything about tell all info information details provide show find please the for with company contact ltd limited'.split(' '));
+  const tokens=normalized.split(' ').filter(t=>t.length>2&&!stop.has(t));
+  const ids=q.match(/\b(?:tss-cy|tss-web|con|opp|tic|tsk)-[a-z0-9-]+\b/g)||[];
+  const out=[];
+  ['Companies','Contacts','Opportunities','Tickets','Tasks'].forEach(entity=>{
+    (state.records[entity]||[]).forEach(r=>{
+      const id=String(r.id||'').toLowerCase();
+      if(ids.length){if(ids.includes(id))out.push({entity,r,score:10000});return;}
+      const name=normalizeForMatch(r.name),email=String(r.email||'').toLowerCase();
+      const words=new Set(normalizeForMatch([r.name,r.email,r.phone,r.website].filter(Boolean).join(' ')).split(' '));
+      let score=0;
+      if(name&&(' '+normalized+' ').includes(' '+name+' '))score=1000+name.length;
+      else if(email&&q.includes(email))score=900;
+      else{const hits=tokens.filter(t=>words.has(t)).length;if(hits)score=hits/tokens.length*100;}
+      if(score)out.push({entity,r,score});
     });
   });
-  return out.sort(function(a,b){return b.score-a.score;}).slice(0,12).map(function(x){return {entity:x.entity,record:compactRecord(x.entity,x.r)};});
+  return out.sort((a,b)=>b.score-a.score).slice(0,12).map(x=>({entity:x.entity,record:compactRecord(x.entity,x.r),score:x.score}));
 }
 function workingSummary(){
   const r=state.records,actions=actionableRecords();
@@ -112,9 +120,10 @@ function dossierRequest(text){
   const q=String(text||'').toLowerCase();
   const wants=/\b(all info|all information|all details|everything about|provide.*info|provide.*details|tell me everything|full details|full info)\b/i.test(q);
   if(!wants)return null;
-  const match=lexicalCandidates(text).find(function(x){return x.entity==='Companies';});
-  if(!match||!match.record||!match.record.id)return null;
-  return (state.records.Companies||[]).find(function(r){return r.id===match.record.id;})||null;
+  const matches=lexicalCandidates(text).filter(x=>x.entity==='Companies');
+  const match=matches[0];
+  if(!match||match.score<100||(matches[1]&&matches[1].score===match.score))return null;
+  return (state.records.Companies||[]).find(r=>r.id===match.record.id)||null;
 }
 function dossierValue(v){return v===undefined||v===null||v===''?'—':esc(v);}
 function companyDossierHtml(companyRec){
@@ -326,6 +335,9 @@ async function handleAssistantSubmit(e){
     el('aiAnswer').innerHTML=companyDossierHtml(dossier);
     return;
   }
+  if(/\b(all info|all information|all details|everything about|provide.*info|provide.*details|tell me everything|full details|full info)\b/i.test(q)){
+    el('aiAnswer').innerHTML='<div class="assistant-message">I could not identify one company confidently. Please use its full company name or exact CRM ID.</div>';return;
+  }
   const local=localCommunicationAnswer(q);
   if(local){
     aiConversation.push({role:'user',text:q},{role:'assistant',text:local});
@@ -431,3 +443,4 @@ async function undoLastAiUpdate(){
 function clearAiConversation(){aiConversation=[];aiPendingPlan=null;aiContextSelection={entity:'',id:'',label:''};saveAiState();if(view==='Today'||view==='Assistant')render();}
 function assistant(){aiContextSelection={entity:'',id:'',label:''};el('main').innerHTML='<h2>CRM Assistant</h2><p class="muted">Your one-stop shop for everything in the CRM.</p>'+assistantWorkspaceHtml();wireAssistantForm();}
 async function syncInbox(){try{const r=await call('syncEmail');notice(r.created+' new tickets, '+r.updated);await refresh();}catch(e){notice(e.message);}}
+
