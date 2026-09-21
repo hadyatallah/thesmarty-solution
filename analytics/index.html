@@ -28,7 +28,7 @@
 const GOOGLE_CLIENT_ID='103840050410-80lukup1okjnkmt6qvmd9s2mbvi3uakf.apps.googleusercontent.com';
 const CRM_API='https://script.google.com/macros/s/AKfycbyiSUdWOD3LfVzzvV_8WnO3gGvKLbvbNcyTYKnFpUU-Duh8u8liGfU79cc3erXTG9Hk4Q/exec';
 const ENQUIRY_SHEET_ID='1Hq-pYK4XSKyIcKsKg6IjOQKI-CvKaYrRmmtY80Zojao';
-let sessionToken='',sessionExpiry=0,crmState=null,googleAccessToken='',gaProperty='',scSite='',rangeDays=30,googleConnectionAttempted=false;
+let sessionToken='',sessionExpiry=0,crmState=null,googleAccessToken='',gaProperty='',scSite='',rangeDays=30,googleConnectionAttempted=false,googleLoginHint='';
 let charts={};
 const el=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -40,16 +40,22 @@ async function rpc(fn,...args){
 }
 async function call(fn,...args){return rpc(fn,sessionToken,...args)}
 async function loadGoogleIdentity(){if(window.google?.accounts?.id)return;await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=resolve;s.onerror=()=>reject(Error('Google sign-in could not load.'));document.head.appendChild(s)})}
+function googleEmailFromCredential(credential){
+  try{
+    const payload=String(credential||'').split('.')[1];
+    return payload?String(JSON.parse(atob(payload.replace(/-/g,'+').replace(/_/g,'/'))).email||''):'';
+  }catch(error){return ''}
+}
 async function showLogin(message=''){
  el('main').innerHTML='<section class="panel login"><h2>Analytics login</h2><p class="muted">Use your authorised TSS Google account.</p><p id="loginError" class="warning">'+esc(message)+'</p><div id="googleButton">Connecting to Google…</div><p class="source-note">The dashboard is separate from the CRM. The CRM login is reused only as the access gate.</p></section>';
  await loadGoogleIdentity();
  const challenge=await rpc('beginGoogleLogin');
  google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,nonce:challenge.nonce,auto_select:false,callback:async response=>{
-   try{const r=await rpc('googleSignIn',response.credential,challenge.nonce);sessionToken=r.token;sessionExpiry=r.expiresAt;await loadCrmState();renderDashboard();}catch(e){showLogin(e.message)}
+   try{googleLoginHint=googleEmailFromCredential(response.credential);const r=await rpc('googleSignIn',response.credential,challenge.nonce);sessionToken=r.token;sessionExpiry=r.expiresAt;await loadCrmState();renderDashboard();}catch(e){showLogin(e.message)}
  }});
  el('googleButton').textContent='';google.accounts.id.renderButton(el('googleButton'),{theme:'outline',size:'large',text:'signin_with',width:280});
 }
-async function logout(){const t=sessionToken;sessionToken='';crmState=null;googleAccessToken='';googleConnectionAttempted=false;el('signOutButton').classList.add('hidden');try{await rpc('signOut',t)}catch(e){}showLogin('Signed out.')}
+async function logout(){const t=sessionToken;sessionToken='';crmState=null;googleAccessToken='';googleConnectionAttempted=false;googleLoginHint='';el('signOutButton').classList.add('hidden');try{await rpc('signOut',t)}catch(e){}showLogin('Signed out.')}
 async function loadCrmState(){crmState=await call('getState');el('signOutButton').classList.remove('hidden')}
 function crmSummary(){
  const r=crmState?.records||{},opps=r.Opportunities||[],companies=r.Companies||[],tasks=r.Tasks||[];
@@ -113,11 +119,18 @@ async function connectGoogleData(silent=false){
  if(silent&&googleConnectionAttempted)return;
  googleConnectionAttempted=true;
  await loadGoogleIdentity();
+ let consentFallbackUsed=false;
  const client=google.accounts.oauth2.initTokenClient({
    client_id:GOOGLE_CLIENT_ID,
+   login_hint:googleLoginHint||undefined,
    scope:'https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/spreadsheets.readonly',
    callback:async token=>{
      if(token.error){
+       if(!silent&&!consentFallbackUsed){
+         consentFallbackUsed=true;
+         client.requestAccessToken({prompt:'consent'});
+         return;
+       }
        const button=el('connectGoogle');if(button)button.textContent='Connect Google data';
        if(!silent)notice(token.error==='consent_required'?'Please approve Google data access.':token.error);
        return;
@@ -127,7 +140,7 @@ async function connectGoogleData(silent=false){
      await refreshAll();
    }
  });
- client.requestAccessToken({prompt:silent?'':'consent'});
+ client.requestAccessToken({prompt:''});
 }
 async function gfetch(url,opts={}){
  if(!googleAccessToken)throw Error('Google data is not connected.');
