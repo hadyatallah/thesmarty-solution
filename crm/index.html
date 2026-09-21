@@ -117,7 +117,14 @@ function edit(entity,id='',companyId=''){const r=id?state.records[entity].find(x
 
 function whatsappNumber(raw){let n=String(raw||'').trim();if(n.startsWith('00'))n=n.slice(2);return n.replace(/\D/g,'')}
 function whatsappTemplate(kind,r){const templates={
- intro:'Hello, this is The Smarty Solution. I\'m reaching out regarding a potential business opportunity. Would you be open to a brief discussion?',
+ intro:`Hi, hope you're doing well! I'm getting in touch from The Smarty Solution, based in Cyprus.
+
+We help businesses reach new customers and explore ways to grow. I'd like to learn a little more about ${r?.name || "your business"} and see whether there's a useful way we could work together.
+
+Are you currently looking to reach more customers or grow a particular part of the business?
+
+Here's our website if you'd like to have a look:
+https://www.thesmartysolution.com`,
  followup:'Hello, following up on my previous message. Please let me know if this is something you\'d be interested in discussing.',
  investment:'Hello, this is The Smarty Solution. I\'m reaching out regarding an investment opportunity that may be relevant to you. If of interest, I can share the initial non-confidential details.',
  prime:'Hello, this is The Smarty Solution. I\'m reaching out regarding a potential collaboration with Prime Surfaces. If relevant, I can share a short introduction and details.',
