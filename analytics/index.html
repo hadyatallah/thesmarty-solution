@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#142f40">
+<title>The Smarty Solution | Analytics</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+<style>
+:root{--navy:#142f40;--teal:#087f80;--bg:#f3f6f7;--line:#dbe4e7;--muted:#536871;--warn:#9a461d;--good:#18745f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--navy);font:15px/1.5 Arial,sans-serif}button,select{font:inherit;min-height:42px}button{cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:9px 14px;background:#fff;color:var(--navy)}button.primary{background:var(--teal);border-color:var(--teal);color:#fff}button:disabled{opacity:.55;cursor:not-allowed}header{background:var(--navy);color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{display:flex;align-items:center;gap:11px}.brand img{width:42px;height:42px;object-fit:contain}.brand h1{font-size:19px;margin:0}.brand small{color:#b6cfce}main{max-width:1420px;margin:auto;padding:24px}.topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}.topbar h2{margin:0 auto 0 0;font-size:28px}.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px}.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin:18px 0}.metric span{display:block;color:var(--muted);font-size:13px}.metric strong{display:block;font-size:30px;margin-top:5px}.metric small{color:var(--muted)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}.chart-wrap{height:300px}.status-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.status{padding:13px;border:1px solid var(--line);border-radius:10px;background:#f8fbfb}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#a9b8bc;margin-right:7px}.dot.good{background:var(--good)}.dot.warn{background:#d07a2d}.muted{color:var(--muted)}.warning{color:var(--warn)}.hidden{display:none!important}.login{max-width:520px;margin:50px auto}.source-note{font-size:13px;color:var(--muted);margin-top:8px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.section-title h3{margin:0;font-size:18px}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}.table th{font-size:12px;color:var(--muted)}#notice{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;max-width:88vw;z-index:20}#notice:empty{display:none}
+@media(max-width:1100px){.cards{grid-template-columns:repeat(3,1fr)}.status-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){main{padding:15px}.grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.status-grid{grid-template-columns:1fr}.topbar h2{width:100%}.chart-wrap{height:260px}}@media(max-width:420px){.cards{grid-template-columns:1fr 1fr}.metric strong{font-size:25px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><img src="/logo-mark-light.png" alt=""><div><h1>The Smarty Solution</h1><small>Private Analytics</small></div></div>
+  <button id="signOutButton" class="hidden" onclick="logout()">Sign out</button>
+</header>
+<main id="main">
+  <section class="panel login"><h2>Analytics login</h2><p class="muted">Use your authorised TSS Google account.</p><div id="loginError" class="warning"></div><div id="googleButton">Connecting to Google…</div></section>
+</main>
+<div id="notice" role="status" aria-live="polite"></div>
+<script>
+'use strict';
+const GOOGLE_CLIENT_ID='103840050410-80lukup1okjnkmt6qvmd9s2mbvi3uakf.apps.googleusercontent.com';
+const CRM_API='https://script.google.com/macros/s/AKfycbyiSUdWOD3LfVzzvV_8WnO3gGvKLbvbNcyTYKnFpUU-Duh8u8liGfU79cc3erXTG9Hk4Q/exec';
+const ENQUIRY_SHEET_ID='1Hq-pYK4XSKyIcKsKg6IjOQKI-CvKaYrRmmtY80Zojao';
+let sessionToken='',sessionExpiry=0,crmState=null,googleAccessToken='',gaProperty='',scSite='',rangeDays=30;
+let charts={};
+const el=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function notice(s){el('notice').textContent=s;setTimeout(()=>{if(el('notice').textContent===s)el('notice').textContent=''},6000)}
+async function rpc(fn,...args){
+ const r=await fetch(CRM_API,{method:'POST',credentials:'omit',redirect:'follow',cache:'no-store',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({fn,args})});
+ if(!r.ok)throw Error('TSS service unavailable.');
+ const data=await r.json();if(!data.ok)throw Error(data.error||'Request failed');return data.result;
+}
+async function call(fn,...args){return rpc(fn,sessionToken,...args)}
+async function loadGoogleIdentity(){if(window.google?.accounts?.id)return;await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=resolve;s.onerror=()=>reject(Error('Google sign-in could not load.'));document.head.appendChild(s)})}
+async function showLogin(message=''){
+ el('main').innerHTML='<section class="panel login"><h2>Analytics login</h2><p class="muted">Use your authorised TSS Google account.</p><p id="loginError" class="warning">'+esc(message)+'</p><div id="googleButton">Connecting to Google…</div><p class="source-note">The dashboard is separate from the CRM. The CRM login is reused only as the access gate.</p></section>';
+ await loadGoogleIdentity();
+ const challenge=await rpc('beginGoogleLogin');
+ google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,nonce:challenge.nonce,auto_select:false,callback:async response=>{
+   try{const r=await rpc('googleSignIn',response.credential,challenge.nonce);sessionToken=r.token;sessionExpiry=r.expiresAt;await loadCrmState();renderDashboard();}catch(e){showLogin(e.message)}
+ }});
+ el('googleButton').textContent='';google.accounts.id.renderButton(el('googleButton'),{theme:'outline',size:'large',text:'signin_with',width:280});
+}
+async function logout(){const t=sessionToken;sessionToken='';crmState=null;googleAccessToken='';el('signOutButton').classList.add('hidden');try{await rpc('signOut',t)}catch(e){}showLogin('Signed out.')}
+async function loadCrmState(){crmState=await call('getState');el('signOutButton').classList.remove('hidden')}
+function crmSummary(){
+ const r=crmState?.records||{},opps=r.Opportunities||[],companies=r.Companies||[],tasks=r.Tasks||[];
+ const open=opps.filter(x=>!['Won','Lost'].includes(x.stage)).length;
+ const qualified=opps.filter(x=>x.qualificationStatus==='Qualified'||x.stage==='Qualified').length;
+ const overdue=tasks.filter(x=>x.status!=='Done'&&x.dueDate&&x.dueDate<new Date().toISOString().slice(0,10)).length;
+ return {companies:companies.length,open,qualified,overdue};
+}
+function renderDashboard(){
+ const c=crmSummary();
+ el('main').innerHTML=`
+ <div class="topbar"><h2>TSS Analytics</h2>
+   <select id="range" aria-label="Date range" onchange="changeRange(this.value)">
+    <option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option>
+   </select>
+   <button class="primary" id="connectGoogle" onclick="connectGoogleData()">Connect Google data</button>
+   <button onclick="refreshAll()">Refresh</button>
+ </div>
+ <div class="status-grid">
+  <div class="status"><span class="dot good"></span><strong>CRM</strong><div class="muted">Connected</div></div>
+  <div class="status" id="gaStatus"><span class="dot"></span><strong>Google Analytics</strong><div class="muted">Not connected</div></div>
+  <div class="status" id="scStatus"><span class="dot"></span><strong>Search Console</strong><div class="muted">Not connected</div></div>
+  <div class="status" id="enquiryStatus"><span class="dot"></span><strong>Historical enquiries</strong><div class="muted">Waiting for Google data access</div></div>
+ </div>
+ <div class="cards">
+  <div class="panel metric"><span>Visitors</span><strong id="mVisitors">—</strong><small>GA4</small></div>
+  <div class="panel metric"><span>Sessions</span><strong id="mSessions">—</strong><small>GA4</small></div>
+  <div class="panel metric"><span>Page views</span><strong id="mViews">—</strong><small>GA4</small></div>
+  <div class="panel metric"><span>Google clicks</span><strong id="mClicks">—</strong><small>Search Console</small></div>
+  <div class="panel metric"><span>Historical enquiries</span><strong id="mEnquiries">—</strong><small>Enquiry workbook</small></div>
+  <div class="panel metric"><span>Open opportunities</span><strong>${c.open}</strong><small>CRM</small></div>
+ </div>
+ <div class="grid">
+   <section class="panel"><div class="section-title"><h3>Traffic trend</h3><span class="muted">GA4</span></div><div class="chart-wrap"><canvas id="trafficChart"></canvas></div><p id="trafficEmpty" class="muted">Connect Google data to load website traffic.</p></section>
+   <section class="panel"><div class="section-title"><h3>Google Search performance</h3><span class="muted">Search Console</span></div><div class="chart-wrap"><canvas id="searchChart"></canvas></div><p id="searchEmpty" class="muted">Historical Search Console data will appear here if the property already exists.</p></section>
+   <section class="panel"><div class="section-title"><h3>Traffic sources</h3><span class="muted">GA4</span></div><div class="chart-wrap"><canvas id="sourceChart"></canvas></div><p id="sourceEmpty" class="muted">No source data loaded.</p></section>
+   <section class="panel"><div class="section-title"><h3>Top pages</h3><span class="muted">GA4</span></div><div id="topPages" class="muted">No page data loaded.</div></section>
+ </div>
+ <div class="grid">
+  <section class="panel"><h3>Commercial context</h3>
+   <table class="table"><tr><th>CRM measure</th><th>Current</th></tr>
+   <tr><td>Companies</td><td>${c.companies}</td></tr><tr><td>Open opportunities</td><td>${c.open}</td></tr><tr><td>Qualified opportunities</td><td>${c.qualified}</td></tr><tr><td>Overdue CRM tasks</td><td>${c.overdue}</td></tr></table>
+   <p class="source-note">These CRM counts are business records, not website-attributed conversions. Source attribution will become more accurate as campaign tracking is used consistently.</p>
+  </section>
+  <section class="panel"><h3>Historical coverage</h3><div id="historyCoverage" class="muted">Search Console can provide earlier Google Search data if the site was already verified. GA4 can only show periods that were actually collected by an existing GA property.</div></section>
+ </div>`;
+ setMetric('mVisitors','—'); setMetric('mSessions','—'); setMetric('mViews','—'); setMetric('mClicks','—'); setMetric('mEnquiries','—');
+}
+function setMetric(id,v){const n=el(id);if(n)n.textContent=v}
+function setStatus(id,state,text){const n=el(id);if(!n)return;n.innerHTML='<span class="dot '+(state==='good'?'good':state==='warn'?'warn':'')+'"></span><strong>'+esc(n.querySelector('strong')?.textContent||'Source')+'</strong><div class="muted">'+esc(text)+'</div>'}
+async function connectGoogleData(){
+ await loadGoogleIdentity();
+ const client=google.accounts.oauth2.initTokenClient({
+   client_id:GOOGLE_CLIENT_ID,
+   scope:'https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/spreadsheets.readonly',
+   callback:async token=>{if(token.error){notice(token.error);return}googleAccessToken=token.access_token;el('connectGoogle').textContent='Google connected';await refreshAll();}
+ });
+ client.requestAccessToken({prompt:'consent'});
+}
+async function gfetch(url,opts={}){
+ if(!googleAccessToken)throw Error('Google data is not connected.');
+ const h={...(opts.headers||{}),Authorization:'Bearer '+googleAccessToken};
+ const r=await fetch(url,{...opts,headers:h});if(!r.ok){let t=await r.text();throw Error(t.slice(0,220)||('Google API '+r.status));}return r.json();
+}
+async function discoverGa(){
+ const data=await gfetch('https://analyticsadmin.googleapis.com/v1beta/accountSummaries');
+ const props=(data.accountSummaries||[]).flatMap(a=>(a.propertySummaries||[]).map(p=>({...p,account:a.displayName||a.account})));
+ if(!props.length)throw Error('No Google Analytics property is available to this Google account.');
+ let p=props.find(x=>/smarty|thesmarty|solution/i.test(x.displayName||''))||props[0];
+ gaProperty=(p.property||'').replace('properties/','');
+ setStatus('gaStatus','good','Connected: '+(p.displayName||gaProperty));
+ return p;
+}
+function dates(days){const end=new Date();end.setDate(end.getDate()-1);const start=new Date(end);start.setDate(start.getDate()-days+1);const f=d=>d.toISOString().slice(0,10);return {start:f(start),end:f(end)}}
+async function gaReport(dimensions,metrics,days=rangeDays,limit=100){
+ const d=dates(days);
+ return gfetch('https://analyticsdata.googleapis.com/v1beta/properties/'+gaProperty+':runReport',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({dateRanges:[{startDate:d.start,endDate:d.end}],dimensions:dimensions.map(name=>({name})),metrics:metrics.map(name=>({name})),limit:String(limit)})});
+}
+function val(row,i){return Number(row.metricValues?.[i]?.value||0)}
+function destroyChart(k){if(charts[k]){charts[k].destroy();delete charts[k]}}
+async function loadGa(){
+ if(!gaProperty)await discoverGa();
+ const [totals,trend,sources,pages]=await Promise.all([
+  gaReport([],['activeUsers','sessions','screenPageViews'],rangeDays,10),
+  gaReport(['date'],['activeUsers','sessions'],rangeDays,400),
+  gaReport(['sessionDefaultChannelGroup'],['sessions'],rangeDays,20),
+  gaReport(['pagePath'],['screenPageViews','activeUsers'],rangeDays,15)
+ ]);
+ const tr=totals.rows?.[0];setMetric('mVisitors',tr?Math.round(val(tr,0)).toLocaleString():'0');setMetric('mSessions',tr?Math.round(val(tr,1)).toLocaleString():'0');setMetric('mViews',tr?Math.round(val(tr,2)).toLocaleString():'0');
+ const trendRows=(trend.rows||[]).map(r=>({date:r.dimensionValues[0].value,users:val(r,0),sessions:val(r,1)})).sort((a,b)=>a.date.localeCompare(b.date));
+ drawLine('traffic','trafficChart',trendRows.map(x=>x.date.slice(4,6)+'/'+x.date.slice(6,8)),[{label:'Visitors',data:trendRows.map(x=>x.users)},{label:'Sessions',data:trendRows.map(x=>x.sessions)}]);el('trafficEmpty').classList.add('hidden');
+ const src=(sources.rows||[]).map(r=>({name:r.dimensionValues[0].value||'Other',v:val(r,0)})).slice(0,10);drawBar('source','sourceChart',src.map(x=>x.name),src.map(x=>x.v),'Sessions');el('sourceEmpty').classList.add('hidden');
+ const pg=(pages.rows||[]).map(r=>({path:r.dimensionValues[0].value,v:val(r,0),u:val(r,1)}));el('topPages').innerHTML=pg.length?'<table class="table"><tr><th>Page</th><th>Views</th><th>Visitors</th></tr>'+pg.map(x=>'<tr><td>'+esc(x.path)+'</td><td>'+Math.round(x.v).toLocaleString()+'</td><td>'+Math.round(x.u).toLocaleString()+'</td></tr>').join('')+'</table>':'No page data for this period.';
+}
+async function discoverSearchConsole(){
+ const data=await gfetch('https://www.googleapis.com/webmasters/v3/sites');
+ const sites=(data.siteEntry||[]).map(x=>x.siteUrl);
+ scSite=sites.find(x=>/thesmarty-solution\.com|thesmartysolution\.com/i.test(x))||sites[0]||'';
+ if(!scSite)throw Error('No Search Console property is available to this Google account.');
+ setStatus('scStatus','good','Connected: '+scSite.replace(/^sc-domain:/,''));
+}
+async function scQuery(days,dimensions=[]){
+ const d=dates(days);
+ return gfetch('https://www.googleapis.com/webmasters/v3/sites/'+encodeURIComponent(scSite)+'/searchAnalytics/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({startDate:d.start,endDate:d.end,dimensions,rowLimit:25000,dataState:'final'})});
+}
+async function loadSearchConsole(){
+ if(!scSite)await discoverSearchConsole();
+ const [total,trend]=await Promise.all([scQuery(rangeDays,[]),scQuery(rangeDays,['date'])]);
+ const row=total.rows?.[0];setMetric('mClicks',row?Math.round(row.clicks||0).toLocaleString():'0');
+ const rows=(trend.rows||[]).map(r=>({date:r.keys?.[0]||'',clicks:r.clicks||0,impressions:r.impressions||0})).sort((a,b)=>a.date.localeCompare(b.date));
+ drawLine('search','searchChart',rows.map(x=>x.date.slice(5)),[{label:'Clicks',data:rows.map(x=>x.clicks)},{label:'Impressions',data:rows.map(x=>x.impressions)}]);el('searchEmpty').classList.add('hidden');
+ try{const history=await scQuery(480,[]);const h=history.rows?.[0];el('historyCoverage').innerHTML='<strong>Search Console historical data found.</strong><br>'+Math.round(h?.clicks||0).toLocaleString()+' Google Search clicks and '+Math.round(h?.impressions||0).toLocaleString()+' impressions are available in the requested historical window. GA4 history remains dependent on when GA tracking actually existed.';}catch(e){}
+}
+async function loadEnquiries(){
+ const meta=await gfetch('https://sheets.googleapis.com/v4/spreadsheets/'+ENQUIRY_SHEET_ID+'?fields=sheets.properties.title');
+ const title=meta.sheets?.[0]?.properties?.title;if(!title)throw Error('Enquiry workbook has no readable sheet.');
+ const data=await gfetch('https://sheets.googleapis.com/v4/spreadsheets/'+ENQUIRY_SHEET_ID+'/values/'+encodeURIComponent(title+'!A:Z'));
+ const rows=data.values||[];if(rows.length<2){setMetric('mEnquiries','0');setStatus('enquiryStatus','good','Connected · 0 records');return}
+ const head=rows[0].map(x=>String(x).trim().toLowerCase()),tsIndex=head.findIndex(x=>/timestamp|date|submitted|created/.test(x));
+ let count=rows.length-1;
+ if(tsIndex>=0&&rangeDays<3650){const cutoff=Date.now()-rangeDays*86400000;count=rows.slice(1).filter(r=>{const d=new Date(r[tsIndex]||'');return !Number.isNaN(d.getTime())&&d.getTime()>=cutoff}).length}
+ setMetric('mEnquiries',count.toLocaleString());setStatus('enquiryStatus','good','Connected · '+(rows.length-1).toLocaleString()+' total records');
+}
+function drawLine(key,id,labels,datasets){destroyChart(key);charts[key]=new Chart(el(id),{type:'line',data:{labels,datasets:datasets.map(d=>({...d,tension:.22,pointRadius:1.5,borderWidth:2}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true}}}})}
+function drawBar(key,id,labels,data,label){destroyChart(key);charts[key]=new Chart(el(id),{type:'bar',data:{labels,datasets:[{label,data}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:labels.length>6?'y':'x',plugins:{legend:{display:false}},scales:{y:{beginAtZero:true},x:{beginAtZero:true}}}})}
+async function refreshAll(){
+ if(!sessionToken)return showLogin();
+ if(!googleAccessToken){notice('CRM refreshed. Connect Google data to load Analytics, Search Console and historical enquiries.');await loadCrmState();renderDashboard();return}
+ const jobs=[
+   loadGa().catch(e=>{setStatus('gaStatus','warn','Unavailable: '+shortErr(e));setMetric('mVisitors','—');setMetric('mSessions','—');setMetric('mViews','—')}),
+   loadSearchConsole().catch(e=>{setStatus('scStatus','warn','Unavailable: '+shortErr(e));setMetric('mClicks','—')}),
+   loadEnquiries().catch(e=>{setStatus('enquiryStatus','warn','Unavailable: '+shortErr(e));setMetric('mEnquiries','—')})
+ ];
+ await Promise.all(jobs);
+}
+function shortErr(e){const s=String(e.message||e).replace(/\s+/g,' ');return s.length>95?s.slice(0,92)+'…':s}
+async function changeRange(v){rangeDays=Number(v)||30;if(googleAccessToken)await refreshAll()}
+showLogin().catch(e=>showLogin(e.message));
+</script>
+</body>
+</html>
