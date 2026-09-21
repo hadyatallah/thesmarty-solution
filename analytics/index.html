@@ -28,7 +28,7 @@
 const GOOGLE_CLIENT_ID='103840050410-80lukup1okjnkmt6qvmd9s2mbvi3uakf.apps.googleusercontent.com';
 const CRM_API='https://script.google.com/macros/s/AKfycbyiSUdWOD3LfVzzvV_8WnO3gGvKLbvbNcyTYKnFpUU-Duh8u8liGfU79cc3erXTG9Hk4Q/exec';
 const ENQUIRY_SHEET_ID='1Hq-pYK4XSKyIcKsKg6IjOQKI-CvKaYrRmmtY80Zojao';
-let sessionToken='',sessionExpiry=0,crmState=null,googleAccessToken='',gaProperty='',scSite='',rangeDays=30;
+let sessionToken='',sessionExpiry=0,crmState=null,googleAccessToken='',gaProperty='',scSite='',rangeDays=30,googleConnectionAttempted=false;
 let charts={};
 const el=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -49,7 +49,7 @@ async function showLogin(message=''){
  }});
  el('googleButton').textContent='';google.accounts.id.renderButton(el('googleButton'),{theme:'outline',size:'large',text:'signin_with',width:280});
 }
-async function logout(){const t=sessionToken;sessionToken='';crmState=null;googleAccessToken='';el('signOutButton').classList.add('hidden');try{await rpc('signOut',t)}catch(e){}showLogin('Signed out.')}
+async function logout(){const t=sessionToken;sessionToken='';crmState=null;googleAccessToken='';googleConnectionAttempted=false;el('signOutButton').classList.add('hidden');try{await rpc('signOut',t)}catch(e){}showLogin('Signed out.')}
 async function loadCrmState(){crmState=await call('getState');el('signOutButton').classList.remove('hidden')}
 function crmSummary(){
  const r=crmState?.records||{},opps=r.Opportunities||[],companies=r.Companies||[],tasks=r.Tasks||[];
@@ -65,7 +65,7 @@ function renderDashboard(){
    <select id="range" aria-label="Date range" onchange="changeRange(this.value)">
     <option value="7">Last 7 days</option><option value="30" selected>Last 30 days</option><option value="90">Last 90 days</option><option value="365">Last 12 months</option>
    </select>
-   <button class="primary" id="connectGoogle" onclick="connectGoogleData()">Connect Google data</button>
+   <button class="primary" id="connectGoogle" onclick="connectGoogleData(false)">Connect Google data</button>
    <button onclick="refreshAll()">Refresh</button>
  </div>
  <div class="status-grid">
@@ -94,20 +94,40 @@ function renderDashboard(){
    <tr><td>Companies</td><td>${c.companies}</td></tr><tr><td>Open opportunities</td><td>${c.open}</td></tr><tr><td>Qualified opportunities</td><td>${c.qualified}</td></tr><tr><td>Overdue CRM tasks</td><td>${c.overdue}</td></tr></table>
    <p class="source-note">These CRM counts are business records, not website-attributed conversions. Source attribution will become more accurate as campaign tracking is used consistently.</p>
   </section>
-  <section class="panel"><h3>Historical coverage</h3><div id="historyCoverage" class="muted">Search Console can provide earlier Google Search data if the site was already verified. GA4 can only show periods that were actually collected by an existing GA property.</div></section>
+  <section class="panel"><h3>What you are looking at</h3>
+   <table class="table"><tr><th>Area</th><th>What it means</th></tr>
+   <tr><td>CRM</td><td>Your live business records. Open opportunities are active opportunities, not website leads.</td></tr>
+   <tr><td>Historical enquiries</td><td>Website enquiries in the enquiry workbook. This is a count only. No enquiry text or contact details are sent to analytics.</td></tr>
+   <tr><td>Google Analytics</td><td>Website visitors, sessions, page views and traffic sources, once a GA4 property exists and tracking is installed.</td></tr>
+   <tr><td>Search Console</td><td>Google Search visibility. Clicks are visits from Google results. Impressions are times a page appeared in Google results.</td></tr></table>
+   <div id="historyCoverage" class="source-note">Search Console can provide earlier Google Search data if the site was already verified. GA4 can only show periods that were actually collected by an existing GA property.</div>
+  </section>
  </div>`;
  setMetric('mVisitors','—'); setMetric('mSessions','—'); setMetric('mViews','—'); setMetric('mClicks','—'); setMetric('mEnquiries','—');
+ setTimeout(()=>connectGoogleData(true),0);
 }
 function setMetric(id,v){const n=el(id);if(n)n.textContent=v}
 function setStatus(id,state,text){const n=el(id);if(!n)return;n.innerHTML='<span class="dot '+(state==='good'?'good':state==='warn'?'warn':'')+'"></span><strong>'+esc(n.querySelector('strong')?.textContent||'Source')+'</strong><div class="muted">'+esc(text)+'</div>'}
-async function connectGoogleData(){
+async function connectGoogleData(silent=false){
+ if(googleAccessToken)return;
+ if(silent&&googleConnectionAttempted)return;
+ googleConnectionAttempted=true;
  await loadGoogleIdentity();
  const client=google.accounts.oauth2.initTokenClient({
    client_id:GOOGLE_CLIENT_ID,
    scope:'https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/webmasters.readonly https://www.googleapis.com/auth/spreadsheets.readonly',
-   callback:async token=>{if(token.error){notice(token.error);return}googleAccessToken=token.access_token;el('connectGoogle').textContent='Google connected';await refreshAll();}
+   callback:async token=>{
+     if(token.error){
+       const button=el('connectGoogle');if(button)button.textContent='Connect Google data';
+       if(!silent)notice(token.error==='consent_required'?'Please approve Google data access.':token.error);
+       return;
+     }
+     googleAccessToken=token.access_token;
+     const button=el('connectGoogle');if(button)button.textContent='Google connected';
+     await refreshAll();
+   }
  });
- client.requestAccessToken({prompt:'consent'});
+ client.requestAccessToken({prompt:silent?'':'consent'});
 }
 async function gfetch(url,opts={}){
  if(!googleAccessToken)throw Error('Google data is not connected.');
