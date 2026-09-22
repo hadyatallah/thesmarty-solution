@@ -27,7 +27,7 @@ const el=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g
 const label=k=>labels[k]||(k.charAt(0).toUpperCase()+k.slice(1)).replace(/([a-z])([A-Z])/g,'$1 $2');
 const today=()=>{const d=new Date();return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Nicosia',year:'numeric',month:'2-digit',day:'2-digit'}).format(d)};
 const GOOGLE_CLIENT_ID='103840050410-80lukup1okjnkmt6qvmd9s2mbvi3uakf.apps.googleusercontent.com';
-const CRM_API='https://script.google.com/macros/s/AKfycbyiSUdWOD3LfVzzvV_8WnO3gGvKLbvbNcyTYKnFpUU-Duh8u8liGfU79cc3erXTG9Hk4Q/exec';
+const CRM_API='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
 let sessionExpiry=0,loginGeneration=0;
 async function rpc(fn,...args){
  let r;try{r=await fetch(CRM_API,{method:'POST',credentials:'omit',redirect:'follow',cache:'no-store',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({fn,args})});}catch(e){throw Error('Could not connect to the CRM. Check your internet connection and retry.');}

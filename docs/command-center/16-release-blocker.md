@@ -15,3 +15,10 @@ Required next approval: create one separate candidate Apps Script web-app endpoi
 After approval: create and record the candidate endpoint and version, bind it only to Preview, verify unauthenticated requests are rejected, validate the native ledger and exact-action flow on synthetic/internal records, and complete the remaining regression gates before promoting Production. Production frontend and backend rollback must retain their exact prior versions. Research, sending, publishing, monitoring feeds and schedules still have separate incomplete integration/acceptance work.
 
 Live draft check returned an English-only draft in the already-open browser page. This page predates the latest bilingual Preview deployment, so it does not verify the bilingual candidate. Reload and fresh sign-in are required before that acceptance test. No message was sent.
+
+
+## Approved candidate deployment
+
+The user explicitly approved the requested permission scope. Candidate Version 11 was deployed successfully on 22 September 2026 at 21:09 UTC. Candidate endpoint: https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec . Production Version 10 endpoint was not modified.
+
+Owner-only ccInstall completed at 21:10:46 UTC to initialize Agent Ledger metadata. Existing CRM records were not part of this operation. No schedules or external dispatch enabled. Development branch crm/index.html now targets the candidate endpoint for Preview testing. Authenticated ledger and write acceptance remain pending.
