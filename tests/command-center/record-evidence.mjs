@@ -1,0 +1,14 @@
+import {spawnSync,execFileSync} from 'node:child_process';
+import {readFileSync,writeFileSync,readdirSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+const testFiles=[...readdirSync('tests/command-center').filter(x=>x.endsWith('.test.js')).map(x=>'tests/command-center/'+x),'tests/assistant-formatting.test.mjs','tests/enquiry-flow.test.mjs'];
+const start=new Date().toISOString();
+const r=spawnSync(process.execPath,['--test','--test-reporter=tap',...testFiles],{encoding:'utf8'});
+writeFileSync('docs/command-center/test-output.tap',r.stdout+r.stderr);
+const files=[...readdirSync('command-center').filter(x=>x.endsWith('.js')).map(x=>'command-center/'+x),'crm/assistant.js','crm/command-center.js','crm/index.html',...testFiles];
+const hashes=Object.fromEntries(files.map(f=>[f,createHash('sha256').update(readFileSync(f)).digest('hex')]));
+const version=createHash('sha256').update(JSON.stringify(hashes)).digest('hex');
+const tests=[...r.stdout.matchAll(/^(ok|not ok) (\d+) - (.+)$/gm)].map(m=>({testId:m[3].match(/^(P\d-\d+|SEC-\d+|UI-\d+)/)?.[0]||'REG-'+m[2],environment:'Local Node '+process.version,baseCommit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),sourceVersion:version,testData:'Synthetic fixture only; no network/provider dispatch',expected:m[3],actual:m[1]==='ok'?'Assertions passed':'Assertions failed',result:m[1]==='ok'?'PASS':'FAIL',evidence:'docs/command-center/test-output.tap test '+m[2],sideEffects:'Test doubles only. No real CRM/email/social writes configured. Real providers NOT TESTED.',at:start}));
+writeFileSync('docs/command-center/test-evidence.json',JSON.stringify({at:start,finishedAt:new Date().toISOString(),environment:process.platform+' '+process.version,sourceVersion:version,sourceHashes:hashes,exitCode:r.status,tests},null,2)+'\n');
+writeFileSync('docs/command-center/08-test-matrix.md','# Test matrix\n\nAll rows below are component/isolated integration tests, not live acceptance. Exact source hashes, environment and timestamp are retained in test-evidence.json.\n\n| ID | Expected result | Actual | Environment |\n|---|---|---|---|\n'+tests.map(t=>`| ${t.testId} | ${t.expected.replaceAll('|','/')} | ${t.result}: assertions ${t.result==='PASS'?'satisfied':'failed'} | Synthetic / Node |`).join('\n')+'\n\nLive acceptance pending: signed-in CRM, production API projections, server approval gateway, durable transaction/restart tests, provider reconciliation, new enquiry transfer, Outlook ingest, Android phone/tablet and installed PWA, backend scheduled job delivery. No phase is accepted for Production.\n');
+console.log(JSON.stringify({tests:tests.length,passed:tests.filter(t=>t.result==='PASS').length,failed:tests.filter(t=>t.result==='FAIL').length,sourceVersion:version}));process.exit(r.status||0);

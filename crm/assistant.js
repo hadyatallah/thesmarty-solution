@@ -273,8 +273,9 @@ function validatePlan(plan){
     const fields=writableFields(a.entity);Object.keys(a.data||{}).forEach(function(k){if(!fields.has(k))delete a.data[k];});
     if(a.operation==='create'&&a.entity==='Companies'){const dup=findLikelyCompany(a.data||{});if(dup)a._duplicate={entity:'Companies',id:dup.r.id,name:dup.r.name};}
     if(a.operation==='create'&&a.entity==='Contacts'){const dup=findLikelyContact(a.data||{});if(dup)a._duplicate={entity:'Contacts',id:dup.id,name:dup.name};}
-    if(a.operation==='update'&&!a.recordId){const n=normalizeForMatch(a.recordName),match=(state.records[a.entity]||[]).find(function(r){return normalizeForMatch(r.name)===n;});if(match)a.recordId=match.id;}
+    if(a.operation==='update'&&!a.recordId){const n=normalizeForMatch(a.recordName),matches=(state.records[a.entity]||[]).filter(function(r){return normalizeForMatch(r.name)===n;});if(matches.length!==1)throw Error('Use an exact record ID; the name is unknown or ambiguous.');a.recordId=matches[0].id;}
     if(a.operation==='update'&&!a.recordId)throw Error('I could not identify the record to update.');
+    if(a.operation==='update'){const current=(state.records[a.entity]||[]).find(r=>r.id===a.recordId);if(!current)throw Error('Record not found.');a._expectedVersion=current.version;}
     a._sensitive=actionIsSensitive(a);
   });
   return plan;
@@ -312,7 +313,7 @@ function assistantHistoryHtml(){
 }
 function assistantWorkspaceHtml(){
   loadAiState();
-  return '<section class="panel assistant-panel"><div class="row"><div><h3>CRM Assistant</h3><p class="muted">Your one-stop shop for everything in the CRM.</p></div><span class="assistant-status">'+(state.aiEnabled?'AI connected':'AI unavailable')+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="3000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary" '+(!state.aiEnabled?'disabled':'')+'>Send</button></div></form><div id="aiAnswer" class="assistant-response" role="status"></div>'+assistantHistoryHtml()+'</section>';
+  return '<section class="panel assistant-panel"><div class="row"><div><h3>TSS Command Center</h3><p class="muted">Ask about your customers, priorities and next actions.</p></div><span class="assistant-status">'+(state.aiEnabled?'AI connected':'AI unavailable')+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="3000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary">Send</button></div></form><div id="aiAnswer" class="assistant-response" role="status"></div>'+assistantHistoryHtml()+(window.TSSCommandCenter?window.TSSCommandCenter.statusHtml():'')+'</section>';
 }
 function wireAssistantForm(){const form=el('aiForm');if(form)form.onsubmit=handleAssistantSubmit;}
 async function handleAssistantSubmit(e){
@@ -320,6 +321,9 @@ async function handleAssistantSubmit(e){
   const b=e.submitter,q=el('aiQuestion').value.trim();
   if(!q)return;
   if(q.length>3000){el('aiAnswer').innerHTML='<div class="assistant-message error">Please keep each message to 3,000 characters or less.</div>';return;}
+  if(window.TSSCommandCenter){
+    try{const answer=await window.TSSCommandCenter.answer(q,state);if(answer){el('aiAnswer').innerHTML=answer;return;}}catch(err){el('aiAnswer').innerHTML='<p class="error">Command Center could not complete this request. No action executed.</p>';return;}
+  }
   const dueAnswer=localDuePeriodAnswer(q);
   if(dueAnswer){
     aiConversation.push({role:'user',text:q},{role:'assistant',text:dueAnswer});
@@ -345,6 +349,7 @@ async function handleAssistantSubmit(e){
     el('aiAnswer').innerHTML='<div class="assistant-message">'+formatAssistantText(local)+'</div>';
     return;
   }
+  if(!state.aiEnabled){el('aiAnswer').innerHTML='<p>AI interpretation is unavailable. You can still ask for attention, account summaries, overdue work or data-quality checks.</p>';return;}
   b.disabled=true;
   aiConversation.push({role:'user',text:q});
   saveAiState();
@@ -399,10 +404,11 @@ async function executeAiPlan(){
       if(a.operation==='update'){
         const r=(state.records[a.entity]||[]).find(function(x){return x.id===a.recordId;});
         if(!r)throw Error('Record not found: '+a.recordId);
+        if(a._expectedVersion===undefined||String(r.version)!==String(a._expectedVersion))throw Error('Record changed or approval is from an older session. Prepare and review a fresh proposal.');
         undo.push(snapshotForUndo(a.entity,r));
         const payload={},allowed=writableFields(a.entity);
-        allowed.forEach(function(k){payload[k]=r[k]||'';});
-        Object.assign(payload,data,{id:r.id,version:r.version});
+        allowed.forEach(function(k){payload[k]=r[k]??'';});
+        Object.assign(payload,data,{id:r.id,version:a._expectedVersion});
         if(r.threadId)payload.threadId=r.threadId;
         const saved=await call('saveRecord',a.entity,payload);
         Object.assign(r,payload);if(saved&&typeof saved==='object')Object.assign(r,saved);
@@ -424,6 +430,9 @@ async function executeAiPlan(){
   }catch(err){
     const pending=(plan.actions||[]).slice(completed.length).map(function(a){return (a.operation==='create'?'Create ':'Update ')+(a.recordName||a.recordId||a.entity);});
     const msg=(completed.length?'Completed before the error:\n• '+completed.join('\n• ')+'\n\n':'')+'Failed: '+err.message+(pending.length?'\n\nStill pending:\n• '+pending.join('\n• '):'');
+    // An uncertain create must not be replayed by clicking Confirm again.
+    aiPendingPlan=null;saveAiState();
+    if(el('dialog').open)el('dialog').close();
     recordAiAction({summary:'Partial AI action failure: '+err.message});
     if(el('aiAnswer'))el('aiAnswer').innerHTML='<div class="assistant-message error">'+formatAssistantText(msg)+'</div>';
     notice('CRM action did not fully complete');
