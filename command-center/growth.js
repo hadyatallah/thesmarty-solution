@@ -12,7 +12,16 @@ export function classifyEmail(message,crm) {
  return {category:company?.lifecycle==='Client'?'customer reply':'prospect reply',companyId:companyIds[0],reviewRequired:false,suggestedAction:'Review reply and determine next action',automaticActions:[]};
 }
 export class GrowthAgent {
- constructor({crm,researchAdapter=null}){this.crm=crm;this.researchAdapter=researchAdapter;}
+ constructor({crm,researchAdapter=null,translatePurpose=null}){this.crm=crm;this.researchAdapter=researchAdapter;this.translatePurpose=translatePurpose;}
+ async prepareDraft(input) {
+  const initial=this.draft(input);
+  if(initial.channel!=='email'||input.purposeGreek||!this.translatePurpose)return initial;
+  try {
+   const translated=await this.translatePurpose(input.purpose);
+   if(typeof translated!=='string'||translated.length>3000||!/[\u0370-\u03ff\u1f00-\u1fff]/.test(translated))throw Error('TRANSLATION_UNAVAILABLE');
+   return this.draft({...input,purposeGreek:translated.trim()});
+  }catch{return {...initial,limitations:[...initial.limitations,'Greek translation is unavailable. Nothing was sent. Review and complete the draft before approval.']};}
+ }
  readiness(company) {
   if(suppressed(company))return {eligible:false,reason:'Do not contact or not suitable'};
   const duplicate=this.crm.quality().duplicates.some(x=>x.entity==='Companies'&&x.ids.includes(company.id));
@@ -40,12 +49,16 @@ export class GrowthAgent {
   if(evidence.confirmedNeed && evidence.source)return {fit:'potential',reason:evidence.confirmedNeed,source:evidence.source};
   return {fit:'unproven',reason:'No evidenced customer need. A basic website alone is insufficient.'};
  }
- draft({companyId,channel='email',purpose,followUp=false}) {
+ draft({companyId,channel='email',purpose,purposeGreek='',followUp=false}) {
   const c=this.crm.lookup(companyId).record;
   if(!c)throw Error('EXACT_COMPANY_REQUIRED');if(suppressed(c))throw Error('SUPPRESSED');
   if(!purpose?.trim())throw Error('PURPOSE_REQUIRED');
   const text=followUp?`Hi, following up on our earlier message to ${c.name} about ${purpose}. Is this something you would like to explore?`:`Hi, I'm contacting ${c.name} from The Smarty Solution about ${purpose}. We help businesses with business development, customer management and follow-up. Would this be relevant to your team?`;
-  return {status:'Draft',channel,from:channel==='email'?'info@thesmartysolution.com':null,to:channel==='email'?c.email||null:c.phone||null,subject:followUp?'Following up':'An idea for '+c.name,text:text+'\n\nThe Smarty Solution\nhttps://www.thesmartysolution.com',limitations:channel==='whatsapp'?['Prepared only. Send in WhatsApp Business App and log manually. No inbox access.']:['Prepared only. Exact recipient and final text require approval before sending.'],readiness:this.readiness(c)};
+  const signature='\n\nThe Smarty Solution\ninfo@thesmartysolution.com\nhttps://www.thesmartysolution.com';
+  const english=text+signature;
+  const greek=purposeGreek.trim()?(followUp?`Καλημέρα σας, επανέρχομαι στο προηγούμενο μήνυμά μας προς την εταιρεία ${c.name} σχετικά με ${purposeGreek}. Θα σας ενδιέφερε να το συζητήσουμε;`:`Καλημέρα σας, επικοινωνώ με την εταιρεία ${c.name} εκ μέρους της The Smarty Solution σχετικά με ${purposeGreek}. Βοηθούμε επιχειρήσεις στην επιχειρηματική ανάπτυξη, στη διαχείριση πελατών και στη συστηματική επικοινωνία μαζί τους. Θα ήταν χρήσιμο για την ομάδα σας;`)+signature:null;
+  const bilingual=channel==='email';
+  return {status:'Draft',channel,from:bilingual?'info@thesmartysolution.com':null,to:bilingual?c.email||null:c.phone||null,subject:followUp?'Following up / Συνέχεια επικοινωνίας':'An idea for '+c.name+' / Μια ιδέα για την εταιρεία '+c.name,text:bilingual?'English\n'+english+'\n\nΕλληνικά\n'+(greek||'[Greek translation of the specific outreach purpose is required before approval.]'):english,languages:bilingual?['en','el-CY']:['en'],translationStatus:bilingual?(greek?'Requires human review':'Missing Greek purpose'):'Not requested',approvalReady:!bilingual||!!greek,limitations:channel==='whatsapp'?['Prepared only. Send in WhatsApp Business App and log manually. No inbox access.']:['Prepared only. Both language versions must convey equivalent facts. Exact recipient, sender and final bilingual text require approval before sending.'],readiness:this.readiness(c)};
  }
  incoming() {
   if(!this.crm.coverage('Email Activity').available)return {available:false,messages:[],limitation:'Email history unavailable'};
