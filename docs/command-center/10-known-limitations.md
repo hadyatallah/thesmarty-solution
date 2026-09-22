@@ -1,8 +1,8 @@
 # Known limitations
 
 - No production deployment or merge. The staged system is not the finished operating system.
-- Preview Google sign-in is blocked by origin_mismatch. Exact Preview origin is approved, but cannot yet be configured because Google Cloud Console is inaccessible.
-- Native durable action/audit binding is built and tested in an isolated real spreadsheet, but the production ledger and endpoints are not released.
+- Preview Google sign-in is working. Tablet sign-in does not share the connected browser session. Browser reload ends the CRM session by its existing policy.
+- Candidate Version 11 and the shared Agent Ledger are installed. Live ledger reads and daily-brief deduplication passed. Exact-write acceptance and Production release remain open.
 - Assistant writes now require the shared gateway. They cannot use a legacy direct-save fallback. Existing manual CRM screens remain separate.
 - General model interpretation is the existing service. Full specialist prompt orchestration and adversarial model evaluation are pending.
 - Current-source research, Outlook sending, and social provider execution are not connected.

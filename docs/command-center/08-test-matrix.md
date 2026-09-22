@@ -127,6 +127,7 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | SEC-23 | SEC-23 unexpected redirects are blocked without leaking session | PASS: assertions satisfied | Synthetic / Node |
 | SEC-24 | SEC-24 uncertain external result never retries the mutation | PASS: assertions satisfied | Synthetic / Node |
 | SEC-25 | SEC-25 backend auth failure remains a failure and HTML is not forwarded | PASS: assertions satisfied | Synthetic / Node |
+| SEC-26 | SEC-26 browser relay retains same-origin Preview access without cross-origin credentials | PASS: assertions satisfied | Synthetic / Node |
 | UI-01 | UI-01 account data is escaped in rendered dossier | PASS: assertions satisfied | Synthetic / Node |
 | UI-02 | UI-02 attention works with AI provider disabled | PASS: assertions satisfied | Synthetic / Node |
 | UI-03 | UI-03 unknown request falls back to existing assistant | PASS: assertions satisfied | Synthetic / Node |
@@ -138,11 +139,11 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | UI-09 | UI-09 companies without next action query is scoped to companies | PASS: assertions satisfied | Synthetic / Node |
 | UI-10 | UI-10 linked contacts remain visible without activity details | PASS: assertions satisfied | Synthetic / Node |
 | UI-11 | UI-11 unnamed create cannot be approved using only its display label | PASS: assertions satisfied | Synthetic / Node |
-| REG-135 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
-| REG-136 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
-| REG-137 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
-| REG-138 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
-| REG-139 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
-| REG-140 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
+| REG-136 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
+| REG-137 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
+| REG-138 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
+| REG-139 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
+| REG-140 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
+| REG-141 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
 
 Live acceptance pending: signed-in CRM, production API projections, server approval gateway, durable transaction/restart tests, provider reconciliation, new enquiry transfer, Outlook ingest, Android phone/tablet and installed PWA, backend scheduled job delivery. No phase is accepted for Production.
