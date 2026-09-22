@@ -156,6 +156,8 @@ function tssCreateNonce_() {
   if (!select) return;
   const guidance = document.getElementById('enquiry-guidance');
   const hints = {
+    sme: 'Include your sector, general location, business stage, your role, evidence of demand and the type of partner you need. Share a non-confidential outline only, not proprietary methods, customer names or a full business plan.',
+    'business-investor': 'Include your sectors, preferred locations, business stages, indicative range and desired operating involvement. This is an initial enquiry, not an investment commitment.',
     growth: 'Tell us your target market, objective, timing and the support you need.',
     flow: 'Tell us how you manage enquiries today, what is getting missed and how many people use the process.',
     land: 'Cyprus plots only initially. Include general location, approximate area, your ownership or authority to represent, any known planning information, and whether you seek a sale, joint venture or development partnership. Do not send title deeds or confidential documents here.',
@@ -652,4 +654,5 @@ function tssRenderAgentReply_(container, value) {
   notice.querySelector('.tss-consent-accept').addEventListener('click', () => choose('accepted'));
   notice.querySelector('.tss-consent-reject').addEventListener('click', () => choose('rejected'));
 })();
+
 

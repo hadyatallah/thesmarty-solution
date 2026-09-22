@@ -111,7 +111,7 @@ test('spam, duplicate, rate limit, offline and HTTP failures never show success'
 
 
  test('contact routes preserve backend category and include the visible service in the message', async () => {
-  for (const [label, category] of [['Submit a plot in Cyprus','Present a business opportunity'], ['CRM & Workflows','Other'], ['Developer / investor interest','Investor interest']]) {
+  for (const [label, category] of [['SME seeking investment / a business partner','Present a business opportunity'], ['SME investor / operating partner interest','Investor interest'], ['Submit a plot in Cyprus','Present a business opportunity'], ['CRM & Workflows','Other'], ['Developer / investor interest','Investor interest']]) {
     const f = fixture(json({ok:true,recorded:true,enquiryId:'TSS-TEST'}), { interest:category, message:'Synthetic enquiry for contract testing only.' }, label);
     await f.send();
     const body=f.requests[0].options.body;
