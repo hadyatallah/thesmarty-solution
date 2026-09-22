@@ -1,6 +1,7 @@
 // Server-side service only. No HTTP endpoint is exposed until durable storage,
 // authentication and existing saveRecord validation are bound and verified.
 import {createHash, randomUUID} from 'node:crypto';
+import {enforceEmailWindow} from './email-hours.js';
 const canonical = value => Array.isArray(value) ? value.map(canonical) : value && typeof value==='object' ? Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])])) : value;
 export const digest = value => createHash('sha256').update(JSON.stringify(canonical(value))).digest('hex');
 const deny = code => { throw Object.assign(new Error(code),{code}); };
@@ -48,6 +49,7 @@ export class Gateway {
       if(a.approvalRequired && (!a.approval||a.approval.payloadHash!==a.payloadHash||Date.parse(a.approval.expiresAt)<=this.clock().getTime()))deny('APPROVAL_REQUIRED');
       const actualHash=digest({entity:a.entity,recordId:a.recordId,operation:a.operation,fields:a.fields,expectedVersion:a.expectedVersion,expectedOutcome:a.expectedOutcome});
       if(actualHash!==a.payloadHash)deny('PAYLOAD_CHANGED');
+      enforceEmailWindow(a,this.clock());
       if(a.operation==='update') {const current=await this.adapter.read(ctx,a.entity,a.recordId);if(!current||String(current.version)!==String(a.expectedVersion))deny('STALE_RECORD');}
       await this.adapter.validate(ctx,a); // validate permissions, suppression and current schema again
       a.status='executing';a.updatedAt=this.clock().toISOString();await tx.put(a);await this.audit(tx,ctx,a,'executing');return a;
@@ -55,7 +57,7 @@ export class Gateway {
     if(a.replay)return a;
     // Mark before dispatch. Crash/timeout leaves executing or uncertain and cannot resend.
     let result, error;
-    try{result=await this.adapter.execute(ctx,a);if(!result?.receipt)throw Error('MISSING_PROVIDER_RECEIPT');}catch(e){error=e;}
+    try{enforceEmailWindow(a,this.clock());result=await this.adapter.execute(ctx,a);if(!result?.receipt)throw Error('MISSING_PROVIDER_RECEIPT');}catch(e){error=e;}
     return this.store.atomic(this.key(ctx,id),async tx=>{const current=await tx.get();current.updatedAt=this.clock().toISOString();if(error){current.status=error.definitelyNotExecuted===true?'failed':'uncertain';current.errorCode=error.code||'PROVIDER_ERROR';}else{current.status='succeeded';current.providerReceipt=result.receipt;}await tx.put(current);await this.audit(tx,ctx,current,current.status,current.errorCode);return current;});
   }
   async reconcile(ctx,id) {

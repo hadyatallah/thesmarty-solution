@@ -10,4 +10,14 @@ The tss.growth.2 prompt records this policy. The registered prompt is not yet a 
 
 Validation: P2-19 through P2-21 exercise bilingual preparation, fixed sender, failed translation, suppression and WhatsApp separation. Live model translation, native-speaker review and provider dispatch remain untested.
 
+## Sending window
+
+User direction: no email outside business hours. Provisional window is Monday to Friday, 09:00 inclusive to 17:00 exclusive, Asia/Nicosia. The user has not supplied alternative hours. IANA timezone conversion handles daylight saving. Public holidays are not yet configured, so this must not be described as a complete Cyprus working-day calendar.
+
+The server gateway checks the window before claiming dispatch and again immediately before calling an email provider. Out-of-hours actions remain unexecuted. A valid exact-content approval is still required when sending resumes. An overnight hold does not extend the ten-minute approval expiry. No automatic morning send or retry was enabled.
+
+This is a tested server contract, not a live Outlook sending integration. Native Apps Script continues to reject email operations altogether. Existing separate website acknowledgements and mailbox rules have not yet been verified against this window. Do not claim this update controls every email sent by the business.
+
+P2-22 to P2-24 cover winter/summer time, weekends, boundaries, expired approvals and crossing closing time during validation. Provider calls are synthetic, with zero real messages sent.
+
 Release status: the user requested deployment, but successful signed-in CRM acceptance and the other live phase gates are still required. Google origin mismatch was cleared. The first CRM challenge expired during Google verification. Subsequent authentication popups timed out in the cloud browser. No completed authenticated Preview session was established and no Production release was performed.
