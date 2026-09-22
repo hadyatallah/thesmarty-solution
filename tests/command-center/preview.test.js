@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import vm from 'node:vm';
+import {snapshot} from '../../command-center-preview/fixture.js';
+import {createSandbox} from '../../command-center-preview/runtime.js';
+const input={requestId:'preview-test-1234',entity:'Tasks',recordId:'SYN-TASK-1',operation:'update',expectedVersion:'1',fields:{status:'Done'},expectedOutcome:'Complete synthetic task'};
+test('PRE-01 standalone bundle compiles and denies network access',()=>{const html=readFileSync('command-center-preview/index.html','utf8');new vm.Script(html.match(/<script>([\s\S]*)<\/script>/)[1]);assert.match(html,/connect-src 'none'/);assert.doesNotMatch(html,/CRM_API|103840050410|script.google.com|fetch\s*\(|XMLHttpRequest|WebSocket|sendBeacon/);});
+test('PRE-02 approval required, exact decision and replay cannot duplicate update',async()=>{const s=createSandbox(snapshot()),a=await s.call('ccPropose',input);await assert.rejects(s.call('ccExecute',a.id),/APPROVAL_REQUIRED/);await assert.rejects(s.call('ccDecide',a.id,'changed','approve'),/NOT_APPLICABLE/);await s.call('ccDecide',a.id,a.payloadHash,'approve');assert.equal((await s.call('ccExecute',a.id)).status,'succeeded');await s.call('ccExecute',a.id);assert.equal(s.data.records.Tasks[0].version,'2');assert.equal(s.data.records.Tasks[0].status,'Done');assert.equal((await s.call('ccState')).audit.length,4);});
+test('PRE-03 rejected action cannot execute',async()=>{const s=createSandbox(snapshot()),a=await s.call('ccPropose',input);await s.call('ccDecide',a.id,a.payloadHash,'reject');await assert.rejects(s.call('ccExecute',a.id),/RECONCILE_REQUIRED/);assert.equal(s.data.records.Tasks[0].status,'Open');});
+test('PRE-04 concurrent change blocks stale approval',async()=>{const s=createSandbox(snapshot()),a=await s.call('ccPropose',input);await s.call('ccDecide',a.id,a.payloadHash,'approve');s.changeRecord();await assert.rejects(s.call('ccExecute',a.id),/STALE_RECORD/);assert.equal(s.data.records.Tasks[0].status,'Open');});
+test('PRE-05 external operations unavailable and reset has no previous state',async()=>{const s=createSandbox(snapshot());for(const operation of ['send','publish','delete','merge','deploy'])await assert.rejects(s.call('ccPropose',{...input,operation}),/UNSUPPORTED/);await assert.rejects(s.call('saveRecord','Tasks',{}),/unavailable/);await s.call('ccPropose',input);assert.equal((await createSandbox(snapshot()).call('ccState')).actions.length,0);});

@@ -95,6 +95,11 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | P4-15 | P4-15 Manager marks partial success | PASS: assertions satisfied | Synthetic / Node |
 | P4-16 | P4-16 job audit exists without credentials or bodies | PASS: assertions satisfied | Synthetic / Node |
 | P4-17 | P4-17 no send or publish event permitted | PASS: assertions satisfied | Synthetic / Node |
+| PRE-01 | PRE-01 standalone bundle compiles and denies network access | PASS: assertions satisfied | Synthetic / Node |
+| PRE-02 | PRE-02 approval required, exact decision and replay cannot duplicate update | PASS: assertions satisfied | Synthetic / Node |
+| PRE-03 | PRE-03 rejected action cannot execute | PASS: assertions satisfied | Synthetic / Node |
+| PRE-04 | PRE-04 concurrent change blocks stale approval | PASS: assertions satisfied | Synthetic / Node |
+| PRE-05 | PRE-05 external operations unavailable and reset has no previous state | PASS: assertions satisfied | Synthetic / Node |
 | SEC-01 | SEC-01 repeated proposal has same durable action ID | PASS: assertions satisfied | Synthetic / Node |
 | SEC-02 | SEC-02 tenant cannot approve another tenant action | PASS: assertions satisfied | Synthetic / Node |
 | SEC-03 | SEC-03 tampering invalidates approved payload | PASS: assertions satisfied | Synthetic / Node |
@@ -110,11 +115,11 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | UI-07 | UI-07 create cannot fall back to legacy saveRecord | PASS: assertions satisfied | Synthetic / Node |
 | UI-08 | UI-08 assistant delegates to shared approval controls without a direct write | PASS: assertions satisfied | Synthetic / Node |
 | UI-09 | UI-09 companies without next action query is scoped to companies | PASS: assertions satisfied | Synthetic / Node |
-| REG-107 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
-| REG-108 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
-| REG-109 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
-| REG-110 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
-| REG-111 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
-| REG-112 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
+| REG-112 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
+| REG-113 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
+| REG-114 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
+| REG-115 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
+| REG-116 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
+| REG-117 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
 
 Live acceptance pending: signed-in CRM, production API projections, server approval gateway, durable transaction/restart tests, provider reconciliation, new enquiry transfer, Outlook ingest, Android phone/tablet and installed PWA, backend scheduled job delivery. No phase is accepted for Production.

@@ -1,0 +1,14 @@
+import {snapshot} from './fixture.js';
+import {createSandbox} from './runtime.js';
+import {commandCenter} from '../crm/command-center.js';
+let sandbox=createSandbox(snapshot());
+const byId=id=>document.getElementById(id);
+const refresh=()=>{byId('ccShell').innerHTML=commandCenter.statusHtml();commandCenter.mount({call:sandbox.call});byId('taskState').textContent=sandbox.data.records.Tasks[0].name+' · '+sandbox.data.records.Tasks[0].status+' · version '+sandbox.data.records.Tasks[0].version;};
+const ask=async q=>{byId('question').value=q;byId('response').textContent='Checking synthetic records…';try{byId('response').innerHTML=await commandCenter.answer(q,sandbox.data)||'<p>This request needs the live AI interpreter, which is disconnected in this test. Use a sample command below.</p>';}catch(e){byId('response').textContent=e.message;}};
+byId('command').addEventListener('submit',e=>{e.preventDefault();ask(byId('question').value);});
+document.querySelectorAll('[data-command]').forEach(b=>b.addEventListener('click',()=>ask(b.dataset.command)));
+byId('propose').addEventListener('click',async()=>{const r=sandbox.data.records.Tasks[0];await commandCenter.stagePlan({actions:[{operation:'update',entity:'Tasks',recordId:r.id,recordName:r.name,_expectedVersion:r.version,data:{status:r.status==='Done'?'Open':'Done'}}]},{call:sandbox.call,state:sandbox.data,onDone:async()=>{byId('dialog').close();refresh();byId('result').textContent='Decision recorded. The task status below shows the result. No live CRM record changed.';}});});
+byId('stale').addEventListener('click',()=>{sandbox.changeRecord();byId('result').textContent='Synthetic record version changed. An earlier proposal must now be rejected as stale.';refresh();});
+byId('reset').addEventListener('click',()=>{sandbox=createSandbox(snapshot());byId('result').textContent='Synthetic session reset.';byId('response').replaceChildren();refresh();});
+byId('dialog').addEventListener('click',e=>{if(e.target.dataset.close!==undefined)byId('dialog').close();});
+refresh();ask('What needs my attention?');

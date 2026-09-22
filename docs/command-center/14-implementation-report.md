@@ -39,3 +39,8 @@ No recurring costs were introduced. No real prospect contacted, public post publ
 10. Future TSS Flow reuse: shared adapters, action policy, exact identity and coverage rules, deterministic attention, prompt register and evaluation harness. Commercial tenancy/auth/storage remain separately scoped.
 
 Next dependency: approve one stable protected Preview origin for the existing Google OAuth client, then complete signed-in browser and backend acceptance. Production approval is a separate final gate after remaining blockers are resolved.
+
+
+## Sign-in-free interaction Preview — 22 September 2026
+
+Added `/command-center-preview/`, an offline-capable synthetic workspace reusing the Manager, response UI and approval gateway components. No Google authentication or network adapter exists on that page. CSP blocks connections; real CRM authentication and production are unchanged. Local suite: 117/117 PASS including five Preview isolation/action tests. This does not replace live acceptance; research, sending, publishing and proactive scheduling remain unavailable in this workspace. See `command-center-preview/README.md` for rebuild, use and rollback.
