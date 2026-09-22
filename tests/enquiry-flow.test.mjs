@@ -7,7 +7,7 @@ const source = readFileSync(new URL('../script.js', import.meta.url), 'utf8');
 const endpoint = source.match(/const TSS_FORM_ENDPOINT = '([^']+)'/)[1];
 const formCode = source.slice(source.indexOf('function tssFormParams_'), source.indexOf('// Render the assistant'));
 
-function fixture(result, overrides = {}) {
+function fixture(result, overrides = {}, contactChoice = null) {
   const fields = {
     name: 'Website verification', email: 'test@example.invalid', phone: '+357 99 810330',
     company: 'Test only', profile: 'Property developer', structure: 'Development partnership',
@@ -21,10 +21,10 @@ function fixture(result, overrides = {}) {
   const requests = [], events = [];
   let submit;
   const form = {
-    dataset: { tssForm: 'kiti' }, fields, resets: 0,
+    dataset: { tssForm: contactChoice ? 'contact' : 'kiti' }, fields, resets: 0,
     addEventListener(type, callback) { if (type === 'submit') submit = callback; },
     reportValidity: () => true,
-    querySelector: selector => selector.startsWith('button') ? button : status,
+    querySelector: selector => selector === '#interest' ? { selectedOptions: [{ textContent: contactChoice }] } : selector.startsWith('button') ? button : status,
     reset() { this.resets++; },
     dispatchEvent: event => events.push(event.type)
   };
@@ -34,7 +34,7 @@ function fixture(result, overrides = {}) {
     CustomEvent: class { constructor(type) { this.type = type; } },
     navigator: { onLine: true },
     window: { location: { href: 'https://www.thesmartysolution.com/opportunity-kiti.html#enquire' } },
-    document: { querySelectorAll: () => [form] },
+    document: { querySelector: () => null, querySelectorAll: () => [form] },
     setTimeout: () => {},
     fetch: async (url, options) => { requests.push({ url, options }); if (result instanceof Error) throw result; return result; }
   });
@@ -107,4 +107,17 @@ test('spam, duplicate, rate limit, offline and HTTP failures never show success'
   offline.context.navigator.onLine = false;
   await offline.send();
   assert.match(offline.status.textContent, /offline/);
+});
+
+
+ test('contact routes preserve backend category and include the visible service in the message', async () => {
+  for (const [label, category] of [['Submit a plot in Cyprus','Present a business opportunity'], ['CRM & Workflows','Other'], ['Developer / investor interest','Investor interest']]) {
+    const f = fixture(json({ok:true,recorded:true,enquiryId:'TSS-TEST'}), { interest:category, message:'Synthetic enquiry for contract testing only.' }, label);
+    await f.send();
+    const body=f.requests[0].options.body;
+    assert.equal(body.get('interest'),category);
+    assert.ok(body.get('message').startsWith('Service enquiry: '+label));
+    assert.equal(body.get('form_nonce'),'test-nonce-123456');
+    assert.equal(f.status.dataset.state,'success');
+  }
 });

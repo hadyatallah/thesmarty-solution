@@ -150,6 +150,28 @@ function tssCreateNonce_() {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}`;
 }
 
+// Contact enquiry routing uses existing backend categories.
+(() => {
+  const select = document.querySelector('form[data-tss-form="contact"] #interest');
+  if (!select) return;
+  const guidance = document.getElementById('enquiry-guidance');
+  const hints = {
+    growth: 'Tell us your target market, objective, timing and the support you need.',
+    flow: 'Tell us how you manage enquiries today, what is getting missed and how many people use the process.',
+    land: 'Cyprus plots only initially. Include general location, approximate area, your ownership or authority to represent, any known planning information, and whether you seek a sale, joint venture or development partnership. Do not send title deeds or confidential documents here.',
+    partner: 'Include your role, company if applicable, preferred Cyprus locations, project criteria and indicative timing. Share only information you are comfortable submitting here.',
+    kiti: 'Tell us your role, preferred arrangement and what you would like to assess about the Kiti opportunity.',
+    other: 'Tell us your objective, timing and what you need from us.'
+  };
+  const requested = new URLSearchParams(location.search).get('enquiry');
+  const index = Array.from(select.options).findIndex(option => option.dataset.route === requested);
+  if (index >= 0) select.selectedIndex = index;
+  const update = () => { guidance.textContent = hints[select.selectedOptions[0].dataset.route] || hints.other; };
+  select.addEventListener('change', update);
+  select.form.addEventListener('reset', () => setTimeout(update, 0));
+  update();
+})();
+
 // Website enquiry forms
 (() => {
   document.querySelectorAll('form[data-tss-form]').forEach((form) => {
@@ -172,6 +194,10 @@ function tssCreateNonce_() {
 
       const data = new FormData(form);
       data.set('source', window.location.href);
+      if (form.dataset.tssForm === 'contact') {
+        const choice = form.querySelector('#interest').selectedOptions[0];
+        data.set('message', `Service enquiry: ${choice.textContent}\n\n${data.get('message') || ''}`);
+      }
 
       if (form.dataset.tssForm === 'kiti') {
         const originalMessage = String(data.get('message') || '').trim();
@@ -626,3 +652,4 @@ function tssRenderAgentReply_(container, value) {
   notice.querySelector('.tss-consent-accept').addEventListener('click', () => choose('accepted'));
   notice.querySelector('.tss-consent-reject').addEventListener('click', () => choose('rejected'));
 })();
+
