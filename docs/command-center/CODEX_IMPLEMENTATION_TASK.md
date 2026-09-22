@@ -1,6 +1,6 @@
 # Continuation status, 22 September 2026
 
-The private source recovery, native durable binding, authenticated gateway dispatch and shared UI controls described below are now implemented and staged at candidate 0.2.0. The original task is retained as acceptance detail; do not repeat source recovery or replace the native binding with a new architecture. Production remains Version 10. See 01-architecture.md, 09-test-evidence-report.md and 14-implementation-report.md for current state. Next work is the exact approved Preview OAuth origin, authenticated end-to-end acceptance, remaining research/provider/health/content integrations and phase gates. Do not activate schedules before gates pass.
+Candidate 0.3.0 is live in authenticated Preview with native ledger installed. OAuth/sign-in are resolved. Synthetic exact-approval write, rejected action, stored daily job and one bilingual draft passed. The original task below remains acceptance detail; do not repeat source recovery or redesign storage. See 14-implementation-report.md and live-acceptance-2026-09-22.json. Finish sync-repair live verification and remaining research/provider/monitoring/content gates; do not activate schedules early.
 
 # Codex backend integration and acceptance task
 

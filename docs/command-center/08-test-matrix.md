@@ -36,6 +36,16 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | P2-22 | P2-22 Cyprus business hours observe winter and summer time and exact boundaries | PASS: assertions satisfied | Synthetic / Node |
 | P2-23 | P2-23 approved out-of-hours email is held without provider dispatch and needs valid approval later | PASS: assertions satisfied | Synthetic / Node |
 | P2-24 | P2-24 final dispatch check blocks an email crossing closing time during validation | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-01 | SYNC-01 fetches Gmail without holding CRM lock and writes under shared lock | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-02 | SYNC-02 overlapping scan skips without API call, write or lease replacement | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-03 | SYNC-03 CRM edits during remote reads are preserved by fresh authoritative read | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-04 | SYNC-04 repeated message does not duplicate ticket or append message twice | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-05 | SYNC-05 provider failure leaves cursor unchanged and releases owned lease | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-06 | SYNC-06 stale worker cannot write or clear a replacement lease | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-07 | SYNC-07 disabled capture during fetch prevents application and cursor advancement | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-08 | SYNC-08 pagination remains bounded to two pages and preserves remaining cursor | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-09 | SYNC-09 partial sheet write replay reconciles existing message marker | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-10 | SYNC-10 expired lease is recoverable; active CRM lock remains required | PASS: assertions satisfied | Synthetic / Node |
 | P1-01 | P1-01 exact normalized company lookup | PASS: assertions satisfied | Synthetic / Node |
 | P1-02 | P1-02 exact ID lookup | PASS: assertions satisfied | Synthetic / Node |
 | P1-03 | P1-03 ambiguous name cannot choose a record | PASS: assertions satisfied | Synthetic / Node |
@@ -110,6 +120,8 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | P4-15 | P4-15 Manager marks partial success | PASS: assertions satisfied | Synthetic / Node |
 | P4-16 | P4-16 job audit exists without credentials or bodies | PASS: assertions satisfied | Synthetic / Node |
 | P4-17 | P4-17 no send or publish event permitted | PASS: assertions satisfied | Synthetic / Node |
+| P4-18 | P4-18 incomplete bilingual draft is reported as partial, never completed | PASS: assertions satisfied | Synthetic / Node |
+| P4-19 | P4-19 unavailable email history is not reported as successful inbox analysis | PASS: assertions satisfied | Synthetic / Node |
 | PRE-01 | PRE-01 standalone bundle compiles and denies network access | PASS: assertions satisfied | Synthetic / Node |
 | PRE-02 | PRE-02 approval required, exact decision and replay cannot duplicate update | PASS: assertions satisfied | Synthetic / Node |
 | PRE-03 | PRE-03 rejected action cannot execute | PASS: assertions satisfied | Synthetic / Node |
@@ -139,11 +151,11 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | UI-09 | UI-09 companies without next action query is scoped to companies | PASS: assertions satisfied | Synthetic / Node |
 | UI-10 | UI-10 linked contacts remain visible without activity details | PASS: assertions satisfied | Synthetic / Node |
 | UI-11 | UI-11 unnamed create cannot be approved using only its display label | PASS: assertions satisfied | Synthetic / Node |
-| REG-136 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
-| REG-137 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
-| REG-138 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
-| REG-139 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
-| REG-140 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
-| REG-141 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
+| REG-148 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
+| REG-149 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
+| REG-150 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
+| REG-151 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
+| REG-152 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
+| REG-153 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
 
-Live acceptance pending: signed-in CRM, production API projections, server approval gateway, durable transaction/restart tests, provider reconciliation, new enquiry transfer, Outlook ingest, Android phone/tablet and installed PWA, backend scheduled job delivery. No phase is accepted for Production.
+Live signed-in CRM, one exact approved synthetic write, rejected proposal, stored daily brief and bilingual draft have separate evidence in live-acceptance-2026-09-22.json. Remaining live gates include sync-repair concurrency, full regression, provider reconciliation, new enquiry transfer, Outlook ingest, Android phone/tablet and installed PWA, and backend scheduled job delivery. No phase is accepted for Production.

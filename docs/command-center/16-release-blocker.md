@@ -36,3 +36,16 @@ Local component suite: 140/140 passed, including cross-origin refusal, missing s
 ## Preview request credential correction
 
 The connected browser signed in successfully at21:44UTC. Its first relay request failed before reaching the Vercel function. Runtime counts showed only the earlier GET405. The stable Preview URL independently returned a Vercel SSO redirect. Inspection found credentials:omit in the browser RPC, which excludes the Preview access cookie even on same-origin requests. Changed only that fetch to credentials:same-origin. Cross-origin Apps Script calls still exclude cookies. This is a transport correction, not relaxed CRM authentication. Added SEC-26 and reran141 component tests successfully. Live retest pending.
+
+## Current result: authenticated live acceptance, 22:03 UTC
+
+The older sign-in, deployment-permission and bilingual-draft blockers above are historical and resolved. The user approved the endpoint scope; Version 11 is deployed; an authenticated Preview session is active. Proposal 498c5f764800784fdc3ea7105a10b55b was reconciled and rejected, never executed. A corrected exact proposal 84631d13e95c2c95f7356cb192ae349e passed approval and created only cancelled internal task TAS-af063c45. Refreshed CRM list showed exactly nine tasks, previously eight. English/Greek draft preparation passed at 22:03:22 UTC with info@thesmartysolution.com. No external message was sent.
+
+A 182.869-second Gmail capture execution overlapped the failing requests. Code inspection confirmed remote Gmail requests held the same global lock needed by gateway calls. The tested replacement in command-center/apps-script/EmailSync.gs fetches outside that lock with a fenced scan lease, then rereads and applies records under the original CRM lock. It is saved to Head for live verification; Version 11 web code remains immutable until candidate deployment update. Local suite now153/153 PASS, including10 sync concurrency/replay/failure cases and2 partial-result reporting cases. This is not proof of full live phase acceptance.
+
+Remaining blockers: live concurrency verification of this repair, complete regression coverage and actual current-source research, outbound provider, health feeds and publishing integrations. Daily/weekly schedules remain disabled. Production authorization is retained; release is blocked by unfinished gates, not a need for another general approval.
+
+
+Live sync check: repaired Head completed at 22:08:44.536 UTC in 4.478 seconds, zero matching messages and zero record changes; lease cleared and scan success marker advanced. This validates a real empty scan, not large-batch concurrency. Synthetic concurrency/failure tests passed.
+
+Candidate endpoint successfully updated to Version 12 at 22:11 UTC, retaining the existing owner execution/access settings and authenticated dispatch. Production Version 10 remains unchanged.

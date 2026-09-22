@@ -24,8 +24,8 @@ export class Manager {
    if(/attention|priorities|daily/i.test(q)){if(this.growth){add('Communications',()=>this.growth.incoming());add('Growth',()=>this.growth.prospects());}if(this.operations){add('Operations',()=>this.operations.summary(now));add('Content',()=>this.operations.content(now));}add('Approvals',()=>approvalSummary(this.runtime));}
   }else return {handled:false};
   const settled=await Promise.allSettled(jobs.map(j=>Promise.resolve().then(j.fn)));
-  const results=settled.map((r,i)=>r.status==='fulfilled'?{section:jobs[i].name,status:r.value?.unavailable||r.value?.status==='unavailable'?'unavailable':'success',data:r.value}:{section:jobs[i].name,status:'failed',error:'Specialist unavailable; no action executed'});
-  return {handled:true,version:registry.manager.id,at:now.toISOString(),status:results.every(r=>r.status==='success')?'completed':results.some(r=>r.status==='success')?'partial':'failed',results};
+  const results=settled.map((r,i)=>r.status==='fulfilled'?{section:jobs[i].name,status:r.value?.unavailable||r.value?.status==='unavailable'||r.value?.available===false?'unavailable':r.value?.approvalReady===false||r.value?.status==='needs_context'?'partial':'success',data:r.value}:{section:jobs[i].name,status:'failed',error:'Specialist unavailable; no action executed'});
+  return {handled:true,version:registry.manager.id,at:now.toISOString(),status:results.every(r=>r.status==='success')?'completed':results.some(r=>['success','partial'].includes(r.status))?'partial':'failed',results};
  }
 }
 export const managerForSnapshot=snapshot=>new Manager({crm:new CRMAdapter(snapshot)});

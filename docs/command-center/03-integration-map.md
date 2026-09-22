@@ -2,9 +2,9 @@
 
 | Integration | Verified candidate state | Remaining gate |
 |---|---|---|
-| CRM reads | Existing Google session and getState; native read adapter checked against live records | Authenticated Preview end-to-end acceptance |
-| CRM writes | Native proposal/decision/execute/status dispatch staged; existing validator retained | Live installation, synthetic confirmed-write acceptance, release approval |
-| Durable ledger | Google spreadsheet append/lock/flush; isolated real storage test passed | Production ledger installation; scale/concurrency acceptance |
+| CRM reads | Existing Google session and getState; native read adapter checked against live records | Remaining complete-coverage and regression acceptance |
+| CRM writes | Native proposal/decision/execute/status live in Preview; one synthetic write verified; existing validator retained | Broader live mutation/concurrency regression; approved release after gates |
+| Durable ledger | Google spreadsheet append/lock/flush; isolated real storage test passed | Ledger installed for candidate; scale/concurrency acceptance remains |
 | Email | Existing Email Activity projection verified; no automatic qualification | Outlook runtime OAuth, heartbeat/reconciliation and approved sending provider |
 | WhatsApp | Existing Business App contact action/manual logging preserved | No inbox/API integration in this project |
 | Enquiry | Existing flow untouched; normalization tests | Live receipt/transfer projection and end-to-end synthetic form regression |
