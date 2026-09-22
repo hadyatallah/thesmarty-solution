@@ -1,7 +1,8 @@
 import {CRMAdapter} from '../command-center/crm.js';
 import {GrowthAgent} from '../command-center/growth.js';
 import {OperationsAgent} from '../command-center/operations.js';
-const CCReadCore={CRMAdapter,GrowthAgent,OperationsAgent};
+import {operationalEvidence} from '../command-center/context.js';
+const CCReadCore={CRMAdapter,GrowthAgent,OperationsAgent,operationalEvidence};
 // Synthetic UI test binding only. All services are in memory; no network adapter.
 export function createSandbox(data){
  const OWNER='synthetic-owner@example.test',SCHEMA=data.fields,ENUMS=data.enums;
@@ -24,7 +25,7 @@ export function createSandbox(data){
  * Each ledger append contains state and audit in one cell. Script lock covers
  * read/check/append/flush. A crash after dispatch requires manual reconciliation.
  */
-const CC_VERSION_='tss-cc-0.2.0';
+const CC_VERSION_='tss-cc-0.3.0';
 const CC_HEADERS_=['sequence','key','timestamp','envelope','checksum'];
 function ccCanonical_(v){return Array.isArray(v)?v.map(ccCanonical_):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,ccCanonical_(v[k])])):v;}
 function ccHash_(v){return authHash_(JSON.stringify(ccCanonical_(v)));}
@@ -82,7 +83,7 @@ function ccExecuteCore_(ss,ctx,id,adapter){
 function ccExecute(token,id){const ctx=ccContext_(token);return ccLock_(()=>ccExecuteCore_(db_(),ctx,id,{read:(e,id)=>rows_(e).find(r=>r.id===id),save:(e,input)=>saveRecordLocked_(e,input)}));}
 function ccState(token){const ctx=ccContext_(token);return ccLock_(()=>{const all=ccReadLedger_(db_()),latest={};all.forEach(e=>latest[e.key]=e.state);const values=Object.values(latest).filter(s=>s.tenantId===ctx.tenantId);return {version:CC_VERSION_,checkedAt:new Date().toISOString(),actions:values.filter(s=>s.operation).slice(-100).reverse(),jobs:values.filter(s=>s.type).slice(-30).reverse(),audit:all.slice(-100).reverse().map(e=>e.audit),capabilities:{crmWrites:true,emailSend:false,whatsappSend:false,socialPublish:false,researchProvider:false,schedules:PropertiesService.getScriptProperties().getProperty('CC_SCHEDULES_ENABLED')==='true'}};});}
 function ccSnapshot_(){const records={},coverage={};Object.keys(SCHEMA).forEach(n=>{try{records[n]=rows_(n);coverage[n]={available:true,complete:true,total:records[n].length};}catch(e){coverage[n]={available:false,error:'CRM_SOURCE_UNAVAILABLE'};}});const commercial=commercialState_();Object.assign(records,commercial.records);Object.assign(coverage,commercial.coverage);return {records,coverage,enums:ENUMS,fields:SCHEMA,updatedAt:new Date().toISOString()};}
-function ccBuildBrief_(type){const crm=new CCReadCore.CRMAdapter(ccSnapshot_()),growth=new CCReadCore.GrowthAgent({crm}),ops=new CCReadCore.OperationsAgent({crm}),sections=[],errors=[];for(const [name,fn] of [['CRM',()=>type==='weekly-review'?crm.weekly():crm.attention()],['Communications',()=>growth.incoming()],['Operations',()=>ops.summary()],['Content',()=>ops.content()]]){try{const data=fn();sections.push({name,data});}catch(e){errors.push({name,errorCode:'SOURCE_UNAVAILABLE'});}}return {status:errors.length?'partial':'completed',sections,errors,at:new Date().toISOString(),externalActionExecuted:false};}
+function ccBuildBrief_(type){const snapshot=ccSnapshot_(),crm=new CCReadCore.CRMAdapter(snapshot),growth=new CCReadCore.GrowthAgent({crm}),ops=new CCReadCore.OperationsAgent({crm,evidence:CCReadCore.operationalEvidence(snapshot)}),sections=[],errors=[];const jobs=type==='housekeeping'?[['Data quality',()=>crm.quality()],['CRM',()=>crm.attention()]]:[['CRM',()=>type==='weekly-review'?crm.weekly():crm.attention()],['Communications',()=>growth.incoming()],['Growth',()=>growth.prospects()],['Operations',()=>ops.summary()],['Content',()=>ops.content()]];for(const [name,fn] of jobs){try{const data=fn();sections.push({name,data});}catch(e){errors.push({name,errorCode:'SOURCE_UNAVAILABLE'});}}return {status:errors.length?'partial':'completed',sections,errors,at:new Date().toISOString(),externalActionExecuted:false};}
 function ccRunBriefCore_(ss,ctx,type,eventId,build){
  if(!['daily-brief','weekly-review','housekeeping'].includes(type)||!/^[a-z0-9:.-]{1,120}$/i.test(eventId))throw Error('CC_INVALID_EVENT');
  const key=ctx.tenantId+':job:'+eventId;let j=ccLatest_(ss,key);if(j&&['completed','partial','running','failed'].includes(j.status))return j;

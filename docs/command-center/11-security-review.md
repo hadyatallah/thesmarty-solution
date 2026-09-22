@@ -9,3 +9,6 @@ Audit entries retain metadata, not session tokens or raw note/message bodies. Ac
 Untrusted CRM/email/site content remains data. HTML rendering escapes fields. Model proposals cannot gain write authority. Model-level prompt injection evaluation, retention policy, complete notification isolation and scale/concurrency tests remain open.
 
 Preview sign-in requires an explicitly approved exact OAuth origin. Do not use wildcard origins, bypass tokens in frontend code, disabled login protection, or copied production session tokens to get around this gate.
+
+
+Native event types are allowlisted. Event content cannot select a write operation. Exact event-ID payload conflicts are rejected; stale/future/deleted/changed references cannot prepare work. Maximum three preparation attempts. Event activation requires exact runtime gates and an explicit event age policy. The notification projection does not grant write permission.

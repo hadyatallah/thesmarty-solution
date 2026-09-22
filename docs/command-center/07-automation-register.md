@@ -4,9 +4,9 @@
 |---|---|---|
 | Daily brief | Native backend handler, Asia/Nicosia working days, deterministic event key | Disabled; not installed |
 | Weekly review | Native Monday handler, deterministic date key | Disabled; not installed |
-| Housekeeping | Read rules and generic workflow contract | No event hook installed |
-| Incoming email/enquiry | Existing TSS capture routines preserved | New command-center event binding pending |
-| Content/publication result | Generic preparation/reconciliation contract | Not connected |
+| Housekeeping | Native persisted report preparation and data-quality checks | No event hook installed |
+| Incoming email/enquiry | Existing TSS capture routines preserved | Native event consumer tested; producer hooks remain gated |
+| Content/publication result | Native metadata event consumer; provider integration pending | Not connected |
 
 ccEnableSchedules requires CC_LIVE_GATES_PASSED equal to the exact runtime version. Do not set that property before acceptance. It deduplicates its own handler and does not remove existing triggers. ccDisableSchedules turns off only the new brief workflow. No new ChatGPT automation, external send, or publication trigger was created.
 

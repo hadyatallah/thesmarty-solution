@@ -24,6 +24,15 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | AS-09 | AS-09 corrupted ledger fails closed | PASS: assertions satisfied | Synthetic / Node |
 | AS-10 | AS-10 duplicate backend brief event produces one report and journal result | PASS: assertions satisfied | Synthetic / Node |
 | AS-11 | AS-11 expired approval cannot execute | PASS: assertions satisfied | Synthetic / Node |
+| AS-12 | AS-12 native event duplicate remains deduplicated after runtime restart | PASS: assertions satisfied | Synthetic / Node |
+| AS-13 | AS-13 native stale, future, deleted and changed events never prepare | PASS: assertions satisfied | Synthetic / Node |
+| AS-14 | AS-14 native events reject conflicting IDs, unknown types and missing policy | PASS: assertions satisfied | Synthetic / Node |
+| AS-15 | AS-15 native failed downstream obeys retry time and bounded attempts | PASS: assertions satisfied | Synthetic / Node |
+| AS-16 | AS-16 native observer remains disabled without live phase gates | PASS: assertions satisfied | Synthetic / Node |
+| CTX-01 | CTX-01 message date alone does not establish ingestion success | PASS: assertions satisfied | Synthetic / Node |
+| CTX-02 | CTX-02 notifications deduplicate exact action state and flag expired approval | PASS: assertions satisfied | Synthetic / Node |
+| CTX-03 | CTX-03 Manager reads actual approval service and preserves unavailable state | PASS: assertions satisfied | Synthetic / Node |
+| CTX-04 | CTX-04 daily and weekly combine growth communications content and approvals | PASS: assertions satisfied | Synthetic / Node |
 | P1-01 | P1-01 exact normalized company lookup | PASS: assertions satisfied | Synthetic / Node |
 | P1-02 | P1-02 exact ID lookup | PASS: assertions satisfied | Synthetic / Node |
 | P1-03 | P1-03 ambiguous name cannot choose a record | PASS: assertions satisfied | Synthetic / Node |
@@ -116,11 +125,11 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | UI-08 | UI-08 assistant delegates to shared approval controls without a direct write | PASS: assertions satisfied | Synthetic / Node |
 | UI-09 | UI-09 companies without next action query is scoped to companies | PASS: assertions satisfied | Synthetic / Node |
 | UI-10 | UI-10 linked contacts remain visible without activity details | PASS: assertions satisfied | Synthetic / Node |
-| REG-113 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
-| REG-114 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
-| REG-115 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
-| REG-116 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
-| REG-117 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
-| REG-118 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
+| REG-122 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
+| REG-123 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
+| REG-124 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
+| REG-125 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
+| REG-126 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
+| REG-127 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
 
 Live acceptance pending: signed-in CRM, production API projections, server approval gateway, durable transaction/restart tests, provider reconciliation, new enquiry transfer, Outlook ingest, Android phone/tablet and installed PWA, backend scheduled job delivery. No phase is accepted for Production.

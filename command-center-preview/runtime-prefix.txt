@@ -1,7 +1,8 @@
 import {CRMAdapter} from '../command-center/crm.js';
 import {GrowthAgent} from '../command-center/growth.js';
 import {OperationsAgent} from '../command-center/operations.js';
-const CCReadCore={CRMAdapter,GrowthAgent,OperationsAgent};
+import {operationalEvidence} from '../command-center/context.js';
+const CCReadCore={CRMAdapter,GrowthAgent,OperationsAgent,operationalEvidence};
 // Synthetic UI test binding only. All services are in memory; no network adapter.
 export function createSandbox(data){
  const OWNER='synthetic-owner@example.test',SCHEMA=data.fields,ENUMS=data.enums;

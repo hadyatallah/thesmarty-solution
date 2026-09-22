@@ -322,7 +322,7 @@ async function handleAssistantSubmit(e){
   if(!q)return;
   if(q.length>3000){el('aiAnswer').innerHTML='<div class="assistant-message error">Please keep each message to 3,000 characters or less.</div>';return;}
   if(window.TSSCommandCenter){
-    try{const answer=await window.TSSCommandCenter.answer(q,state);if(answer){el('aiAnswer').innerHTML=answer;return;}}catch(err){el('aiAnswer').innerHTML='<p class="error">Command Center could not complete this request. No action executed.</p>';return;}
+    try{const answer=await window.TSSCommandCenter.answer(q,state,{call});if(answer){el('aiAnswer').innerHTML=answer;return;}}catch(err){el('aiAnswer').innerHTML='<p class="error">Command Center could not complete this request. No action executed.</p>';return;}
   }
   const dueAnswer=localDuePeriodAnswer(q);
   if(dueAnswer){

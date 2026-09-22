@@ -44,3 +44,10 @@ Next dependency: approve one stable protected Preview origin for the existing Go
 ## Sign-in-free interaction Preview — 22 September 2026
 
 Added `/command-center-preview/`, an offline-capable synthetic workspace reusing the Manager, response UI and approval gateway components. No Google authentication or network adapter exists on that page. CSP blocks connections; real CRM authentication and production are unchanged. Local suite: 118/118 PASS including five Preview isolation/action tests and a contact visibility regression test. This does not replace live acceptance; research, sending, publishing and proactive scheduling remain unavailable in this workspace. See `command-center-preview/README.md` for rebuild, use and rollback.
+
+
+## Candidate 0.3 continuation
+
+Implemented shared runtime approval reads, aggregated notification projection, all-six-section management responses, persisted report controls and native event jobs. Operations can expose a captured Email Activity receipt but never promote it to healthy without a freshness rule and coverage evidence. Local suite 127/127 PASS. Native event test passed on 22 September 2026 at 20:21:15 UTC and fresh-execution persistence passed at 20:21:57 UTC using the isolated synthetic workbook. No commercial writes or external sends.
+
+The backend source is staged in private Head. Version 10 production web deployment, existing Gmail capture trigger and Outlook integration were preserved. Events and schedules remain disabled. The Google Cloud Console access blocker remains current. New research/email/social provider dispatch and full live monitoring still require integration work. This candidate is not the finished production operating system.

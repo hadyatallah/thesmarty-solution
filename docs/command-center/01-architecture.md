@@ -13,3 +13,6 @@ The browser stages proposals, displays exact server-returned fields, then requir
 Pure modules are packaged into the private Apps Script file by build.mjs. No Node dependencies, credentials, alternate authentication, new OAuth scopes, or provider send/publish adapters are introduced. The generic Node Gateway/WorkflowEngine remain contract implementations; the native binding is the actual staged runtime.
 
 Production remains on backend Version 10 and the previous website release. The staged Head source is not a production web deployment. No live Agent Ledger or proactive trigger has been installed. A separate synthetic workbook verifies Google-backed persistence. Real CRM reads were verified without changing business data.
+
+
+Candidate 0.3 adds context.js as the shared evidence/notification projection, and native Events.gs serialized by the same Apps Script lock and append ledger. No new service or datastore.

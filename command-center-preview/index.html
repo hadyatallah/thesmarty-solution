@@ -233,17 +233,45 @@ function promptFor(role,data){
 }
 
 return {registry,promptFor};})();
+const context=(()=>{
+// Shared projections only. No independent CRM store or provider dispatch.
+const {validDate}=crm;
+function operationalEvidence(snapshot={}) {
+ const evidence={...(snapshot.operationalEvidence||{})};
+ const mail=snapshot.records?.['Email Activity'];
+ if(Array.isArray(mail)){
+  const captured=mail.filter(r=>r.messageId&&validDate(r.createdAt||r.updatedAt));
+  const latest=captured.sort((a,b)=>Date.parse(b.createdAt||b.updatedAt)-Date.parse(a.createdAt||a.updatedAt))[0];
+  if(latest)evidence['Outlook ingestion']={...evidence['Outlook ingestion'],lastBusinessSuccess:latest.createdAt||latest.updatedAt,reference:latest.messageId,source:'CRM Email Activity capture',limitation:'Captured ledger evidence only. Mailbox completeness, ingestion heartbeat and backlog remain unverified.'};
+ }
+ return evidence;
+}
+function notificationItems(runtime,now=new Date()){
+ if(!runtime)return [];
+ const items=[];
+ for(const a of runtime.actions||[]){
+  const expired=a.approvalState==='approved'&&Date.parse(a.approval?.expiresAt)<=now.getTime();
+  if(a.status==='proposed')items.push({key:'action:'+a.id+':'+(expired?'expired':a.approvalState),kind:expired?'Warning':'Needs Approval',reference:a.id,text:expired?'Approval expired. Review the current record and prepare a fresh approval.':a.operation+' '+a.entity+' '+(a.recordId||'new record')});
+  else if(['failed','uncertain','executing'].includes(a.status))items.push({key:'action:'+a.id+':'+a.status,kind:a.status==='failed'?'Failed':'Warning',reference:a.id,text:a.status==='failed'?'Action failed. Review the audit.':'Execution outcome needs reconciliation. Do not repeat this action.'});
+ }
+ for(const j of runtime.jobs||[])if(['failed','retry','partial','stale','changed','running'].includes(j.status))items.push({key:'job:'+j.id+':'+j.status,kind:j.status==='failed'?'Failed':'Warning',reference:j.id,text:j.type+' · '+j.status});
+ const seen=new Set();return items.filter(x=>{if(seen.has(x.key))return false;seen.add(x.key);return true;});
+}
+function approvalSummary(runtime){return runtime?{actions:runtime.actions||[],notifications:notificationItems(runtime),checkedAt:runtime.checkedAt,limitations:['Approval applies only to the exact recorded proposal. Use the approval controls below.']}:{unavailable:'Approval service unavailable. No action executed.'};}
+
+return {operationalEvidence,notificationItems,approvalSummary};})();
 const manager=(()=>{
 const {CRMAdapter}=crm;
 const {registry}=prompts;
+const {approvalSummary,notificationItems}=context;
 class Manager {
- constructor({crm,growth,operations}={}){this.crm=crm;this.growth=growth;this.operations=operations;}
+ constructor({crm,growth,operations,runtime=null}={}){this.crm=crm;this.growth=growth;this.operations=operations;this.runtime=runtime;}
  async run(command,now=new Date()) {
   const q=String(command||'').trim(); if(!q||q.length>3000)throw Error('INVALID_COMMAND');
   const jobs=[];const add=(name,fn)=>jobs.push({name,fn});
   const dossier=q.match(/^(?:summari[sz]e|tell me (?:everything )?about|give me everything about|lookup|look up)\s+(.+?)[.!?]?$/i);
   if(dossier)add('CRM',()=>this.crm.dossier(dossier[1]));
-  else if(/weekly|management (?:review|report)/i.test(q)){add('CRM',()=>this.crm.weekly(now));if(this.operations)add('Operations',()=>this.operations.summary(now));}
+  else if(/weekly|management (?:review|report)/i.test(q)){add('CRM',()=>this.crm.weekly(now));if(this.growth){add('Communications',()=>this.growth.incoming());add('Growth',()=>this.growth.prospects());}if(this.operations){add('Operations',()=>this.operations.summary(now));add('Content',()=>this.operations.content(now));}add('Approvals',()=>approvalSummary(this.runtime));}
   else if(/duplicate|incomplete|data (?:quality|problems)|inconsistent/i.test(q))add('CRM',()=>this.crm.quality());
   else if(/important (?:emails|replies)|incoming|unanswered/i.test(q))add('Communications',()=>this.growth?this.growth.incoming():{unavailable:'Email adapter is unavailable'});
   else if(/contact next|(?:who|which companies).*contact|prospects/i.test(q))add('Growth',()=>this.growth?this.growth.prospects():{unavailable:'Growth adapter is unavailable'});
@@ -251,14 +279,15 @@ class Manager {
   else if(/prepare.*(?:email|whatsapp|follow.up|introduction)/i.test(q))add('Communications',()=>{const match=q.match(/\bfor\s+(.+?)\s+about\s+(.+)$/i);if(!match||!this.growth)return {status:'needs_context',message:'Specify the exact company and purpose, for example: Prepare an email for [company] about [purpose]. Nothing has been sent.'};const company=this.crm.lookup(match[1]);if(!company.record)return company;return this.growth.draft({companyId:company.record.id,channel:/whatsapp/i.test(q)?'whatsapp':'email',purpose:match[2],followUp:/follow.up/i.test(q)});});
   else if(/content|social|story|reel/i.test(q))add('Content',()=>this.operations?this.operations.content(now):{unavailable:'Content adapter is unavailable'});
   else if(/fail|overnight|healthy|health|integration|outlook|enquiry workflow/i.test(q))add('Operations',()=>this.operations?this.operations.summary(now):{unavailable:'Operations evidence is unavailable'});
-  else if(/approval/i.test(q))add('Approvals',()=>({unavailable:'Durable approval backend is not connected. Existing CRM confirmation remains separate.'}));
+  else if(/approval/i.test(q))add('Approvals',()=>approvalSummary(this.runtime));
+  else if(/notification/i.test(q))add('Notifications',()=>this.runtime?{notifications:notificationItems(this.runtime,now)}:{unavailable:'Notification service unavailable'});
   else if(/changed since|yesterday/i.test(q))add('CRM',()=>({period:'Available recent activity only',...this.crm.weekly(now),limitation:'No complete audit snapshot comparison is available'}));
   else if(/attention|priorities|daily|overdue|dormant|no next action/i.test(q)){
    add('CRM',()=>{const r=this.crm.attention(now);if(/overdue/i.test(q))r.items=r.items.filter(x=>x.kind==='overdue');else if(/dormant/i.test(q))r.items=r.items.filter(x=>x.kind==='dormant');else if(/no next action/i.test(q)){if(/companies/i.test(q))r.items=this.crm.rows('Companies').filter(x=>!String(x.nextAction||'').trim()).map(x=>({kind:'missing_next_action',entity:'Companies',id:x.id,name:x.name}));else r.items=r.items.filter(x=>x.kind==='missing_next_action');}return r;});
-   if(/attention|priorities|daily/i.test(q)){if(this.growth)add('Communications',()=>this.growth.incoming());if(this.operations)add('Operations',()=>this.operations.summary(now));}
+   if(/attention|priorities|daily/i.test(q)){if(this.growth){add('Communications',()=>this.growth.incoming());add('Growth',()=>this.growth.prospects());}if(this.operations){add('Operations',()=>this.operations.summary(now));add('Content',()=>this.operations.content(now));}add('Approvals',()=>approvalSummary(this.runtime));}
   }else return {handled:false};
   const settled=await Promise.allSettled(jobs.map(j=>Promise.resolve().then(j.fn)));
-  const results=settled.map((r,i)=>r.status==='fulfilled'?{section:jobs[i].name,status:'success',data:r.value}:{section:jobs[i].name,status:'failed',error:'Specialist unavailable; no action executed'});
+  const results=settled.map((r,i)=>r.status==='fulfilled'?{section:jobs[i].name,status:r.value?.unavailable||r.value?.status==='unavailable'?'unavailable':'success',data:r.value}:{section:jobs[i].name,status:'failed',error:'Specialist unavailable; no action executed'});
   return {handled:true,version:registry.manager.id,at:now.toISOString(),status:results.every(r=>r.status==='success')?'completed':results.some(r=>r.status==='success')?'partial':'failed',results};
  }
 }
@@ -270,6 +299,7 @@ const {CRMAdapter}=crm;
 const {Manager}=manager;
 const {GrowthAgent}=growth;
 const {OperationsAgent}=operations;
+const {operationalEvidence,notificationItems}=context;
 const escape = v => String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const line=(label,value)=>value===undefined||value===null||value===''?'':`<li><strong>${escape(label)}:</strong> ${escape(value)}</li>`;
 const list=items=>`<ul>${items.join('')}</ul>`;
@@ -281,6 +311,8 @@ function renderResult(result){
   else if(d.status==='ambiguous')body='<p>More than one company matches. Use an exact ID.</p>'+list(d.candidates.map(x=>line(x.id,x.name)));
   else if(d.status==='unknown')body='<p>No company matched. Check the name or exact ID.</p>';
   else if(d.record){body=list(['id','name','category','district','email','phone','website','lifecycle','communicationStatus','lastContact','nextAction','followUp'].map(k=>line(k,d.record[k])));for(const [name,items] of Object.entries(d.sections)){const c=d.coverage[name];body+=`<h4>${escape(name)}</h4>`+(!c?.available?'<p>Unavailable.</p>':list(items.slice(0,20).map(x=>line(x.name||x.subject||x.id||x.action||'Record',[x.stage||x.status,x.nextAction,x.dueDate||x.followUp||x.messageDate,x.direction,x.summary,x.email,x.phone,x.role].filter(Boolean).join(' · ')||'No additional details')))+(!items.length?'<p>No linked entries in loaded data.</p>':'')+`<p class="muted">${items.length} linked records. ${c.complete?'Source population marked complete.':'History may be partial.'}</p>`);}}
+  else if(d.actions){body=list(d.actions.filter(a=>a.status==='proposed').map(a=>line(a.operation+' '+a.entity,[a.recordId||'new',a.approvalState,a.id].join(' · '))))||'<p>No pending approvals.</p>';body+='<p>Review and execute exact proposals in the approval controls below.</p>';}
+  else if(d.notifications){body=list(d.notifications.map(n=>line(n.kind,n.text)))||'<p>No notifications.</p>';}
   else if(d.items && !d.topic){body=`<p>${escape(d.period||'Current attention')} · ${d.items.length} items</p>`+list(d.items.slice(0,50).map(x=>line(x.kind.replaceAll('_',' '),[x.name||x.id,x.date,x.days!==undefined?x.days+' days':''].filter(Boolean).join(' · '))));}
   else if(d.pipeline){body=`<p>Review period: ${escape(d.period.from)} to ${escape(d.period.to)}</p><p>${d.pipeline.length} current open opportunities. This is a current snapshot, not a historical conversion calculation.</p>`+list(d.pipeline.map(x=>line(x.name||x.id,x.stage+' · '+(x.nextAction||'No next action'))))+`<p>${d.attention.items.length} current attention items. Activity coverage may be partial.</p>`;}
   else if(d.duplicates){body=`<p>${d.duplicates.length} duplicate signals and ${d.issues.length} data-quality findings. No records changed.</p>`+list(d.duplicates.slice(0,30).map(x=>line('Review '+x.signal,x.ids.join(', '))))+list(d.issues.slice(0,30).map(x=>line(x.kind,[x.entity,x.id,x.missing||x.field].filter(Boolean).join(' · '))));}
@@ -294,7 +326,7 @@ function renderResult(result){
   return `<section class="section"><h3>${escape(r.section)}</h3>${body}</section>`;
  }).join('');
 }
-function createManager(snapshot){const crm=new CRMAdapter(snapshot);return new Manager({crm,growth:new GrowthAgent({crm}),operations:new OperationsAgent({crm})});}
+function createManager(snapshot,runtime=null){const crm=new CRMAdapter(snapshot);return new Manager({crm,growth:new GrowthAgent({crm}),operations:new OperationsAgent({crm,evidence:operationalEvidence(snapshot)}),runtime});}
 function renderAction(a){return `<article class="section"><h4>${escape(a.operation)} ${escape(a.entity)} · ${escape(a.recordId||'new record')}</h4>${list(Object.entries(a.fields||{}).map(([k,v])=>line(k,v)))}<p>${escape(a.expectedOutcome)}</p><p class="muted">${escape(a.status)} · ${escape(a.class)} · Action ${escape(a.id)}</p>${a.status==='proposed'?`<button type="button" data-approve="${escape(a.id)}">Approve exact change and execute</button> <button type="button" data-reject="${escape(a.id)}">Reject</button>`:''}${a.errorCode?`<p class="error">${escape(a.errorCode)}. Check the CRM and audit before proposing another action.</p>`:''}</article>`;}
 function bindActions(root,actions,call,onDone){
  root.querySelectorAll('[data-approve],[data-reject]').forEach(button=>button.addEventListener('click',async()=>{
@@ -305,9 +337,9 @@ function bindActions(root,actions,call,onDone){
  }));
 }
 const commandCenter={
- async answer(query,snapshot){const result=await createManager(snapshot).run(query);return result.handled?renderResult(result):null;},
- statusHtml(){return '<section class="section" id="ccControls"><h3>Approvals, activity and system status</h3><button type="button" data-load-ledger>Refresh action ledger</button><div data-ledger role="status">Load the server ledger to review pending approvals, jobs and audit evidence.</div></section><details class="section"><summary>Assistant capabilities and limits</summary><p>CRM reads use your signed-in snapshot. Email history may be partial. Sending, publication and automatic WhatsApp inbox access are unavailable. A prepared message has not been sent.</p><p>Assistant changes require a server proposal and a separate exact-action approval. If the backend is not connected, changes are blocked.</p></details>';},
- mount({call}){const root=document.getElementById('ccControls');if(!root)return;const load=async()=>{const box=root.querySelector('[data-ledger]');box.textContent='Loading server evidence…';try{const s=await call('ccState');box.innerHTML=`<p>Backend ${escape(s.version)} · Checked ${escape(s.checkedAt)} · Schedules ${s.capabilities.schedules?'enabled':'not enabled'}</p><h4>Pending approvals and recent actions</h4>${s.actions.map(renderAction).join('')||'<p>No actions recorded.</p>'}<p data-feedback class="error" role="alert"></p><h4>Prepared briefs and jobs</h4>${list(s.jobs.map(j=>line(j.type,j.status+' · '+j.updatedAt)))}<h4>Recent audit</h4>${list(s.audit.slice(0,20).map(a=>line(a.timestamp,a.operation+' · '+a.result+' · '+a.actionId)))}`;bindActions(box,s.actions,call,load);}catch(e){box.textContent='Action backend unavailable: '+e.message+'. Reads and drafts remain available; no proposed change was executed.';}};root.querySelector('[data-load-ledger]').addEventListener('click',load);},
+ async answer(query,snapshot,{call}={}){let runtime=null;if(call&&/attention|priorities|daily|weekly|management|approval|notification/i.test(query)){try{runtime=await call('ccState');}catch{}}const result=await createManager(snapshot,runtime).run(query);return result.handled?renderResult(result):null;},
+ statusHtml(){return '<section class="section" id="ccControls"><h3>Approvals, activity and system status</h3><button type="button" data-load-ledger>Refresh action ledger</button><button type="button" data-brief="daily-brief">Prepare daily brief</button><button type="button" data-brief="weekly-review">Prepare weekly review</button><button type="button" data-brief="housekeeping">Check data quality</button><p data-brief-status role="status"></p><div data-ledger role="status">Load the server ledger to review pending approvals, jobs and audit evidence.</div></section><details class="section"><summary>Assistant capabilities and limits</summary><p>CRM reads use your signed-in snapshot. Email history may be partial. Sending, publication and automatic WhatsApp inbox access are unavailable. A prepared message has not been sent.</p><p>Assistant changes require a server proposal and a separate exact-action approval. If the backend is not connected, changes are blocked.</p></details>';},
+ mount({call}){const root=document.getElementById('ccControls');if(!root)return;const load=async()=>{const box=root.querySelector('[data-ledger]');box.textContent='Loading server evidence…';try{const s=await call('ccState');box.innerHTML=`<p>Backend ${escape(s.version)} · Checked ${escape(s.checkedAt)} · Schedules ${s.capabilities.schedules?'enabled':'not enabled'}</p><h4>Pending approvals and recent actions</h4>${s.actions.map(renderAction).join('')||'<p>No actions recorded.</p>'}<p data-feedback class="error" role="alert"></p><h4>Notifications</h4>${list(notificationItems(s).map(n=>line(n.kind,n.text)))}<h4>Prepared briefs and jobs</h4>${list(s.jobs.map(j=>line(j.type,j.status+' · '+j.updatedAt)))}<h4>Recent audit</h4>${list(s.audit.slice(0,20).map(a=>line(a.timestamp,a.operation+' · '+a.result+' · '+a.actionId)))}`;bindActions(box,s.actions,call,load);}catch(e){box.textContent='Action backend unavailable: '+e.message+'. Reads and drafts remain available; no proposed change was executed.';}};root.querySelector('[data-load-ledger]').addEventListener('click',load);root.querySelectorAll('[data-brief]').forEach(button=>button.addEventListener('click',async()=>{button.disabled=true;const status=root.querySelector('[data-brief-status]');status.textContent='Preparing report…';try{const j=await call('ccPrepareBrief',button.dataset.brief);status.textContent=j.type+' · '+j.status+' · '+j.id+'. No external messages sent.';await load();}catch(e){status.textContent='Report unavailable: '+e.message;}finally{button.disabled=false;}}));},
  async stagePlan(plan,{call,state,onDone}){
   if(!plan?.actions?.length)return;
   const dialog=document.getElementById('dialog');
@@ -341,7 +373,8 @@ const runtime=(()=>{
 const {CRMAdapter}=crm;
 const {GrowthAgent}=growth;
 const {OperationsAgent}=operations;
-const CCReadCore={CRMAdapter,GrowthAgent,OperationsAgent};
+const {operationalEvidence}=context;
+const CCReadCore={CRMAdapter,GrowthAgent,OperationsAgent,operationalEvidence};
 // Synthetic UI test binding only. All services are in memory; no network adapter.
 function createSandbox(data){
  const OWNER='synthetic-owner@example.test',SCHEMA=data.fields,ENUMS=data.enums;
@@ -364,7 +397,7 @@ function createSandbox(data){
  * Each ledger append contains state and audit in one cell. Script lock covers
  * read/check/append/flush. A crash after dispatch requires manual reconciliation.
  */
-const CC_VERSION_='tss-cc-0.2.0';
+const CC_VERSION_='tss-cc-0.3.0';
 const CC_HEADERS_=['sequence','key','timestamp','envelope','checksum'];
 function ccCanonical_(v){return Array.isArray(v)?v.map(ccCanonical_):v&&typeof v==='object'?Object.fromEntries(Object.keys(v).sort().map(k=>[k,ccCanonical_(v[k])])):v;}
 function ccHash_(v){return authHash_(JSON.stringify(ccCanonical_(v)));}
@@ -422,7 +455,7 @@ function ccExecuteCore_(ss,ctx,id,adapter){
 function ccExecute(token,id){const ctx=ccContext_(token);return ccLock_(()=>ccExecuteCore_(db_(),ctx,id,{read:(e,id)=>rows_(e).find(r=>r.id===id),save:(e,input)=>saveRecordLocked_(e,input)}));}
 function ccState(token){const ctx=ccContext_(token);return ccLock_(()=>{const all=ccReadLedger_(db_()),latest={};all.forEach(e=>latest[e.key]=e.state);const values=Object.values(latest).filter(s=>s.tenantId===ctx.tenantId);return {version:CC_VERSION_,checkedAt:new Date().toISOString(),actions:values.filter(s=>s.operation).slice(-100).reverse(),jobs:values.filter(s=>s.type).slice(-30).reverse(),audit:all.slice(-100).reverse().map(e=>e.audit),capabilities:{crmWrites:true,emailSend:false,whatsappSend:false,socialPublish:false,researchProvider:false,schedules:PropertiesService.getScriptProperties().getProperty('CC_SCHEDULES_ENABLED')==='true'}};});}
 function ccSnapshot_(){const records={},coverage={};Object.keys(SCHEMA).forEach(n=>{try{records[n]=rows_(n);coverage[n]={available:true,complete:true,total:records[n].length};}catch(e){coverage[n]={available:false,error:'CRM_SOURCE_UNAVAILABLE'};}});const commercial=commercialState_();Object.assign(records,commercial.records);Object.assign(coverage,commercial.coverage);return {records,coverage,enums:ENUMS,fields:SCHEMA,updatedAt:new Date().toISOString()};}
-function ccBuildBrief_(type){const crm=new CCReadCore.CRMAdapter(ccSnapshot_()),growth=new CCReadCore.GrowthAgent({crm}),ops=new CCReadCore.OperationsAgent({crm}),sections=[],errors=[];for(const [name,fn] of [['CRM',()=>type==='weekly-review'?crm.weekly():crm.attention()],['Communications',()=>growth.incoming()],['Operations',()=>ops.summary()],['Content',()=>ops.content()]]){try{const data=fn();sections.push({name,data});}catch(e){errors.push({name,errorCode:'SOURCE_UNAVAILABLE'});}}return {status:errors.length?'partial':'completed',sections,errors,at:new Date().toISOString(),externalActionExecuted:false};}
+function ccBuildBrief_(type){const snapshot=ccSnapshot_(),crm=new CCReadCore.CRMAdapter(snapshot),growth=new CCReadCore.GrowthAgent({crm}),ops=new CCReadCore.OperationsAgent({crm,evidence:CCReadCore.operationalEvidence(snapshot)}),sections=[],errors=[];const jobs=type==='housekeeping'?[['Data quality',()=>crm.quality()],['CRM',()=>crm.attention()]]:[['CRM',()=>type==='weekly-review'?crm.weekly():crm.attention()],['Communications',()=>growth.incoming()],['Growth',()=>growth.prospects()],['Operations',()=>ops.summary()],['Content',()=>ops.content()]];for(const [name,fn] of jobs){try{const data=fn();sections.push({name,data});}catch(e){errors.push({name,errorCode:'SOURCE_UNAVAILABLE'});}}return {status:errors.length?'partial':'completed',sections,errors,at:new Date().toISOString(),externalActionExecuted:false};}
 function ccRunBriefCore_(ss,ctx,type,eventId,build){
  if(!['daily-brief','weekly-review','housekeeping'].includes(type)||!/^[a-z0-9:.-]{1,120}$/i.test(eventId))throw Error('CC_INVALID_EVENT');
  const key=ctx.tenantId+':job:'+eventId;let j=ccLatest_(ss,key);if(j&&['completed','partial','running','failed'].includes(j.status))return j;
@@ -468,7 +501,7 @@ const {commandCenter}=ui;
 let sandbox=createSandbox(snapshot());
 const byId=id=>document.getElementById(id);
 const refresh=()=>{byId('ccShell').innerHTML=commandCenter.statusHtml();commandCenter.mount({call:sandbox.call});byId('taskState').textContent=sandbox.data.records.Tasks[0].name+' · '+sandbox.data.records.Tasks[0].status+' · version '+sandbox.data.records.Tasks[0].version;};
-const ask=async q=>{byId('question').value=q;byId('response').textContent='Checking synthetic records…';try{byId('response').innerHTML=await commandCenter.answer(q,sandbox.data)||'<p>This request needs the live AI interpreter, which is disconnected in this test. Use a sample command below.</p>';}catch(e){byId('response').textContent=e.message;}};
+const ask=async q=>{byId('question').value=q;byId('response').textContent='Checking synthetic records…';try{byId('response').innerHTML=await commandCenter.answer(q,sandbox.data,{call:sandbox.call})||'<p>This request needs the live AI interpreter, which is disconnected in this test. Use a sample command below.</p>';}catch(e){byId('response').textContent=e.message;}};
 byId('command').addEventListener('submit',e=>{e.preventDefault();ask(byId('question').value);});
 document.querySelectorAll('[data-command]').forEach(b=>b.addEventListener('click',()=>ask(b.dataset.command)));
 byId('propose').addEventListener('click',async()=>{const r=sandbox.data.records.Tasks[0];await commandCenter.stagePlan({actions:[{operation:'update',entity:'Tasks',recordId:r.id,recordName:r.name,_expectedVersion:r.version,data:{status:r.status==='Done'?'Open':'Done'}}]},{call:sandbox.call,state:sandbox.data,onDone:async()=>{byId('dialog').close();refresh();byId('result').textContent='Decision recorded. The task status below shows the result. No live CRM record changed.';}});});

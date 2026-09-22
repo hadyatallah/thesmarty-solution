@@ -1,0 +1,30 @@
+{
+  "version": "tss-cc-0.3.0",
+  "environment": "Apps Script Head / isolated synthetic spreadsheet",
+  "tests": [
+    {
+      "testId": "LIVE-EVENT-01",
+      "at": "2026-09-22T20:21:15.133Z",
+      "expected": "One preparation, duplicate suppressed, stale and changed blocked",
+      "actual": {
+        "singlePreparation": 1,
+        "duplicateSuppressed": true,
+        "staleBlocked": true,
+        "changedBlocked": true
+      },
+      "result": "PASS",
+      "sideEffects": "Synthetic ledger writes only; zero commercial writes and sends"
+    },
+    {
+      "testId": "LIVE-EVENT-02",
+      "at": "2026-09-22T20:21:57.432Z",
+      "expected": "Fresh runtime retains result without preparing or appending again",
+      "actual": {
+        "priorResultRetained": true,
+        "duplicatePreparations": 0
+      },
+      "result": "PASS",
+      "sideEffects": "No extra ledger writes, commercial writes or sends"
+    }
+  ]
+}

@@ -15,3 +15,6 @@
 | Notifications | Generic durable-store contract; action/job status available in candidate UI | Complete centralized notification inbox binding |
 
 ChatGPT connector/browser access does not confer application OAuth credentials. No new credentials are stored in public code.
+
+
+Email Activity captured receipts are projected read-only. They do not prove Outlook heartbeat/backlog/completeness. No Gmail sending adapter was substituted for the commercial Outlook mailbox.

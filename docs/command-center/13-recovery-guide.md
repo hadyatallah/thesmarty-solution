@@ -11,3 +11,6 @@ For future release rollback: disable CC_SCHEDULES_ENABLED first if activated; re
 For executing/uncertain actions, reconcile the exact entity and record against the proposed fields and recorded receipt. No automatic retry is implemented. A stale version or rejected/expired approval requires fresh review. Broken ledger headers/checksums fail closed and require restoration from evidence, not silent recreation.
 
 Google origin_mismatch requires an approved exact JavaScript origin in the existing OAuth client. A successful Vercel login does not fix the separate Google OAuth rule.
+
+
+For candidate 0.3 Head rollback, restore CommandCenter.before-0.3.gs captured immediately before staging. No event producers or schedules were installed. The public frontend can return to c96d139e5e6d58ffe7bf3a7ce73d55b6e7929b53. Preserve the synthetic ledger for evidence.

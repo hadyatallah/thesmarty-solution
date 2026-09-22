@@ -11,3 +11,8 @@ After a stale-record error, refresh and prepare a new proposal. After an uncerta
 Emails/WhatsApp/social content are drafts only. Use existing authorized tools for manual final review and sending/publication. The current Meta draft workflow remains authoritative. No scheduler date is proof of publication.
 
 Daily and weekly backend schedules are not installed. Release operators must complete phase gates before enabling them.
+
+
+## Candidate 0.3 controls
+
+The same Command Center now reads pending approvals from ccState when available. Daily/weekly answers include CRM, communications, growth, operations, content and approvals. Failure to load the approval service is shown as unavailable. Use Prepare daily brief, Prepare weekly review or Check data quality to persist a preparation-only report through the authenticated backend. Repeating a report on the same Cyprus date returns the existing report. Notifications aggregate pending approvals, expired approvals, uncertain actions and failed/partial jobs. Refresh after acting. These controls require the candidate backend and installed ledger.
