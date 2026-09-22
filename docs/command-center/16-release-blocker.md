@@ -22,3 +22,13 @@ Live draft check returned an English-only draft in the already-open browser page
 The user explicitly approved the requested permission scope. Candidate Version 11 was deployed successfully on 22 September 2026 at 21:09 UTC. Candidate endpoint: https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec . Production Version 10 endpoint was not modified.
 
 Owner-only ccInstall completed at 21:10:46 UTC to initialize Agent Ledger metadata. Existing CRM records were not part of this operation. No schedules or external dispatch enabled. Development branch crm/index.html now targets the candidate endpoint for Preview testing. Authenticated ledger and write acceptance remain pending.
+
+## Signed-in Version 11 acceptance and transport repair
+
+Candidate faee562 / backend tss-cc-0.3.0 passed signed-in ledger reads and manual daily-brief persistence. Repeating the brief returned job a3101c46-cb44-4d07-924e-b1ab09324616 without additional audit entries. Google model health diagnostic returned HTTP 200 and Greek output. Live bilingual drafting still failed to obtain translation; it displayed a missing-translation limitation and did not send.
+
+The internal Cancelled task proposal failed with a browser connection error before exact approval. The ledger refresh subsequently returned an unavailable error. No ccDecide or ccExecute approval was issued. A task plan also omitted data.name; frontend validation now rejects this and the planner explicitly requires data.name.
+
+Added api/crm-command.js for the six Command Center methods only. Same-site POST requests forward the existing opaque session to the fixed candidate Apps Script endpoint. No privileged credential, new authentication model, database or provider subscription was introduced. Redirects are restricted to the Google ContentService host and followed as GET without the session body. Failed writes are never retried. Existing login and ordinary CRM transport remain unchanged. This repair must pass deployed acceptance before Production promotion.
+
+Local component suite: 140/140 passed, including cross-origin refusal, missing sessions, method restriction, redirect session protection, uncertain-write non-retry, HTML response rejection and missing-name proposal validation. Live repair verification pending. Production unchanged; external sending, publishing and proactive schedules remain disabled.

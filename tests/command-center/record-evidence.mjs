@@ -5,7 +5,7 @@ const testFiles=[...readdirSync('tests/command-center').filter(x=>x.endsWith('.t
 const start=new Date().toISOString();
 const r=spawnSync(process.execPath,['--test','--test-reporter=tap',...testFiles],{encoding:'utf8'});
 writeFileSync('docs/command-center/test-output.tap',r.stdout+r.stderr);
-const files=[...readdirSync('command-center').filter(x=>x.endsWith('.js')).map(x=>'command-center/'+x),'crm/assistant.js','crm/command-center.js','crm/index.html','command-center/apps-script/CommandCenter.gs','command-center/apps-script/build.mjs','command-center/apps-script/Events.gs',...testFiles];
+const files=[...readdirSync('command-center').filter(x=>x.endsWith('.js')).map(x=>'command-center/'+x),'api/crm-command.js','crm/assistant.js','crm/command-center.js','crm/index.html','command-center/apps-script/CommandCenter.gs','command-center/apps-script/build.mjs','command-center/apps-script/Events.gs',...testFiles];
 files.push(...readdirSync('command-center-preview').map(f=>'command-center-preview/'+f));
 const hashes=Object.fromEntries(files.map(f=>[f,createHash('sha256').update(readFileSync(f)).digest('hex')]));
 const version=createHash('sha256').update(JSON.stringify(hashes)).digest('hex');

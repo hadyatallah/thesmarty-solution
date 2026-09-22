@@ -238,7 +238,7 @@ function primaryAssistantContext(text){
 }
 function aiPlannerPromptFromInterpretation(originalText,interpretation){
   const matches=compactPlannerContext(originalText);
-  const rules='Classify the CRM result. Questions/explanations => answer. Searches/lists => query or timeline. Writes => action and need confirmation. Sensitive: Qualified, Won/Lost, Do not contact, payments, outreach send/approve, merge/delete. Positive reply alone is not Qualified. Never invent facts. Writable only: Companies, Contacts, Opportunities, Tickets, Tasks.';
+  const rules='Classify the CRM result. Questions/explanations => answer. Searches/lists => query or timeline. Writes => action and need confirmation. Sensitive: Qualified, Won/Lost, Do not contact, payments, outreach send/approve, merge/delete. Positive reply alone is not Qualified. Never invent facts. Writable only: Companies, Contacts, Opportunities, Tickets, Tasks. For creates put the record name in data.name; recordName is only a display label.';
   const formats='JSON only: answer {"mode":"answer","message":"..."}; clarify {"mode":"clarify","message":"..."}; query {"mode":"query","message":"...","query":{"entity":"Companies|Contacts|Opportunities|Tickets|Tasks","conditions":[],"limit":50}}; timeline {"mode":"timeline","message":"...","recordId":"company id"}; action {"mode":"action","message":"...","actions":[{"operation":"create|update","entity":"Companies|Contacts|Opportunities|Tickets|Tasks","recordId":"","recordName":"","data":{}}]}.';
   return [
     rules,
@@ -270,7 +270,9 @@ function validatePlan(plan){
   if(plan.actions.length>20)throw Error('That request contains more than 20 changes. Please split it into smaller batches.');
   plan.actions.forEach(function(a){
     if(!['create','update'].includes(a.operation)||!['Companies','Contacts','Opportunities','Tickets','Tasks'].includes(a.entity))throw Error('The assistant proposed an unsupported CRM action.');
+    if(!a.data||typeof a.data!=='object'||Array.isArray(a.data))throw Error('Proposed fields are invalid.');
     const fields=writableFields(a.entity);Object.keys(a.data||{}).forEach(function(k){if(!fields.has(k))delete a.data[k];});
+    if(a.operation==='create'&&fields.has('name')&&(typeof a.data.name!=='string'||!a.data.name.trim()))throw Error('The proposed record is missing its name. Please revise the request before approval.');
     if(a.operation==='create'&&a.entity==='Companies'){const dup=findLikelyCompany(a.data||{});if(dup)a._duplicate={entity:'Companies',id:dup.r.id,name:dup.r.name};}
     if(a.operation==='create'&&a.entity==='Contacts'){const dup=findLikelyContact(a.data||{});if(dup)a._duplicate={entity:'Contacts',id:dup.id,name:dup.name};}
     if(a.operation==='update'&&!a.recordId){const n=normalizeForMatch(a.recordName),matches=(state.records[a.entity]||[]).filter(function(r){return normalizeForMatch(r.name)===n;});if(matches.length!==1)throw Error('Use an exact record ID; the name is unknown or ambiguous.');a.recordId=matches[0].id;}

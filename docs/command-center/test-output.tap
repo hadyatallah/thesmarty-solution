@@ -2,807 +2,849 @@ TAP version 13
 # Subtest: renders paragraphs, bold text and both list types
 ok 1 - renders paragraphs, bold text and both list types
   ---
-  duration_ms: 15.385096
+  duration_ms: 16.356058
   type: 'test'
   ...
 # Subtest: routes existing TSS enquiry and opportunity links directly to Kiti
 ok 2 - routes existing TSS enquiry and opportunity links directly to Kiti
   ---
-  duration_ms: 1.85762
+  duration_ms: 3.225565
   type: 'test'
   ...
 # Subtest: preserves external destinations and uses safe new-tab attributes
 ok 3 - preserves external destinations and uses safe new-tab attributes
   ---
-  duration_ms: 0.8269
+  duration_ms: 2.373238
   type: 'test'
   ...
 # Subtest: keeps trailing punctuation outside bare links but retains balanced parentheses
 ok 4 - keeps trailing punctuation outside bare links but retains balanced parentheses
   ---
-  duration_ms: 1.385479
+  duration_ms: 1.390464
   type: 'test'
   ...
 # Subtest: HTML and unsafe link protocols remain inert text
 ok 5 - HTML and unsafe link protocols remain inert text
   ---
-  duration_ms: 1.455083
+  duration_ms: 1.201621
   type: 'test'
   ...
 # Subtest: link labels can have bold text but cannot inject tags or nested links
 ok 6 - link labels can have bold text but cannot inject tags or nested links
   ---
-  duration_ms: 1.221091
+  duration_ms: 1.686045
   type: 'test'
   ...
 # Subtest: does not classify lookalike domains as TSS or accept credential URLs
 ok 7 - does not classify lookalike domains as TSS or accept credential URLs
   ---
-  duration_ms: 1.04727
+  duration_ms: 1.190549
   type: 'test'
   ...
 # Subtest: actual message renderer formats assistant responses and keeps visitor text literal
 ok 8 - actual message renderer formats assistant responses and keeps visitor text literal
   ---
-  duration_ms: 2.086047
+  duration_ms: 4.643787
   type: 'test'
   ...
 # Subtest: assistant lead receipt cannot turn a backend reference into HTML
 ok 9 - assistant lead receipt cannot turn a backend reference into HTML
   ---
-  duration_ms: 3.831441
+  duration_ms: 6.757442
   type: 'test'
   ...
 # Subtest: AS-01 native gateway rejects unauthenticated requests before data access
 ok 10 - AS-01 native gateway rejects unauthenticated requests before data access
   ---
-  duration_ms: 15.873626
+  duration_ms: 22.423362
   type: 'test'
   ...
 # Subtest: AS-02 exact approval required; successful replay cannot dispatch twice
 ok 11 - AS-02 exact approval required; successful replay cannot dispatch twice
   ---
-  duration_ms: 45.302848
+  duration_ms: 31.464966
   type: 'test'
   ...
 # Subtest: AS-03 durable ledger survives a fresh process context
 ok 12 - AS-03 durable ledger survives a fresh process context
   ---
-  duration_ms: 17.730469
+  duration_ms: 17.201336
   type: 'test'
   ...
 # Subtest: AS-04 changed record blocks execution without dispatch
 ok 13 - AS-04 changed record blocks execution without dispatch
   ---
-  duration_ms: 7.879207
+  duration_ms: 10.592343
   type: 'test'
   ...
 # Subtest: AS-05 rejection cannot be executed or approved again
 ok 14 - AS-05 rejection cannot be executed or approved again
   ---
-  duration_ms: 14.862051
+  duration_ms: 17.072925
   type: 'test'
   ...
 # Subtest: AS-06 uncertain outcome persists and cannot be retried
 ok 15 - AS-06 uncertain outcome persists and cannot be retried
   ---
-  duration_ms: 19.04038
+  duration_ms: 14.859435
   type: 'test'
   ...
 # Subtest: AS-07 unsupported operations and protected fields are denied
 ok 16 - AS-07 unsupported operations and protected fields are denied
   ---
-  duration_ms: 8.506212
+  duration_ms: 7.467278
   type: 'test'
   ...
 # Subtest: AS-08 audit excludes raw fields and session credentials
 ok 17 - AS-08 audit excludes raw fields and session credentials
   ---
-  duration_ms: 10.546722
+  duration_ms: 14.215094
   type: 'test'
   ...
 # Subtest: AS-09 corrupted ledger fails closed
 ok 18 - AS-09 corrupted ledger fails closed
   ---
-  duration_ms: 8.605343
+  duration_ms: 8.432499
   type: 'test'
   ...
 # Subtest: AS-10 duplicate backend brief event produces one report and journal result
 ok 19 - AS-10 duplicate backend brief event produces one report and journal result
   ---
-  duration_ms: 10.54017
+  duration_ms: 15.97411
   type: 'test'
   ...
 # Subtest: AS-11 expired approval cannot execute
 ok 20 - AS-11 expired approval cannot execute
   ---
-  duration_ms: 7.788054
+  duration_ms: 12.540455
   type: 'test'
   ...
 # Subtest: AS-12 native event duplicate remains deduplicated after runtime restart
 ok 21 - AS-12 native event duplicate remains deduplicated after runtime restart
   ---
-  duration_ms: 18.519324
+  duration_ms: 16.288462
   type: 'test'
   ...
 # Subtest: AS-13 native stale, future, deleted and changed events never prepare
 ok 22 - AS-13 native stale, future, deleted and changed events never prepare
   ---
-  duration_ms: 20.875997
+  duration_ms: 26.182064
   type: 'test'
   ...
 # Subtest: AS-14 native events reject conflicting IDs, unknown types and missing policy
 ok 23 - AS-14 native events reject conflicting IDs, unknown types and missing policy
   ---
-  duration_ms: 15.795966
+  duration_ms: 22.798599
   type: 'test'
   ...
 # Subtest: AS-15 native failed downstream obeys retry time and bounded attempts
 ok 24 - AS-15 native failed downstream obeys retry time and bounded attempts
   ---
-  duration_ms: 9.001973
+  duration_ms: 10.94194
   type: 'test'
   ...
 # Subtest: AS-16 native observer remains disabled without live phase gates
 ok 25 - AS-16 native observer remains disabled without live phase gates
   ---
-  duration_ms: 4.594294
+  duration_ms: 5.17876
   type: 'test'
   ...
 # Subtest: CTX-01 message date alone does not establish ingestion success
 ok 26 - CTX-01 message date alone does not establish ingestion success
   ---
-  duration_ms: 13.495722
+  duration_ms: 10.866254
   type: 'test'
   ...
 # Subtest: CTX-02 notifications deduplicate exact action state and flag expired approval
 ok 27 - CTX-02 notifications deduplicate exact action state and flag expired approval
   ---
-  duration_ms: 2.005393
+  duration_ms: 1.442546
   type: 'test'
   ...
 # Subtest: CTX-03 Manager reads actual approval service and preserves unavailable state
 ok 28 - CTX-03 Manager reads actual approval service and preserves unavailable state
   ---
-  duration_ms: 14.723086
+  duration_ms: 12.125414
   type: 'test'
   ...
 # Subtest: CTX-04 daily and weekly combine growth communications content and approvals
 ok 29 - CTX-04 daily and weekly combine growth communications content and approvals
   ---
-  duration_ms: 236.104722
+  duration_ms: 305.906952
   type: 'test'
   ...
 # Subtest: P2-22 Cyprus business hours observe winter and summer time and exact boundaries
 ok 30 - P2-22 Cyprus business hours observe winter and summer time and exact boundaries
   ---
-  duration_ms: 122.477904
+  duration_ms: 183.880845
   type: 'test'
   ...
 # Subtest: P2-23 approved out-of-hours email is held without provider dispatch and needs valid approval later
 ok 31 - P2-23 approved out-of-hours email is held without provider dispatch and needs valid approval later
   ---
-  duration_ms: 25.781212
+  duration_ms: 36.2264
   type: 'test'
   ...
 # Subtest: P2-24 final dispatch check blocks an email crossing closing time during validation
 ok 32 - P2-24 final dispatch check blocks an email crossing closing time during validation
   ---
-  duration_ms: 14.230539
+  duration_ms: 6.383302
   type: 'test'
   ...
 # Subtest: P1-01 exact normalized company lookup
 ok 33 - P1-01 exact normalized company lookup
   ---
-  duration_ms: 10.324683
+  duration_ms: 5.978459
   type: 'test'
   ...
 # Subtest: P1-02 exact ID lookup
 ok 34 - P1-02 exact ID lookup
   ---
-  duration_ms: 1.126578
+  duration_ms: 1.067658
   type: 'test'
   ...
 # Subtest: P1-03 ambiguous name cannot choose a record
 ok 35 - P1-03 ambiguous name cannot choose a record
   ---
-  duration_ms: 1.097347
+  duration_ms: 0.716539
   type: 'test'
   ...
 # Subtest: P1-04 unknown name cannot guess
 ok 36 - P1-04 unknown name cannot guess
   ---
-  duration_ms: 1.396463
+  duration_ms: 0.556809
   type: 'test'
   ...
 # Subtest: P1-05 overdue task uses Cyprus date
 ok 37 - P1-05 overdue task uses Cyprus date
   ---
-  duration_ms: 131.415864
+  duration_ms: 144.553973
   type: 'test'
   ...
 # Subtest: P1-06 missing next action
 ok 38 - P1-06 missing next action
   ---
-  duration_ms: 3.734383
+  duration_ms: 1.572119
   type: 'test'
   ...
 # Subtest: P1-07 dormant opportunity uses configured 10 days
 ok 39 - P1-07 dormant opportunity uses configured 10 days
   ---
-  duration_ms: 3.778762
+  duration_ms: 2.251154
   type: 'test'
   ...
 # Subtest: P1-08 duplicate candidates never merge
 ok 40 - P1-08 duplicate candidates never merge
   ---
-  duration_ms: 2.611289
+  duration_ms: 3.252261
   type: 'test'
   ...
 # Subtest: P1-09 incomplete company
 ok 41 - P1-09 incomplete company
   ---
-  duration_ms: 1.410959
+  duration_ms: 6.948803
   type: 'test'
   ...
 # Subtest: P1-10 existing custom values preserved
 ok 42 - P1-10 existing custom values preserved
   ---
-  duration_ms: 1.727034
+  duration_ms: 2.842218
   type: 'test'
   ...
 # Subtest: P1-11 dossier has available communications
 ok 43 - P1-11 dossier has available communications
   ---
-  duration_ms: 1.601535
+  duration_ms: 1.660866
   type: 'test'
   ...
 # Subtest: P1-12 missing history not called empty
 ok 44 - P1-12 missing history not called empty
   ---
-  duration_ms: 5.12551
+  duration_ms: 1.66522
   type: 'test'
   ...
 # Subtest: P1-13 unauthorized proposal rejected
 ok 45 - P1-13 unauthorized proposal rejected
   ---
-  duration_ms: 20.477999
+  duration_ms: 2.629945
   type: 'test'
   ...
 # Subtest: P1-14 record changes after approval rejected
 ok 46 - P1-14 record changes after approval rejected
   ---
-  duration_ms: 15.369449
+  duration_ms: 20.144154
   type: 'test'
   ...
 # Subtest: P1-15 partial data retains limitations
 ok 47 - P1-15 partial data retains limitations
   ---
-  duration_ms: 1.616115
+  duration_ms: 1.145692
   type: 'test'
   ...
 # Subtest: P1-16 Manager routes exact dossier without model guessing
 ok 48 - P1-16 Manager routes exact dossier without model guessing
   ---
-  duration_ms: 3.76402
+  duration_ms: 5.344325
   type: 'test'
   ...
 # Subtest: P2-01 already contacted is held
 ok 49 - P2-01 already contacted is held
   ---
-  duration_ms: 17.341971
+  duration_ms: 17.727711
   type: 'test'
   ...
 # Subtest: P2-02 suppressed prospect cannot draft
 ok 50 - P2-02 suppressed prospect cannot draft
   ---
-  duration_ms: 3.174442
+  duration_ms: 5.97707
   type: 'test'
   ...
 # Subtest: P2-03 new research prospect never creates a company
 ok 51 - P2-03 new research prospect never creates a company
   ---
-  duration_ms: 5.664713
+  duration_ms: 21.066498
   type: 'test'
   ...
 # Subtest: P2-04 evidenced need can indicate potential fit
 ok 52 - P2-04 evidenced need can indicate potential fit
   ---
-  duration_ms: 1.706187
+  duration_ms: 1.784617
   type: 'test'
   ...
 # Subtest: P2-05 basic website does not prove weak business process
 ok 53 - P2-05 basic website does not prove weak business process
   ---
-  duration_ms: 1.106363
+  duration_ms: 1.090539
   type: 'test'
   ...
 # Subtest: P2-06 working CRM is retained
 ok 54 - P2-06 working CRM is retained
   ---
-  duration_ms: 0.871893
+  duration_ms: 1.017723
   type: 'test'
   ...
 # Subtest: P2-07 ambiguous sender held
 ok 55 - P2-07 ambiguous sender held
   ---
-  duration_ms: 10.169651
+  duration_ms: 3.753588
   type: 'test'
   ...
 # Subtest: P2-08 known reply matches exact company
 ok 56 - P2-08 known reply matches exact company
   ---
-  duration_ms: 4.122488
+  duration_ms: 1.349698
   type: 'test'
   ...
 # Subtest: P2-09 unknown sender never creates company
 ok 57 - P2-09 unknown sender never creates company
   ---
-  duration_ms: 2.638869
+  duration_ms: 3.078008
   type: 'test'
   ...
 # Subtest: P2-10 security notice goes to review, not a customer ticket
 ok 58 - P2-10 security notice goes to review, not a customer ticket
   ---
-  duration_ms: 2.329944
+  duration_ms: 2.074774
   type: 'test'
   ...
 # Subtest: P2-11 positive reply does not qualify
 ok 59 - P2-11 positive reply does not qualify
   ---
-  duration_ms: 5.950554
+  duration_ms: 8.198934
   type: 'test'
   ...
 # Subtest: P2-12 personalized follow-up remains Draft
 ok 60 - P2-12 personalized follow-up remains Draft
   ---
-  duration_ms: 1.288209
+  duration_ms: 3.966901
   type: 'test'
   ...
 # Subtest: P2-13 exact approval required before send
 ok 61 - P2-13 exact approval required before send
   ---
-  duration_ms: 26.122085
+  duration_ms: 25.484206
   type: 'test'
   ...
 # Subtest: P2-14 cancelled send cannot execute
 ok 62 - P2-14 cancelled send cannot execute
   ---
-  duration_ms: 4.393365
+  duration_ms: 4.996284
   type: 'test'
   ...
 # Subtest: P2-15 definite provider rejection reports failure
 ok 63 - P2-15 definite provider rejection reports failure
   ---
-  duration_ms: 136.20497
+  duration_ms: 138.87192
   type: 'test'
   ...
 # Subtest: P2-16 timeout reconciles without resending
 ok 64 - P2-16 timeout reconciles without resending
   ---
-  duration_ms: 12.016804
+  duration_ms: 11.644884
   type: 'test'
   ...
 # Subtest: P2-17 simultaneous and repeated send executes once
 ok 65 - P2-17 simultaneous and repeated send executes once
   ---
-  duration_ms: 12.530186
+  duration_ms: 9.172294
   type: 'test'
   ...
 # Subtest: P2-18 WhatsApp only prepares text
 ok 66 - P2-18 WhatsApp only prepares text
   ---
-  duration_ms: 2.895176
+  duration_ms: 2.3103
   type: 'test'
   ...
 # Subtest: P2-19 bilingual email uses commercial sender and retains review requirement
 ok 67 - P2-19 bilingual email uses commercial sender and retains review requirement
   ---
-  duration_ms: 5.024376
+  duration_ms: 5.438436
   type: 'test'
   ...
 # Subtest: P2-20 translation failure cannot produce an approval-ready draft
 ok 68 - P2-20 translation failure cannot produce an approval-ready draft
   ---
-  duration_ms: 3.942864
+  duration_ms: 1.987008
   type: 'test'
   ...
 # Subtest: P2-21 suppression blocks translation and WhatsApp does not call email translation
 ok 69 - P2-21 suppression blocks translation and WhatsApp does not call email translation
   ---
-  duration_ms: 2.317767
+  duration_ms: 2.678196
   type: 'test'
   ...
 # Subtest: P3-01 enquiry success requires linked CRM receipts
 ok 70 - P3-01 enquiry success requires linked CRM receipts
   ---
-  duration_ms: 7.225203
+  duration_ms: 4.902069
   type: 'test'
   ...
 # Subtest: P3-02 persisted enquiry with delayed transfer stays pending
 ok 71 - P3-02 persisted enquiry with delayed transfer stays pending
   ---
-  duration_ms: 0.876764
+  duration_ms: 0.536316
   type: 'test'
   ...
 # Subtest: P3-03 failed transfer is visible
 ok 72 - P3-03 failed transfer is visible
   ---
-  duration_ms: 0.941263
+  duration_ms: 0.420405
   type: 'test'
   ...
 # Subtest: P3-04 repeated transfer observation has no write side effects
 ok 73 - P3-04 repeated transfer observation has no write side effects
   ---
-  duration_ms: 3.690118
+  duration_ms: 5.268822
   type: 'test'
   ...
 # Subtest: P3-05 stale ingestion warns
 ok 74 - P3-05 stale ingestion warns
   ---
-  duration_ms: 8.889774
+  duration_ms: 64.814536
   type: 'test'
   ...
 # Subtest: P3-06 successful business job is healthy
 ok 75 - P3-06 successful business job is healthy
   ---
-  duration_ms: 0.893754
+  duration_ms: 1.566933
   type: 'test'
   ...
 # Subtest: P3-07 job failure remains failed
 ok 76 - P3-07 job failure remains failed
   ---
-  duration_ms: 0.79605
+  duration_ms: 1.039253
   type: 'test'
   ...
 # Subtest: P3-08 missing backup evidence stays unknown
 ok 77 - P3-08 missing backup evidence stays unknown
   ---
-  duration_ms: 0.6631
+  duration_ms: 0.655068
   type: 'test'
   ...
 # Subtest: P3-09 scheduler success is not business health
 ok 78 - P3-09 scheduler success is not business health
   ---
-  duration_ms: 0.853518
+  duration_ms: 0.813428
   type: 'test'
   ...
 # Subtest: P3-10 social concepts are Draft
 ok 79 - P3-10 social concepts are Draft
   ---
-  duration_ms: 132.55415
+  duration_ms: 176.696607
   type: 'test'
   ...
 # Subtest: P3-11 final assets and logo required for approval readiness
 ok 80 - P3-11 final assets and logo required for approval readiness
   ---
-  duration_ms: 1.933447
+  duration_ms: 2.431556
   type: 'test'
   ...
 # Subtest: P3-12 cancelled publication stays cancelled
 ok 81 - P3-12 cancelled publication stays cancelled
   ---
-  duration_ms: 0.744098
+  duration_ms: 0.792877
   type: 'test'
   ...
 # Subtest: P3-13 Scheduled needs platform reference and time
 ok 82 - P3-13 Scheduled needs platform reference and time
   ---
-  duration_ms: 0.81491
+  duration_ms: 0.444722
   type: 'test'
   ...
 # Subtest: P3-14 definite failure is Failed
 ok 83 - P3-14 definite failure is Failed
   ---
-  duration_ms: 0.570233
+  duration_ms: 0.325763
   type: 'test'
   ...
 # Subtest: P3-15 uncertain publication needs review
 ok 84 - P3-15 uncertain publication needs review
   ---
-  duration_ms: 0.71893
+  duration_ms: 0.821866
   type: 'test'
   ...
 # Subtest: P3-16 publication gateway prevents duplicate dispatch
 ok 85 - P3-16 publication gateway prevents duplicate dispatch
   ---
-  duration_ms: 24.495236
+  duration_ms: 53.454753
   type: 'test'
   ...
 # Subtest: P3-17 story and reel use 1080 by 1920
 ok 86 - P3-17 story and reel use 1080 by 1920
   ---
-  duration_ms: 2.185806
+  duration_ms: 3.207741
   type: 'test'
   ...
 # Subtest: P3-18 unverified landmark blocked
 ok 87 - P3-18 unverified landmark blocked
   ---
-  duration_ms: 0.513165
+  duration_ms: 0.598256
   type: 'test'
   ...
 # Subtest: P3-19 unsupported factual claim blocked
 ok 88 - P3-19 unsupported factual claim blocked
   ---
-  duration_ms: 1.200268
+  duration_ms: 0.793889
   type: 'test'
   ...
 # Subtest: P3-20 real estate agency positioning blocked
 ok 89 - P3-20 real estate agency positioning blocked
   ---
-  duration_ms: 0.844315
+  duration_ms: 0.362959
   type: 'test'
   ...
 # Subtest: P4-01 daily brief with no issues
 ok 90 - P4-01 daily brief with no issues
   ---
-  duration_ms: 131.199761
+  duration_ms: 145.839733
   type: 'test'
   ...
 # Subtest: P4-02 multiple issues preserved
 ok 91 - P4-02 multiple issues preserved
   ---
-  duration_ms: 5.777324
+  duration_ms: 6.675393
   type: 'test'
   ...
 # Subtest: P4-03 repeated event deduplicated
 ok 92 - P4-03 repeated event deduplicated
   ---
-  duration_ms: 9.375715
+  duration_ms: 15.927362
   type: 'test'
   ...
 # Subtest: P4-04 duplicate trigger executes handler once
 ok 93 - P4-04 duplicate trigger executes handler once
   ---
-  duration_ms: 5.431
+  duration_ms: 6.827551
   type: 'test'
   ...
 # Subtest: P4-05 downstream failure remains retryable with bound
 ok 94 - P4-05 downstream failure remains retryable with bound
   ---
-  duration_ms: 4.133131
+  duration_ms: 9.818159
   type: 'test'
   ...
 # Subtest: P4-06 stale event is not executed
 ok 95 - P4-06 stale event is not executed
   ---
-  duration_ms: 2.980221
+  duration_ms: 3.473981
   type: 'test'
   ...
 # Subtest: P4-07 deleted or changed record held
 ok 96 - P4-07 deleted or changed record held
   ---
-  duration_ms: 2.820312
+  duration_ms: 4.644943
   type: 'test'
   ...
 # Subtest: P4-08 notifications deduplicate
 ok 97 - P4-08 notifications deduplicate
   ---
-  duration_ms: 3.464853
+  duration_ms: 6.036955
   type: 'test'
   ...
 # Subtest: P4-09 automation cannot replace send approval
 ok 98 - P4-09 automation cannot replace send approval
   ---
-  duration_ms: 8.382812
+  duration_ms: 12.974387
   type: 'test'
   ...
 # Subtest: P4-10 rejected approval cannot execute
 ok 99 - P4-10 rejected approval cannot execute
   ---
-  duration_ms: 3.55775
+  duration_ms: 4.890303
   type: 'test'
   ...
 # Subtest: P4-11 expired or mismatched approval rejected
 ok 100 - P4-11 expired or mismatched approval rejected
   ---
-  duration_ms: 2.761548
+  duration_ms: 4.597001
   type: 'test'
   ...
 # Subtest: P4-12 retry temporary read failure succeeds
 ok 101 - P4-12 retry temporary read failure succeeds
   ---
-  duration_ms: 4.508804
+  duration_ms: 6.496885
   type: 'test'
   ...
 # Subtest: P4-13 provider unavailable stops after three attempts
 ok 102 - P4-13 provider unavailable stops after three attempts
   ---
-  duration_ms: 5.1353
+  duration_ms: 6.143002
   type: 'test'
   ...
 # Subtest: P4-14 one specialist may fail without losing others
 ok 103 - P4-14 one specialist may fail without losing others
   ---
-  duration_ms: 3.118055
+  duration_ms: 2.213711
   type: 'test'
   ...
 # Subtest: P4-15 Manager marks partial success
 ok 104 - P4-15 Manager marks partial success
   ---
-  duration_ms: 4.477499
+  duration_ms: 3.202628
   type: 'test'
   ...
 # Subtest: P4-16 job audit exists without credentials or bodies
 ok 105 - P4-16 job audit exists without credentials or bodies
   ---
-  duration_ms: 4.273807
+  duration_ms: 3.430699
   type: 'test'
   ...
 # Subtest: P4-17 no send or publish event permitted
 ok 106 - P4-17 no send or publish event permitted
   ---
-  duration_ms: 1.659388
+  duration_ms: 1.369193
   type: 'test'
   ...
 # Subtest: PRE-01 standalone bundle compiles and denies network access
 ok 107 - PRE-01 standalone bundle compiles and denies network access
   ---
-  duration_ms: 23.803434
+  duration_ms: 16.280657
   type: 'test'
   ...
 # Subtest: PRE-02 approval required, exact decision and replay cannot duplicate update
 ok 108 - PRE-02 approval required, exact decision and replay cannot duplicate update
   ---
-  duration_ms: 46.800838
+  duration_ms: 48.910364
   type: 'test'
   ...
 # Subtest: PRE-03 rejected action cannot execute
 ok 109 - PRE-03 rejected action cannot execute
   ---
-  duration_ms: 11.569036
+  duration_ms: 8.070109
   type: 'test'
   ...
 # Subtest: PRE-04 concurrent change blocks stale approval
 ok 110 - PRE-04 concurrent change blocks stale approval
   ---
-  duration_ms: 57.497258
+  duration_ms: 15.098791
   type: 'test'
   ...
 # Subtest: PRE-05 external operations unavailable and reset has no previous state
 ok 111 - PRE-05 external operations unavailable and reset has no previous state
   ---
-  duration_ms: 8.095109
+  duration_ms: 3.633563
   type: 'test'
   ...
 # Subtest: SEC-01 repeated proposal has same durable action ID
 ok 112 - SEC-01 repeated proposal has same durable action ID
   ---
-  duration_ms: 201.380632
+  duration_ms: 154.737123
   type: 'test'
   ...
 # Subtest: SEC-02 tenant cannot approve another tenant action
 ok 113 - SEC-02 tenant cannot approve another tenant action
   ---
-  duration_ms: 4.95751
+  duration_ms: 5.445926
   type: 'test'
   ...
 # Subtest: SEC-03 tampering invalidates approved payload
 ok 114 - SEC-03 tampering invalidates approved payload
   ---
-  duration_ms: 10.075855
+  duration_ms: 5.77798
   type: 'test'
   ...
 # Subtest: SEC-04 data instructions remain outside system prompt
 ok 115 - SEC-04 data instructions remain outside system prompt
   ---
-  duration_ms: 0.97792
+  duration_ms: 1.719849
   type: 'test'
   ...
 # Subtest: SEC-05 audit omits private message body
 ok 116 - SEC-05 audit omits private message body
   ---
-  duration_ms: 32.820998
+  duration_ms: 14.698659
   type: 'test'
   ...
 # Subtest: SEC-06 Manager email drafting cannot execute a send
 ok 117 - SEC-06 Manager email drafting cannot execute a send
   ---
-  duration_ms: 11.768753
+  duration_ms: 13.922955
+  type: 'test'
+  ...
+# Subtest: SEC-20 transport rejects absent sessions and unapproved operations before dispatch
+ok 118 - SEC-20 transport rejects absent sessions and unapproved operations before dispatch
+  ---
+  duration_ms: 6.568808
+  type: 'test'
+  ...
+# Subtest: SEC-21 cross-origin and non-POST requests cannot dispatch
+ok 119 - SEC-21 cross-origin and non-POST requests cannot dispatch
+  ---
+  duration_ms: 1.981019
+  type: 'test'
+  ...
+# Subtest: SEC-22 ContentService redirect receives no session or POST body
+ok 120 - SEC-22 ContentService redirect receives no session or POST body
+  ---
+  duration_ms: 18.793104
+  type: 'test'
+  ...
+# Subtest: SEC-23 unexpected redirects are blocked without leaking session
+ok 121 - SEC-23 unexpected redirects are blocked without leaking session
+  ---
+  duration_ms: 4.816485
+  type: 'test'
+  ...
+# Subtest: SEC-24 uncertain external result never retries the mutation
+ok 122 - SEC-24 uncertain external result never retries the mutation
+  ---
+  duration_ms: 2.361795
+  type: 'test'
+  ...
+# Subtest: SEC-25 backend auth failure remains a failure and HTML is not forwarded
+ok 123 - SEC-25 backend auth failure remains a failure and HTML is not forwarded
+  ---
+  duration_ms: 4.450127
   type: 'test'
   ...
 # Subtest: UI-01 account data is escaped in rendered dossier
-ok 118 - UI-01 account data is escaped in rendered dossier
+ok 124 - UI-01 account data is escaped in rendered dossier
   ---
-  duration_ms: 79.565739
+  duration_ms: 31.517621
   type: 'test'
   ...
 # Subtest: UI-02 attention works with AI provider disabled
-ok 119 - UI-02 attention works with AI provider disabled
+ok 125 - UI-02 attention works with AI provider disabled
   ---
-  duration_ms: 200.190469
+  duration_ms: 145.775479
   type: 'test'
   ...
 # Subtest: UI-03 unknown request falls back to existing assistant
-ok 120 - UI-03 unknown request falls back to existing assistant
+ok 126 - UI-03 unknown request falls back to existing assistant
   ---
-  duration_ms: 5.260726
+  duration_ms: 2.217605
   type: 'test'
   ...
 # Subtest: UI-04 independent specialist error shown alongside success
-ok 121 - UI-04 independent specialist error shown alongside success
+ok 127 - UI-04 independent specialist error shown alongside success
   ---
-  duration_ms: 1.703469
+  duration_ms: 1.640922
   type: 'test'
   ...
 # Subtest: UI-05 legacy ambiguous update rejected before save
-ok 122 - UI-05 legacy ambiguous update rejected before save
+ok 128 - UI-05 legacy ambiguous update rejected before save
   ---
-  duration_ms: 29.45054
+  duration_ms: 11.254735
   type: 'test'
   ...
 # Subtest: UI-06 unavailable gateway blocks all assistant writes
-ok 123 - UI-06 unavailable gateway blocks all assistant writes
+ok 129 - UI-06 unavailable gateway blocks all assistant writes
   ---
-  duration_ms: 4.987957
+  duration_ms: 2.902555
   type: 'test'
   ...
 # Subtest: UI-07 create cannot fall back to legacy saveRecord
-ok 124 - UI-07 create cannot fall back to legacy saveRecord
+ok 130 - UI-07 create cannot fall back to legacy saveRecord
   ---
-  duration_ms: 5.074378
+  duration_ms: 2.761417
   type: 'test'
   ...
 # Subtest: UI-08 assistant delegates to shared approval controls without a direct write
-ok 125 - UI-08 assistant delegates to shared approval controls without a direct write
+ok 131 - UI-08 assistant delegates to shared approval controls without a direct write
   ---
-  duration_ms: 6.553013
+  duration_ms: 3.037503
   type: 'test'
   ...
 # Subtest: UI-09 companies without next action query is scoped to companies
-ok 126 - UI-09 companies without next action query is scoped to companies
+ok 132 - UI-09 companies without next action query is scoped to companies
   ---
-  duration_ms: 3.744296
+  duration_ms: 2.231405
   type: 'test'
   ...
 # Subtest: UI-10 linked contacts remain visible without activity details
-ok 127 - UI-10 linked contacts remain visible without activity details
+ok 133 - UI-10 linked contacts remain visible without activity details
   ---
-  duration_ms: 2.840063
+  duration_ms: 2.910808
+  type: 'test'
+  ...
+# Subtest: UI-11 unnamed create cannot be approved using only its display label
+ok 134 - UI-11 unnamed create cannot be approved using only its display label
+  ---
+  duration_ms: 2.998493
   type: 'test'
   ...
 # Subtest: embedded Kiti form preserves phone, proof, qualification and routing in one request
-ok 128 - embedded Kiti form preserves phone, proof, qualification and routing in one request
+ok 135 - embedded Kiti form preserves phone, proof, qualification and routing in one request
   ---
-  duration_ms: 21.846451
+  duration_ms: 20.935268
   type: 'test'
   ...
 # Subtest: legacy separate experience field is still included if supplied
-ok 129 - legacy separate experience field is still included if supplied
+ok 136 - legacy separate experience field is still included if supplied
   ---
-  duration_ms: 4.949577
+  duration_ms: 3.20477
   type: 'test'
   ...
 # Subtest: recorded enquiry without confirmed email does not claim email was sent
-ok 130 - recorded enquiry without confirmed email does not claim email was sent
+ok 137 - recorded enquiry without confirmed email does not claim email was sent
   ---
-  duration_ms: 10.359491
+  duration_ms: 3.744787
   type: 'test'
   ...
 # Subtest: unreadable or unconfirmed responses retain form values and show processing
-ok 131 - unreadable or unconfirmed responses retain form values and show processing
+ok 138 - unreadable or unconfirmed responses retain form values and show processing
   ---
-  duration_ms: 33.843474
+  duration_ms: 10.091304
   type: 'test'
   ...
 # Subtest: spam, duplicate, rate limit, offline and HTTP failures never show success
-ok 132 - spam, duplicate, rate limit, offline and HTTP failures never show success
+ok 139 - spam, duplicate, rate limit, offline and HTTP failures never show success
   ---
-  duration_ms: 81.53446
+  duration_ms: 22.909078
   type: 'test'
   ...
 # Subtest: contact routes preserve backend category and include the visible service in the message
-ok 133 - contact routes preserve backend category and include the visible service in the message
+ok 140 - contact routes preserve backend category and include the visible service in the message
   ---
-  duration_ms: 27.71942
+  duration_ms: 23.952087
   type: 'test'
   ...
-1..133
-# tests 133
+1..140
+# tests 140
 # suites 0
-# pass 133
+# pass 140
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 2970.466625
+# duration_ms 2644.323473
