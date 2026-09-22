@@ -1,11 +1,13 @@
 # Recovery and troubleshooting
 
-Candidate frontend rollback: revert the candidate commit through a reviewed change, then deploy only with release approval. No workbook schema or business record rollback is needed because this work did not mutate them. The existing Production branch remains the release baseline.
+Production website and Apps Script Version 10 remain the rollback baseline. No production deployment occurred. Private source/manifest/diagnostic backups and hashes were captured and saved separately. Never restore the historical public form-backend file as the private CRM source.
 
-If a new read handler fails, the Manager marks its section failed. Other sections survive. Unknown/unavailable data must not be presented as zero or healthy. Unsupported commands can still reach the original assistant.
+The current staged Head has two changes: new CommandCenter.gs, and Code.gs validator extraction plus five authenticated dispatch entries. Manifest, diagnostic file and existing Gmail trigger are unchanged. Because triggers run Head, web deployment rollback and source rollback are separate. If Head causes a regression, restore captured Code.gs and remove only the newly added module after preserving its evidence. Do not alter existing triggers or business worksheets.
 
-After an uncertain send/publish, use the exact action idempotency key to inspect the provider first. Never click-send again to diagnose. A confirmed remote receipt closes the action. Confirmed absence requires a newly reviewed action. Running/uncertain jobs must be reconciled after crashes.
+No production Agent Ledger or new schedules were installed. The isolated synthetic test workbook and CC_TEST_DB / CC_TEST_ACTION properties contain test evidence and may be retained. Removing them later is a separate cleanup action.
 
-A stale record requires refreshing and reviewing a new proposal. Do not swap in a new version silently. An ambiguous account requires the exact CRM ID. Missing email history requires sync/coverage inspection before outreach. A scheduler run without a business receipt is not success.
+For future release rollback: disable CC_SCHEDULES_ENABLED first if activated; restore prior website commit and prior Apps Script deployment version with release approval. Preserve ledger rows for reconciliation. Never delete audit rows to reset a failed job.
 
-When private Apps Script changes are eventually made, preserve the current deployment ID. Web deployment rollback and Head-trigger source rollback are separate. Capture the current baseline then, do not infer it from historical versions in old reports.
+For executing/uncertain actions, reconcile the exact entity and record against the proposed fields and recorded receipt. No automatic retry is implemented. A stale version or rejected/expired approval requires fresh review. Broken ledger headers/checksums fail closed and require restoration from evidence, not silent recreation.
+
+Google origin_mismatch requires an approved exact JavaScript origin in the existing OAuth client. A successful Vercel login does not fix the separate Google OAuth rule.

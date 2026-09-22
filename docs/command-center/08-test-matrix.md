@@ -13,6 +13,17 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | REG-7 | does not classify lookalike domains as TSS or accept credential URLs | PASS: assertions satisfied | Synthetic / Node |
 | REG-8 | actual message renderer formats assistant responses and keeps visitor text literal | PASS: assertions satisfied | Synthetic / Node |
 | REG-9 | assistant lead receipt cannot turn a backend reference into HTML | PASS: assertions satisfied | Synthetic / Node |
+| AS-01 | AS-01 native gateway rejects unauthenticated requests before data access | PASS: assertions satisfied | Synthetic / Node |
+| AS-02 | AS-02 exact approval required; successful replay cannot dispatch twice | PASS: assertions satisfied | Synthetic / Node |
+| AS-03 | AS-03 durable ledger survives a fresh process context | PASS: assertions satisfied | Synthetic / Node |
+| AS-04 | AS-04 changed record blocks execution without dispatch | PASS: assertions satisfied | Synthetic / Node |
+| AS-05 | AS-05 rejection cannot be executed or approved again | PASS: assertions satisfied | Synthetic / Node |
+| AS-06 | AS-06 uncertain outcome persists and cannot be retried | PASS: assertions satisfied | Synthetic / Node |
+| AS-07 | AS-07 unsupported operations and protected fields are denied | PASS: assertions satisfied | Synthetic / Node |
+| AS-08 | AS-08 audit excludes raw fields and session credentials | PASS: assertions satisfied | Synthetic / Node |
+| AS-09 | AS-09 corrupted ledger fails closed | PASS: assertions satisfied | Synthetic / Node |
+| AS-10 | AS-10 duplicate backend brief event produces one report and journal result | PASS: assertions satisfied | Synthetic / Node |
+| AS-11 | AS-11 expired approval cannot execute | PASS: assertions satisfied | Synthetic / Node |
 | P1-01 | P1-01 exact normalized company lookup | PASS: assertions satisfied | Synthetic / Node |
 | P1-02 | P1-02 exact ID lookup | PASS: assertions satisfied | Synthetic / Node |
 | P1-03 | P1-03 ambiguous name cannot choose a record | PASS: assertions satisfied | Synthetic / Node |
@@ -95,15 +106,15 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | UI-03 | UI-03 unknown request falls back to existing assistant | PASS: assertions satisfied | Synthetic / Node |
 | UI-04 | UI-04 independent specialist error shown alongside success | PASS: assertions satisfied | Synthetic / Node |
 | UI-05 | UI-05 legacy ambiguous update rejected before save | PASS: assertions satisfied | Synthetic / Node |
-| UI-06 | UI-06 legacy stale proposal never writes | PASS: assertions satisfied | Synthetic / Node |
-| UI-07 | UI-07 legacy failed create cannot be replayed | PASS: assertions satisfied | Synthetic / Node |
-| UI-08 | UI-08 legacy valid field values survive update | PASS: assertions satisfied | Synthetic / Node |
+| UI-06 | UI-06 unavailable gateway blocks all assistant writes | PASS: assertions satisfied | Synthetic / Node |
+| UI-07 | UI-07 create cannot fall back to legacy saveRecord | PASS: assertions satisfied | Synthetic / Node |
+| UI-08 | UI-08 assistant delegates to shared approval controls without a direct write | PASS: assertions satisfied | Synthetic / Node |
 | UI-09 | UI-09 companies without next action query is scoped to companies | PASS: assertions satisfied | Synthetic / Node |
-| REG-96 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
-| REG-97 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
-| REG-98 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
-| REG-99 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
-| REG-100 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
-| REG-101 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
+| REG-107 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
+| REG-108 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
+| REG-109 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
+| REG-110 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
+| REG-111 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
+| REG-112 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
 
 Live acceptance pending: signed-in CRM, production API projections, server approval gateway, durable transaction/restart tests, provider reconciliation, new enquiry transfer, Outlook ingest, Android phone/tablet and installed PWA, backend scheduled job delivery. No phase is accepted for Production.

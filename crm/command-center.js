@@ -27,9 +27,33 @@ export function renderResult(result){
  }).join('');
 }
 export function createManager(snapshot){const crm=new CRMAdapter(snapshot);return new Manager({crm,growth:new GrowthAgent({crm}),operations:new OperationsAgent({crm})});}
+export function renderAction(a){return `<article class="section"><h4>${escape(a.operation)} ${escape(a.entity)} · ${escape(a.recordId||'new record')}</h4>${list(Object.entries(a.fields||{}).map(([k,v])=>line(k,v)))}<p>${escape(a.expectedOutcome)}</p><p class="muted">${escape(a.status)} · ${escape(a.class)} · Action ${escape(a.id)}</p>${a.status==='proposed'?`<button type="button" data-approve="${escape(a.id)}">Approve exact change and execute</button> <button type="button" data-reject="${escape(a.id)}">Reject</button>`:''}${a.errorCode?`<p class="error">${escape(a.errorCode)}. Check the CRM and audit before proposing another action.</p>`:''}</article>`;}
+function bindActions(root,actions,call,onDone){
+ root.querySelectorAll('[data-approve],[data-reject]').forEach(button=>button.addEventListener('click',async()=>{
+  const id=button.dataset.approve||button.dataset.reject,a=actions.find(x=>x.id===id);if(!a)return;
+  root.querySelectorAll('button').forEach(b=>b.disabled=true);
+  try{await call('ccDecide',a.id,a.payloadHash,button.dataset.reject?'reject':'approve');if(button.dataset.approve){const done=await call('ccExecute',a.id);if(done.status!=='succeeded')throw Error('Outcome '+done.status+'. Review the action ledger before retrying.');}await onDone();}
+  catch(e){root.querySelector('[data-feedback]').textContent=e.message+' Refresh the action ledger before trying again.';}
+ }));
+}
 export const commandCenter={
  async answer(query,snapshot){const result=await createManager(snapshot).run(query);return result.handled?renderResult(result):null;},
- statusHtml(){return '<details class="section"><summary>Assistant capabilities and limits</summary><p>CRM reads use your current signed-in snapshot. Email history may be partial. Research providers, durable approvals, external actions and proactive jobs are not connected to this candidate.</p><p>Existing CRM changes still use the current confirmation flow. New Manager functions read and prepare only.</p></details>';}
+ statusHtml(){return '<section class="section" id="ccControls"><h3>Approvals, activity and system status</h3><button type="button" data-load-ledger>Refresh action ledger</button><div data-ledger role="status">Load the server ledger to review pending approvals, jobs and audit evidence.</div></section><details class="section"><summary>Assistant capabilities and limits</summary><p>CRM reads use your signed-in snapshot. Email history may be partial. Sending, publication and automatic WhatsApp inbox access are unavailable. A prepared message has not been sent.</p><p>Assistant changes require a server proposal and a separate exact-action approval. If the backend is not connected, changes are blocked.</p></details>';},
+ mount({call}){const root=document.getElementById('ccControls');if(!root)return;const load=async()=>{const box=root.querySelector('[data-ledger]');box.textContent='Loading server evidence…';try{const s=await call('ccState');box.innerHTML=`<p>Backend ${escape(s.version)} · Checked ${escape(s.checkedAt)} · Schedules ${s.capabilities.schedules?'enabled':'not enabled'}</p><h4>Pending approvals and recent actions</h4>${s.actions.map(renderAction).join('')||'<p>No actions recorded.</p>'}<p data-feedback class="error" role="alert"></p><h4>Prepared briefs and jobs</h4>${list(s.jobs.map(j=>line(j.type,j.status+' · '+j.updatedAt)))}<h4>Recent audit</h4>${list(s.audit.slice(0,20).map(a=>line(a.timestamp,a.operation+' · '+a.result+' · '+a.actionId)))}`;bindActions(box,s.actions,call,load);}catch(e){box.textContent='Action backend unavailable: '+e.message+'. Reads and drafts remain available; no proposed change was executed.';}};root.querySelector('[data-load-ledger]').addEventListener('click',load);},
+ async stagePlan(plan,{call,state,onDone}){
+  if(!plan?.actions?.length)return;
+  const dialog=document.getElementById('dialog');
+  try{
+   if(plan.actions.some(a=>a._duplicate))throw Error('Resolve the duplicate before preparing a write.');
+   if(plan.actions.some(a=>Object.values(a.data||{}).some(v=>typeof v==='string'&&/^\$action\d+\.id$/.test(v))))throw Error('Create and review the parent record first, then prepare the linked action with its exact ID.');
+   for(const a of plan.actions)if(a.operation==='update'){const r=(state.records[a.entity]||[]).find(x=>x.id===a.recordId);if(!r||a._expectedVersion===undefined||String(r.version)!==String(a._expectedVersion))throw Error('Record changed. Prepare a fresh proposal.');}
+   plan._gatewayRequestId=plan._gatewayRequestId||crypto.randomUUID();const actions=[];
+   for(let i=0;i<plan.actions.length;i++){const a=plan.actions[i];actions.push(await call('ccPropose',{requestId:plan._gatewayRequestId+':'+i,entity:a.entity,operation:a.operation,recordId:a.recordId||null,expectedVersion:a._expectedVersion||null,fields:a.data||{},expectedOutcome:(a.operation==='create'?'Create ':'Update ')+(a.recordName||a.recordId||a.entity)}));}
+   dialog.innerHTML='<h3>Review the exact server proposals</h3><p>No CRM changes have been executed. Approve each action separately.</p>'+actions.map(renderAction).join('')+'<p data-feedback class="error" role="alert"></p><button type="button" data-close>Close</button>';
+   if(!dialog.open)dialog.showModal();dialog.querySelector('[data-close]').addEventListener('click',()=>dialog.close());
+   bindActions(dialog,actions,call,async()=>{await onDone();});
+  }catch(e){dialog.innerHTML='<h3>Proposal could not be prepared</h3><p class="error">'+escape(e.message)+'</p><p>No CRM write was requested. Any proposals already recorded remain in the server ledger.</p><button type="button" data-close>Close</button>';if(!dialog.open)dialog.showModal();dialog.querySelector('[data-close]').addEventListener('click',()=>dialog.close());}
+ }
 };
 
 if(typeof window!=='undefined')window.TSSCommandCenter=commandCenter;

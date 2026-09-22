@@ -1,21 +1,15 @@
 # TSS AI Agent Command Center architecture
 
-Candidate 0.1.0. Existing operational Sheets CRM remains authoritative. Commercial TSS Flow and Discovery Portal are out of scope. No migration, new hosting or new account was created.
+Candidate 0.2.0, staged on 22 September 2026. Existing operational Google Sheets CRM remains authoritative. No database migration or new hosting.
 
-## Actually implemented
+The existing CRM loads one Manager and shared CRM, Growth/Communications and Operations/Content modules. Common requests use deterministic rules over the signed-in snapshot. Unknown commands retain the existing approved AI interpreter. Specialist prompt registry remains 0.1.0; it is not a newly connected autonomous model runtime.
 
-The current CRM page loads crm/command-center.js. Its Manager routes supported natural-language requests to CRMAdapter, GrowthAgent and OperationsAgent. These are logical modules in one application. All receive the same authenticated getState snapshot. They do not independently copy CRM data. Unknown requests retain the existing assistant/AI interpretation path.
+The native Apps Script binding in command-center/apps-script/CommandCenter.gs uses the existing requireSession_ function and derives the internal tenant and actor on the server. Browser-supplied roles or tenant IDs do not authorize anything. Existing saveRecord validation was extracted without changing its body into a private saveRecordLocked_ helper. Both the manual CRM and new gateway retain that validator and record-version check.
 
-CRM rules are deterministic. They provide lookup, dossiers, due work, configured opportunity inactivity, duplicate candidates, missing fields and current pipeline/activity summaries. The Manager reports partial specialist failure without discarding successful results. Rendering escapes source text.
+Agent Ledger stores append-only transitions. Each row holds an action/job state plus a metadata-only audit event in one JSON envelope with a checksum. A script lock and SpreadsheetApp.flush serialize transitions. This is not a database transaction spanning the business sheet and ledger. Dispatch is recorded first; a crash or ambiguous result remains executing/uncertain and cannot be automatically replayed. Manual reconciliation is still required. Locks do not serialize a human editing the sheet or another Apps Script project.
 
-Gateway is a server-side service class with injected authorization, transactional store and provider adapter. It hashes exact payloads, binds approvals to them, checks expiry/version, records dispatch before sending, deduplicates the same request and holds uncertain outcomes for reconciliation. WorkflowEngine similarly takes a transactional store and bounded read/preparation handlers. Neither is exposed as a live endpoint. The only store implementation is an explicitly synthetic test double.
+The browser stages proposals, displays exact server-returned fields, then requires a separate approval click per action. The server binds approval to the exact payload hash and current record version for ten minutes. Assistant writes fail closed when the gateway is unavailable. Ordinary manual CRM screens and WhatsApp logging retain existing behavior. Linked dependent actions require a resolved parent ID and a new review.
 
-## Not connected
+Pure modules are packaged into the private Apps Script file by build.mjs. No Node dependencies, credentials, alternate authentication, new OAuth scopes, or provider send/publish adapters are introduced. The generic Node Gateway/WorkflowEngine remain contract implementations; the native binding is the actual staged runtime.
 
-Production authentication to the new gateway, durable metadata/audit persistence, provider send/publish adapters, current public research provider and backend schedules/event hooks. No new write/send/publish endpoint is exposed. Existing assistant writes continue through the legacy confirmation and validated saveRecord path. They are not claimed to be covered by the new gateway.
-
-The new Manager routes common requests deterministically. Full conversational orchestration using the versioned specialist prompts is not connected. Prompts are registered and tested for data separation, not evidence of adversarial model robustness.
-
-## Backend completion
-
-Reuse the current Apps Script authentication, authoritative schema and saveRecord validation. Add private agent metadata ledgers and lock-protected gateway transitions through the actual private runtime after its source is recovered and inspected. A server bridge may host the Node gateway, but no new token trust model or database migration is authorized. The integration task identifies this remaining work explicitly.
+Production remains on backend Version 10 and the previous website release. The staged Head source is not a production web deployment. No live Agent Ledger or proactive trigger has been installed. A separate synthetic workbook verifies Google-backed persistence. Real CRM reads were verified without changing business data.

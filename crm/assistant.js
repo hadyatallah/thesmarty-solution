@@ -315,7 +315,7 @@ function assistantWorkspaceHtml(){
   loadAiState();
   return '<section class="panel assistant-panel"><div class="row"><div><h3>TSS Command Center</h3><p class="muted">Ask about your customers, priorities and next actions.</p></div><span class="assistant-status">'+(state.aiEnabled?'AI connected':'AI unavailable')+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="3000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary">Send</button></div></form><div id="aiAnswer" class="assistant-response" role="status"></div>'+assistantHistoryHtml()+(window.TSSCommandCenter?window.TSSCommandCenter.statusHtml():'')+'</section>';
 }
-function wireAssistantForm(){const form=el('aiForm');if(form)form.onsubmit=handleAssistantSubmit;}
+function wireAssistantForm(){const form=el('aiForm');if(form)form.onsubmit=handleAssistantSubmit;if(window.TSSCommandCenter?.mount)window.TSSCommandCenter.mount({call});}
 async function handleAssistantSubmit(e){
   e.preventDefault();
   const b=e.submitter,q=el('aiQuestion').value.trim();
@@ -394,61 +394,14 @@ function resolveActionRefs(data,results){
 function snapshotForUndo(entity,r){const data={};(state.fields&&state.fields[entity]||[]).forEach(function(k){if(!['id','version','createdAt','updatedAt','threadId'].includes(k))data[k]=r[k]||'';});return{entity:entity,id:r.id,data:data};}
 async function executeAiPlan(){
   if(!aiPendingPlan||busy)return;
-  const plan=aiPendingPlan;
-  if((plan.actions||[]).some(function(a){return a._duplicate;})){notice('Resolve the duplicate match before creating the record.');return;}
+  if(!window.TSSCommandCenter?.stagePlan){notice('Command Center controls are unavailable. Reload before preparing a CRM change.');return;}
   busy=true;
-  const results=[],undo=[],completed=[];
-  try{
-    for(let i=0;i<plan.actions.length;i++){
-      const a=plan.actions[i],data=resolveActionRefs(a.data||{},results);
-      if(a.operation==='update'){
-        const r=(state.records[a.entity]||[]).find(function(x){return x.id===a.recordId;});
-        if(!r)throw Error('Record not found: '+a.recordId);
-        if(a._expectedVersion===undefined||String(r.version)!==String(a._expectedVersion))throw Error('Record changed or approval is from an older session. Prepare and review a fresh proposal.');
-        undo.push(snapshotForUndo(a.entity,r));
-        const payload={},allowed=writableFields(a.entity);
-        allowed.forEach(function(k){payload[k]=r[k]??'';});
-        Object.assign(payload,data,{id:r.id,version:a._expectedVersion});
-        if(r.threadId)payload.threadId=r.threadId;
-        const saved=await call('saveRecord',a.entity,payload);
-        Object.assign(r,payload);if(saved&&typeof saved==='object')Object.assign(r,saved);
-        results.push(saved||r);
-      }else{
-        const saved=await call('saveRecord',a.entity,data);
-        if(!saved||!saved.id)throw Error('The new '+a.entity+' record was not returned by the CRM.');
-        results.push(saved);if(state.records[a.entity])state.records[a.entity].push(saved);
-      }
-      completed.push((a.operation==='create'?'Created ':'Updated ')+(a.recordName||a.recordId||a.entity));
-    }
-    if(undo.length===plan.actions.length&&plan.actions.every(function(a){return a.operation==='update';})){
-      try{localStorage.setItem(AI_UNDO_KEY,JSON.stringify({items:undo,at:Date.now()}));}catch(e){}
-    }else{try{localStorage.removeItem(AI_UNDO_KEY);}catch(e){}}
-    const summary=completed.join('; ');
-    recordAiAction({summary:summary});aiConversation.push({role:'assistant',text:'Completed: '+summary});
-    aiPendingPlan=null;saveAiState();if(el('dialog').open)el('dialog').close();
-    await refresh();notice('CRM updated');if(view==='Today'||view==='Assistant')render();
-  }catch(err){
-    const pending=(plan.actions||[]).slice(completed.length).map(function(a){return (a.operation==='create'?'Create ':'Update ')+(a.recordName||a.recordId||a.entity);});
-    const msg=(completed.length?'Completed before the error:\n• '+completed.join('\n• ')+'\n\n':'')+'Failed: '+err.message+(pending.length?'\n\nStill pending:\n• '+pending.join('\n• '):'');
-    // An uncertain create must not be replayed by clicking Confirm again.
-    aiPendingPlan=null;saveAiState();
-    if(el('dialog').open)el('dialog').close();
-    recordAiAction({summary:'Partial AI action failure: '+err.message});
-    if(el('aiAnswer'))el('aiAnswer').innerHTML='<div class="assistant-message error">'+formatAssistantText(msg)+'</div>';
-    notice('CRM action did not fully complete');
-    await refresh();
-  }finally{busy=false;}
+  try{await window.TSSCommandCenter.stagePlan(aiPendingPlan,{call,state,onDone:async()=>{aiPendingPlan=null;saveAiState();if(el('dialog').open)el('dialog').close();await refresh();}});}
+  finally{busy=false;}
 }
-async function undoLastAiUpdate(){
-  let u;try{u=JSON.parse(localStorage.getItem(AI_UNDO_KEY)||'null');}catch(e){}
-  if(!u||!u.items||!u.items.length)return notice('No reversible AI update is available.');
-  if(Date.now()-u.at>30*60*1000)return notice('The undo window has expired.');
-  busy=true;
-  try{
-    for(const item of u.items){const r=(state.records[item.entity]||[]).find(function(x){return x.id===item.id;});if(!r)continue;const payload=Object.assign({},item.data,{id:item.id,version:r.version});const saved=await call('saveRecord',item.entity,payload);Object.assign(r,payload);if(saved&&typeof saved==='object')Object.assign(r,saved);}
-    localStorage.removeItem(AI_UNDO_KEY);recordAiAction({summary:'Undid previous AI update'});await refresh();notice('Last AI update reversed');
-  }catch(e){notice(e.message);}finally{busy=false;}
-}
+
+async function undoLastAiUpdate(){notice('Prepare a fresh proposed update to reverse a change. Review the current record first.');}
+
 function clearAiConversation(){aiConversation=[];aiPendingPlan=null;aiContextSelection={entity:'',id:'',label:''};saveAiState();if(view==='Today'||view==='Assistant')render();}
 function assistant(){aiContextSelection={entity:'',id:'',label:''};el('main').innerHTML='<h2>CRM Assistant</h2><p class="muted">Your one-stop shop for everything in the CRM.</p>'+assistantWorkspaceHtml();wireAssistantForm();}
 async function syncInbox(){try{const r=await call('syncEmail');notice(r.created+' new tickets, '+r.updated);await refresh();}catch(e){notice(e.message);}}

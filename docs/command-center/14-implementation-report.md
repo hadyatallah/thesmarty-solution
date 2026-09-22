@@ -1,40 +1,41 @@
-# Implementation report
+# Implementation report, candidate 0.2.0
 
-Candidate code exists for all four phases, with passing synthetic component suites. This is not an accepted end-to-end release. Production remains unchanged. Runtime backend/provider work is still needed.
+Progress report, not final acceptance. Backend source and shared UI controls are staged; production remains unchanged. 112 local tests pass, with additional real Apps Script isolated-storage and read-only CRM checks. Preview browser acceptance is blocked by Google OAuth origin_mismatch.
 
 | Major function | Status |
 |---|---|
-| Manager routing and CRM read rules | IMPLEMENTED, PARTIALLY TESTED |
-| Existing Command Center input integration | IMPLEMENTED, PARTIALLY TESTED |
-| Account matching, attention, quality, current pipeline reporting | IMPLEMENTED, PARTIALLY TESTED |
-| Gateway approval/version/idempotency/audit logic | BUILT BUT BLOCKED BY EXTERNAL DEPENDENCY |
-| Durable production action/audit storage | NOT IMPLEMENTED |
-| CRM-first growth, email matching and draft generation | IMPLEMENTED, PARTIALLY TESTED |
-| Live public research provider | NOT IMPLEMENTED |
-| Email sending through new gateway | BUILT BUT BLOCKED BY EXTERNAL DEPENDENCY |
+| Manager and CRM read intelligence | IMPLEMENTED, PARTIALLY TESTED |
+| Single existing-interface integration | IMPLEMENTED, PARTIALLY TESTED |
+| Native exact-approval and durable ledger binding | IMPLEMENTED, PARTIALLY TESTED |
+| Released shared CRM-write gateway | BUILT BUT BLOCKED BY EXTERNAL DEPENDENCY |
+| Growth triage, matching and message drafts | IMPLEMENTED, PARTIALLY TESTED |
+| Current-source research integration | NOT IMPLEMENTED |
+| Application email sending | NOT IMPLEMENTED |
 | WhatsApp draft assistance | IMPLEMENTED, PARTIALLY TESTED |
-| WhatsApp inbox/API | NOT IMPLEMENTED; outside current V1A boundary |
+| WhatsApp inbox/API | NOT IMPLEMENTED, outside V1A |
 | Operations evidence normalization | IMPLEMENTED, PARTIALLY TESTED |
-| Live operations/provider monitoring | NOT IMPLEMENTED |
-| Content concepts and structured review rules | IMPLEMENTED, PARTIALLY TESTED |
-| New social gateway integration | BUILT BUT BLOCKED BY EXTERNAL DEPENDENCY |
-| Job/event/retry/notification service logic | BUILT BUT BLOCKED BY EXTERNAL DEPENDENCY |
-| New proactive schedules and backend event hooks | NOT IMPLEMENTED |
-| Commercial multi-tenancy | PROPOSED ONLY; deliberately not deployed |
+| Complete live operations monitoring | NOT IMPLEMENTED |
+| Content concepts and review rules | IMPLEMENTED, PARTIALLY TESTED |
+| New social provider publication | NOT IMPLEMENTED |
+| Native daily/weekly job preparation | IMPLEMENTED, PARTIALLY TESTED |
+| Activated schedules, event hooks and full notification inbox | NOT IMPLEMENTED |
+| Commercial multi-tenancy | PROPOSED ONLY |
 
-No recurring service costs were introduced. Existing services may incur their usual usage. No email, WhatsApp message, public social post, commercial-state change, deletion or merge was performed.
+Changes: command-center/apps-script/CommandCenter.gs and build.mjs, shared UI approval controls, removal of assistant direct-save fallback, native contract tests and updated evidence/documentation. Private Code.gs changed only to expose the shared validator internally and add authenticated dispatch. Existing forms, website content, manual CRM UI, WhatsApp V1A, social workflow, service worker and manifest were preserved.
 
-Source paths: command-center/*.js, crm/command-center.js, crm/assistant.js, crm/index.html, tests/command-center/*, docs/command-center/*. Existing form, social publisher, service worker and manifest files are unchanged.
+No recurring costs were introduced. No real prospect contacted, public post published, commercial record changed, data merged/deleted, production deployment or new automation activated. Google created one isolated synthetic test workbook. Existing Vercel storage usage is close to its Functions Storage allowance; avoid repeated builds and paid upgrades.
 
-## Acceptance questions
+## Acceptance answers
 
-1. Safe for daily use? Not yet as a complete operating system. Candidate reads require live acceptance and approval before release.
-2. Trusted CRM summaries? Synthetic matching/coverage tests pass; live API and browser verification are pending.
-3. CRM changes? The existing confirmation/saveRecord route remains. No new shared-gateway CRM write path is live.
-4. Reliable prospect research? Not yet. A public research provider and factual evaluation must be connected.
-5. Email send or prepare? Prepare only through this candidate.
-6. WhatsApp? Prepare drafts, then use the existing Business App/manual logging. No inbox ingestion or autonomous send.
-7. Social publishing? Existing route preserved; new Command Center publication integration is not operational.
-8. Proactive briefs? On-demand preparation is built. New daily/weekly schedules are not operational.
-9. Manual work? Approval, final assets, sending/publishing in existing approved tools, reconciliation, backend setup and live acceptance.
-10. Future TSS Flow reuse? Adapter contracts, identity/coverage rules, action policy, deterministic attention, event/retry controls and test harness. Production tenancy/storage/auth need separate implementation.
+1. Daily Manager use: not yet accepted as the finished system; production candidate not released.
+2. CRM summaries: deterministic component tests and live read projections pass; authenticated Preview presentation and full coverage checks remain.
+3. CRM changes: proposed create/update for existing writable entities, exact approval, retained schema/version validation. New gateway is staged, not live. No delete/merge/financial/send/publish capability.
+4. Prospect research: not operational without a current-source provider.
+5. Email: prepare only; no new sending authorization.
+6. WhatsApp: draft plus existing Business App contact action/manual logging; no inbox reading, scraping or API claims.
+7. Social: approved manual Meta workflow preserved; Command Center publishing not operational.
+8. Proactive daily/weekly: handlers and persistence built; schedules not activated because phase gates remain open.
+9. Manual work: exact approvals, current research verification, final assets, sending/publication, uncertain-result reconciliation and remaining integration acceptance.
+10. Future TSS Flow reuse: shared adapters, action policy, exact identity and coverage rules, deterministic attention, prompt register and evaluation harness. Commercial tenancy/auth/storage remain separately scoped.
+
+Next dependency: approve one stable protected Preview origin for the existing Google OAuth client, then complete signed-in browser and backend acceptance. Production approval is a separate final gate after remaining blockers are resolved.

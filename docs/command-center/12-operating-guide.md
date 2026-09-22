@@ -1,22 +1,13 @@
-# Operating guide for candidate testing
+# Operating guide
 
-After the candidate is available and authenticated, use the existing CRM input. Try:
+Candidate use is restricted to Preview acceptance until release approval. Existing production CRM continues independently.
 
-- What needs my attention?
-- Summarize [exact company name or ID].
-- Which leads are overdue?
-- Which opportunities are dormant?
-- Find companies with no next action.
-- Find potential duplicates.
-- Check the CRM for data problems.
-- Which companies should I contact next?
-- Prepare an email for [company] about [specific purpose].
-- Prepare a WhatsApp introduction for [company] about [specific purpose].
-- Show me important replies.
-- What failed today?
-- Prepare today's social content.
-- Prepare my weekly management review.
+Use the one Command Center input for attention, exact account summaries, overdue/dormant work, quality checks, drafts and weekly reviews. Unknown/ambiguous accounts require an exact ID. Unavailable evidence remains unavailable.
 
-Dossiers show whether history is available and whether it may be partial. A duplicate signal means review, not merge. Eligibility is conservative and is not sending permission. Drafts are unsent. Content concepts are not publication-ready packages. Unknown service health requires evidence.
+For an assistant CRM change: review the proposed fields, prepare the server proposal, then approve the exact change. Each action receives its own approval. Use Refresh action ledger to inspect pending proposals, outcomes, jobs and audit. A failed backend blocks execution; it does not authorize a fallback. Linked records must use resolved IDs, then be reviewed separately.
 
-Unsupported requests fall back to the existing assistant. Its existing proposed-change confirmation flow remains in place. Do not assume the new server gateway protects that legacy path. New automated execution is unavailable until the backend task and acceptance gates are complete.
+After a stale-record error, refresh and prepare a new proposal. After an uncertain outcome, inspect the CRM and ledger before any further action. Do not submit another create to see whether the first worked. Reverse a change by preparing and approving a new patch against the current record.
+
+Emails/WhatsApp/social content are drafts only. Use existing authorized tools for manual final review and sending/publication. The current Meta draft workflow remains authoritative. No scheduler date is proof of publication.
+
+Daily and weekly backend schedules are not installed. Release operators must complete phase gates before enabling them.

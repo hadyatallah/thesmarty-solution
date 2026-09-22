@@ -1,9 +1,11 @@
 # Security review
 
-No new credential, secret, auth route, external write endpoint or frontend tenant override was added. Business data is not included in synthetic tests or repository documentation. Source strings are escaped by the new renderer. Existing login and service worker are unchanged.
+The candidate preserves the existing verified Google owner session, nonce/JWT checks, backend schema, and optimistic version validation. Native endpoints authenticate before touching storage. Actor and internal tenant are server-derived. No credentials or private baseline source are included in this public repository. Manifest OAuth scopes are unchanged.
 
-Tests cover unauthorized proposals, tenant-scoped action lookup, exact payload binding, stale versions, rejected/expired approvals, replay/concurrency protection and audit omission of private message bodies. Prompt injection test checks structural separation only. It is not evidence that a language model cannot be manipulated.
+Assistant writes require exact server proposals and a separate human approval. Expiry is ten minutes. Hash mismatch, stale records, unsupported operations, missing authentication and cancelled actions fail closed. Executing/uncertain states cannot be replayed automatically. External sending, publishing, deletion, merging, payment and deployment adapters are absent.
 
-Legacy fixes: ambiguous update names now require exact identity; pending updates retain the reviewed version; nullish field preservation keeps zero/false values; failed/uncertain multi-action plans are cleared so a possible create cannot be replayed with the old Confirm button.
+Audit entries retain metadata, not session tokens or raw note/message bodies. Action state retains the proposed fields necessary for exact review, and must be treated as private CRM data. A checksum detects accidental ledger damage; it is not cryptographic proof against an editor who can rewrite the workbook. Sheets locks are scoped to this script, not arbitrary external editors.
 
-Release blockers: durable server-side gateway binding, least-privilege authorization, authenticated scope extraction, private-store access controls, schema validation during atomic writes, secret-safe provider errors, retention, restart/fault testing and live authorization tests. Existing local browser cache/history needs a separate session-isolation review before multi-client reuse. No claim of production security certification is made.
+Untrusted CRM/email/site content remains data. HTML rendering escapes fields. Model proposals cannot gain write authority. Model-level prompt injection evaluation, retention policy, complete notification isolation and scale/concurrency tests remain open.
+
+Preview sign-in requires an explicitly approved exact OAuth origin. Do not use wildcard origins, bypass tokens in frontend code, disabled login protection, or copied production session tokens to get around this gate.

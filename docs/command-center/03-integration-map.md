@@ -1,16 +1,17 @@
 # Integration map
 
-| Integration | Actual candidate binding | Remaining work |
+| Integration | Verified candidate state | Remaining gate |
 |---|---|---|
-| CRM | Shared current getState snapshot, existing session | Live projection/coverage verification |
-| CRM writes | Existing saveRecord retained with proposal version protection | Route new gateway through same validation, server-side approvals |
-| Email | Read Email Activity if present | Inbox provider, live ingestion heartbeat, send/reconcile adapter |
-| WhatsApp | Existing Business App composer and manual log unchanged | No inbox/API project included |
-| Enquiry | Health normalization contract only; existing transfer code unchanged | Safe read projection of receipt/transfer state |
-| Analytics | No live binding | Authorized existing analytics adapter |
-| Social | Draft concepts, asset review rules, provider-state normalization | Bind exact approved package to existing publisher and receipts |
-| Deployment | No runtime adapter | Read-only project event/usage feed |
-| Notification | Store interface and deduplication | Durable backend inbox plus UI |
-| Research | Injectable research interface | Current public source provider and quality evaluation |
+| CRM reads | Existing Google session and getState; native read adapter checked against live records | Authenticated Preview end-to-end acceptance |
+| CRM writes | Native proposal/decision/execute/status dispatch staged; existing validator retained | Live installation, synthetic confirmed-write acceptance, release approval |
+| Durable ledger | Google spreadsheet append/lock/flush; isolated real storage test passed | Production ledger installation; scale/concurrency acceptance |
+| Email | Existing Email Activity projection verified; no automatic qualification | Outlook runtime OAuth, heartbeat/reconciliation and approved sending provider |
+| WhatsApp | Existing Business App contact action/manual logging preserved | No inbox/API integration in this project |
+| Enquiry | Existing flow untouched; normalization tests | Live receipt/transfer projection and end-to-end synthetic form regression |
+| Analytics/deployment | No runtime adapter; Vercel accessible during this engagement | Application-level read evidence binding |
+| Social | Draft concepts and review rules; approved manual Meta workflow preserved | Final assets and provider receipts; no revival of disabled unattended publisher |
+| Research | Provider interface only | Authorized current-source runtime provider and factual evaluation |
+| Jobs | Native deduplicated brief storage/runner built; schedule installation gate | Phases 1–3 live acceptance, install daily/weekly trigger |
+| Notifications | Generic durable-store contract; action/job status available in candidate UI | Complete centralized notification inbox binding |
 
-No provider credentials belong in browser code or prompts. ChatGPT connector access is not application runtime authorization.
+ChatGPT connector/browser access does not confer application OAuth credentials. No new credentials are stored in public code.
