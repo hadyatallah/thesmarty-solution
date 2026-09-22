@@ -51,3 +51,7 @@ Next action: verify the repaired background capture under concurrent CRM reads, 
 
 
 Live sync check: repaired Head completed at 22:08:44.536 UTC in 4.478 seconds, zero matching messages and zero record changes; lease cleared and scan success marker advanced. This validates a real empty scan, not large-batch concurrency. Synthetic concurrency/failure tests passed.
+
+## Current finalization status
+
+See 17-current-delivery-status.md for the reconciled status. The existing Work Outlook connector is connected and its send tool is available; direct CRM website sending remains a separate missing integration. Existing Outlook sync and management review schedules are enabled, while new Command Center backend schedules remain disabled. Latest suite155/155 PASS. Saved report contents are now visible through expandable job entries. Full Production acceptance remains pending.

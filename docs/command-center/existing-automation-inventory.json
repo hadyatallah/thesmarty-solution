@@ -1,0 +1,147 @@
+{
+  "checkedAt": "2026-09-22T22:27:08.747226Z",
+  "automations": [
+    {
+      "id": "6ab1016b290c81918e36d49c074433ed",
+      "title": "TSS Weekly Social Review",
+      "enabled": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Asia/Nicosia:20260924T080000\nRRULE:FREQ=WEEKLY;BYDAY=TH;BYHOUR=8;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+      "lastRun": "2026-09-21T10:18:21.930308+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6ab159187cc88191bb496b3821290fb0",
+      "title": "TSS Posting Reminder",
+      "enabled": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Asia/Nicosia:20260922T091500\nRRULE:FREQ=DAILY;INTERVAL=2;COUNT=3\nEND:VEVENT",
+      "lastRun": "2026-09-22T06:14:28.809158+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aae2518f6c481918b7cdf3607ca861e",
+      "title": "TSS CRM Health Check",
+      "enabled": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260919T060056Z\nRRULE:FREQ=DAILY;BYHOUR=7\nEND:VEVENT",
+      "lastRun": "2026-09-22T04:24:22.619211+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aae39b6e1f0819197894c8c9ef2ed51",
+      "title": "TSS Outlook CRM Sync",
+      "enabled": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260919T072954Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+      "lastRun": "2026-09-22T21:38:15.073946+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aae2e8fc2e48191b6b3d60c81338a75",
+      "title": "TSS Monthly Management Review",
+      "enabled": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260919T064119Z\nRRULE:FREQ=MONTHLY;BYMONTHDAY=1;BYHOUR=9\nEND:VEVENT",
+      "lastRun": null,
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aae28040ef08191a130ed518be3088a",
+      "title": "TSS Weekly Commercial Review",
+      "enabled": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260919T061324Z\nRRULE:FREQ=WEEKLY;BYDAY=MO;BYHOUR=8\nEND:VEVENT",
+      "lastRun": "2026-09-21T06:16:50.562973+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aae2d16ca6c8191b744b97270e6056b",
+      "title": "TSS Client Delivery Watch",
+      "enabled": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260919T063602Z\nRRULE:FREQ=DAILY;BYHOUR=8\nEND:VEVENT",
+      "lastRun": "2026-09-22T05:29:47.781579+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aae23bd118881918b62f74315129d61",
+      "title": "TSS Outreach Engine",
+      "enabled": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260919T055609Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+      "lastRun": "2026-09-22T21:49:39.427718+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aae2671c6508191b599356dbf9ad2a0",
+      "title": "TSS Lead Scoring",
+      "enabled": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260919T060641Z\nRRULE:FREQ=DAILY;BYHOUR=6\nEND:VEVENT",
+      "lastRun": "2026-09-22T03:23:07.952243+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aae21a39d9c8191956c6cdf9423c565",
+      "title": "TSS CRM Follow-ups",
+      "enabled": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260919T054711Z\nRRULE:FREQ=DAILY;BYHOUR=8\nEND:VEVENT",
+      "lastRun": "2026-09-22T05:41:55.789645+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aae24cc41d08191a8fef8a9efb3b8bb",
+      "title": "TSS CRM Backup",
+      "enabled": true,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260919T055940Z\nRRULE:FREQ=DAILY;BYHOUR=3\nEND:VEVENT",
+      "lastRun": "2026-09-22T01:54:34.461787+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6ab03db522308191880fb0b9384490ce",
+      "title": "TSS Daily Post Brief",
+      "enabled": false,
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Asia/Nicosia:20260921T180000\nRRULE:FREQ=DAILY;BYHOUR=18;BYMINUTE=0;BYSECOND=0\nEND:VEVENT",
+      "lastRun": null,
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6ab01aa556808191ab653a725621a8e6",
+      "title": "TSS Social Approval",
+      "enabled": false,
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Asia/Nicosia:20260921T091500\nRRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR,SA;BYHOUR=9,14,19;BYMINUTE=15;BYSECOND=0\nEND:VEVENT",
+      "lastRun": null,
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aa7e413766c8191970e47a932d3c788",
+      "title": "TSS Post Review",
+      "enabled": false,
+      "schedule": "BEGIN:VEVENT\nDTSTART:20260914T131000Z\nRRULE:FREQ=DAILY;BYHOUR=16;BYMINUTE=10;BYSECOND=0\nEND:VEVENT",
+      "lastRun": "2026-09-20T13:11:21.096810+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aabdd244c108191aa4200d56ba3f844",
+      "title": "TSS Publishing Watchdog",
+      "enabled": false,
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Asia/Nicosia:20260918T091800\nRRULE:FREQ=DAILY;BYHOUR=9,14,19;BYMINUTE=18;BYSECOND=0\nEND:VEVENT",
+      "lastRun": "2026-09-20T16:16:42.175490+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aad6829bcd08191b293ee83d3355c86",
+      "title": "TSS Publisher Trigger",
+      "enabled": false,
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Asia/Nicosia:20260919T091500\nRRULE:FREQ=DAILY;BYHOUR=9,14,19;BYMINUTE=15;BYSECOND=0\nEND:VEVENT",
+      "lastRun": "2026-09-20T16:17:12.035443+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    },
+    {
+      "id": "6aae7229490c8191a05dad0fc3f943a4",
+      "title": "TSS Content Factory",
+      "enabled": false,
+      "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Asia/Nicosia:20260920T073000\nRRULE:FREQ=DAILY;BYHOUR=7;BYMINUTE=30;BYSECOND=0\nEND:VEVENT",
+      "lastRun": "2026-09-20T04:42:48.201573+00:00",
+      "evidenceLimit": "Scheduler metadata only; not proof of business success"
+    }
+  ],
+  "change": {
+    "id": "6aae23bd118881918b62f74315129d61",
+    "updated": true,
+    "scope": "Outreach prompt only: preparation-only background run; exact bilingual approval and business hours for interactive sends; schedule unchanged",
+    "limitations": "Instruction-level control, not a deterministic provider dispatch barrier. No live send performed."
+  }
+}

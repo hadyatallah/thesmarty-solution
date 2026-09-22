@@ -42,7 +42,7 @@ export class GrowthAgent {
   if(!this.researchAdapter)return {status:'unavailable',reason:'No current-public-research provider configured'};
   const result=await this.researchAdapter.research({company:match.record||null,query});
   const facts=(result.facts||[]).filter(f=>f.text&&/^https:\/\//.test(f.url||'')&&f.checkedAt);
-  return {status:'review',companyId:match.record?.id||null,facts,assumptions:result.assumptions||[],recommendations:result.recommendations||[],limitations:['Source links and dates support review, not independent verification of every claim. No company created.']};
+  return {status:'review',companyId:match.record?.id||null,facts,assumptions:result.assumptions||[],recommendations:result.recommendations||[],readiness:match.record?this.readiness(match.record):{eligible:false,reason:'New public research only; CRM matching and history review required'},limitations:[...(result.limitations||[]),'Source links and dates support review, not independent verification of every claim. No company created.']};
  }
  fit(evidence) {
   if(evidence.existingCrmWorking)return {fit:'complement_only',reason:'Keep the working CRM. Assess explicitly evidenced growth or workflow needs.'};

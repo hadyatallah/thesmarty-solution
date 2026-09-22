@@ -127,6 +127,13 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | PRE-03 | PRE-03 rejected action cannot execute | PASS: assertions satisfied | Synthetic / Node |
 | PRE-04 | PRE-04 concurrent change blocks stale approval | PASS: assertions satisfied | Synthetic / Node |
 | PRE-05 | PRE-05 external operations unavailable and reset has no previous state | PASS: assertions satisfied | Synthetic / Node |
+| RES-01 | RES-01 private, loopback, reserved and mapped IPs cannot be fetched | PASS: assertions satisfied | Synthetic / Node |
+| RES-02 | RES-02 public DNS address is passed to pinned request; redirects are revalidated | PASS: assertions satisfied | Synthetic / Node |
+| RES-03 | RES-03 redirects to private DNS or credential URLs never issue a second request | PASS: assertions satisfied | Synthetic / Node |
+| RES-04 | RES-04 source text remains data and company description remains an attributed claim | PASS: assertions satisfied | Synthetic / Node |
+| RES-05 | RES-05 missing session, foreign origin and GET cannot trigger public fetch | PASS: assertions satisfied | Synthetic / Node |
+| RES-06 | RES-06 backend denial blocks research and does not leak ledger/session | PASS: assertions satisfied | Synthetic / Node |
+| RES-07 | RES-07 authenticated research returns evidence only, not private auth response | PASS: assertions satisfied | Synthetic / Node |
 | SEC-01 | SEC-01 repeated proposal has same durable action ID | PASS: assertions satisfied | Synthetic / Node |
 | SEC-02 | SEC-02 tenant cannot approve another tenant action | PASS: assertions satisfied | Synthetic / Node |
 | SEC-03 | SEC-03 tampering invalidates approved payload | PASS: assertions satisfied | Synthetic / Node |
@@ -151,11 +158,13 @@ All rows below are component/isolated integration tests, not live acceptance. Ex
 | UI-09 | UI-09 companies without next action query is scoped to companies | PASS: assertions satisfied | Synthetic / Node |
 | UI-10 | UI-10 linked contacts remain visible without activity details | PASS: assertions satisfied | Synthetic / Node |
 | UI-11 | UI-11 unnamed create cannot be approved using only its display label | PASS: assertions satisfied | Synthetic / Node |
-| REG-148 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
-| REG-149 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
-| REG-150 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
-| REG-151 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
-| REG-152 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
-| REG-153 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
+| UI-12 | UI-12 saved report displays original population and escapes untrusted content | PASS: assertions satisfied | Synthetic / Node |
+| UI-13 | UI-13 failed job without result never renders a successful report | PASS: assertions satisfied | Synthetic / Node |
+| REG-157 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
+| REG-158 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
+| REG-159 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
+| REG-160 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
+| REG-161 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
+| REG-162 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
 
-Live signed-in CRM, one exact approved synthetic write, rejected proposal, stored daily brief and bilingual draft have separate evidence in live-acceptance-2026-09-22.json. Remaining live gates include sync-repair concurrency, full regression, provider reconciliation, new enquiry transfer, Outlook ingest, Android phone/tablet and installed PWA, and backend scheduled job delivery. No phase is accepted for Production.
+Live signed-in CRM, exact synthetic approval, rejected proposal, stored daily brief and bilingual draft have separate evidence in live-acceptance-2026-09-22.json. Remaining live gates include sync-repair concurrency, full regression, provider reconciliation, enquiry transfer, Outlook ingest, Android phone/tablet and installed PWA, and scheduled job delivery. No phase is accepted for Production.
