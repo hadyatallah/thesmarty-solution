@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import {baseHeaders,cors,requireTrustedOrigin,cookies,open,verifyCrmSession,refreshToken,graphMe,assertMailbox,seal,cookie,SESSION_COOKIE} from '../_lib.js';
+import {baseHeaders,cors,requireTrustedOrigin,cookies,open,refreshToken,graphMe,assertMailbox,seal,cookie,SESSION_COOKIE} from '../_lib.js';
 import {validateMessage,findRecipientContext,recentDuplicate,assertEmailControls} from '../../../command-center/email-send-policy.js';
 
 const BACKEND='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
@@ -10,7 +10,8 @@ async function crmState(session){
  let r=await fetch(BACKEND,{method:'POST',redirect:'manual',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:payload});
  if([302,303].includes(r.status)){const u=new URL(r.headers.get('location')||'',BACKEND);if(u.hostname!=='script.googleusercontent.com')throw Error('CRM_STATE_UNAVAILABLE');r=await fetch(u.href,{redirect:'manual'});}
  const d=await r.json().catch(()=>null);
- if(!r.ok||!d?.ok)throw Error('CRM_STATE_UNAVAILABLE');
+ if(!r.ok)throw Error('CRM_STATE_UNAVAILABLE');
+ if(!d?.ok)throw Error(String(d?.error||'AUTH_REQUIRED').includes('AUTH_REQUIRED')?'AUTH_REQUIRED':'CRM_STATE_UNAVAILABLE');
  return d.result;
 }
 
@@ -24,7 +25,6 @@ export default async function handler(req,res){
   stage='request';
   const body=typeof req.body==='string'?JSON.parse(req.body):req.body;
   stage='crm-auth';
-  await verifyCrmSession(body?.session);
   stage='outlook-session';
   const raw=cookies(req)[SESSION_COOKIE];
   if(!raw)throw Error('OUTLOOK_RECONNECT_REQUIRED');
@@ -34,7 +34,7 @@ export default async function handler(req,res){
   const mailbox=assertMailbox(me);
   stage='message-validation';
   const message=validateMessage(body?.message||{});
-  stage='crm-state';
+  stage='crm-auth';
   const state=await crmState(body.session);
   stage='controls';
   assertEmailControls(state);
