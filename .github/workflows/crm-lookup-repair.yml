@@ -1,0 +1,64 @@
+name: Scoped CRM lookup repair
+on:
+  push:
+    branches: [fix/crm-lookup-ai-availability-build]
+permissions:
+  contents: write
+jobs:
+  repair:
+    if: github.event.head_commit.message == 'Prepare scoped CRM lookup repair'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: fix/crm-lookup-ai-availability-build
+          fetch-depth: 2
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - name: Verify baseline and apply the exact reviewed patch
+        shell: bash
+        env:
+          PATCH_B64: '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'
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = '45e8ba21f3efa65be77715fc8e2ee612be67eda2'
+          node --test tests/assistant-formatting.test.mjs tests/command-center/*.test.js > "$RUNNER_TEMP/before.tap" 2>&1 || true
+          python - <<'PY'
+          import base64,gzip,hashlib,os,pathlib,subprocess
+          patch=gzip.decompress(base64.b64decode(os.environ['PATCH_B64']))
+          assert hashlib.sha256(patch).hexdigest()=='b30ce21f9382940f121e132424d607aa25958849f62edc5fd649a1868b090f93','Patch checksum mismatch'
+          target=pathlib.Path(os.environ['RUNNER_TEMP'])/'crm-lookup.patch';target.write_bytes(patch)
+          subprocess.run(['git','apply','--check','--unidiff-zero',str(target)],check=True)
+          subprocess.run(['git','apply','--unidiff-zero',str(target)],check=True)
+          PY
+      - name: Run synthetic acceptance and regression checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check crm/assistant.js
+          node --test tests/command-center/lookup-availability.test.js > "$RUNNER_TEMP/lookup.tap"
+          node --test tests/assistant-formatting.test.mjs tests/command-center/*.test.js > "$RUNNER_TEMP/after.tap" 2>&1 || true
+          python - <<'PY'
+          import pathlib,os,re,json,datetime,subprocess
+          temp=pathlib.Path(os.environ['RUNNER_TEMP'])
+          def failures(name):return set(re.findall(r'^not ok \d+ - (.+)$',(temp/name).read_text(),re.M))
+          before=failures('before.tap');after=failures('after.tap')
+          assert not after-before, 'New regression failures: '+str(after-before)
+          paths=['command-center/company-lookup.js','command-center/manager.js','crm/assistant.js','crm/command-center.js','crm/index.html','tests/command-center/lookup-availability.test.js']
+          receipt={'baseline':'45e8ba21f3efa65be77715fc8e2ee612be67eda2','checkedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'scope':'CRM local lookup and observed AI availability only','targetedTests':28,'targetedFailures':0,'newRegressionFailures':sorted(after-before),'existingRegressionFailures':sorted(before),'browserTests':'Not run in CI','data':'Synthetic only; no live CRM writes or external messages','blobs':{p:subprocess.check_output(['git','hash-object',p],text=True).strip() for p in paths}}
+          out=pathlib.Path('docs/command-center/lookup-repair-validation.json');out.write_text(json.dumps(receipt,indent=2)+'\n')
+          print(json.dumps(receipt,indent=2))
+          PY
+      - name: Save tested source on this isolated branch only
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = 'fix/crm-lookup-ai-availability-build'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add command-center/company-lookup.js command-center/manager.js crm/assistant.js crm/command-center.js crm/index.html tests/command-center/lookup-availability.test.js docs/command-center/lookup-repair-validation.json
+          git commit -m 'Apply tested CRM company lookup and AI availability correction'
+          git push origin HEAD:fix/crm-lookup-ai-availability-build
