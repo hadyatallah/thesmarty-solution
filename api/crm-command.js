@@ -2,13 +2,15 @@
 const BACKEND='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
 const METHODS=new Set(['askAssistant','ccState','ccPropose','ccDecide','ccExecute','ccPrepareBrief']);
 export const config={maxDuration:60};
+const ALLOWED_ORIGINS=new Set(['https://www.thesmartysolution.com','https://thesmartysolution.com']);
+function cors(req,res){let origin='';try{origin=new URL(req.headers.origin).origin;}catch{}if(origin&&ALLOWED_ORIGINS.has(origin)){res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Access-Control-Allow-Credentials','true');res.setHeader('Vary','Origin');}res.setHeader('Access-Control-Allow-Headers','Content-Type');res.setHeader('Access-Control-Allow-Methods','POST, OPTIONS');return origin;}
 export function makeHandler(fetcher=fetch){return async(req,res)=>{
- res.setHeader('Cache-Control','private, no-store');res.setHeader('X-Content-Type-Options','nosniff');
+ res.setHeader('Cache-Control','private, no-store');res.setHeader('X-Content-Type-Options','nosniff');cors(req,res);
  const fail=(status,error)=>res.status(status).json({ok:false,error});
+ if(req.method==='OPTIONS')return res.status(204).end();
  if(req.method!=='POST'){res.setHeader('Allow','POST');return fail(405,'METHOD_NOT_ALLOWED');}
- // Browser calls must originate on this deployment. Session validation is still server-side.
  let origin;try{origin=new URL(req.headers.origin);}catch{return fail(403,'ORIGIN_REQUIRED');}
- if(origin.protocol!=='https:'||origin.host!==req.headers.host)return fail(403,'ORIGIN_NOT_ALLOWED');
+ if(origin.protocol!=='https:'||!ALLOWED_ORIGINS.has(origin.origin))return fail(403,'ORIGIN_NOT_ALLOWED');
  let body;try{body=typeof req.body==='string'?JSON.parse(req.body):req.body;}catch{return fail(400,'INVALID_REQUEST');}
  if(!body||!METHODS.has(body.fn)||!Array.isArray(body.args)||body.args.length>8)return fail(400,'ACTION_NOT_ALLOWED');
  if(typeof body.args[0]!=='string'||!body.args[0]||body.args[0].length>4096)return fail(401,'AUTH_REQUIRED');

@@ -42,8 +42,11 @@ export function extractEvidence(page,now=new Date()){
  const checkedAt=now.toISOString();
  return {facts:[...(title?[{text:'Website title: '+title,url:page.url,checkedAt,kind:'observed_page_metadata'}]:[]),...(description?[{text:'Company website description: '+description,url:page.url,checkedAt,kind:'company_claim_not_independently_verified'}]:[])],assumptions:[],recommendations:['Review the source and CRM communication history before choosing an outreach angle.'],limitations:['Website metadata only; not a full company investigation. Company descriptions are self-published claims. No need, budget, buying intent or TSS fit is inferred. No public search or social-platform coverage.']};
 }
+const ALLOWED_ORIGINS=new Set(['https://www.thesmartysolution.com','https://thesmartysolution.com']);
+function cors(req,res){let origin='';try{origin=new URL(req.headers.origin).origin;}catch{}if(origin&&ALLOWED_ORIGINS.has(origin)){res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Access-Control-Allow-Credentials','true');res.setHeader('Vary','Origin');}res.setHeader('Access-Control-Allow-Headers','Content-Type');res.setHeader('Access-Control-Allow-Methods','POST, OPTIONS');}
 export function makeResearchHandler({authenticate=crmTransport(),fetchPage=fetchPublicPage}={}){return async(req,res)=>{
- res.setHeader('Cache-Control','private, no-store');res.setHeader('X-Content-Type-Options','nosniff');
+ res.setHeader('Cache-Control','private, no-store');res.setHeader('X-Content-Type-Options','nosniff');cors(req,res);
+ if(req.method==='OPTIONS')return res.status(204).end();
  let body;try{body=typeof req.body==='string'?JSON.parse(req.body):req.body;}catch{return res.status(400).json({ok:false,error:'INVALID_REQUEST'});}
  if(!body||typeof body.url!=='string'||body.url.length>2048)return res.status(400).json({ok:false,error:'WEBSITE_REQUIRED'});
  // Reuse the existing session authority, origin checks and no-retry transport.
