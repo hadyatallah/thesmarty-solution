@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {validateMessage,findRecipientContext,recentDuplicate,enforceSendPreflight} from '../../command-center/email-send-policy.js';
+
+const snapshot={records:{Companies:[{id:'C1',name:'Acme',email:'hello@acme.test',communicationStatus:'Not contacted'},{id:'C2',name:'Blocked',email:'blocked@corp.test',communicationStatus:'Do not contact'}],Contacts:[{id:'P1',companyId:'C1',email:'person@acme.test'}],'Email Activity':[]}};
+test('SEND-01 validates an exact text email',()=>{assert.deepEqual(validateMessage({to:' Person@Acme.test ',subject:' Hello ',text:'Body'}),{to:'person@acme.test',subject:'Hello',text:'Body'});});
+test('SEND-02 rejects incomplete Greek placeholder',()=>{assert.throws(()=>validateMessage({to:'person@acme.test',subject:'Hello',text:'[Greek translation of the specific outreach purpose is required before approval.]'}),/EMAIL_TRANSLATION_INCOMPLETE/);});
+test('SEND-03 requires recipient to resolve to one CRM company',()=>{assert.equal(findRecipientContext(snapshot,'person@acme.test').company.id,'C1');assert.throws(()=>findRecipientContext(snapshot,'missing@example.test'),/EMAIL_RECIPIENT_NOT_IN_CRM/);});
+test('SEND-04 blocks suppressed company',()=>{assert.throws(()=>findRecipientContext(snapshot,'blocked@corp.test'),/EMAIL_RECIPIENT_SUPPRESSED/);});
+test('SEND-05 detects recent duplicate sent message',()=>{const s=structuredClone(snapshot);s.records['Email Activity']=[{direction:'Sent',toEmails:'person@acme.test',subject:'Hello',messageDate:'2026-09-23T06:35:00Z'}];assert.equal(recentDuplicate(s,{to:'person@acme.test',subject:'Hello'},new Date('2026-09-23T06:45:00Z')),true);});
+test('SEND-06 enforces Cyprus business hours at execution',()=>{assert.doesNotThrow(()=>enforceSendPreflight(snapshot,{to:'person@acme.test',subject:'Hello'},new Date('2026-09-23T06:45:00Z')));assert.throws(()=>enforceSendPreflight(snapshot,{to:'person@acme.test',subject:'Hello'},new Date('2026-09-23T18:45:00Z')),/EMAIL_OUTSIDE_BUSINESS_HOURS/);});
