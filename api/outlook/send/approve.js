@@ -11,6 +11,20 @@ async function crmState(session){
 }
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 
+async function crmWriteback(session,input){
+ const payload=JSON.stringify({fn:'ccRecordEmailActivity',args:[session,input]});
+ let r=await fetch(BACKEND,{method:'POST',redirect:'manual',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:payload});
+ if([302,303].includes(r.status)){
+  const u=new URL(r.headers.get('location')||'',BACKEND);
+  if(u.hostname!=='script.googleusercontent.com')throw Error('CRM_WRITEBACK_UNAVAILABLE');
+  r=await fetch(u.href,{redirect:'manual'});
+ }
+ const d=await r.json().catch(()=>null);
+ if(!r.ok||!d?.ok)throw Error('CRM_WRITEBACK_UNAVAILABLE');
+ return d.result;
+}
+
+
 export default async function handler(req,res){
  baseHeaders(res);cors(req,res);
  if(req.method==='OPTIONS')return res.status(204).end();
@@ -90,9 +104,28 @@ export default async function handler(req,res){
 
   proposal.state=receipt.reconciled?'succeeded':'accepted';
   proposal.receipt=receipt;
+  let crmWriteback={status:'pending'};
+  if(receipt.reconciled&&receipt.id){
+   try{
+    crmWriteback=await crmWriteback(body.session,{
+     mailbox:proposal.from,
+     to:proposal.to,
+     subject:proposal.subject,
+     messageId:receipt.id,
+     internetMessageId:receipt.internetMessageId||'',
+     actionId:proposal.id,
+     sentAt:receipt.sentDateTime||acceptedAt,
+     bodyPreview:String(proposal.text||'').slice(0,1000),
+     threadKey:proposal.subject
+    });
+   }catch{
+    crmWriteback={status:'failed',error:'CRM_WRITEBACK_UNAVAILABLE'};
+   }
+  }
+  proposal.crmWriteback=crmWriteback;
   res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:3600,path:'/api/outlook/send'}));
-  console.info(JSON.stringify({component:'outlook-send',actionId:proposal.id,result:proposal.state,companyId:proposal.companyId,providerRequestId,sentDateTime:receipt.sentDateTime,reconciled:receipt.reconciled}));
-  return res.status(200).json({ok:true,status:proposal.state,receipt,companyId:proposal.companyId});
+  console.info(JSON.stringify({component:'outlook-send',actionId:proposal.id,result:proposal.state,companyId:proposal.companyId,providerRequestId,sentDateTime:receipt.sentDateTime,reconciled:receipt.reconciled,crmWriteback:crmWriteback.status}));
+  return res.status(200).json({ok:true,status:proposal.state,receipt,companyId:proposal.companyId,crmWriteback});
  }catch(e){
   const known=['AUTH_REQUIRED','EMAIL_APPROVAL_NOT_APPLICABLE','EMAIL_OUTSIDE_BUSINESS_HOURS','EMAIL_DUPLICATE_RECENT','EMAIL_RECIPIENT_SUPPRESSED','EMAIL_CONTEXT_CHANGED','EMAIL_SENDER_CHANGED','EMAIL_SEND_UNCERTAIN','EMAIL_SEND_REJECTED'];
   const error=known.includes(e.message)?e.message:'EMAIL_SEND_FAILED';
