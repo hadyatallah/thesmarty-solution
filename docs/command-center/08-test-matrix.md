@@ -1,0 +1,170 @@
+# Test matrix
+
+All rows below are component/isolated integration tests, not live acceptance. Exact source hashes, environment and timestamp are retained in test-evidence.json.
+
+| ID | Expected result | Actual | Environment |
+|---|---|---|---|
+| REG-1 | renders paragraphs, bold text and both list types | PASS: assertions satisfied | Synthetic / Node |
+| REG-2 | routes existing TSS enquiry and opportunity links directly to Kiti | PASS: assertions satisfied | Synthetic / Node |
+| REG-3 | preserves external destinations and uses safe new-tab attributes | PASS: assertions satisfied | Synthetic / Node |
+| REG-4 | keeps trailing punctuation outside bare links but retains balanced parentheses | PASS: assertions satisfied | Synthetic / Node |
+| REG-5 | HTML and unsafe link protocols remain inert text | PASS: assertions satisfied | Synthetic / Node |
+| REG-6 | link labels can have bold text but cannot inject tags or nested links | PASS: assertions satisfied | Synthetic / Node |
+| REG-7 | does not classify lookalike domains as TSS or accept credential URLs | PASS: assertions satisfied | Synthetic / Node |
+| REG-8 | actual message renderer formats assistant responses and keeps visitor text literal | PASS: assertions satisfied | Synthetic / Node |
+| REG-9 | assistant lead receipt cannot turn a backend reference into HTML | PASS: assertions satisfied | Synthetic / Node |
+| AS-01 | AS-01 native gateway rejects unauthenticated requests before data access | PASS: assertions satisfied | Synthetic / Node |
+| AS-02 | AS-02 exact approval required; successful replay cannot dispatch twice | PASS: assertions satisfied | Synthetic / Node |
+| AS-03 | AS-03 durable ledger survives a fresh process context | PASS: assertions satisfied | Synthetic / Node |
+| AS-04 | AS-04 changed record blocks execution without dispatch | PASS: assertions satisfied | Synthetic / Node |
+| AS-05 | AS-05 rejection cannot be executed or approved again | PASS: assertions satisfied | Synthetic / Node |
+| AS-06 | AS-06 uncertain outcome persists and cannot be retried | PASS: assertions satisfied | Synthetic / Node |
+| AS-07 | AS-07 unsupported operations and protected fields are denied | PASS: assertions satisfied | Synthetic / Node |
+| AS-08 | AS-08 audit excludes raw fields and session credentials | PASS: assertions satisfied | Synthetic / Node |
+| AS-09 | AS-09 corrupted ledger fails closed | PASS: assertions satisfied | Synthetic / Node |
+| AS-10 | AS-10 duplicate backend brief event produces one report and journal result | PASS: assertions satisfied | Synthetic / Node |
+| AS-11 | AS-11 expired approval cannot execute | PASS: assertions satisfied | Synthetic / Node |
+| AS-12 | AS-12 native event duplicate remains deduplicated after runtime restart | PASS: assertions satisfied | Synthetic / Node |
+| AS-13 | AS-13 native stale, future, deleted and changed events never prepare | PASS: assertions satisfied | Synthetic / Node |
+| AS-14 | AS-14 native events reject conflicting IDs, unknown types and missing policy | PASS: assertions satisfied | Synthetic / Node |
+| AS-15 | AS-15 native failed downstream obeys retry time and bounded attempts | PASS: assertions satisfied | Synthetic / Node |
+| AS-16 | AS-16 native observer remains disabled without live phase gates | PASS: assertions satisfied | Synthetic / Node |
+| CTX-01 | CTX-01 message date alone does not establish ingestion success | PASS: assertions satisfied | Synthetic / Node |
+| CTX-02 | CTX-02 notifications deduplicate exact action state and flag expired approval | PASS: assertions satisfied | Synthetic / Node |
+| CTX-03 | CTX-03 Manager reads actual approval service and preserves unavailable state | PASS: assertions satisfied | Synthetic / Node |
+| CTX-04 | CTX-04 daily and weekly combine growth communications content and approvals | PASS: assertions satisfied | Synthetic / Node |
+| P2-22 | P2-22 Cyprus business hours observe winter and summer time and exact boundaries | PASS: assertions satisfied | Synthetic / Node |
+| P2-23 | P2-23 approved out-of-hours email is held without provider dispatch and needs valid approval later | PASS: assertions satisfied | Synthetic / Node |
+| P2-24 | P2-24 final dispatch check blocks an email crossing closing time during validation | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-01 | SYNC-01 fetches Gmail without holding CRM lock and writes under shared lock | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-02 | SYNC-02 overlapping scan skips without API call, write or lease replacement | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-03 | SYNC-03 CRM edits during remote reads are preserved by fresh authoritative read | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-04 | SYNC-04 repeated message does not duplicate ticket or append message twice | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-05 | SYNC-05 provider failure leaves cursor unchanged and releases owned lease | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-06 | SYNC-06 stale worker cannot write or clear a replacement lease | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-07 | SYNC-07 disabled capture during fetch prevents application and cursor advancement | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-08 | SYNC-08 pagination remains bounded to two pages and preserves remaining cursor | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-09 | SYNC-09 partial sheet write replay reconciles existing message marker | PASS: assertions satisfied | Synthetic / Node |
+| SYNC-10 | SYNC-10 expired lease is recoverable; active CRM lock remains required | PASS: assertions satisfied | Synthetic / Node |
+| P1-01 | P1-01 exact normalized company lookup | PASS: assertions satisfied | Synthetic / Node |
+| P1-02 | P1-02 exact ID lookup | PASS: assertions satisfied | Synthetic / Node |
+| P1-03 | P1-03 ambiguous name cannot choose a record | PASS: assertions satisfied | Synthetic / Node |
+| P1-04 | P1-04 unknown name cannot guess | PASS: assertions satisfied | Synthetic / Node |
+| P1-05 | P1-05 overdue task uses Cyprus date | PASS: assertions satisfied | Synthetic / Node |
+| P1-06 | P1-06 missing next action | PASS: assertions satisfied | Synthetic / Node |
+| P1-07 | P1-07 dormant opportunity uses configured 10 days | PASS: assertions satisfied | Synthetic / Node |
+| P1-08 | P1-08 duplicate candidates never merge | PASS: assertions satisfied | Synthetic / Node |
+| P1-09 | P1-09 incomplete company | PASS: assertions satisfied | Synthetic / Node |
+| P1-10 | P1-10 existing custom values preserved | PASS: assertions satisfied | Synthetic / Node |
+| P1-11 | P1-11 dossier has available communications | PASS: assertions satisfied | Synthetic / Node |
+| P1-12 | P1-12 missing history not called empty | PASS: assertions satisfied | Synthetic / Node |
+| P1-13 | P1-13 unauthorized proposal rejected | PASS: assertions satisfied | Synthetic / Node |
+| P1-14 | P1-14 record changes after approval rejected | PASS: assertions satisfied | Synthetic / Node |
+| P1-15 | P1-15 partial data retains limitations | PASS: assertions satisfied | Synthetic / Node |
+| P1-16 | P1-16 Manager routes exact dossier without model guessing | PASS: assertions satisfied | Synthetic / Node |
+| P2-01 | P2-01 already contacted is held | PASS: assertions satisfied | Synthetic / Node |
+| P2-02 | P2-02 suppressed prospect cannot draft | PASS: assertions satisfied | Synthetic / Node |
+| P2-03 | P2-03 new research prospect never creates a company | PASS: assertions satisfied | Synthetic / Node |
+| P2-04 | P2-04 evidenced need can indicate potential fit | PASS: assertions satisfied | Synthetic / Node |
+| P2-05 | P2-05 basic website does not prove weak business process | PASS: assertions satisfied | Synthetic / Node |
+| P2-06 | P2-06 working CRM is retained | PASS: assertions satisfied | Synthetic / Node |
+| P2-07 | P2-07 ambiguous sender held | PASS: assertions satisfied | Synthetic / Node |
+| P2-08 | P2-08 known reply matches exact company | PASS: assertions satisfied | Synthetic / Node |
+| P2-09 | P2-09 unknown sender never creates company | PASS: assertions satisfied | Synthetic / Node |
+| P2-10 | P2-10 security notice goes to review, not a customer ticket | PASS: assertions satisfied | Synthetic / Node |
+| P2-11 | P2-11 positive reply does not qualify | PASS: assertions satisfied | Synthetic / Node |
+| P2-12 | P2-12 personalized follow-up remains Draft | PASS: assertions satisfied | Synthetic / Node |
+| P2-13 | P2-13 exact approval required before send | PASS: assertions satisfied | Synthetic / Node |
+| P2-14 | P2-14 cancelled send cannot execute | PASS: assertions satisfied | Synthetic / Node |
+| P2-15 | P2-15 definite provider rejection reports failure | PASS: assertions satisfied | Synthetic / Node |
+| P2-16 | P2-16 timeout reconciles without resending | PASS: assertions satisfied | Synthetic / Node |
+| P2-17 | P2-17 simultaneous and repeated send executes once | PASS: assertions satisfied | Synthetic / Node |
+| P2-18 | P2-18 WhatsApp only prepares text | PASS: assertions satisfied | Synthetic / Node |
+| P2-19 | P2-19 bilingual email uses commercial sender and retains review requirement | PASS: assertions satisfied | Synthetic / Node |
+| P2-20 | P2-20 translation failure cannot produce an approval-ready draft | PASS: assertions satisfied | Synthetic / Node |
+| P2-21 | P2-21 suppression blocks translation and WhatsApp does not call email translation | PASS: assertions satisfied | Synthetic / Node |
+| P3-01 | P3-01 enquiry success requires linked CRM receipts | PASS: assertions satisfied | Synthetic / Node |
+| P3-02 | P3-02 persisted enquiry with delayed transfer stays pending | PASS: assertions satisfied | Synthetic / Node |
+| P3-03 | P3-03 failed transfer is visible | PASS: assertions satisfied | Synthetic / Node |
+| P3-04 | P3-04 repeated transfer observation has no write side effects | PASS: assertions satisfied | Synthetic / Node |
+| P3-05 | P3-05 stale ingestion warns | PASS: assertions satisfied | Synthetic / Node |
+| P3-06 | P3-06 successful business job is healthy | PASS: assertions satisfied | Synthetic / Node |
+| P3-07 | P3-07 job failure remains failed | PASS: assertions satisfied | Synthetic / Node |
+| P3-08 | P3-08 missing backup evidence stays unknown | PASS: assertions satisfied | Synthetic / Node |
+| P3-09 | P3-09 scheduler success is not business health | PASS: assertions satisfied | Synthetic / Node |
+| P3-10 | P3-10 social concepts are Draft | PASS: assertions satisfied | Synthetic / Node |
+| P3-11 | P3-11 final assets and logo required for approval readiness | PASS: assertions satisfied | Synthetic / Node |
+| P3-12 | P3-12 cancelled publication stays cancelled | PASS: assertions satisfied | Synthetic / Node |
+| P3-13 | P3-13 Scheduled needs platform reference and time | PASS: assertions satisfied | Synthetic / Node |
+| P3-14 | P3-14 definite failure is Failed | PASS: assertions satisfied | Synthetic / Node |
+| P3-15 | P3-15 uncertain publication needs review | PASS: assertions satisfied | Synthetic / Node |
+| P3-16 | P3-16 publication gateway prevents duplicate dispatch | PASS: assertions satisfied | Synthetic / Node |
+| P3-17 | P3-17 story and reel use 1080 by 1920 | PASS: assertions satisfied | Synthetic / Node |
+| P3-18 | P3-18 unverified landmark blocked | PASS: assertions satisfied | Synthetic / Node |
+| P3-19 | P3-19 unsupported factual claim blocked | PASS: assertions satisfied | Synthetic / Node |
+| P3-20 | P3-20 real estate agency positioning blocked | PASS: assertions satisfied | Synthetic / Node |
+| P4-01 | P4-01 daily brief with no issues | PASS: assertions satisfied | Synthetic / Node |
+| P4-02 | P4-02 multiple issues preserved | PASS: assertions satisfied | Synthetic / Node |
+| P4-03 | P4-03 repeated event deduplicated | PASS: assertions satisfied | Synthetic / Node |
+| P4-04 | P4-04 duplicate trigger executes handler once | PASS: assertions satisfied | Synthetic / Node |
+| P4-05 | P4-05 downstream failure remains retryable with bound | PASS: assertions satisfied | Synthetic / Node |
+| P4-06 | P4-06 stale event is not executed | PASS: assertions satisfied | Synthetic / Node |
+| P4-07 | P4-07 deleted or changed record held | PASS: assertions satisfied | Synthetic / Node |
+| P4-08 | P4-08 notifications deduplicate | PASS: assertions satisfied | Synthetic / Node |
+| P4-09 | P4-09 automation cannot replace send approval | PASS: assertions satisfied | Synthetic / Node |
+| P4-10 | P4-10 rejected approval cannot execute | PASS: assertions satisfied | Synthetic / Node |
+| P4-11 | P4-11 expired or mismatched approval rejected | PASS: assertions satisfied | Synthetic / Node |
+| P4-12 | P4-12 retry temporary read failure succeeds | PASS: assertions satisfied | Synthetic / Node |
+| P4-13 | P4-13 provider unavailable stops after three attempts | PASS: assertions satisfied | Synthetic / Node |
+| P4-14 | P4-14 one specialist may fail without losing others | PASS: assertions satisfied | Synthetic / Node |
+| P4-15 | P4-15 Manager marks partial success | PASS: assertions satisfied | Synthetic / Node |
+| P4-16 | P4-16 job audit exists without credentials or bodies | PASS: assertions satisfied | Synthetic / Node |
+| P4-17 | P4-17 no send or publish event permitted | PASS: assertions satisfied | Synthetic / Node |
+| P4-18 | P4-18 incomplete bilingual draft is reported as partial, never completed | PASS: assertions satisfied | Synthetic / Node |
+| P4-19 | P4-19 unavailable email history is not reported as successful inbox analysis | PASS: assertions satisfied | Synthetic / Node |
+| PRE-01 | PRE-01 standalone bundle compiles and denies network access | PASS: assertions satisfied | Synthetic / Node |
+| PRE-02 | PRE-02 approval required, exact decision and replay cannot duplicate update | PASS: assertions satisfied | Synthetic / Node |
+| PRE-03 | PRE-03 rejected action cannot execute | PASS: assertions satisfied | Synthetic / Node |
+| PRE-04 | PRE-04 concurrent change blocks stale approval | PASS: assertions satisfied | Synthetic / Node |
+| PRE-05 | PRE-05 external operations unavailable and reset has no previous state | PASS: assertions satisfied | Synthetic / Node |
+| RES-01 | RES-01 private, loopback, reserved and mapped IPs cannot be fetched | PASS: assertions satisfied | Synthetic / Node |
+| RES-02 | RES-02 public DNS address is passed to pinned request; redirects are revalidated | PASS: assertions satisfied | Synthetic / Node |
+| RES-03 | RES-03 redirects to private DNS or credential URLs never issue a second request | PASS: assertions satisfied | Synthetic / Node |
+| RES-04 | RES-04 source text remains data and company description remains an attributed claim | PASS: assertions satisfied | Synthetic / Node |
+| RES-05 | RES-05 missing session, foreign origin and GET cannot trigger public fetch | PASS: assertions satisfied | Synthetic / Node |
+| RES-06 | RES-06 backend denial blocks research and does not leak ledger/session | PASS: assertions satisfied | Synthetic / Node |
+| RES-07 | RES-07 authenticated research returns evidence only, not private auth response | PASS: assertions satisfied | Synthetic / Node |
+| SEC-01 | SEC-01 repeated proposal has same durable action ID | PASS: assertions satisfied | Synthetic / Node |
+| SEC-02 | SEC-02 tenant cannot approve another tenant action | PASS: assertions satisfied | Synthetic / Node |
+| SEC-03 | SEC-03 tampering invalidates approved payload | PASS: assertions satisfied | Synthetic / Node |
+| SEC-04 | SEC-04 data instructions remain outside system prompt | PASS: assertions satisfied | Synthetic / Node |
+| SEC-05 | SEC-05 audit omits private message body | PASS: assertions satisfied | Synthetic / Node |
+| SEC-06 | SEC-06 Manager email drafting cannot execute a send | PASS: assertions satisfied | Synthetic / Node |
+| SEC-20 | SEC-20 transport rejects absent sessions and unapproved operations before dispatch | PASS: assertions satisfied | Synthetic / Node |
+| SEC-21 | SEC-21 cross-origin and non-POST requests cannot dispatch | PASS: assertions satisfied | Synthetic / Node |
+| SEC-22 | SEC-22 ContentService redirect receives no session or POST body | PASS: assertions satisfied | Synthetic / Node |
+| SEC-23 | SEC-23 unexpected redirects are blocked without leaking session | PASS: assertions satisfied | Synthetic / Node |
+| SEC-24 | SEC-24 uncertain external result never retries the mutation | PASS: assertions satisfied | Synthetic / Node |
+| SEC-25 | SEC-25 backend auth failure remains a failure and HTML is not forwarded | PASS: assertions satisfied | Synthetic / Node |
+| SEC-26 | SEC-26 browser relay retains same-origin Preview access without cross-origin credentials | PASS: assertions satisfied | Synthetic / Node |
+| UI-01 | UI-01 account data is escaped in rendered dossier | PASS: assertions satisfied | Synthetic / Node |
+| UI-02 | UI-02 attention works with AI provider disabled | PASS: assertions satisfied | Synthetic / Node |
+| UI-03 | UI-03 unknown request falls back to existing assistant | PASS: assertions satisfied | Synthetic / Node |
+| UI-04 | UI-04 independent specialist error shown alongside success | PASS: assertions satisfied | Synthetic / Node |
+| UI-05 | UI-05 legacy ambiguous update rejected before save | PASS: assertions satisfied | Synthetic / Node |
+| UI-06 | UI-06 unavailable gateway blocks all assistant writes | PASS: assertions satisfied | Synthetic / Node |
+| UI-07 | UI-07 create cannot fall back to legacy saveRecord | PASS: assertions satisfied | Synthetic / Node |
+| UI-08 | UI-08 assistant delegates to shared approval controls without a direct write | PASS: assertions satisfied | Synthetic / Node |
+| UI-09 | UI-09 companies without next action query is scoped to companies | PASS: assertions satisfied | Synthetic / Node |
+| UI-10 | UI-10 linked contacts remain visible without activity details | PASS: assertions satisfied | Synthetic / Node |
+| UI-11 | UI-11 unnamed create cannot be approved using only its display label | PASS: assertions satisfied | Synthetic / Node |
+| UI-12 | UI-12 saved report displays original population and escapes untrusted content | PASS: assertions satisfied | Synthetic / Node |
+| UI-13 | UI-13 failed job without result never renders a successful report | PASS: assertions satisfied | Synthetic / Node |
+| REG-157 | embedded Kiti form preserves phone, proof, qualification and routing in one request | PASS: assertions satisfied | Synthetic / Node |
+| REG-158 | legacy separate experience field is still included if supplied | PASS: assertions satisfied | Synthetic / Node |
+| REG-159 | recorded enquiry without confirmed email does not claim email was sent | PASS: assertions satisfied | Synthetic / Node |
+| REG-160 | unreadable or unconfirmed responses retain form values and show processing | PASS: assertions satisfied | Synthetic / Node |
+| REG-161 | spam, duplicate, rate limit, offline and HTTP failures never show success | PASS: assertions satisfied | Synthetic / Node |
+| REG-162 | contact routes preserve backend category and include the visible service in the message | PASS: assertions satisfied | Synthetic / Node |
+
+Live signed-in CRM, exact synthetic approval, rejected proposal, stored daily brief and bilingual draft have separate evidence in live-acceptance-2026-09-22.json. Remaining live gates include sync-repair concurrency, full regression, provider reconciliation, enquiry transfer, Outlook ingest, Android phone/tablet and installed PWA, and scheduled job delivery. No phase is accepted for Production.

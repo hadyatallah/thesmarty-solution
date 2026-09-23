@@ -238,7 +238,7 @@ function primaryAssistantContext(text){
 }
 function aiPlannerPromptFromInterpretation(originalText,interpretation){
   const matches=compactPlannerContext(originalText);
-  const rules='Classify the CRM result. Questions/explanations => answer. Searches/lists => query or timeline. Writes => action and need confirmation. Sensitive: Qualified, Won/Lost, Do not contact, payments, outreach send/approve, merge/delete. Positive reply alone is not Qualified. Never invent facts. Writable only: Companies, Contacts, Opportunities, Tickets, Tasks.';
+  const rules='Classify the CRM result. Questions/explanations => answer. Searches/lists => query or timeline. Writes => action and need confirmation. Sensitive: Qualified, Won/Lost, Do not contact, payments, outreach send/approve, merge/delete. Positive reply alone is not Qualified. Never invent facts. Writable only: Companies, Contacts, Opportunities, Tickets, Tasks. For creates put the record name in data.name; recordName is only a display label.';
   const formats='JSON only: answer {"mode":"answer","message":"..."}; clarify {"mode":"clarify","message":"..."}; query {"mode":"query","message":"...","query":{"entity":"Companies|Contacts|Opportunities|Tickets|Tasks","conditions":[],"limit":50}}; timeline {"mode":"timeline","message":"...","recordId":"company id"}; action {"mode":"action","message":"...","actions":[{"operation":"create|update","entity":"Companies|Contacts|Opportunities|Tickets|Tasks","recordId":"","recordName":"","data":{}}]}.';
   return [
     rules,
@@ -270,11 +270,14 @@ function validatePlan(plan){
   if(plan.actions.length>20)throw Error('That request contains more than 20 changes. Please split it into smaller batches.');
   plan.actions.forEach(function(a){
     if(!['create','update'].includes(a.operation)||!['Companies','Contacts','Opportunities','Tickets','Tasks'].includes(a.entity))throw Error('The assistant proposed an unsupported CRM action.');
+    if(!a.data||typeof a.data!=='object'||Array.isArray(a.data))throw Error('Proposed fields are invalid.');
     const fields=writableFields(a.entity);Object.keys(a.data||{}).forEach(function(k){if(!fields.has(k))delete a.data[k];});
+    if(a.operation==='create'&&fields.has('name')&&(typeof a.data.name!=='string'||!a.data.name.trim()))throw Error('The proposed record is missing its name. Please revise the request before approval.');
     if(a.operation==='create'&&a.entity==='Companies'){const dup=findLikelyCompany(a.data||{});if(dup)a._duplicate={entity:'Companies',id:dup.r.id,name:dup.r.name};}
     if(a.operation==='create'&&a.entity==='Contacts'){const dup=findLikelyContact(a.data||{});if(dup)a._duplicate={entity:'Contacts',id:dup.id,name:dup.name};}
-    if(a.operation==='update'&&!a.recordId){const n=normalizeForMatch(a.recordName),match=(state.records[a.entity]||[]).find(function(r){return normalizeForMatch(r.name)===n;});if(match)a.recordId=match.id;}
+    if(a.operation==='update'&&!a.recordId){const n=normalizeForMatch(a.recordName),matches=(state.records[a.entity]||[]).filter(function(r){return normalizeForMatch(r.name)===n;});if(matches.length!==1)throw Error('Use an exact record ID; the name is unknown or ambiguous.');a.recordId=matches[0].id;}
     if(a.operation==='update'&&!a.recordId)throw Error('I could not identify the record to update.');
+    if(a.operation==='update'){const current=(state.records[a.entity]||[]).find(r=>r.id===a.recordId);if(!current)throw Error('Record not found.');a._expectedVersion=current.version;}
     a._sensitive=actionIsSensitive(a);
   });
   return plan;
@@ -308,18 +311,21 @@ function planHtml(plan){
 }
 function assistantHistoryHtml(){
   const actions=aiActionHistory().slice(0,6),undo=localStorage.getItem(AI_UNDO_KEY);
-  return'<div class="grid section"><section><h3>Recent AI actions</h3><div class="assistant-history">'+(actions.map(function(a){return'<div class="record"><strong>'+esc(a.summary)+'</strong><small class="muted">'+esc(new Date(a.at).toLocaleString())+'</small></div>';}).join('')||'<p class="muted">No AI-driven changes yet.</p>')+'</div>'+(undo?'<button style="margin-top:10px" onclick="undoLastAiUpdate()">Undo last AI update</button>':'')+'</section><section><h3>Pending confirmation</h3>'+(aiPendingPlan?'<div class="record pending-card"><strong>'+esc(aiPendingPlan.message||'CRM changes waiting for confirmation')+'</strong><button style="margin-top:8px" onclick="showPendingAiPlan()">Review</button></div>':'<p class="muted">Nothing waiting for confirmation.</p>')+'</section></div>';
+  return'<div class="grid section"><section><h3>Recent AI actions</h3><div class="assistant-history">'+(actions.map(function(a){return'<div class="record"><strong>'+esc(a.summary)+'</strong><small class="muted">'+esc(new Date(a.at).toLocaleString())+'</small></div>';}).join('')||'<p class="muted">No additional activity in this session. See the server action ledger below for verified actions.</p>')+'</div>'+(undo?'<button style="margin-top:10px" onclick="undoLastAiUpdate()">Undo last AI update</button>':'')+'</section><section><h3>Pending confirmation</h3>'+(aiPendingPlan?'<div class="record pending-card"><strong>'+esc(aiPendingPlan.message||'CRM changes waiting for confirmation')+'</strong><button style="margin-top:8px" onclick="showPendingAiPlan()">Review</button></div>':'<p class="muted">No unsubmitted plan in this session. Check the server ledger for pending approvals.</p>')+'</section></div>';
 }
 function assistantWorkspaceHtml(){
   loadAiState();
-  return '<section class="panel assistant-panel"><div class="row"><div><h3>CRM Assistant</h3><p class="muted">Your one-stop shop for everything in the CRM.</p></div><span class="assistant-status">'+(state.aiEnabled?'AI connected':'AI unavailable')+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="3000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary" '+(!state.aiEnabled?'disabled':'')+'>Send</button></div></form><div id="aiAnswer" class="assistant-response" role="status"></div>'+assistantHistoryHtml()+'</section>';
+  return '<section class="panel assistant-panel"><div class="row"><div><h3>TSS Command Center</h3><p class="muted">Ask about your customers, priorities and next actions.</p></div><span class="assistant-status">'+(state.aiEnabled?'AI connected':'AI unavailable')+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="3000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary">Send</button></div></form><div id="aiAnswer" class="assistant-response" role="status"></div>'+assistantHistoryHtml()+(window.TSSCommandCenter?window.TSSCommandCenter.statusHtml():'')+'</section>';
 }
-function wireAssistantForm(){const form=el('aiForm');if(form)form.onsubmit=handleAssistantSubmit;}
+function wireAssistantForm(){const form=el('aiForm');if(form)form.onsubmit=handleAssistantSubmit;if(window.TSSCommandCenter?.mount)window.TSSCommandCenter.mount({call});}
 async function handleAssistantSubmit(e){
   e.preventDefault();
   const b=e.submitter,q=el('aiQuestion').value.trim();
   if(!q)return;
   if(q.length>3000){el('aiAnswer').innerHTML='<div class="assistant-message error">Please keep each message to 3,000 characters or less.</div>';return;}
+  if(window.TSSCommandCenter){
+    try{const answer=await window.TSSCommandCenter.answer(q,state,{call});if(answer){el('aiAnswer').innerHTML=answer;return;}}catch(err){el('aiAnswer').innerHTML='<p class="error">Command Center could not complete this request. No action executed.</p>';return;}
+  }
   const dueAnswer=localDuePeriodAnswer(q);
   if(dueAnswer){
     aiConversation.push({role:'user',text:q},{role:'assistant',text:dueAnswer});
@@ -345,6 +351,7 @@ async function handleAssistantSubmit(e){
     el('aiAnswer').innerHTML='<div class="assistant-message">'+formatAssistantText(local)+'</div>';
     return;
   }
+  if(!state.aiEnabled){el('aiAnswer').innerHTML='<p>AI interpretation is unavailable. You can still ask for attention, account summaries, overdue work or data-quality checks.</p>';return;}
   b.disabled=true;
   aiConversation.push({role:'user',text:q});
   saveAiState();
@@ -389,57 +396,14 @@ function resolveActionRefs(data,results){
 function snapshotForUndo(entity,r){const data={};(state.fields&&state.fields[entity]||[]).forEach(function(k){if(!['id','version','createdAt','updatedAt','threadId'].includes(k))data[k]=r[k]||'';});return{entity:entity,id:r.id,data:data};}
 async function executeAiPlan(){
   if(!aiPendingPlan||busy)return;
-  const plan=aiPendingPlan;
-  if((plan.actions||[]).some(function(a){return a._duplicate;})){notice('Resolve the duplicate match before creating the record.');return;}
+  if(!window.TSSCommandCenter?.stagePlan){notice('Command Center controls are unavailable. Reload before preparing a CRM change.');return;}
   busy=true;
-  const results=[],undo=[],completed=[];
-  try{
-    for(let i=0;i<plan.actions.length;i++){
-      const a=plan.actions[i],data=resolveActionRefs(a.data||{},results);
-      if(a.operation==='update'){
-        const r=(state.records[a.entity]||[]).find(function(x){return x.id===a.recordId;});
-        if(!r)throw Error('Record not found: '+a.recordId);
-        undo.push(snapshotForUndo(a.entity,r));
-        const payload={},allowed=writableFields(a.entity);
-        allowed.forEach(function(k){payload[k]=r[k]||'';});
-        Object.assign(payload,data,{id:r.id,version:r.version});
-        if(r.threadId)payload.threadId=r.threadId;
-        const saved=await call('saveRecord',a.entity,payload);
-        Object.assign(r,payload);if(saved&&typeof saved==='object')Object.assign(r,saved);
-        results.push(saved||r);
-      }else{
-        const saved=await call('saveRecord',a.entity,data);
-        if(!saved||!saved.id)throw Error('The new '+a.entity+' record was not returned by the CRM.');
-        results.push(saved);if(state.records[a.entity])state.records[a.entity].push(saved);
-      }
-      completed.push((a.operation==='create'?'Created ':'Updated ')+(a.recordName||a.recordId||a.entity));
-    }
-    if(undo.length===plan.actions.length&&plan.actions.every(function(a){return a.operation==='update';})){
-      try{localStorage.setItem(AI_UNDO_KEY,JSON.stringify({items:undo,at:Date.now()}));}catch(e){}
-    }else{try{localStorage.removeItem(AI_UNDO_KEY);}catch(e){}}
-    const summary=completed.join('; ');
-    recordAiAction({summary:summary});aiConversation.push({role:'assistant',text:'Completed: '+summary});
-    aiPendingPlan=null;saveAiState();if(el('dialog').open)el('dialog').close();
-    await refresh();notice('CRM updated');if(view==='Today'||view==='Assistant')render();
-  }catch(err){
-    const pending=(plan.actions||[]).slice(completed.length).map(function(a){return (a.operation==='create'?'Create ':'Update ')+(a.recordName||a.recordId||a.entity);});
-    const msg=(completed.length?'Completed before the error:\n• '+completed.join('\n• ')+'\n\n':'')+'Failed: '+err.message+(pending.length?'\n\nStill pending:\n• '+pending.join('\n• '):'');
-    recordAiAction({summary:'Partial AI action failure: '+err.message});
-    if(el('aiAnswer'))el('aiAnswer').innerHTML='<div class="assistant-message error">'+formatAssistantText(msg)+'</div>';
-    notice('CRM action did not fully complete');
-    await refresh();
-  }finally{busy=false;}
+  try{await window.TSSCommandCenter.stagePlan(aiPendingPlan,{call,state,onDone:async()=>{aiPendingPlan=null;saveAiState();if(el('dialog').open)el('dialog').close();await refresh();}});}
+  finally{busy=false;}
 }
-async function undoLastAiUpdate(){
-  let u;try{u=JSON.parse(localStorage.getItem(AI_UNDO_KEY)||'null');}catch(e){}
-  if(!u||!u.items||!u.items.length)return notice('No reversible AI update is available.');
-  if(Date.now()-u.at>30*60*1000)return notice('The undo window has expired.');
-  busy=true;
-  try{
-    for(const item of u.items){const r=(state.records[item.entity]||[]).find(function(x){return x.id===item.id;});if(!r)continue;const payload=Object.assign({},item.data,{id:item.id,version:r.version});const saved=await call('saveRecord',item.entity,payload);Object.assign(r,payload);if(saved&&typeof saved==='object')Object.assign(r,saved);}
-    localStorage.removeItem(AI_UNDO_KEY);recordAiAction({summary:'Undid previous AI update'});await refresh();notice('Last AI update reversed');
-  }catch(e){notice(e.message);}finally{busy=false;}
-}
+
+async function undoLastAiUpdate(){notice('Prepare a fresh proposed update to reverse a change. Review the current record first.');}
+
 function clearAiConversation(){aiConversation=[];aiPendingPlan=null;aiContextSelection={entity:'',id:'',label:''};saveAiState();if(view==='Today'||view==='Assistant')render();}
 function assistant(){aiContextSelection={entity:'',id:'',label:''};el('main').innerHTML='<h2>CRM Assistant</h2><p class="muted">Your one-stop shop for everything in the CRM.</p>'+assistantWorkspaceHtml();wireAssistantForm();}
 async function syncInbox(){try{const r=await call('syncEmail');notice(r.created+' new tickets, '+r.updated);await refresh();}catch(e){notice(e.message);}}
