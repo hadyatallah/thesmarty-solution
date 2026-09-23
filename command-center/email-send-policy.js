@@ -37,3 +37,12 @@ export function enforceSendPreflight(snapshot,message,now=new Date()){
  if(!emailWindowOpen(now))throw Error('EMAIL_OUTSIDE_BUSINESS_HOURS');
  return context;
 }
+
+export function assertEmailControls(snapshot={}){
+ const records=snapshot.records||snapshot,settings=Object.fromEntries((records['System Control']||[]).filter(r=>r?.setting).map(r=>[r.setting,String(r.value??'')]));
+ if(settings.commandCenterDirectEmailSendEnabled!=='ON')throw Error('EMAIL_DIRECT_SEND_DISABLED');
+ if(settings.approvalRequired!=='YES')throw Error('EMAIL_APPROVAL_CONTROL_INVALID');
+ if(String(settings.defaultMailbox||'').toLowerCase()!=='info@thesmartysolution.com')throw Error('EMAIL_MAILBOX_CONTROL_INVALID');
+ if(settings.outreachAutomationEnabled==='OFF')throw Error('EMAIL_OUTREACH_DISABLED');
+ return true;
+}
