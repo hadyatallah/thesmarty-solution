@@ -1,5 +1,5 @@
 import {baseHeaders,cors,requireTrustedOrigin,cookies,open,verifyCrmSession,refreshToken,graphMe,assertMailbox,seal,cookie,SESSION_COOKIE} from '../_lib.js';
-import {validateMessage,enforceSendPreflight} from '../../../command-center/email-send-policy.js';
+import {validateMessage,enforceSendPreflight,assertEmailControls} from '../../../command-center/email-send-policy.js';
 
 const BACKEND='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
 const PROPOSAL_COOKIE='tss_ms_send_proposal';
@@ -25,6 +25,7 @@ export default async function handler(req,res){
 
   const message=validateMessage(proposal);
   const state=await crmState(body.session);
+  assertEmailControls(state);
   const ctx=enforceSendPreflight(state,message,new Date());
   if(ctx.company.id!==proposal.companyId)throw Error('EMAIL_CONTEXT_CHANGED');
 
