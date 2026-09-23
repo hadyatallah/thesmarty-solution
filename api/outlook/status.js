@@ -1,4 +1,4 @@
-import {baseHeaders,requireSameOrigin,cookies,open,verifyCrmSession,refreshToken,graphMe,assertMailbox,sessionEnvelope,cookie,clearCookie,SESSION_COOKIE} from './oauth/_lib.js';
+import {baseHeaders,requireSameOrigin,cookies,open,verifyCrmSession,refreshToken,graphMe,assertMailbox,sessionEnvelope,cookie,clearCookie,SESSION_COOKIE} from './_lib.js';
 export default async function handler(req,res){
  baseHeaders(res);
  if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({ok:false,error:'METHOD_NOT_ALLOWED'});}
