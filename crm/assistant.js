@@ -317,7 +317,7 @@ function assistantWorkspaceHtml(){
   loadAiState();
   return '<section class="panel assistant-panel"><div class="row"><div><h3>TSS Command Center</h3><p class="muted">Ask about your customers, priorities and next actions.</p></div><span class="assistant-status">'+(state.aiEnabled?'AI connected':'AI unavailable')+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="3000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary">Send</button></div></form><div id="aiAnswer" class="assistant-response" role="status"></div>'+assistantHistoryHtml()+(window.TSSCommandCenter?window.TSSCommandCenter.statusHtml():'')+'</section>';
 }
-function wireAssistantForm(){const form=el('aiForm');if(form)form.onsubmit=handleAssistantSubmit;if(window.TSSCommandCenter?.mount)window.TSSCommandCenter.mount({call});}
+function wireAssistantForm(){const form=el('aiForm');if(form)form.onsubmit=handleAssistantSubmit;if(window.TSSCommandCenter?.mount)window.TSSCommandCenter.mount({call,session:()=>sessionToken});}
 async function handleAssistantSubmit(e){
   e.preventDefault();
   const b=e.submitter,q=el('aiQuestion').value.trim();
