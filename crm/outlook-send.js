@@ -13,7 +13,7 @@ export async function prepareOutlookSend({session,message,dialog}){
   try{
    const sr=await fetch(API+'/api/outlook/send/approve',{method:'POST',credentials:'include',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({session,id:p.id,hash:p.hash})});
    const sd=await sr.json();if(!sr.ok||!sd.ok)throw Error(sd.error||'EMAIL_SEND_FAILED');
-   status.textContent='Sent and reconciled with Microsoft 365 at '+sd.receipt.sentDateTime+'.';e.currentTarget.remove();
+   status.textContent=sd.status==='succeeded'?'Sent and reconciled with Microsoft 365 at '+sd.receipt.sentDateTime+'.':'Accepted by Microsoft 365 at '+sd.receipt.acceptedAt+'. Sent Items reconciliation is still pending. Do not resend.';e.currentTarget.remove();
   }catch(err){status.textContent=err.message==='EMAIL_SEND_UNCERTAIN'?'Outcome uncertain. Do not retry. Check Sent Items first.':'Not sent: '+err.message;e.currentTarget.disabled=false;}
  });
 }
