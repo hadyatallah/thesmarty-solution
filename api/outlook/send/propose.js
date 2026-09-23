@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 import {baseHeaders,cors,requireTrustedOrigin,cookies,open,verifyCrmSession,refreshToken,graphMe,assertMailbox,seal,cookie,SESSION_COOKIE} from '../_lib.js';
-import {validateMessage,findRecipientContext,recentDuplicate} from '../../../command-center/email-send-policy.js';
+import {validateMessage,findRecipientContext,recentDuplicate,assertEmailControls} from '../../../command-center/email-send-policy.js';
 
 const BACKEND='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
 const PROPOSAL_COOKIE='tss_ms_send_proposal';
@@ -21,7 +21,7 @@ export default async function handler(req,res){
   await verifyCrmSession(body?.session);
   const session=open(cookies(req)[SESSION_COOKIE]);const token=await refreshToken(session.refreshToken);const me=await graphMe(token.access_token);const mailbox=assertMailbox(me);
   const message=validateMessage(body?.message||{});
-  const state=await crmState(body.session);const ctx=findRecipientContext(state,message.to);
+  const state=await crmState(body.session);assertEmailControls(state);const ctx=findRecipientContext(state,message.to);
   if(recentDuplicate(state,message,new Date()))throw Error('EMAIL_DUPLICATE_RECENT');
   const id=crypto.randomUUID(),proposal={id,from:mailbox,to:message.to,subject:message.subject,text:message.text,companyId:ctx.company.id,createdAt:Date.now(),expiresAt:Date.now()+600000,state:'proposed'};
   proposal.hash=crypto.createHash('sha256').update(JSON.stringify({id:proposal.id,from:proposal.from,to:proposal.to,subject:proposal.subject,text:proposal.text,companyId:proposal.companyId})).digest('hex');
