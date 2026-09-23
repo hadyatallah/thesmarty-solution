@@ -1,4 +1,4 @@
-import {baseHeaders,cors,requireTrustedOrigin,cookies,open,verifyCrmSession,refreshToken,graphMe,assertMailbox,seal,cookie,SESSION_COOKIE} from '../_lib.js';
+import {baseHeaders,cors,requireTrustedOrigin,cookies,open,refreshToken,graphMe,assertMailbox,seal,cookie,SESSION_COOKIE} from '../_lib.js';
 import {validateMessage,enforceSendPreflight,assertEmailControls} from '../../../command-center/email-send-policy.js';
 
 const BACKEND='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
@@ -7,7 +7,7 @@ const PROPOSAL_COOKIE='tss_ms_send_proposal';
 async function crmState(session){
  let r=await fetch(BACKEND,{method:'POST',redirect:'manual',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({fn:'getState',args:[session]})});
  if([302,303].includes(r.status)){const u=new URL(r.headers.get('location')||'',BACKEND);if(u.hostname!=='script.googleusercontent.com')throw Error('CRM_STATE_UNAVAILABLE');r=await fetch(u.href);}
- const d=await r.json().catch(()=>null);if(!r.ok||!d?.ok)throw Error('CRM_STATE_UNAVAILABLE');return d.result;
+ const d=await r.json().catch(()=>null);if(!r.ok)throw Error('CRM_STATE_UNAVAILABLE');if(!d?.ok)throw Error(String(d?.error||'AUTH_REQUIRED').includes('AUTH_REQUIRED')?'AUTH_REQUIRED':'CRM_STATE_UNAVAILABLE');return d.result;
 }
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 
@@ -19,13 +19,13 @@ export default async function handler(req,res){
  try{
   requireTrustedOrigin(req);
   stage='request';const body=typeof req.body==='string'?JSON.parse(req.body):req.body;
-  stage='crm-auth';await verifyCrmSession(body?.session);
+  stage='crm-auth';
 
   stage='proposal-cookie';const proposal=open(cookies(req)[PROPOSAL_COOKIE]);
   if(!proposal||proposal.id!==body?.id||proposal.hash!==body?.hash||proposal.state!=='proposed'||Date.now()>proposal.expiresAt)throw Error('EMAIL_APPROVAL_NOT_APPLICABLE');
 
   stage='message-validation';const message=validateMessage(proposal);
-  stage='crm-state';const state=await crmState(body.session);
+  stage='crm-auth';const state=await crmState(body.session);
   stage='controls';assertEmailControls(state);
   stage='preflight';const ctx=enforceSendPreflight(state,message,new Date());
   if(ctx.company.id!==proposal.companyId)throw Error('EMAIL_CONTEXT_CHANGED');
