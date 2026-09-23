@@ -15,23 +15,24 @@ export default async function handler(req,res){
  baseHeaders(res);cors(req,res);
  if(req.method==='OPTIONS')return res.status(204).end();
  if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({ok:false,error:'METHOD_NOT_ALLOWED'});}
+ let stage='origin';
  try{
   requireTrustedOrigin(req);
-  const body=typeof req.body==='string'?JSON.parse(req.body):req.body;
-  await verifyCrmSession(body?.session);
+  stage='request';const body=typeof req.body==='string'?JSON.parse(req.body):req.body;
+  stage='crm-auth';await verifyCrmSession(body?.session);
 
-  const proposal=open(cookies(req)[PROPOSAL_COOKIE]);
+  stage='proposal-cookie';const proposal=open(cookies(req)[PROPOSAL_COOKIE]);
   if(!proposal||proposal.id!==body?.id||proposal.hash!==body?.hash||proposal.state!=='proposed'||Date.now()>proposal.expiresAt)throw Error('EMAIL_APPROVAL_NOT_APPLICABLE');
 
-  const message=validateMessage(proposal);
-  const state=await crmState(body.session);
-  assertEmailControls(state);
-  const ctx=enforceSendPreflight(state,message,new Date());
+  stage='message-validation';const message=validateMessage(proposal);
+  stage='crm-state';const state=await crmState(body.session);
+  stage='controls';assertEmailControls(state);
+  stage='preflight';const ctx=enforceSendPreflight(state,message,new Date());
   if(ctx.company.id!==proposal.companyId)throw Error('EMAIL_CONTEXT_CHANGED');
 
-  const oauth=open(cookies(req)[SESSION_COOKIE]);
-  const token=await refreshToken(oauth.refreshToken);
-  const me=await graphMe(token.access_token);
+  stage='outlook-session';const oauth=open(cookies(req)[SESSION_COOKIE]);
+  stage='refresh-token';const token=await refreshToken(oauth.refreshToken);
+  stage='graph-profile';const me=await graphMe(token.access_token);
   if(assertMailbox(me)!==proposal.from)throw Error('EMAIL_SENDER_CHANGED');
 
   const graphHeaders={Authorization:'Bearer '+token.access_token,'Content-Type':'application/json'};
@@ -39,6 +40,7 @@ export default async function handler(req,res){
   res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:600,path:'/api/outlook/send'}));
 
   const acceptedAt=new Date().toISOString();
+  stage='graph-send';
   let sendResp;
   try{
    sendResp=await fetch('https://graph.microsoft.com/v1.0/me/sendMail',{
@@ -60,7 +62,7 @@ export default async function handler(req,res){
    throw Error('EMAIL_SEND_UNCERTAIN');
   }
 
-  if(sendResp.status!==202){
+  if(sendResp.status!==202){console.warn(JSON.stringify({component:'outlook-send',stage:'graph-send',status:sendResp.status}));
    proposal.state=sendResp.status>=500?'uncertain':'failed';
    res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:3600,path:'/api/outlook/send'}));
    throw Error(proposal.state==='uncertain'?'EMAIL_SEND_UNCERTAIN':'EMAIL_SEND_REJECTED');
@@ -94,6 +96,7 @@ export default async function handler(req,res){
  }catch(e){
   const known=['AUTH_REQUIRED','EMAIL_APPROVAL_NOT_APPLICABLE','EMAIL_OUTSIDE_BUSINESS_HOURS','EMAIL_DUPLICATE_RECENT','EMAIL_RECIPIENT_SUPPRESSED','EMAIL_CONTEXT_CHANGED','EMAIL_SENDER_CHANGED','EMAIL_SEND_UNCERTAIN','EMAIL_SEND_REJECTED'];
   const error=known.includes(e.message)?e.message:'EMAIL_SEND_FAILED';
+  console.warn(JSON.stringify({component:'outlook-send',stage,code:error,errorType:error==='EMAIL_SEND_FAILED'?String(e?.name||'Error'):undefined}));
   return res.status(error==='AUTH_REQUIRED'?401:error==='EMAIL_SEND_UNCERTAIN'?409:400).json({ok:false,error});
  }
 }
