@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import {baseHeaders,requireSameOrigin,verifyCrmSession,pkce,authorizeUrl,seal,cookie,FLOW_COOKIE} from './_lib.js';
+import {baseHeaders,requireSameOrigin,verifyCrmSession,pkce,authorizeUrl,seal,cookie,FLOW_COOKIE} from '../_lib.js';
 export default async function handler(req,res){
  baseHeaders(res);
  if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({ok:false,error:'METHOD_NOT_ALLOWED'});}
