@@ -3,7 +3,7 @@ import {Manager} from '../command-center/manager.js?v=2';
 import {GrowthAgent} from '../command-center/growth.js?v=3';
 import {OperationsAgent} from '../command-center/operations.js';
 import {operationalEvidence,notificationItems} from '../command-center/context.js';
-import {prepareOutlookSend} from './outlook-send.js';
+import {prepareOutlookSend} from './outlook-send.js?v=2';
 const escape = v => String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const line=(label,value)=>value===undefined||value===null||value===''?'':`<li><strong>${escape(label)}:</strong> ${escape(value)}</li>`;
 const list=items=>`<ul>${items.join('')}</ul>`;
