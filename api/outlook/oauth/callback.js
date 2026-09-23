@@ -2,7 +2,7 @@ import {baseHeaders,cookies,open,verifyCrmSession,exchangeCode,graphMe,assertMai
 export default async function handler(req,res){
  baseHeaders(res);
  if(req.method!=='GET'){res.setHeader('Allow','GET');return res.status(405).send('Method not allowed');}
- const fail=code=>{res.setHeader('Set-Cookie',clearCookie(FLOW_COOKIE,'/api/outlook/oauth'));return res.redirect(302,'/crm/?view=Assistant&outlook='+encodeURIComponent(code));};
+ const fail=code=>{res.setHeader('Set-Cookie',clearCookie(FLOW_COOKIE,'/api/outlook/oauth'));return res.redirect(302,'https://www.thesmartysolution.com/crm/?view=Assistant&outlook='+encodeURIComponent(code));};
  try{
   if(req.query?.error)return fail('denied');
   const flow=open(cookies(req)[FLOW_COOKIE]);
@@ -15,6 +15,6 @@ export default async function handler(req,res){
    clearCookie(FLOW_COOKIE,'/api/outlook/oauth'),
    cookie(SESSION_COOKIE,sessionEnvelope(token.refresh_token,mailbox),{maxAge:2592000,path:'/api/outlook'})
   ]);
-  return res.redirect(302,'/crm/?view=Assistant&outlook=connected');
+  return res.redirect(302,'https://www.thesmartysolution.com/crm/?view=Assistant&outlook=connected');
  }catch(e){console.warn(JSON.stringify({component:'outlook-oauth',stage:'callback',code:e.message}));return fail('failed');}
 }
