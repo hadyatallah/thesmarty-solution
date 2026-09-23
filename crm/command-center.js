@@ -1,6 +1,6 @@
 import {CRMAdapter} from '../command-center/crm.js';
 import {Manager} from '../command-center/manager.js?v=2';
-import {GrowthAgent} from '../command-center/growth.js';
+import {GrowthAgent} from '../command-center/growth.js?v=2';
 import {OperationsAgent} from '../command-center/operations.js';
 import {operationalEvidence,notificationItems} from '../command-center/context.js';
 import {prepareOutlookSend} from './outlook-send.js';
