@@ -1,5 +1,5 @@
 import {CRMAdapter} from '../command-center/crm.js';
-import {Manager} from '../command-center/manager.js?v=3';
+import {Manager} from '../command-center/manager.js?v=2acdb4a2be19';
 import {GrowthAgent} from '../command-center/growth.js?v=4';
 import {OperationsAgent} from '../command-center/operations.js';
 import {operationalEvidence,notificationItems} from '../command-center/context.js';
@@ -14,7 +14,7 @@ export function renderResult(result){
   let body='';const d=r.data||{};
   if(r.status==='failed')body=`<p class="error">${escape(r.error)}</p>`;
   else if(d.status==='ambiguous')body='<p>More than one company matches. Use an exact ID.</p>'+list(d.candidates.map(x=>line(x.id,x.name)));
-  else if(d.status==='unknown')body='<p>No company matched. Check the name or exact ID.</p>';
+  else if(d.status==='unknown')body='<p>No matching company in the loaded CRM data. Check the name or exact ID, or refresh the CRM.</p>';
   else if(d.record){body=list(['id','name','category','district','email','phone','website','lifecycle','communicationStatus','lastContact','nextAction','followUp'].map(k=>line(k,d.record[k])));for(const [name,items] of Object.entries(d.sections)){const c=d.coverage[name];body+=`<h4>${escape(name)}</h4>`+(!c?.available?'<p>Unavailable.</p>':list(items.slice(0,20).map(x=>line(x.name||x.subject||x.id||x.action||'Record',[x.stage||x.status,x.nextAction,x.dueDate||x.followUp||x.messageDate,x.direction,x.summary,x.email,x.phone,x.role].filter(Boolean).join(' · ')||'No additional details')))+(!items.length?'<p>No linked entries in loaded data.</p>':'')+`<p class="muted">${items.length} linked records. ${c.complete?'Source population marked complete.':'History may be partial.'}</p>`);}}
   else if(d.actions){body=list(d.actions.filter(a=>a.status==='proposed').map(a=>line(a.operation+' '+a.entity,[a.recordId||'new',a.approvalState,a.id].join(' · '))))||'<p>No pending approvals.</p>';body+='<p>Review and execute exact proposals in the approval controls below.</p>';}
   else if(d.notifications){body=list(d.notifications.map(n=>line(n.kind,n.text)))||'<p>No notifications.</p>';}
