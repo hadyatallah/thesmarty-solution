@@ -230,6 +230,30 @@ function formatAssistantText(text){
   closeList();
   return html.join('');
 }
+function looksLikeOutboundDraft(text){
+  const s=String(text||'');
+  const hasSubject=/(^|\n)\s*subject\s*:/i.test(s);
+  const hasGreeting=/(^|\n)\s*(?:hi|hello|dear)\b/i.test(s);
+  const hasSignoff=/\b(?:best regards|kind regards|sincerely|regards)\b|\[(?:your|sender)?\s*name\]/i.test(s);
+  const saysDraft=/\bdraft\s+(?:reminder\s+)?(?:email|message)\b/i.test(s);
+  return (hasSubject&&hasGreeting)||(hasGreeting&&hasSignoff)||saysDraft;
+}
+function companyFromAssistantContext(text){
+  const ctx=primaryAssistantContext(text);
+  if(!ctx.id)return null;
+  if(ctx.entity==='Companies')return (state.records.Companies||[]).find(x=>x.id===ctx.id)||null;
+  const record=(state.records[ctx.entity]||[]).find(x=>x.id===ctx.id);
+  return record?.companyId?(state.records.Companies||[]).find(x=>x.id===record.companyId)||null:null;
+}
+async function managedCommunicationFallback(originalText,generatedText){
+  if(!looksLikeOutboundDraft(generatedText)||!window.TSSCommandCenter?.answer)return '';
+  const company=companyFromAssistantContext(originalText)||companyFromAssistantContext(generatedText);
+  if(!company)return '<div class="assistant-message error">The assistant tried to create an email outside the controlled communication workflow. No draft or send action was accepted. Specify the exact CRM company to prepare the standard TSS email.</div>';
+  const followUp=/\b(?:follow[ -]?up|reminder|reply|respond|previous|earlier)\b/i.test(String(originalText)+' '+String(generatedText));
+  const managedPrompt=(followUp?'Write a follow-up email to ':'Write an email to ')+company.name+(followUp?'':' about the current CRM next action');
+  const html=await window.TSSCommandCenter.answer(managedPrompt,state,{call});
+  return html||'<div class="assistant-message error">A managed communication could not be prepared. No email was sent.</div>';
+}
 function primaryAssistantContext(text){
   const c=lexicalCandidates(text);
   if(!c.length)return {entity:'',id:''};
@@ -238,7 +262,7 @@ function primaryAssistantContext(text){
 }
 function aiPlannerPromptFromInterpretation(originalText,interpretation){
   const matches=compactPlannerContext(originalText);
-  const rules='Classify the CRM result. Questions/explanations => answer. Searches/lists => query or timeline. Writes => action and need confirmation. Sensitive: Qualified, Won/Lost, Do not contact, payments, outreach send/approve, merge/delete. Positive reply alone is not Qualified. Never invent facts. Writable only: Companies, Contacts, Opportunities, Tickets, Tasks. For creates put the record name in data.name; recordName is only a display label.';
+  const rules='Classify the CRM result. Questions/explanations => answer. Searches/lists => query or timeline. Writes => action and need confirmation. Sensitive: Qualified, Won/Lost, Do not contact, payments, outreach send/approve, merge/delete. Positive reply alone is not Qualified. Never invent facts. Never draft, reproduce, recommend sending, or format an email/WhatsApp/message body here. All outbound communication drafts must be produced by the managed Command Center communication workflow so the approved TSS format and approval button are applied. Writable only: Companies, Contacts, Opportunities, Tickets, Tasks. For creates put the record name in data.name; recordName is only a display label.';
   const formats='JSON only: answer {"mode":"answer","message":"..."}; clarify {"mode":"clarify","message":"..."}; query {"mode":"query","message":"...","query":{"entity":"Companies|Contacts|Opportunities|Tickets|Tasks","conditions":[],"limit":50}}; timeline {"mode":"timeline","message":"...","recordId":"company id"}; action {"mode":"action","message":"...","actions":[{"operation":"create|update","entity":"Companies|Contacts|Opportunities|Tickets|Tasks","recordId":"","recordName":"","data":{}}]}.';
   return [
     rules,
@@ -315,7 +339,7 @@ function assistantHistoryHtml(){
 }
 function assistantWorkspaceHtml(){
   loadAiState();
-  return '<section class="panel assistant-panel"><div class="row"><div><h3>TSS Command Center</h3><p class="muted">Ask about your customers, priorities and next actions.</p></div><span class="assistant-status">'+(state.aiEnabled?'AI connected':'AI unavailable')+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="3000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary">Send</button></div></form><div id="aiAnswer" class="assistant-response" role="status"></div>'+assistantHistoryHtml()+(window.TSSCommandCenter?window.TSSCommandCenter.statusHtml():'')+'</section>';
+  return '<section class="panel assistant-panel"><div class="row"><div><h3>TSS Command Center</h3><p class="muted">Ask about your customers, priorities and next actions.</p></div><span class="assistant-status">'+(state.aiEnabled?'AI connected':'AI unavailable')+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="3000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary">Run request</button></div></form><div id="aiAnswer" class="assistant-response" role="status"></div>'+assistantHistoryHtml()+(window.TSSCommandCenter?window.TSSCommandCenter.statusHtml():'')+'</section>';
 }
 function wireAssistantForm(){const form=el('aiForm');if(form)form.onsubmit=handleAssistantSubmit;if(window.TSSCommandCenter?.mount)window.TSSCommandCenter.mount({call,session:()=>sessionToken});}
 async function handleAssistantSubmit(e){
@@ -360,11 +384,25 @@ async function handleAssistantSubmit(e){
     const ctx=primaryAssistantContext(q);
     const first=await call('askAssistant',q,ctx.entity,ctx.id);
     const interpretation=String(first.answer||'').trim();
+    const managed=await managedCommunicationFallback(q,interpretation);
+    if(managed){
+      aiConversation.push({role:'assistant',text:'Managed TSS communication prepared.'});
+      saveAiState();
+      el('aiAnswer').innerHTML=managed;
+      return;
+    }
     const second=await call('askAssistant',aiPlannerPromptFromInterpretation(q,interpretation),'','');
     const parsed=parseAssistantJson(second.answer);
     const plan=validatePlan(parsed||{mode:'answer',message:interpretation||second.answer});
     if(plan.mode==='answer'||plan.mode==='clarify'){
       const message=plan.message||interpretation;
+      const managedAnswer=await managedCommunicationFallback(q,message);
+      if(managedAnswer){
+        aiConversation.push({role:'assistant',text:'Managed TSS communication prepared.'});
+        saveAiState();
+        el('aiAnswer').innerHTML=managedAnswer;
+        return;
+      }
       aiConversation.push({role:'assistant',text:message});
       saveAiState();
       el('aiAnswer').innerHTML='<div class="assistant-message">'+formatAssistantText(message)+'</div>';
