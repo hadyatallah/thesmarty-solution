@@ -1,5 +1,28 @@
 import {closed,normalize} from './crm.js';
 export const suppressed = r => [r.communicationStatus,r.status].includes('Do not contact') || r.status==='Not suitable' || r.suppressed===true || r.doNotContact===true;
+export const TSS_EMAIL_SIGNATURE='The Smarty Solution\nConnect · Develop · Invest.\ninfo@thesmartysolution.com\n+35799810330\nhttps://www.thesmartysolution.com';
+export const isCommunicationDraftRequest=q=>{
+ const s=String(q||'');
+ const write=/\b(?:prepare|draft|write|compose|create|send)\b/i.test(s)&&/\b(?:email|message|whatsapp|introduction)\b/i.test(s);
+ const follow=/\b(?:follow[ -]?up|reply|respond)\b/i.test(s);
+ return write||follow;
+};
+export function communicationRequest(q,crm){
+ const text=String(q||'').trim(),channel=/\bwhatsapp\b/i.test(text)?'whatsapp':'email',followUp=/\b(?:follow[ -]?up|reply|respond)\b/i.test(text);
+ const normalized=normalize(text),mentioned=crm.rows('Companies').filter(c=>{const n=normalize(c.name);return n.length>=3&&(' '+normalized+' ').includes(' '+n+' ');}).sort((a,b)=>String(b.name||'').length-String(a.name||'').length);
+ let company=mentioned[0]||null;
+ if(mentioned.length>1&&normalize(mentioned[0].name)===normalize(mentioned[1].name))company=null;
+ if(!company){
+  const m=text.match(/\b(?:to|for|with)\s+(.+?)(?=\s+(?:about|regarding|concerning|on)\b|$)/i);
+  if(m){const found=crm.lookup(m[1].trim());if(found.record)company=found.record;}
+ }
+ if(!company)return {status:'needs_context',message:'Specify the exact CRM company for this communication. Nothing has been sent.'};
+ const purposeMatch=text.match(/\b(?:about|regarding|concerning|on)\s+(.+)$/i);
+ let purpose=purposeMatch?purposeMatch[1].trim():'';
+ if(followUp&&/^(?:the |a )?(?:follow[ -]?up|email|message)$/i.test(purpose))purpose='';
+ if(!followUp&&!purpose)return {status:'needs_context',message:'Specify the purpose of the message. Nothing has been sent.',companyId:company.id};
+ return {companyId:company.id,channel,purpose,followUp};
+}
 export function classifyEmail(message,crm) {
  const email=String(message.fromEmail||'').trim().toLowerCase();
  const matches=crm.rows('Contacts').filter(r=>String(r.email||'').trim().toLowerCase()===email);
@@ -14,12 +37,17 @@ export function classifyEmail(message,crm) {
 export class GrowthAgent {
  constructor({crm,researchAdapter=null,translatePurpose=null}){this.crm=crm;this.researchAdapter=researchAdapter;this.translatePurpose=translatePurpose;}
  async prepareDraft(input) {
-  const initial=this.draft(input);
-  if(initial.channel!=='email'||input.purposeGreek||!this.translatePurpose)return initial;
+  let prepared={...input};
+  if(prepared.followUp&&!String(prepared.purpose||'').trim()){
+   const previous=this.crm.rows('Email Activity').filter(r=>r.companyId===prepared.companyId&&/^(sent|outbound)$/i.test(r.direction||'')).sort((a,b)=>String(b.messageDate||'').localeCompare(String(a.messageDate||'')))[0];
+   if(previous?.subject)prepared={...prepared,priorSubject:String(previous.subject).trim()};
+  }
+  const initial=this.draft(prepared);
+  if(initial.channel!=='email'||initial.approvalReady||prepared.purposeGreek||!this.translatePurpose)return initial;
   try {
-   const translated=await this.translatePurpose(input.purpose);
+   const translated=await this.translatePurpose(prepared.purpose);
    if(typeof translated!=='string'||translated.length>3000||!/[\u0370-\u03ff\u1f00-\u1fff]/.test(translated))throw Error('TRANSLATION_UNAVAILABLE');
-   return this.draft({...input,purposeGreek:translated.trim()});
+   return this.draft({...prepared,purposeGreek:translated.trim()});
   }catch{return {...initial,limitations:[...initial.limitations,'Greek translation is unavailable. Nothing was sent. Review and complete the draft before approval.']};}
  }
  readiness(company) {
@@ -49,27 +77,35 @@ export class GrowthAgent {
   if(evidence.confirmedNeed && evidence.source)return {fit:'potential',reason:evidence.confirmedNeed,source:evidence.source};
   return {fit:'unproven',reason:'No evidenced customer need. A basic website alone is insufficient.'};
  }
- draft({companyId,channel='email',purpose,purposeGreek='',followUp=false}) {
+ draft({companyId,channel='email',purpose='',purposeGreek='',followUp=false,priorSubject=''}) {
   const c=this.crm.lookup(companyId).record;
   if(!c)throw Error('EXACT_COMPANY_REQUIRED');if(suppressed(c))throw Error('SUPPRESSED');
-  if(!purpose?.trim())throw Error('PURPOSE_REQUIRED');
+  if(!String(purpose||'').trim()&&!priorSubject)throw Error('PURPOSE_REQUIRED');
 
   const internalQa=/\binternal\b/i.test(purpose)&&/\b(?:qa|test|testing)\b/i.test(purpose);
-  const signature='\n\nThe Smarty Solution\nConnect · Develop · Invest.\ninfo@thesmartysolution.com\n+35799810330\nhttps://www.thesmartysolution.com';
+  const signature='\n\n'+TSS_EMAIL_SIGNATURE;
+  const contacts=this.crm.rows('Contacts').filter(r=>r.companyId===c.id&&String(r.name||'').trim());
+  const preferred=contacts.find(r=>String(r.primaryContact||'').toLowerCase()==='yes')||(contacts.length===1?contacts[0]:null);
+  const firstName=preferred?String(preferred.name).trim().split(/\s+/)[0]:'';
+  const englishHello=firstName?'Hi '+firstName+',':'Hi,';
 
   const englishBody=internalQa
-   ? `Hi, a quick note before anything else: this is only an internal TSS QA email for ${c.name}. It is being sent to verify the controlled Outlook workflow. No customer action is required, and this is not commercial outreach.`
-   : followUp
-    ? `Hi, I wanted to follow up on my earlier note about ${purpose}. If it is relevant to ${c.name}, I would be happy to share a little more. If not, no problem at all.`
-    : `Hi, I will keep this brief. I am reaching out with one specific idea around ${purpose} that may be relevant to ${c.name}. If it is worth exploring, I would be happy to share a little more.`;
+   ? `${englishHello} A quick note before anything else: this is only an internal TSS QA email for ${c.name}. It is being sent to verify the controlled Outlook workflow. No customer action is required, and this is not commercial outreach.`
+   : followUp&&priorSubject
+    ? `${englishHello} I wanted to follow up on my earlier email, “${priorSubject}”. If it is still relevant, I would be happy to continue the conversation. If not, no problem at all.`
+    : followUp
+     ? `${englishHello} I wanted to follow up on my earlier note about ${purpose}. If it is relevant to ${c.name}, I would be happy to share a little more. If not, no problem at all.`
+     : `${englishHello} I will keep this brief. I am reaching out with one specific idea around ${purpose} that may be relevant to ${c.name}. If it is worth exploring, I would be happy to share a little more.`;
 
   const greekBody=internalQa
    ? `Καλημέρα σας, μια σύντομη σημείωση πριν από οτιδήποτε άλλο: αυτό είναι μόνο ένα εσωτερικό μήνυμα QA της TSS για την εταιρεία ${c.name}. Αποστέλλεται για την επαλήθευση της ελεγχόμενης διαδικασίας Outlook. Δεν απαιτείται καμία ενέργεια και δεν αποτελεί εμπορική επικοινωνία.`
-   : purposeGreek.trim()
-    ? followUp
+   : followUp&&priorSubject
+    ? `Καλημέρα σας, ήθελα να επανέλθω στο προηγούμενο μήνυμά μου με θέμα «${priorSubject}». Αν εξακολουθεί να είναι σχετικό, θα χαρώ να συνεχίσουμε την επικοινωνία. Αν όχι, κανένα πρόβλημα.`
+    : purposeGreek.trim()
+     ? followUp
       ? `Καλημέρα σας, ήθελα να επανέλθω στο προηγούμενο μήνυμά μου σχετικά με ${purposeGreek}. Αν είναι σχετικό με την εταιρεία ${c.name}, θα χαρώ να μοιραστώ περισσότερες πληροφορίες. Αν όχι, κανένα πρόβλημα.`
       : `Καλημέρα σας, θα είμαι σύντομος. Επικοινωνώ με μια συγκεκριμένη ιδέα σχετικά με ${purposeGreek}, η οποία μπορεί να είναι σχετική με την εταιρεία ${c.name}. Αν αξίζει να το εξετάσουμε, θα χαρώ να μοιραστώ περισσότερες πληροφορίες.`
-    : null;
+     : null;
 
   const bilingual=channel==='email';
   const outbound=bilingual
@@ -79,9 +115,13 @@ export class GrowthAgent {
   const subject=internalQa
     ? 'Internal TSS QA test'
     : followUp
-      ? 'Following up / Συνέχεια επικοινωνίας'
+      ? (priorSubject?'Following up: '+priorSubject+' / Συνέχεια επικοινωνίας':'Following up / Συνέχεια επικοινωνίας')
       : 'A quick idea for '+c.name+' / Μια σύντομη ιδέα για '+c.name;
 
+  if(channel==='email'){
+   if(/\[(?:your|sender)?\s*name\]|best regards|kind regards|sincerely/i.test(outbound))throw Error('EMAIL_TEMPLATE_INVALID');
+   if(!outbound.endsWith(TSS_EMAIL_SIGNATURE))throw Error('EMAIL_SIGNATURE_INVALID');
+  }
   return {
    status:'Draft',channel,
    from:bilingual?'info@thesmartysolution.com':null,

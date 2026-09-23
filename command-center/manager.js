@@ -1,6 +1,7 @@
 import {CRMAdapter} from './crm.js';
 import {registry} from './prompts.js';
 import {approvalSummary,notificationItems} from './context.js';
+import {isCommunicationDraftRequest,communicationRequest} from './growth.js';
 export class Manager {
  constructor({crm,growth,operations,runtime=null}={}){this.crm=crm;this.growth=growth;this.operations=operations;this.runtime=runtime;}
  async run(command,now=new Date()) {
@@ -13,7 +14,7 @@ export class Manager {
   else if(/important (?:emails|replies)|incoming|unanswered/i.test(q))add('Communications',()=>this.growth?this.growth.incoming():{unavailable:'Email adapter is unavailable'});
   else if(/contact next|(?:who|which companies).*contact|prospects/i.test(q))add('Growth',()=>this.growth?this.growth.prospects():{unavailable:'Growth adapter is unavailable'});
   else if(/^research\s+/i.test(q))add('Growth',()=>this.growth?this.growth.research(q.replace(/^research\s+/i,'')):{unavailable:'Research adapter unavailable'});
-  else if(/prepare.*(?:email|whatsapp|follow.up|introduction)/i.test(q))add('Communications',()=>{if(!this.growth)return {status:'needs_context',message:'Growth adapter is unavailable. Nothing has been sent.'};const patterns=[/\bfor\s+(.+?)\s+about\s+(.+)$/i,/\bto\s+(.+?)\s+about\s+(.+)$/i,/\bto\s+(.+?)\s+for\s+(.+)$/i,/\bfor\s+(.+?)\s+for\s+(.+)$/i];let match=null;for(const p of patterns){match=q.match(p);if(match)break;}if(!match)return {status:'needs_context',message:'Specify the exact company and purpose, for example: Prepare an email for [company] about [purpose]. Nothing has been sent.'};const companyName=match[1].replace(/\s+(?:and|with)\s+(?:state|say|mention|include)\b.*$/i,'').trim();const purpose=match[2].trim();const company=this.crm.lookup(companyName);if(!company.record)return company;return this.growth.prepareDraft({companyId:company.record.id,channel:/whatsapp/i.test(q)?'whatsapp':'email',purpose,followUp:/follow.up/i.test(q)});});
+  else if(isCommunicationDraftRequest(q))add('Communications',()=>{if(!this.growth)return {status:'needs_context',message:'Growth adapter is unavailable. Nothing has been sent.'};const request=communicationRequest(q,this.crm);if(request.status==='needs_context')return request;return this.growth.prepareDraft(request);});
   else if(/content|social|story|reel/i.test(q))add('Content',()=>this.operations?this.operations.content(now):{unavailable:'Content adapter is unavailable'});
   else if(/fail|overnight|healthy|health|integration|outlook|enquiry workflow/i.test(q))add('Operations',()=>this.operations?this.operations.summary(now):{unavailable:'Operations evidence is unavailable'});
   else if(/approval/i.test(q))add('Approvals',()=>approvalSummary(this.runtime));
