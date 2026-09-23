@@ -34,38 +34,65 @@ export default async function handler(req,res){
   const me=await graphMe(token.access_token);
   if(assertMailbox(me)!==proposal.from)throw Error('EMAIL_SENDER_CHANGED');
 
-  const graphHeaders={Authorization:'Bearer '+token.access_token,'Content-Type':'application/json',Prefer:'IdType="ImmutableId"'};
-  const draftResp=await fetch('https://graph.microsoft.com/v1.0/me/messages',{method:'POST',headers:graphHeaders,body:JSON.stringify({
-   subject:proposal.subject,
-   body:{contentType:'Text',content:proposal.text},
-   toRecipients:[{emailAddress:{address:proposal.to}}],
-   internetMessageHeaders:[{name:'x-tss-action-id',value:proposal.id}]
-  })});
-  const draft=await draftResp.json().catch(()=>null);
-  if(!draftResp.ok||!draft?.id)throw Error('EMAIL_DRAFT_CREATE_FAILED');
-
-  proposal.state='executing';proposal.providerDraftId=draft.id;
+  const graphHeaders={Authorization:'Bearer '+token.access_token,'Content-Type':'application/json'};
+  proposal.state='executing';
   res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:600,path:'/api/outlook/send'}));
 
+  const acceptedAt=new Date().toISOString();
   let sendResp;
-  try{sendResp=await fetch('https://graph.microsoft.com/v1.0/me/messages/'+encodeURIComponent(draft.id)+'/send',{method:'POST',headers:{Authorization:'Bearer '+token.access_token,Prefer:'IdType="ImmutableId"'}});}
-  catch{proposal.state='uncertain';res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:3600,path:'/api/outlook/send'}));throw Error('EMAIL_SEND_UNCERTAIN');}
-  if(!sendResp.ok){proposal.state=sendResp.status>=500?'uncertain':'failed';res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:3600,path:'/api/outlook/send'}));throw Error(proposal.state==='uncertain'?'EMAIL_SEND_UNCERTAIN':'EMAIL_SEND_REJECTED');}
-
-  let receipt=null;
-  for(let i=0;i<4;i++){
-   await sleep(500*(i+1));
-   const check=await fetch('https://graph.microsoft.com/v1.0/me/messages/'+encodeURIComponent(draft.id)+'?$select=id,sentDateTime,internetMessageId',{headers:{Authorization:'Bearer '+token.access_token,Prefer:'IdType="ImmutableId"'}});
-   if(check.ok){const x=await check.json();if(x.sentDateTime){receipt=x;break;}}
+  try{
+   sendResp=await fetch('https://graph.microsoft.com/v1.0/me/sendMail',{
+    method:'POST',
+    headers:graphHeaders,
+    body:JSON.stringify({
+     message:{
+      subject:proposal.subject,
+      body:{contentType:'Text',content:proposal.text},
+      toRecipients:[{emailAddress:{address:proposal.to}}],
+      internetMessageHeaders:[{name:'x-tss-action-id',value:proposal.id}]
+     },
+     saveToSentItems:true
+    })
+   });
+  }catch{
+   proposal.state='uncertain';
+   res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:3600,path:'/api/outlook/send'}));
+   throw Error('EMAIL_SEND_UNCERTAIN');
   }
-  if(!receipt){proposal.state='uncertain';res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:3600,path:'/api/outlook/send'}));throw Error('EMAIL_SEND_UNCERTAIN');}
 
-  proposal.state='succeeded';proposal.receipt={id:receipt.id,internetMessageId:receipt.internetMessageId||null,sentDateTime:receipt.sentDateTime};
+  if(sendResp.status!==202){
+   proposal.state=sendResp.status>=500?'uncertain':'failed';
+   res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:3600,path:'/api/outlook/send'}));
+   throw Error(proposal.state==='uncertain'?'EMAIL_SEND_UNCERTAIN':'EMAIL_SEND_REJECTED');
+  }
+
+  const providerRequestId=sendResp.headers.get('request-id')||sendResp.headers.get('client-request-id')||null;
+  let receipt={provider:'Microsoft Graph',requestId:providerRequestId,acceptedAt,sentDateTime:null,id:null,internetMessageId:null,reconciled:false};
+
+  for(let i=0;i<4;i++){
+   await sleep(700*(i+1));
+   const url="https://graph.microsoft.com/v1.0/me/mailFolders('SentItems')/messages?$select=id,subject,sentDateTime,internetMessageId,toRecipients,bodyPreview&$orderby=sentDateTime%20desc&$top=20";
+   const check=await fetch(url,{headers:{Authorization:'Bearer '+token.access_token,Prefer:'IdType="ImmutableId"'}});
+   if(!check.ok)continue;
+   const data=await check.json().catch(()=>({value:[]}));
+   const minTime=Date.parse(acceptedAt)-120000;
+   const found=(data.value||[]).find(m=>{
+    const recipient=(m.toRecipients||[]).some(x=>String(x.emailAddress?.address||'').toLowerCase()===String(proposal.to).toLowerCase());
+    const recent=Date.parse(m.sentDateTime||0)>=minTime;
+    const sameSubject=String(m.subject||'')===String(proposal.subject);
+    const sameBody=String(m.bodyPreview||'').trim().startsWith(String(proposal.text||'').trim().slice(0,80));
+    return recipient&&recent&&sameSubject&&sameBody;
+   });
+   if(found){receipt={...receipt,id:found.id,internetMessageId:found.internetMessageId||null,sentDateTime:found.sentDateTime||acceptedAt,reconciled:true};break;}
+  }
+
+  proposal.state=receipt.reconciled?'succeeded':'accepted';
+  proposal.receipt=receipt;
   res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:3600,path:'/api/outlook/send'}));
-  console.info(JSON.stringify({component:'outlook-send',actionId:proposal.id,result:'succeeded',companyId:proposal.companyId,providerMessageId:receipt.id,sentDateTime:receipt.sentDateTime}));
-  return res.status(200).json({ok:true,status:'succeeded',receipt:proposal.receipt,companyId:proposal.companyId});
+  console.info(JSON.stringify({component:'outlook-send',actionId:proposal.id,result:proposal.state,companyId:proposal.companyId,providerRequestId,sentDateTime:receipt.sentDateTime,reconciled:receipt.reconciled}));
+  return res.status(200).json({ok:true,status:proposal.state,receipt,companyId:proposal.companyId});
  }catch(e){
-  const known=['AUTH_REQUIRED','EMAIL_APPROVAL_NOT_APPLICABLE','EMAIL_OUTSIDE_BUSINESS_HOURS','EMAIL_DUPLICATE_RECENT','EMAIL_RECIPIENT_SUPPRESSED','EMAIL_CONTEXT_CHANGED','EMAIL_SENDER_CHANGED','EMAIL_SEND_UNCERTAIN','EMAIL_SEND_REJECTED','EMAIL_DRAFT_CREATE_FAILED'];
+  const known=['AUTH_REQUIRED','EMAIL_APPROVAL_NOT_APPLICABLE','EMAIL_OUTSIDE_BUSINESS_HOURS','EMAIL_DUPLICATE_RECENT','EMAIL_RECIPIENT_SUPPRESSED','EMAIL_CONTEXT_CHANGED','EMAIL_SENDER_CHANGED','EMAIL_SEND_UNCERTAIN','EMAIL_SEND_REJECTED'];
   const error=known.includes(e.message)?e.message:'EMAIL_SEND_FAILED';
   return res.status(error==='AUTH_REQUIRED'?401:error==='EMAIL_SEND_UNCERTAIN'?409:400).json({ok:false,error});
  }
