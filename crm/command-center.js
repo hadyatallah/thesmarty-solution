@@ -3,6 +3,7 @@ import {Manager} from '../command-center/manager.js';
 import {GrowthAgent} from '../command-center/growth.js';
 import {OperationsAgent} from '../command-center/operations.js';
 import {operationalEvidence,notificationItems} from '../command-center/context.js';
+import {prepareOutlookSend} from './outlook-send.js';
 const escape = v => String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const line=(label,value)=>value===undefined||value===null||value===''?'':`<li><strong>${escape(label)}:</strong> ${escape(value)}</li>`;
 const list=items=>`<ul>${items.join('')}</ul>`;
@@ -25,7 +26,7 @@ export function renderResult(result){
   else if(d.messages){body=d.available===false?'<p>Email history unavailable.</p>':list(d.messages.slice(0,30).map(x=>line(x.subject||'No subject',[x.category,x.date,x.companyId||'Match needs review'].filter(Boolean).join(' · '))));body+=`<p class="muted">${escape(d.limitation)}</p>`;}
   else if(d.services){body=list(d.services.map(x=>line(x.name,x.status+' · '+(x.reason||x.errorCode||''))))+list(d.loggedIssues.map(x=>line(x.component,x.action)));}
   else if(d.topic){body=`<p>Draft concepts for ${escape(d.date)}. Topic: ${escape(d.topic)}. No final assets or publication approval.</p>`+rows(d.items,x=>`<h4>${escape(x.format)} · ${x.width} × ${x.height}</h4><p><strong>${escape(x.headline)}</strong></p><p>${escape(x.caption||(x.script||[]).join(' '))}</p><p class="muted">${escape(x.visualBrief)}</p>`);}
-  else if(d.text){body=`<p>Draft only · ${escape(d.channel)}</p>`+list([line('From',d.from),line('To',d.to),line('Subject',d.subject)])+`<p style="white-space:pre-wrap">${escape(d.text)}</p>`;}
+  else if(d.text){const sendData=d.channel==='email'&&d.approvalReady&&d.to?escape(encodeURIComponent(JSON.stringify({to:d.to,subject:d.subject,text:d.text}))):'';body=`<p>Draft only · ${escape(d.channel)}</p>`+list([line('From',d.from),line('To',d.to),line('Subject',d.subject)])+`<p style="white-space:pre-wrap">${escape(d.text)}</p>`+(sendData?`<p><button type="button" data-email-review="${sendData}">Review exact Outlook send</button></p>`:'');}
   else body=`<p>${escape(d.unavailable||d.message||d.reason||'No result available.')}</p>`;
   body+=(d.limitations?.length?list(d.limitations.map(x=>line('Limit',x))):'');
   return `<section class="section"><h3>${escape(r.section)}</h3>${body}</section>`;
@@ -69,6 +70,7 @@ export const commandCenter={
   root.querySelector('[data-outlook-connect]').addEventListener('click',async()=>{const button=root.querySelector('[data-outlook-connect]'),label=root.querySelector('[data-outlook-status]');button.disabled=true;label.textContent='Starting Microsoft sign-in…';try{const r=await ms('/api/outlook/oauth/start');if(!/^https:\/\/login\.microsoftonline\.com\//.test(r.url||''))throw Error('Invalid Microsoft authorization URL.');location.assign(r.url);}catch(e){label.textContent='Could not start Microsoft sign-in: '+e.message;button.disabled=false;}});
   root.querySelector('[data-outlook-disconnect]').addEventListener('click',async()=>{const button=root.querySelector('[data-outlook-disconnect]');button.disabled=true;try{await ms('/api/outlook/disconnect');await outlookStatus();}catch(e){root.querySelector('[data-outlook-status]').textContent='Could not disconnect Outlook: '+e.message;}finally{button.disabled=false;}});
   outlookStatus();
+  if(!window.__tssOutlookReviewBound){window.__tssOutlookReviewBound=true;document.addEventListener('click',async event=>{const button=event.target.closest?.('[data-email-review]');if(!button)return;const dialog=document.getElementById('dialog');try{const message=JSON.parse(decodeURIComponent(button.dataset.emailReview));await prepareOutlookSend({session:typeof session==='function'?session():'',message,dialog});}catch(err){dialog.innerHTML='<h3>Email cannot be prepared for sending</h3><p class="error">'+escape(err.message)+'</p><button type="button" data-close>Close</button>';if(!dialog.open)dialog.showModal();dialog.querySelector('[data-close]').addEventListener('click',()=>dialog.close());}}); }
  }, async stagePlan(plan,{call,state,onDone}){
   if(!plan?.actions?.length)return;
   const dialog=document.getElementById('dialog');
