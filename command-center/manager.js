@@ -1,4 +1,5 @@
 import {CRMAdapter} from './crm.js';
+import {companyLookupQuery} from './company-lookup.js';
 import {registry} from './prompts.js';
 import {approvalSummary,notificationItems} from './context.js';
 import {isCommunicationDraftRequest,communicationRequest} from './growth.js';
@@ -7,8 +8,8 @@ export class Manager {
  async run(command,now=new Date()) {
   const q=String(command||'').trim(); if(!q||q.length>3000)throw Error('INVALID_COMMAND');
   const jobs=[];const add=(name,fn)=>jobs.push({name,fn});
-  const dossier=q.match(/^(?:summari[sz]e|tell me (?:everything )?about|give me everything about|lookup|look up)\s+(.+?)[.!?]?$/i);
-  if(dossier)add('CRM',()=>this.crm.dossier(dossier[1]));
+  const lookup=companyLookupQuery(q,this.crm);
+  if(lookup!==null)add('CRM',()=>this.crm.coverage('Companies').available?this.crm.dossier(lookup):{unavailable:'Company records are unavailable. Refresh the CRM and try again.'});
   else if(/weekly|management (?:review|report)/i.test(q)){add('CRM',()=>this.crm.weekly(now));if(this.growth){add('Communications',()=>this.growth.incoming());add('Growth',()=>this.growth.prospects());}if(this.operations){add('Operations',()=>this.operations.summary(now));add('Content',()=>this.operations.content(now));}add('Approvals',()=>approvalSummary(this.runtime));}
   else if(/duplicate|incomplete|data (?:quality|problems)|inconsistent/i.test(q))add('CRM',()=>this.crm.quality());
   else if(/important (?:emails|replies)|incoming|unanswered/i.test(q))add('Communications',()=>this.growth?this.growth.incoming():{unavailable:'Email adapter is unavailable'});

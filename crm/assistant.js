@@ -1,5 +1,34 @@
 'use strict';
 
+// Configuration is not proof of live AI availability. Track actual attempts only.
+let assistantAiHealth = {status:'unchecked',checkedAt:null};
+function assistantAiStatus(){
+  if(!state.aiEnabled)return {text:'AI unavailable',title:'AI is not configured. CRM lookups and standard reports do not require AI.'};
+  const labels={unchecked:'AI configured',checking:'Checking AI',available:'AI available',limited:'AI limited',unavailable:'AI unavailable'};
+  const checked=assistantAiHealth.checkedAt?' Last checked '+new Date(assistantAiHealth.checkedAt).toLocaleString()+'.':'';
+  return {text:labels[assistantAiHealth.status]||labels.unchecked,title:(assistantAiHealth.status==='unchecked'?'Availability has not been checked.':'Status reflects the last AI request, not remaining allowance.')+checked+' CRM lookups and standard reports do not require AI.'};
+}
+function setAssistantAiHealth(status){
+  assistantAiHealth={status,checkedAt:status==='checking'?null:new Date().toISOString()};
+  if(typeof document==='undefined')return;
+  const statusText=assistantAiStatus();
+  document.querySelectorAll('.assistant-status').forEach(node=>{node.textContent=statusText.text;node.title=statusText.title;});
+}
+async function assistantCall(method,...args){
+  if(method!=='askAssistant')return call(method,...args);
+  setAssistantAiHealth('checking');
+  try{
+    const result=await call(method,...args);
+    if(!result||typeof result.answer!=='string'||!result.answer.trim())throw Error('The AI service returned no answer.');
+    setAssistantAiHealth('available');
+    return result;
+  }catch(error){
+    const message=String(error&&error.message||error);
+    setAssistantAiHealth(/free ai limit|rate[ _-]?limit|quota|resource_exhausted|\b429\b/i.test(message)?'limited':'unavailable');
+    throw error;
+  }
+}
+
 const AI_HELP_RULES = [
   'The user may speak naturally. Never require exact commands or field names.',
   'Explain CRM functions using the actual TSS CRM rules, not generic CRM advice.',
@@ -251,7 +280,7 @@ async function managedCommunicationFallback(originalText,generatedText){
   if(!company)return '<div class="assistant-message error">The assistant tried to create an email outside the controlled communication workflow. No draft or send action was accepted. Specify the exact CRM company to prepare the standard TSS email.</div>';
   const followUp=/\b(?:follow[ -]?up|reminder|reply|respond|previous|earlier)\b/i.test(String(originalText)+' '+String(generatedText));
   const managedPrompt=(followUp?'Write a follow-up email to ':'Write an email to ')+company.name+(followUp?'':' about the current CRM next action');
-  const html=await window.TSSCommandCenter.answer(managedPrompt,state,{call});
+  const html=await window.TSSCommandCenter.answer(managedPrompt,state,{call:assistantCall});
   return html||'<div class="assistant-message error">A managed communication could not be prepared. No email was sent.</div>';
 }
 function primaryAssistantContext(text){
@@ -339,7 +368,8 @@ function assistantHistoryHtml(){
 }
 function assistantWorkspaceHtml(){
   loadAiState();
-  return '<section class="panel assistant-panel"><div class="row"><div><h3>TSS Command Center</h3><p class="muted">Ask about your customers, priorities and next actions.</p></div><span class="assistant-status">'+(state.aiEnabled?'AI connected':'AI unavailable')+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="3000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary">Run request</button></div></form><div id="aiAnswer" class="assistant-response" role="status"></div>'+assistantHistoryHtml()+(window.TSSCommandCenter?window.TSSCommandCenter.statusHtml():'')+'</section>';
+  const aiStatus=assistantAiStatus();
+  return '<section class="panel assistant-panel"><div class="row"><div><h3>TSS Command Center</h3><p class="muted">Ask about your customers, priorities and next actions.</p></div><span class="assistant-status" title="'+esc(aiStatus.title)+'">'+esc(aiStatus.text)+'</span></div><form id="aiForm"><label><span>What do you want to do?</span><textarea class="assistant-input" id="aiQuestion" maxlength="3000" placeholder="Type naturally, paste an email, ask a question, or describe what happened…" required></textarea></label><div class="actions"><button type="submit" class="primary">Run request</button></div></form><div id="aiAnswer" class="assistant-response" role="status"></div>'+assistantHistoryHtml()+(window.TSSCommandCenter?window.TSSCommandCenter.statusHtml():'')+'</section>';
 }
 function wireAssistantForm(){const form=el('aiForm');if(form)form.onsubmit=handleAssistantSubmit;if(window.TSSCommandCenter?.mount)window.TSSCommandCenter.mount({call,session:()=>sessionToken});}
 async function handleAssistantSubmit(e){
@@ -348,7 +378,7 @@ async function handleAssistantSubmit(e){
   if(!q)return;
   if(q.length>3000){el('aiAnswer').innerHTML='<div class="assistant-message error">Please keep each message to 3,000 characters or less.</div>';return;}
   if(window.TSSCommandCenter){
-    try{const answer=await window.TSSCommandCenter.answer(q,state,{call});if(answer){el('aiAnswer').innerHTML=answer;return;}}catch(err){el('aiAnswer').innerHTML='<p class="error">Command Center could not complete this request. No action executed.</p>';return;}
+    try{const answer=await window.TSSCommandCenter.answer(q,state,{call:assistantCall});if(answer){el('aiAnswer').innerHTML=answer;return;}}catch(err){el('aiAnswer').innerHTML='<p class="error">Command Center could not complete this request. No action executed.</p>';return;}
   }
   const dueAnswer=localDuePeriodAnswer(q);
   if(dueAnswer){
@@ -382,7 +412,7 @@ async function handleAssistantSubmit(e){
   el('aiAnswer').innerHTML='<div class="assistant-message">Analyzing CRM context…</div>';
   try{
     const ctx=primaryAssistantContext(q);
-    const first=await call('askAssistant',q,ctx.entity,ctx.id);
+    const first=await assistantCall('askAssistant',q,ctx.entity,ctx.id);
     const interpretation=String(first.answer||'').trim();
     const managed=await managedCommunicationFallback(q,interpretation);
     if(managed){
@@ -391,7 +421,7 @@ async function handleAssistantSubmit(e){
       el('aiAnswer').innerHTML=managed;
       return;
     }
-    const second=await call('askAssistant',aiPlannerPromptFromInterpretation(q,interpretation),'','');
+    const second=await assistantCall('askAssistant',aiPlannerPromptFromInterpretation(q,interpretation),'','');
     const parsed=parseAssistantJson(second.answer);
     const plan=validatePlan(parsed||{mode:'answer',message:interpretation||second.answer});
     if(plan.mode==='answer'||plan.mode==='clarify'){
@@ -420,7 +450,7 @@ async function handleAssistantSubmit(e){
       el('aiAnswer').innerHTML=planHtml(aiPendingPlan);
     }
   }catch(err){
-    el('aiAnswer').innerHTML='<div class="assistant-message error">'+esc(err.message)+'</div>';
+    el('aiAnswer').innerHTML='<div class="assistant-message error">'+esc(err.message)+'</div>'+(assistantAiHealth.status==='limited'||assistantAiHealth.status==='unavailable'?'<p class="muted">Company searches and standard CRM reports still work without AI. Enter a company name to look it up.</p>':'');
   }finally{b.disabled=false;}
 }
 function showPendingAiPlan(){if(aiPendingPlan)showDialog('Pending CRM changes',planHtml(aiPendingPlan));}

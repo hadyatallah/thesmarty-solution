@@ -1,0 +1,29 @@
+{
+  "baseline": "45e8ba21f3efa65be77715fc8e2ee612be67eda2",
+  "checkedAt": "2026-09-23T21:15:29.985855+00:00",
+  "scope": "CRM local lookup and observed AI availability only",
+  "targetedTests": 28,
+  "targetedFailures": 0,
+  "newRegressionFailures": [],
+  "existingRegressionFailures": [
+    "RES-06 backend denial blocks research and does not leak ledger/session",
+    "RES-07 authenticated research returns evidence only, not private auth response",
+    "SEC-22 ContentService redirect receives no session or POST body",
+    "SEC-23 unexpected redirects are blocked without leaking session",
+    "SEC-24 uncertain external result never retries the mutation",
+    "SEC-25 backend auth failure remains a failure and HTML is not forwarded",
+    "SEC-26 browser relay retains same-origin Preview access without cross-origin credentials",
+    "UI-14 follow-up email routes through managed Growth draft, not generic assistant",
+    "UI-15 send request prepares exact review instead of claiming immediate send"
+  ],
+  "browserTests": "Not run in CI",
+  "data": "Synthetic only; no live CRM writes or external messages",
+  "blobs": {
+    "command-center/company-lookup.js": "782a8735c79f0084efb0dd3daf67f5071944d997",
+    "command-center/manager.js": "2acdb4a2be1976bc8216c3aafc91f1f966226ea2",
+    "crm/assistant.js": "36fda145879bf5cfe4cfbc92f3a7bc6efb87ba6e",
+    "crm/command-center.js": "105c1d6e32d772090e08d085861b19553655c4f4",
+    "crm/index.html": "3fba0a3f86d83988bd1e42fa85bd147e583eee65",
+    "tests/command-center/lookup-availability.test.js": "e511619175a03ff27df22c85195cd84823d55c5f"
+  }
+}
