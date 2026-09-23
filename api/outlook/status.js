@@ -1,9 +1,10 @@
-import {baseHeaders,requireSameOrigin,cookies,open,verifyCrmSession,refreshToken,graphMe,assertMailbox,sessionEnvelope,cookie,clearCookie,SESSION_COOKIE} from './_lib.js';
+import {baseHeaders,cors,requireTrustedOrigin,cookies,open,verifyCrmSession,refreshToken,graphMe,assertMailbox,sessionEnvelope,cookie,clearCookie,SESSION_COOKIE} from './_lib.js';
 export default async function handler(req,res){
- baseHeaders(res);
+ baseHeaders(res);cors(req,res);
+ if(req.method==='OPTIONS')return res.status(204).end();
  if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({ok:false,error:'METHOD_NOT_ALLOWED'});}
  try{
-  requireSameOrigin(req);
+  requireTrustedOrigin(req);
   const body=typeof req.body==='string'?JSON.parse(req.body):req.body;
   await verifyCrmSession(body?.session);
   const raw=cookies(req)[SESSION_COOKIE];if(!raw)return res.status(200).json({ok:true,connected:false});
