@@ -10,4 +10,4 @@ for(const name of names){
  out+=`const ${name}=(()=>{\n${src}\nreturn {${exports.join(',')}};})();\n`;
 }
 out+='return {...crm,...growth,...operations,...context};})();\n';
-const target=process.argv[2];if(!target)throw Error('Provide the private output path');writeFileSync(target,out+readFileSync('command-center/apps-script/CommandCenter.gs','utf8')+readFileSync('command-center/apps-script/Events.gs','utf8'));
+const target=process.argv[2];if(!target)throw Error('Provide the private output path');writeFileSync(target,out+readFileSync('command-center/apps-script/CommandCenter.gs','utf8')+readFileSync('command-center/apps-script/Events.gs','utf8')+readFileSync('command-center/apps-script/OutlookCrmWriteback.gs','utf8'));
