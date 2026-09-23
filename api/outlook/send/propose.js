@@ -19,7 +19,7 @@ export default async function handler(req,res){
   requireTrustedOrigin(req);
   const body=typeof req.body==='string'?JSON.parse(req.body):req.body;
   await verifyCrmSession(body?.session);
-  const session=open(cookies(req)[SESSION_COOKIE]);const token=await refreshToken(session.refreshToken);const me=await graphMe(token.access_token);const mailbox=assertMailbox(me);
+  const raw=cookies(req)[SESSION_COOKIE];if(!raw)throw Error('OUTLOOK_RECONNECT_REQUIRED');let session;try{session=open(raw);}catch{throw Error('OUTLOOK_RECONNECT_REQUIRED');}let token;try{token=await refreshToken(session.refreshToken);}catch{throw Error('OUTLOOK_RECONNECT_REQUIRED');}let me;try{me=await graphMe(token.access_token);}catch{throw Error('OUTLOOK_RECONNECT_REQUIRED');}const mailbox=assertMailbox(me);
   const message=validateMessage(body?.message||{});
   const state=await crmState(body.session);assertEmailControls(state);const ctx=findRecipientContext(state,message.to);
   if(recentDuplicate(state,message,new Date()))throw Error('EMAIL_DUPLICATE_RECENT');
@@ -27,5 +27,5 @@ export default async function handler(req,res){
   proposal.hash=crypto.createHash('sha256').update(JSON.stringify({id:proposal.id,from:proposal.from,to:proposal.to,subject:proposal.subject,text:proposal.text,companyId:proposal.companyId})).digest('hex');
   res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:600,path:'/api/outlook/send'}));
   return res.status(200).json({ok:true,proposal:{id:proposal.id,hash:proposal.hash,from:proposal.from,to:proposal.to,subject:proposal.subject,text:proposal.text,companyId:proposal.companyId,expiresAt:new Date(proposal.expiresAt).toISOString()}});
- }catch(e){const safe=['EMAIL_RECIPIENT_INVALID','EMAIL_SUBJECT_INVALID','EMAIL_BODY_INVALID','EMAIL_TRANSLATION_INCOMPLETE','EMAIL_RECIPIENT_AMBIGUOUS','EMAIL_RECIPIENT_NOT_IN_CRM','EMAIL_COMPANY_NOT_FOUND','EMAIL_RECIPIENT_SUPPRESSED','EMAIL_DUPLICATE_RECENT','AUTH_REQUIRED'].includes(e.message)?e.message:'EMAIL_PROPOSAL_FAILED';return res.status(safe==='AUTH_REQUIRED'?401:400).json({ok:false,error:safe});}
+ }catch(e){const known=['EMAIL_RECIPIENT_INVALID','EMAIL_SUBJECT_INVALID','EMAIL_BODY_INVALID','EMAIL_TRANSLATION_INCOMPLETE','EMAIL_RECIPIENT_AMBIGUOUS','EMAIL_RECIPIENT_NOT_IN_CRM','EMAIL_COMPANY_NOT_FOUND','EMAIL_RECIPIENT_SUPPRESSED','EMAIL_DUPLICATE_RECENT','AUTH_REQUIRED','OUTLOOK_RECONNECT_REQUIRED','CRM_STATE_UNAVAILABLE','EMAIL_DIRECT_SEND_DISABLED','EMAIL_APPROVAL_CONTROL_INVALID','EMAIL_MAILBOX_CONTROL_INVALID','EMAIL_OUTREACH_DISABLED'];const safe=known.includes(e.message)?e.message:'EMAIL_PROPOSAL_FAILED';console.warn(JSON.stringify({component:'outlook-proposal',code:safe}));return res.status(safe==='AUTH_REQUIRED'?401:400).json({ok:false,error:safe});}
 }
