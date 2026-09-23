@@ -9,11 +9,11 @@ export async function prepareOutlookSend({session,message,dialog}){
  if(!dialog.open)dialog.showModal();
  dialog.querySelector('[data-close]').addEventListener('click',()=>dialog.close());
  dialog.querySelector('[data-send-email]').addEventListener('click',async e=>{
-  const sendButton=e.currentTarget;sendButton.disabled=true;const status=dialog.querySelector('[data-send-status]');status.textContent='Sending through Microsoft 365…';
+  const sendButton=e.currentTarget,originalText=sendButton.textContent;sendButton.disabled=true;sendButton.setAttribute('aria-busy','true');sendButton.textContent='Sending…';const status=dialog.querySelector('[data-send-status]');status.textContent='Sending through Microsoft 365…';
   try{
    const sr=await fetch(API+'/api/outlook/send/approve',{method:'POST',credentials:'include',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({session,id:p.id,hash:p.hash})});
    const sd=await sr.json();if(!sr.ok||!sd.ok)throw Error(sd.error||'EMAIL_SEND_FAILED');
    status.textContent=sd.status==='succeeded'?'Sent and reconciled with Microsoft 365 at '+sd.receipt.sentDateTime+'.':'Accepted by Microsoft 365 at '+sd.receipt.acceptedAt+'. Sent Items reconciliation is still pending. Do not resend.';sendButton.remove();
-  }catch(err){status.textContent=err.message==='EMAIL_SEND_UNCERTAIN'?'Outcome uncertain. Do not retry. Check Sent Items first.':'Not sent: '+err.message;sendButton.disabled=false;}
+  }catch(err){status.textContent=err.message==='EMAIL_SEND_UNCERTAIN'?'Outcome uncertain. Do not retry. Check Sent Items first.':'Not sent: '+err.message;if(sendButton.isConnected){sendButton.disabled=false;sendButton.removeAttribute('aria-busy');sendButton.textContent=originalText;}}
  });
 }
