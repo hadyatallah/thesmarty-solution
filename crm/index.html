@@ -31,7 +31,7 @@ const GOOGLE_CLIENT_ID='103840050410-80lukup1okjnkmt6qvmd9s2mbvi3uakf.apps.googl
 const CRM_API='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
 let sessionExpiry=0,loginGeneration=0;
 async function rpc(fn,...args){
- let r;try{r=await fetch(fn==='ccResearchWebsite'?COMMAND_API+'/api/crm-research':['askAssistant','ccState','ccPropose','ccDecide','ccExecute','ccPrepareBrief'].includes(fn)?COMMAND_API+'/api/crm-command':CRM_API,{method:'POST',credentials:'include',redirect:'follow',cache:'no-store',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(fn==='ccResearchWebsite'?{session:args[0],url:args[1]}:{fn,args})});}catch(e){throw Error('Could not connect to the CRM. Check your internet connection and retry.');}
+ let r;try{const commandCall=fn==='ccResearchWebsite'||['askAssistant','ccState','ccPropose','ccDecide','ccExecute','ccPrepareBrief'].includes(fn);const endpoint=fn==='ccResearchWebsite'?COMMAND_API+'/api/crm-research':commandCall?COMMAND_API+'/api/crm-command':CRM_API;r=await fetch(endpoint,{method:'POST',credentials:commandCall?'include':'same-origin',redirect:'follow',cache:'no-store',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(fn==='ccResearchWebsite'?{session:args[0],url:args[1]}:{fn,args})});}catch(e){throw Error('Could not connect to the CRM. Check your internet connection and retry.');}
  if(!r.ok)throw Error('CRM temporarily unavailable. Please retry.');
  let data;try{data=await r.json()}catch(e){throw Error('Unexpected CRM response. Please retry.');}
  if(!data.ok)throw Error(data.error||'Request failed');return data.result;
