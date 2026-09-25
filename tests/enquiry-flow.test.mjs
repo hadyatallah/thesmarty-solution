@@ -39,6 +39,14 @@ function fixture(result, overrides = {}, contactChoice = null) {
     fetch: async (url, options) => { requests.push({ url, options }); if (result instanceof Error) throw result; return result; }
   });
   vm.runInContext(`const TSS_FORM_ENDPOINT = ${JSON.stringify(endpoint)};\n${formCode}`, context);
+  context.window.tssTrackEvent_ = () => {};
+  if (contactChoice) {
+    context.window.tssBuildCommercialEnquiryMessage_ = (data) => {
+      const route = String(data.get('interest') || 'Commercial Review');
+      const original = String(data.get('message') || '').trim();
+      return ['Service route: ' + route, original ? 'Additional context:\n' + original : ''].filter(Boolean).join('\n');
+    };
+  }
   return { form, status, requests, events, context, send: () => submit({ preventDefault() {} }) };
 }
 const json = payload => ({ ok: true, type: 'cors', json: async () => payload });
@@ -110,13 +118,14 @@ test('spam, duplicate, rate limit, offline and HTTP failures never show success'
 });
 
 
- test('contact routes preserve backend category and include the visible service in the message', async () => {
-  for (const [label, category] of [['SME seeking investment / a business partner','Present a business opportunity'], ['SME investor / operating partner interest','Investor interest'], ['Submit a plot in Cyprus','Present a business opportunity'], ['CRM & Workflows','Other'], ['Developer / investor interest','Investor interest']]) {
-    const f = fixture(json({ok:true,recorded:true,enquiryId:'TSS-TEST'}), { interest:category, message:'Synthetic enquiry for contract testing only.' }, label);
+test('Phase 7 contact routes preserve the selected commercial category and structured message', async () => {
+  for (const category of ['Business Growth','Market Entry & Representation','Strategic Connections','Opportunity Development','Business Systems','Commercial Review']) {
+    const f = fixture(json({ok:true,recorded:true,enquiryId:'TSS-TEST'}), { interest:category, message:'Synthetic enquiry for contract testing only.' }, category);
     await f.send();
     const body=f.requests[0].options.body;
     assert.equal(body.get('interest'),category);
-    assert.ok(body.get('message').startsWith('Service enquiry: '+label));
+    assert.ok(body.get('message').startsWith('Service route: '+category));
+    assert.match(body.get('message'), /Synthetic enquiry for contract testing only/);
     assert.equal(body.get('form_nonce'),'test-nonce-123456');
     assert.equal(f.status.dataset.state,'success');
   }

@@ -24,3 +24,19 @@ h1,h2,h3{margin:0 0 .55em;color:var(--ink);font-family:Manrope,Inter,sans-serif;
 @media(max-width:620px){#enquire{scroll-margin-top:88px}.private-opportunities .pagehero h1{font-size:clamp(2rem,8.2vw,3rem)}.private-opportunities .pagehero .btns{align-items:flex-start;flex-direction:column}}
 
 @media(max-width:940px){.private-opportunities .contact form{order:-1}}
+
+
+/* Phase 7 public positioning reset */
+.split .flow{grid-template-columns:1fr 1fr}
+.anchor-alias{display:block;position:relative;top:-96px;visibility:hidden}
+.route-fields{margin:18px 0;padding:18px;border:1px solid #dce5e8;border-radius:16px;background:#f7f8f7}
+.route-fields[hidden]{display:none!important}
+.route-fields>div+div{margin-top:14px}
+.consent-row{display:flex;gap:10px;align-items:flex-start;font-weight:400}
+.consent-row input{width:auto;margin-top:4px;flex:0 0 auto}
+.service-note{margin-top:18px;padding:16px 18px;border-left:4px solid #12c7c0;background:#f7f8f7;border-radius:0 12px 12px 0}
+@media(max-width:620px){
+  .split .flow{grid-template-columns:1fr}
+  .route-fields{padding:14px}
+  .consent-row{font-size:.94rem}
+}
