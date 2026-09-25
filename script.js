@@ -21,6 +21,77 @@ document.querySelectorAll('[data-year]').forEach((element) => {
   element.textContent = new Date().getFullYear();
 });
 
+// Phase 7 public positioning: normalize public navigation/footer while preserving legacy URLs.
+(() => {
+  const current = window.location.pathname.toLowerCase();
+  const nav = document.querySelector('.navlinks');
+  if (nav) {
+    const whatCurrent = current.endsWith('/divisions.html') ? ' aria-current="page"' : '';
+    const aboutCurrent = current.endsWith('/about.html') ? ' aria-current="page"' : '';
+    const contactCurrent = current.endsWith('/contact.html') ? ' aria-current="page"' : '';
+    nav.innerHTML =
+      '<li><a href="divisions.html"' + whatCurrent + '>What We Do</a></li>' +
+      '<li><a href="divisions.html#how-we-work">How We Work</a></li>' +
+      '<li><a href="about.html"' + aboutCurrent + '>About</a></li>' +
+      '<li><a class="navcta" href="contact.html"' + contactCurrent + ' data-tss-event="discuss_business_click" data-cta-location="header">Discuss Your Business</a></li>';
+  }
+
+  document.querySelectorAll('.footer').forEach((footer) => {
+    const cols = Array.from(footer.querySelectorAll('.footergrid > div'));
+    const brandCol = cols[0];
+    if (brandCol) {
+      const p = brandCol.querySelector('p');
+      if (p) p.textContent = 'Business growth, market entry, strategic connections and opportunity development. Cyprus first, selected EMEA.';
+    }
+
+    const navCol = cols.find((column) => {
+      const h = column.querySelector('h3');
+      return h && h.textContent.trim().toLowerCase() === 'navigate';
+    });
+    if (navCol) {
+      const list = navCol.querySelector('ul');
+      if (list) list.innerHTML = '<li><a href="divisions.html">What We Do</a></li><li><a href="divisions.html#how-we-work">How We Work</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Discuss Your Business</a></li>';
+    }
+
+    const contactCol = cols.find((column) => {
+      const h = column.querySelector('h3');
+      return h && h.textContent.trim().toLowerCase() === 'contact';
+    });
+    if (contactCol) {
+      Array.from(contactCol.querySelectorAll('li')).forEach((li) => {
+        if (!li.querySelector('a') && /cyprus|lebanon|emea/i.test(li.textContent)) {
+          li.textContent = 'Cyprus · Selected EMEA';
+        }
+      });
+    }
+
+    const bottom = footer.querySelector('.footerbottom');
+    if (bottom) {
+      bottom.innerHTML = '© ' + new Date().getFullYear() + ' The Smarty Solution Ltd. <a href="privacy.html">Privacy</a> · Business development and consultancy. Specialist or regulated matters require the appropriate professional.';
+    }
+  });
+})();
+
+window.tssTrackEvent_ = function tssTrackEvent_(name, params = {}) {
+  if (!window.__tssAnalyticsLoaded || typeof window.gtag !== 'function') return;
+  const safe = {};
+  ['page_path','service_route','cta_location','opportunity_key'].forEach((key) => {
+    if (params[key] !== undefined && params[key] !== null) safe[key] = String(params[key]).slice(0, 120);
+  });
+  window.gtag('event', name, safe);
+};
+
+document.addEventListener('click', (event) => {
+  const target = event.target.closest('[data-tss-event]');
+  if (!target) return;
+  window.tssTrackEvent_(target.dataset.tssEvent, {
+    page_path: window.location.pathname,
+    service_route: target.dataset.serviceRoute || '',
+    cta_location: target.dataset.ctaLocation || '',
+    opportunity_key: target.dataset.opportunityKey || ''
+  });
+});
+
 // Social links in the footer across all site pages.
 (() => {
   const footer = document.querySelector('.footer');
@@ -150,28 +221,106 @@ function tssCreateNonce_() {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}`;
 }
 
-// Contact enquiry routing uses existing backend categories.
+// Phase 7 adaptive commercial enquiry routing. Existing backend contract is preserved.
 (() => {
-  const select = document.querySelector('form[data-tss-form="contact"] #interest');
-  if (!select) return;
+  const form = document.querySelector('form[data-tss-form="contact"]');
+  const select = form && form.querySelector('#interest');
+  if (!form || !select) return;
+
   const guidance = document.getElementById('enquiry-guidance');
-  const hints = {
-    sme: 'Include your sector, general location, business stage, your role, evidence of demand and the type of partner you need. Share a non-confidential outline only, not proprietary methods, customer names or a full business plan.',
-    'business-investor': 'Include your sectors, preferred locations, business stages, indicative range and desired operating involvement. This is an initial enquiry, not an investment commitment.',
-    growth: 'Tell us your target market, objective, timing and the support you need.',
-    flow: 'Tell us how you manage enquiries today, what is getting missed and how many people use the process.',
-    land: 'Cyprus plots only initially. Include general location, approximate area, your ownership or authority to represent, any known planning information, and whether you seek a sale, joint venture or development partnership. Do not send title deeds or confidential documents here.',
-    partner: 'Include your role, company if applicable, preferred Cyprus locations, project criteria and indicative timing. Share only information you are comfortable submitting here.',
-    kiti: 'Tell us your role, preferred arrangement and what you would like to assess about the Kiti opportunity.',
-    other: 'Tell us your objective, timing and what you need from us.'
+  const fields = Array.from(form.querySelectorAll('[data-route-fields]'));
+  const legacyMap = {
+    growth: 'business-growth',
+    flow: 'business-systems',
+    land: 'opportunity-development',
+    partner: 'strategic-connections',
+    kiti: 'kiti',
+    sme: 'opportunity-development',
+    'business-investor': 'strategic-connections',
+    'market-entry': 'market-entry',
+    'strategic-connections': 'strategic-connections',
+    'opportunity-development': 'opportunity-development',
+    'business-systems': 'business-systems',
+    other: 'commercial-review'
   };
-  const requested = new URLSearchParams(location.search).get('enquiry');
-  const index = Array.from(select.options).findIndex(option => option.dataset.route === requested);
-  if (index >= 0) select.selectedIndex = index;
-  const update = () => { guidance.textContent = hints[select.selectedOptions[0].dataset.route] || hints.other; };
-  select.addEventListener('change', update);
-  select.form.addEventListener('reset', () => setTimeout(update, 0));
-  update();
+  const hints = {
+    'business-growth': 'Tell us what growth means for your business, the market you are targeting and the main commercial challenge.',
+    'market-entry': 'Tell us what you need in Cyprus or another selected market and whether you already have local activity.',
+    'strategic-connections': 'Describe the type of counterparty you need and the commercial objective the connection should support.',
+    'opportunity-development': 'Describe the opportunity, its stage and what you want to achieve. Property or investment-related enquiries are reviewed before any external action.',
+    'business-systems': 'Start with the business problem and current tools. We do not assume your existing CRM needs replacing.',
+    'commercial-review': 'Describe the objective or problem in your own words. TSS will determine the most relevant route after review.',
+    kiti: 'Your enquiry will be treated as interest in the Kiti Residential Development Opportunity and reviewed before further information is shared.'
+  };
+  const requiredByRoute = {
+    'business-growth': ['growth_goal','growth_market','growth_challenge'],
+    'market-entry': ['entry_market','entry_need','entry_activity'],
+    'strategic-connections': ['connection_type','connection_objective'],
+    'opportunity-development': ['opportunity_type','opportunity_stage','opportunity_objective'],
+    'business-systems': ['systems_problem','systems_current','systems_users'],
+    'commercial-review': ['review_objective'],
+    kiti: ['kiti_context']
+  };
+
+  const chooseRoute = (route) => {
+    fields.forEach((group) => {
+      const active = group.dataset.routeFields === route;
+      group.hidden = !active;
+      group.querySelectorAll('input,select,textarea').forEach((control) => {
+        control.required = active && (requiredByRoute[route] || []).includes(control.name);
+        control.disabled = !active;
+      });
+    });
+    if (guidance) guidance.textContent = hints[route] || '';
+  };
+
+  const requestedRaw = new URLSearchParams(window.location.search).get('enquiry');
+  const requested = legacyMap[requestedRaw] || requestedRaw;
+  if (requested) {
+    const option = Array.from(select.options).find((item) => item.dataset.route === requested);
+    if (option) select.value = option.value;
+  }
+
+  const sync = () => {
+    const option = select.selectedOptions[0];
+    const route = option ? option.dataset.route : '';
+    chooseRoute(route);
+    if (route) {
+      window.tssTrackEvent_('enquiry_route_selected', {
+        page_path: window.location.pathname,
+        service_route: select.value
+      });
+    }
+  };
+  select.addEventListener('change', sync);
+  form.addEventListener('reset', () => setTimeout(sync, 0));
+  sync();
+
+  window.tssBuildCommercialEnquiryMessage_ = function tssBuildCommercialEnquiryMessage_(data) {
+    const option = select.selectedOptions[0];
+    const route = option ? option.dataset.route : '';
+    const lines = ['Service route: ' + (select.value || 'Commercial Review')];
+    const group = fields.find((item) => item.dataset.routeFields === route);
+    if (group) {
+      group.querySelectorAll('input,select,textarea').forEach((control) => {
+        if (control.disabled || !control.value) return;
+        const label = form.querySelector('label[for="' + control.id + '"]');
+        const name = label ? label.textContent.trim() : control.name;
+        lines.push(name + ': ' + String(control.value).trim());
+      });
+    }
+    const website = String(data.get('company_website') || '').trim();
+    const country = String(data.get('country') || '').trim();
+    const timing = String(data.get('timing') || '').trim();
+    if (website) lines.push('Company website: ' + website);
+    if (country) lines.push('Country: ' + country);
+    if (timing) lines.push('Desired timing: ' + timing);
+    lines.push('Marketing consent: ' + (data.get('marketing_consent') === 'Yes' ? 'Yes' : 'No'));
+
+    const message = String(data.get('message') || '').trim();
+    if (message) lines.push('', 'Additional context:', message);
+    return lines.join('\n');
+  };
 })();
 
 // Website enquiry forms
@@ -196,9 +345,8 @@ function tssCreateNonce_() {
 
       const data = new FormData(form);
       data.set('source', window.location.href);
-      if (form.dataset.tssForm === 'contact') {
-        const choice = form.querySelector('#interest').selectedOptions[0];
-        data.set('message', `Service enquiry: ${choice.textContent}\n\n${data.get('message') || ''}`);
+      if (form.dataset.tssForm === 'contact' && typeof window.tssBuildCommercialEnquiryMessage_ === 'function') {
+        data.set('message', window.tssBuildCommercialEnquiryMessage_(data));
       }
 
       if (form.dataset.tssForm === 'kiti') {
@@ -236,6 +384,12 @@ function tssCreateNonce_() {
           const emailMessage = payload.confirmationSent === true
             ? ' A confirmation email has been sent to the address you provided.'
             : ' Your enquiry was recorded, but the confirmation email could not be verified.';
+          if (form.dataset.tssForm === 'contact') {
+            window.tssTrackEvent_('enquiry_received', {
+              page_path: window.location.pathname,
+              service_route: data.get('interest') || ''
+            });
+          }
           form.reset();
           form.dispatchEvent(new CustomEvent('tss:submission-confirmed'));
           setTssFormStatus_(status, 'success', `Thank you. Your enquiry has been received.${emailMessage}${reference}`);
@@ -415,12 +569,12 @@ function tssRenderAgentReply_(container, value) {
   panel.setAttribute('aria-label', 'The Smarty Solution business assistant');
   panel.innerHTML = `
     <div class="tss-agent-head">
-      <div class="tss-agent-id"><div class="tss-agent-mark">TSS</div><div><strong>TSS Business Assistant</strong><small>Cyprus · Opportunities · Business Development</small></div></div>
+      <div class="tss-agent-id"><div class="tss-agent-mark">TSS</div><div><strong>TSS Business Assistant</strong><small>Business Growth · Cyprus · Commercial Support</small></div></div>
       <button class="tss-agent-close" type="button" aria-label="Close assistant">×</button>
     </div>
     <div class="tss-agent-body" aria-live="polite"></div>
     <div class="tss-agent-foot">
-      <form class="tss-agent-form"><input class="tss-agent-input" maxlength="1200" autocomplete="off" placeholder="Ask about Cyprus, opportunities or TSS" aria-label="Message"><button class="tss-agent-send" type="submit" aria-label="Send">→</button></form>
+      <form class="tss-agent-form"><input class="tss-agent-input" maxlength="1200" autocomplete="off" placeholder="Ask about your business objective or TSS" aria-label="Message"><button class="tss-agent-send" type="submit" aria-label="Send">→</button></form>
       <div class="tss-agent-note">General information only. Legal, tax, planning, valuation and investment matters should be independently verified with the appropriate professional.</div>
     </div>`;
 
@@ -552,7 +706,7 @@ function tssRenderAgentReply_(container, value) {
     launch.setAttribute('aria-expanded', 'true');
     if (!started) {
       started = true;
-      addMessage('assistant', 'I can help you explore Cyprus investment and real estate, understand TSS services, review current opportunities, or discuss an opportunity you would like TSS to evaluate.');
+      addMessage('assistant', 'I can help you understand TSS services, discuss a growth or market-entry objective, identify the type of commercial connection you need, develop an opportunity, or review a business-systems problem.');
       quickPrompts();
     }
     setTimeout(() => input.focus(), 50);
