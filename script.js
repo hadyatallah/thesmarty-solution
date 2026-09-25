@@ -435,8 +435,12 @@ function tssAgentLink_(destination) {
     if (url.pathname === '/kiti-enquiry.html') {
       url.pathname = '/opportunity-kiti.html';
       url.hash = 'enquire';
-    } else if (url.pathname === '/projects.html') {
-      url.pathname = '/opportunity-kiti.html';
+    } else if (url.pathname === '/projects.html' || url.pathname === '/opportunities.html' || url.pathname === '/cyprus-investment-opportunities.html') {
+      url.pathname = '/divisions.html';
+      url.hash = 'opportunity-development';
+    } else if (url.pathname === '/sme-investment-partnerships-cyprus.html') {
+      url.pathname = '/divisions.html';
+      url.hash = 'strategic-connections';
     }
     return { href: `${url.pathname}${url.search}${url.hash}`, external: false };
   }
@@ -683,11 +687,11 @@ function tssRenderAgentReply_(container, value) {
     const wrap = document.createElement('div');
     wrap.className = 'tss-quick';
     [
-      'Investing in Cyprus',
-      'Cyprus real estate',
-      'Explore opportunities',
       'Grow my business',
-      'Submit an opportunity'
+      'Enter the Cyprus market',
+      'Find a commercial partner',
+      'Develop an opportunity',
+      'Improve business systems'
     ].forEach((text) => {
       const button = document.createElement('button');
       button.type = 'button';
