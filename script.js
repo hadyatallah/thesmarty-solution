@@ -31,7 +31,6 @@ document.querySelectorAll('[data-year]').forEach((element) => {
     const contactCurrent = current.endsWith('/contact.html') ? ' aria-current="page"' : '';
     nav.innerHTML =
       '<li><a href="divisions.html"' + whatCurrent + '>What We Do</a></li>' +
-      '<li><a href="opportunity-kiti.html">Kiti Opportunity</a></li>' +
       '<li><a href="divisions.html#how-we-work">How We Work</a></li>' +
       '<li><a href="about.html"' + aboutCurrent + '>About</a></li>' +
       '<li><a class="navcta" href="contact.html"' + contactCurrent + ' data-tss-event="discuss_business_click" data-cta-location="header">Discuss Your Business</a></li>';
@@ -51,7 +50,7 @@ document.querySelectorAll('[data-year]').forEach((element) => {
     });
     if (navCol) {
       const list = navCol.querySelector('ul');
-      if (list) list.innerHTML = '<li><a href="divisions.html">What We Do</a></li><li><a href="opportunity-kiti.html">Kiti Opportunity</a></li><li><a href="divisions.html#how-we-work">How We Work</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Discuss Your Business</a></li>';
+      if (list) list.innerHTML = '<li><a href="divisions.html">What We Do</a></li><li><a href="divisions.html#how-we-work">How We Work</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Discuss Your Business</a></li>';
     }
 
     const contactCol = cols.find((column) => {
@@ -279,7 +278,7 @@ function tssCreateNonce_() {
   const requested = legacyMap[requestedRaw] || requestedRaw;
   if (requested) {
     const option = Array.from(select.options).find((item) => item.dataset.route === requested);
-    if (option) select.value = option.value;
+    if (option) option.selected = true;
   }
 
   const sync = () => {
