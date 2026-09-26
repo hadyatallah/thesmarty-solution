@@ -1,0 +1,61 @@
+name: Phase 7A QA
+
+on:
+  push:
+    branches:
+      - phase7a-alignment-correction
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: JavaScript syntax
+        run: |
+          node --check script.js
+          node --check api/tss-agent.js
+      - name: Existing unit tests
+        run: node --test tests/enquiry-flow.test.mjs tests/assistant-formatting.test.mjs
+      - name: Phase 7A static contract
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const assert = require('assert/strict');
+          const pages = ['index.html','divisions.html','about.html','contact.html','opportunity-kiti.html','kiti-enquiry.html','privacy.html'];
+          for (const file of pages) {
+            const s = fs.readFileSync(file,'utf8');
+            assert.match(s,/What We Do/);
+            assert.match(s,/How We Work/);
+            assert.match(s,/Discuss Your Business/);
+            assert.doesNotMatch(s,/<li><a href="opportunity-kiti\.html">Kiti Opportunity<\/a><\/li>/);
+            assert.doesNotMatch(s,/Admin login/);
+            assert.doesNotMatch(s,/>Analytics</);
+          }
+          const contact = fs.readFileSync('contact.html','utf8');
+          for (const route of ['Business Growth','Market Entry &amp; Representation','Strategic Connections','Opportunity Development','Business Systems','Commercial Review']) {
+            assert.ok(contact.includes('value="'+route+'"'), route);
+          }
+          const script = fs.readFileSync('script.js','utf8');
+          assert.ok(script.includes('if (option) option.selected = true;'));
+          assert.ok(script.includes("tssTrackEvent_('enquiry_received'"));
+          assert.doesNotMatch(script,/<li><a href="opportunity-kiti\.html">Kiti Opportunity<\/a><\/li>/);
+          const kiti = fs.readFileSync('opportunity-kiti.html','utf8');
+          assert.match(kiti,/name="robots" content="noindex,follow"/);
+          assert.match(kiti,/Express Interest/);
+          const kitiEnquiry = fs.readFileSync('kiti-enquiry.html','utf8');
+          assert.match(kitiEnquiry,/name="robots" content="noindex,follow"/);
+          const sitemap = fs.readFileSync('sitemap.xml','utf8');
+          assert.doesNotMatch(sitemap,/opportunity-kiti\.html/);
+          const agent = fs.readFileSync('api/tss-agent.js','utf8');
+          assert.match(agent,/Business Growth is the lead identity/);
+          assert.match(agent,/Never offer the TSS Commercial Network, database access, contact credits/);
+          assert.match(agent,/current CRM works well, preserve it/);
+          console.log('Phase 7A static contract passed');
+          NODE
