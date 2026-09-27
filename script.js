@@ -68,7 +68,7 @@ document.querySelectorAll('[data-year]').forEach((element) => {
 
     const bottom = footer.querySelector('.footerbottom');
     if (bottom) {
-      bottom.innerHTML = '© ' + new Date().getFullYear() + ' The Smarty Solution Ltd. <a href="privacy.html">Privacy</a> · Business development and consultancy. Specialist or regulated matters require the appropriate professional.';
+      bottom.innerHTML = '© ' + new Date().getFullYear() + ' The Smarty Solution Ltd. <a href="privacy.html">Privacy</a> · Business development and consultancy. Specialist or regulated matters require the appropriate professional. · <a href="/crm/" rel="nofollow">Admin login</a> · <a href="/analytics/" rel="nofollow">Analytics</a>';
     }
   });
 })();
