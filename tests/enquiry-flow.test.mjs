@@ -130,3 +130,10 @@ test('Phase 7 contact routes preserve the selected commercial category and struc
     assert.equal(f.status.dataset.state,'success');
   }
 });
+
+
+test('legacy Kiti query routing selects the exact hidden Kiti option', () => {
+  assert.match(source, /kiti:\s*'kiti'/);
+  assert.match(source, /if \(option\) option\.selected = true;/);
+  assert.doesNotMatch(source, /if \(option\) select\.value = option\.value;/);
+});

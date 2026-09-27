@@ -57,11 +57,11 @@ test('renders paragraphs, bold text and both list types', () => {
   assert.equal(findAll(result, 'ol')[0].getAttribute('start'), '2');
 });
 
-test('routes existing TSS enquiry and opportunity links directly to Kiti', () => {
+test('routes Kiti enquiries to Kiti and legacy project links to Opportunity Development', () => {
   const result = render('[Request brief](https://www.thesmartysolution.com/kiti-enquiry.html?source=chat)\n\nhttps://thesmartysolution.com/projects.html\n\n[Enquire](kiti-enquiry.html)');
   assert.deepEqual(findAll(result, 'a').map(link => link.getAttribute('href')), [
     '/opportunity-kiti.html?source=chat#enquire',
-    '/opportunity-kiti.html',
+    '/divisions.html#opportunity-development',
     '/opportunity-kiti.html#enquire'
   ]);
   assert.ok(findAll(result, 'a').every(link => link.getAttribute('target') === null));
