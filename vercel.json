@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/projects.html",
+      "destination": "/opportunities.html",
+      "permanent": true
+    },
+    {
+      "source": "/cyprus-investment-opportunities.html",
+      "destination": "/opportunities.html",
+      "permanent": true
+    }
+  ]
+}
