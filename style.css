@@ -40,3 +40,11 @@ h1,h2,h3{margin:0 0 .55em;color:var(--ink);font-family:Manrope,Inter,sans-serif;
   .route-fields{padding:14px}
   .consent-row{font-size:.94rem}
 }
+
+
+/* Keep the homepage concise while preserving the shared site design. */
+.hero.home-hero h1{font-size:clamp(2.75rem,4.9vw,4.5rem);line-height:1.04}
+.home-objectives{padding:clamp(52px,5vw,72px) 0}
+.home-objectives .heading{margin-bottom:28px}
+.home-objectives .card{padding:24px}
+.home-objectives .selected-opportunities-teaser{margin-top:24px}
