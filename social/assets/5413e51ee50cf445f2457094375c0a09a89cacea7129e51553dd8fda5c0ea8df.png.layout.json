@@ -1,0 +1,102 @@
+{
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "CYPRUS / LEBANON",
+      "x": 72,
+      "y": 82,
+      "width": 239,
+      "height": 18,
+      "size": 22
+    },
+    {
+      "text": "UNPOPULAR OPINION: A",
+      "x": 72,
+      "y": 242,
+      "width": 872,
+      "height": 49,
+      "size": 64
+    },
+    {
+      "text": "CONNECTION ISN'T A",
+      "x": 72,
+      "y": 318,
+      "width": 755,
+      "height": 49,
+      "size": 64
+    },
+    {
+      "text": "BUSINESS MODEL.",
+      "x": 72,
+      "y": 394,
+      "width": 649,
+      "height": 49,
+      "size": 64
+    },
+    {
+      "text": "Start with a customer problem. Validate demand. Build a",
+      "x": 72,
+      "y": 500,
+      "width": 849,
+      "height": 29,
+      "size": 30
+    },
+    {
+      "text": "route to market.",
+      "x": 72,
+      "y": 542,
+      "width": 239,
+      "height": 23,
+      "size": 30
+    },
+    {
+      "text": "What problem would you solve across Cyprus",
+      "x": 100,
+      "y": 636,
+      "width": 867,
+      "height": 33,
+      "size": 34
+    },
+    {
+      "text": "and Lebanon?",
+      "x": 100,
+      "y": 682,
+      "width": 263,
+      "height": 26,
+      "size": 34
+    },
+    {
+      "text": "CONNECT · DEVELOP · INVEST",
+      "x": 72,
+      "y": 1228,
+      "width": 327,
+      "height": 16,
+      "size": 22
+    },
+    {
+      "text": "THE SMARTY SOLUTION",
+      "x": 745,
+      "y": 1228,
+      "width": 263,
+      "height": 14,
+      "size": 20
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "photoSha256": null,
+  "palette": {
+    "cream": "#f6f1e8",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1"
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 72,
+    "bottom": 1285
+  }
+}

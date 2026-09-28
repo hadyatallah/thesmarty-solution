@@ -1,0 +1,138 @@
+{
+  "designVersion": 2,
+  "format": "story",
+  "width": 1080,
+  "height": 1920,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 763,
+      "y": 324,
+      "width": 245,
+      "height": 24,
+      "size": 24
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 771,
+      "y": 364,
+      "width": 237,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "RELOCATION / LIVING COSTS",
+      "x": 72,
+      "y": 238,
+      "width": 317,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "MOVING? COMPARE YOUR",
+      "x": 72,
+      "y": 398,
+      "width": 894,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "BASKET.",
+      "x": 72,
+      "y": 472,
+      "width": 276,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "140 vs 63",
+      "x": 72,
+      "y": 568,
+      "width": 355,
+      "height": 52,
+      "size": 68
+    },
+    {
+      "text": "Denmark vs Bulgaria, 2025 household consumption price index.",
+      "x": 72,
+      "y": 668,
+      "width": 902,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "EU = 100. Not adjusted for income.",
+      "x": 72,
+      "y": 706,
+      "width": 494,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "What would your own monthly basket cost?",
+      "x": 97,
+      "y": 766,
+      "width": 643,
+      "height": 26,
+      "size": 26
+    },
+    {
+      "text": "PANO LEFKARA / CYPRUS",
+      "x": 72,
+      "y": 1488,
+      "width": 278,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "Eurostat | 2025 data | 18 June 2026",
+      "x": 72,
+      "y": 1527,
+      "width": 315,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 72,
+      "y": 1592,
+      "width": 310,
+      "height": 14,
+      "size": 20
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 774,
+    "y": 220,
+    "width": 230,
+    "height": 88
+  },
+  "photoSha256": "5336ef1793e4772c1a32d9a1f2776b062203bcb8be0851b5e5f88b2538e981d4",
+  "palette": {
+    "cream": "#faf8f3",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "sky": "#e9f1f7"
+  },
+  "categoryRule": false,
+  "photoTransition": {
+    "y": 1040,
+    "height": 160,
+    "mode": "cream-to-photo-fade"
+  },
+  "photoRegion": {
+    "x": 0,
+    "y": 1200,
+    "width": 1080,
+    "height": 190
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 220,
+    "bottom": 1620
+  }
+}

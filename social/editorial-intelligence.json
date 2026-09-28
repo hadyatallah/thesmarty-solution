@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "status": "active",
+  "principle": "Useful, source-backed content before reach. Engagement language cannot weaken accuracy, context or TSS credibility.",
+  "hookPolicy": {
+    "maxWords": 12,
+    "preferredTypes": [
+      "direct-question",
+      "decision-risk",
+      "myth-vs-fact",
+      "evidence-comparison",
+      "unpopular-opinion"
+    ],
+    "blockedTerms": [
+      "viral",
+      "explosive",
+      "guaranteed",
+      "best investment",
+      "risk free",
+      "tax free",
+      "everyone is leaving",
+      "tax exodus",
+      "can't lose",
+      "once in a lifetime"
+    ]
+  },
+  "objectives": [
+    {"id": "comment", "purpose": "Invite a specific, answerable audience view."},
+    {"id": "save", "purpose": "Make a checklist or decision framework useful later."},
+    {"id": "compare", "purpose": "Identify the next evidence-led market comparison."},
+    {"id": "self-assess", "purpose": "Help the audience test its own assumptions."},
+    {"id": "qualified-enquiry", "purpose": "Invite a relevant TSS enquiry without hard selling."}
+  ],
+  "ctaLibrary": [
+    {"id": "comment-first-factor", "objective": "comment", "text": "Which factor would you check first?", "formats": ["feed", "story", "reel"]},
+    {"id": "comment-decision-change", "objective": "comment", "text": "What would change your decision?", "formats": ["feed", "story", "reel"]},
+    {"id": "save-property-review", "objective": "save", "text": "Save this for your next property review.", "formats": ["feed", "story"]},
+    {"id": "save-comparison-checklist", "objective": "save", "text": "Keep this checklist before comparing options.", "formats": ["feed", "story"]},
+    {"id": "compare-next-country", "objective": "compare", "text": "Which country should we compare next?", "formats": ["feed", "story", "reel"]},
+    {"id": "compare-next-market", "objective": "compare", "text": "Which market deserves the next evidence check?", "formats": ["feed", "story", "reel"]},
+    {"id": "assess-stress-test", "objective": "self-assess", "text": "Which assumption would you stress-test first?", "formats": ["feed", "story", "reel"]},
+    {"id": "assess-plan-test", "objective": "self-assess", "text": "Does your plan still work under this test?", "formats": ["feed", "story", "reel"]},
+    {"id": "enquiry-objective-budget", "objective": "qualified-enquiry", "text": "Send TSS your objective, budget and timeframe.", "formats": ["feed", "story", "reel"]},
+    {"id": "enquiry-assess-opportunity", "objective": "qualified-enquiry", "text": "Share the opportunity you want properly assessed.", "formats": ["feed", "story", "reel"]}
+  ],
+  "trendPolicy": {
+    "sourceGated": true,
+    "automaticClaimsAllowed": false,
+    "maxCandidateAgeDays": 14,
+    "allowedAuthorityTypes": ["primary", "official-statistics", "original-market-study"],
+    "rules": [
+      "A trend must be entered as a reviewed candidate before draft generation.",
+      "Every material statement must map to a direct source and evidence excerpt.",
+      "Publication date, measurement period, geography and provisional status must be explicit.",
+      "Migration counts cannot be presented as proof of tax motivation without separate evidence.",
+      "Search interest, social discussion and news coverage indicate attention, not market truth."
+    ]
+  },
+  "repurposingPolicy": {
+    "enabled": true,
+    "rule": "One researched subject may become multiple formats only when each has a different hook, audience value, visual and format role.",
+    "requiredFields": ["sourceId", "newAngle", "audienceValue", "visualDifference"],
+    "sameCreativeReuseAllowed": false,
+    "sameHookReuseAllowed": false,
+    "sameFormatWithinThirtyDaysAllowed": false
+  },
+  "socialProofPolicy": {
+    "defaultStatus": "blocked",
+    "registryPath": "social/social-proof-registry.json",
+    "requireResultEvidence": true,
+    "requirePermission": true,
+    "requireConfidentialityReview": true,
+    "rules": [
+      "Do not imply a client relationship, outcome or endorsement without evidence and permission.",
+      "Do not disclose private client, investor, owner, partner or project information.",
+      "Use the exact measured result and period. Do not generalise one result into a promise."
+    ]
+  },
+  "carouselPolicy": {
+    "editorialEnabled": true,
+    "publishingEnabled": false,
+    "status": "design-only-until-adapter-and-live-verification",
+    "monthlyPilot": 4,
+    "replacesFeedSlots": true,
+    "slides": {"minimum": 4, "maximum": 6},
+    "rules": [
+      "One idea per slide.",
+      "Each factual slide maps to a reviewed source.",
+      "The final slide uses one approved CTA.",
+      "Every slide needs its own crop, readability and brand inspection."
+    ]
+  },
+  "performancePolicy": {
+    "path": "social/performance-feedback.json",
+    "minimumAgeDays": 7,
+    "minimumComparablePosts": 3,
+    "metrics": ["saves", "shares", "comments", "qualified-enquiries", "reach"],
+    "rules": [
+      "Do not optimise from one post.",
+      "Compare like formats and objectives.",
+      "Reach alone cannot overrule accuracy or audience relevance.",
+      "Only explicit approved learnings may influence future CTA or hook selection."
+    ]
+  }
+}

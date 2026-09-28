@@ -1,0 +1,138 @@
+{
+  "designVersion": 2,
+  "format": "story",
+  "width": 1080,
+  "height": 1920,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 763,
+      "y": 324,
+      "width": 245,
+      "height": 24,
+      "size": 24
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 771,
+      "y": 364,
+      "width": 237,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "CYPRUS TAX / RELOCATION",
+      "x": 72,
+      "y": 238,
+      "width": 298,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "CYPRUS TAX RESIDENCE:",
+      "x": 72,
+      "y": 398,
+      "width": 862,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "60 DAYS ALONE ISN'T",
+      "x": 72,
+      "y": 472,
+      "width": 745,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "ENOUGH.",
+      "x": 72,
+      "y": 546,
+      "width": 313,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "Cyprus has a 183-day rule and a conditional 60-day route. The",
+      "x": 72,
+      "y": 642,
+      "width": 884,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "60-day route requires all listed conditions.",
+      "x": 72,
+      "y": 680,
+      "width": 592,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "Keep this checklist before comparing options.",
+      "x": 97,
+      "y": 740,
+      "width": 674,
+      "height": 26,
+      "size": 26
+    },
+    {
+      "text": "LARNACA CASTLE, CYPRUS",
+      "x": 72,
+      "y": 1488,
+      "width": 299,
+      "height": 17,
+      "size": 20
+    },
+    {
+      "text": "CYPRUS TAX DEPARTMENT",
+      "x": 72,
+      "y": 1527,
+      "width": 237,
+      "height": 13,
+      "size": 18
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 72,
+      "y": 1592,
+      "width": 310,
+      "height": 14,
+      "size": 20
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 774,
+    "y": 220,
+    "width": 230,
+    "height": 88
+  },
+  "photoSha256": "c6a4caacaaf97e1a5277d7b26d285e56f149d32da590cf93623c783482b11bcc",
+  "palette": {
+    "cream": "#faf8f3",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "sky": "#e9f1f7"
+  },
+  "categoryRule": false,
+  "photoTransition": {
+    "y": 1040,
+    "height": 160,
+    "mode": "cream-to-photo-fade"
+  },
+  "photoRegion": {
+    "x": 0,
+    "y": 1200,
+    "width": 1080,
+    "height": 190
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 220,
+    "bottom": 1620
+  }
+}

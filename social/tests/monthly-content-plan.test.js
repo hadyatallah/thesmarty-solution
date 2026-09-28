@@ -1,0 +1,74 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+
+const plan = JSON.parse(await fs.readFile('social/monthly-content-plan.json', 'utf8'));
+const config = JSON.parse(await fs.readFile('social/publishing-config.json', 'utf8'));
+const formats = ['feed', 'story', 'reel'];
+
+test('monthly content plan totals are internally consistent', () => {
+  const formatTotal = formats.reduce((sum, format) => sum + plan.formats[format].monthlyTarget, 0);
+  const pillarTotal = plan.topicPillars.reduce((sum, pillar) => sum + pillar.monthlyTarget, 0);
+  const usefulTotal = plan.topicPillars
+    .filter(pillar => pillar.classification === 'useful')
+    .reduce((sum, pillar) => sum + pillar.monthlyTarget, 0);
+  const promotionTotal = plan.topicPillars
+    .filter(pillar => pillar.classification === 'promotion')
+    .reduce((sum, pillar) => sum + pillar.monthlyTarget, 0);
+
+  assert.equal(formatTotal, plan.targets.contentAssets);
+  assert.equal(pillarTotal, plan.targets.contentAssets);
+  assert.equal(usefulTotal, plan.targets.usefulAssets);
+  assert.equal(promotionTotal, plan.targets.tssPromotionalAssets);
+});
+
+test('pillar format allocations match both pillar and format targets', () => {
+  for (const pillar of plan.topicPillars) {
+    const allocated = formats.reduce((sum, format) => sum + pillar.formats[format], 0);
+    assert.equal(allocated, pillar.monthlyTarget, pillar.id);
+  }
+
+  for (const format of formats) {
+    const allocated = plan.topicPillars.reduce((sum, pillar) => sum + pillar.formats[format], 0);
+    assert.equal(allocated, plan.formats[format].monthlyTarget, format);
+  }
+});
+
+test('current adapter publication count is correct', () => {
+  const platformPublications = formats.reduce(
+    (sum, format) => sum + plan.formats[format].monthlyTarget * plan.formats[format].platforms.length,
+    0
+  );
+  assert.equal(platformPublications, plan.targets.platformPublicationsWithCurrentAdapters);
+});
+
+test('strategy cannot approve or activate publishing', () => {
+  assert.equal(plan.controls.schedulerEnabledByThisFile, false);
+  assert.equal(plan.controls.strategyApprovalIsNotPostApproval, true);
+  assert.equal(plan.controls.initialPostsRequireIndividualApproval, 0);
+  assert.equal(plan.controls.requireControlledLiveVerificationPerFormat, false);
+  assert.equal(plan.controls.launchPolicy, 'automatic_after_qa');
+  assert.equal(plan.controls.requirePublishedAssetComparison, true);
+  assert.equal(plan.controls.stopOnUncertainPublication, true);
+  assert.equal(plan.controls.publishFewerWhenQaFails, true);
+  assert.equal(plan.controls.backfillMissedSlots, false);
+  assert.equal(plan.controls.requireAudienceDecisionMappingForNewContent, true);
+  assert.equal(plan.controls.requireSourceReviewedTrendCandidates, true);
+  assert.equal(plan.controls.allowAutomaticTrendClaims, false);
+  assert.equal(plan.controls.requirePermissionForSocialProof, true);
+  assert.equal(plan.controls.carouselPublishingEnabled, false);
+});
+
+test('publishing caps match the approved monthly plan', () => {
+  assert.equal(config.schedulerEnabled, true);
+  assert.equal(config.automationAuthorization.requireInitialTenVerified, false);
+  assert.equal(config.controlledPublicationId, null);
+  assert.equal(config.monthlyPlan.path, 'social/monthly-content-plan.json');
+  assert.equal(config.monthlyPlan.calendarMonthCap, plan.targets.contentAssets);
+  assert.equal(config.monthlyPlan.promotionCap, plan.targets.tssPromotionalAssets);
+  for (const format of formats) {
+    assert.equal(config.monthlyPlan.formatCaps[format], plan.formats[format].monthlyTarget);
+  }
+  assert.equal(config.editorialPolicy.requireMetadataForNonGrandfatheredQueueItems, true);
+  assert.equal(config.editorialPolicy.carouselPublishingEnabled, false);
+});

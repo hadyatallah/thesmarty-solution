@@ -1,0 +1,132 @@
+{
+  "designVersion": 2,
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 763,
+      "y": 168,
+      "width": 245,
+      "height": 24,
+      "size": 24
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 771,
+      "y": 208,
+      "width": 237,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "TAX / RELOCATION",
+      "x": 72,
+      "y": 82,
+      "width": 203,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "IRELAND: 183 DAYS ISN'T",
+      "x": 72,
+      "y": 242,
+      "width": 883,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "THE ONLY TEST.",
+      "x": 72,
+      "y": 316,
+      "width": 540,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "183 OR 280",
+      "x": 72,
+      "y": 412,
+      "width": 431,
+      "height": 52,
+      "size": 68
+    },
+    {
+      "text": "183+ days in one tax year, or 280+ across the current and",
+      "x": 72,
+      "y": 512,
+      "width": 829,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "preceding tax years.",
+      "x": 72,
+      "y": 550,
+      "width": 285,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "The 30-day exception matters. See caption.",
+      "x": 97,
+      "y": 610,
+      "width": 643,
+      "height": 26,
+      "size": 26
+    },
+    {
+      "text": "PAPHOS CASTLE / CYPRUS",
+      "x": 72,
+      "y": 1193,
+      "width": 291,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "Irish Revenue | checked 14 Sep 2026",
+      "x": 72,
+      "y": 1232,
+      "width": 329,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 72,
+      "y": 1270,
+      "width": 310,
+      "height": 14,
+      "size": 20
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 774,
+    "y": 64,
+    "width": 230,
+    "height": 88
+  },
+  "photoSha256": "560965147a1c035ae48c9155079dfe8b8f8ae8a5a1fe9a2ad5f7435a3c809c6f",
+  "palette": {
+    "cream": "#faf8f3",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "sky": "#e9f1f7"
+  },
+  "photoRegion": {
+    "x": 72,
+    "y": 720,
+    "width": 936,
+    "height": 455
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 64,
+    "bottom": 1298
+  }
+}

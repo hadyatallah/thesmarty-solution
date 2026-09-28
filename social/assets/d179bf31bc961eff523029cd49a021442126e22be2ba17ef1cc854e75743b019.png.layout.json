@@ -1,0 +1,122 @@
+{
+  "designVersion": 2,
+  "format": "reel",
+  "width": 1080,
+  "height": 1920,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 763,
+      "y": 324,
+      "width": 245,
+      "height": 24,
+      "size": 24
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 771,
+      "y": 364,
+      "width": 237,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "CYPRUS BUSINESS",
+      "x": 72,
+      "y": 238,
+      "width": 205,
+      "height": 14,
+      "size": 20
+    },
+    {
+      "text": "CYPRUS UNEMPLOYMENT:",
+      "x": 72,
+      "y": 398,
+      "width": 894,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "3.6% IN Q2.",
+      "x": 72,
+      "y": 472,
+      "width": 401,
+      "height": 57,
+      "size": 62
+    },
+    {
+      "text": "CYSTAT Labour Force Survey | Q2 2026",
+      "x": 72,
+      "y": 568,
+      "width": 548,
+      "height": 29,
+      "size": 28
+    },
+    {
+      "text": "A national measure, not a role-specific hiring forecast.",
+      "x": 97,
+      "y": 628,
+      "width": 805,
+      "height": 26,
+      "size": 26
+    },
+    {
+      "text": "FINIKOUDES / LARNACA",
+      "x": 72,
+      "y": 1488,
+      "width": 264,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "CYSTAT | Q2 2026",
+      "x": 72,
+      "y": 1527,
+      "width": 158,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 72,
+      "y": 1592,
+      "width": 310,
+      "height": 14,
+      "size": 20
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 774,
+    "y": 220,
+    "width": 230,
+    "height": 88
+  },
+  "photoSha256": "e2ea620d908b8365fe8d9a82811d5a15cfcfe6efbfaab525f5127522509d6dee",
+  "palette": {
+    "cream": "#faf8f3",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "sky": "#e9f1f7"
+  },
+  "categoryRule": false,
+  "photoTransition": {
+    "y": 1040,
+    "height": 160,
+    "mode": "cream-to-photo-fade"
+  },
+  "photoRegion": {
+    "x": 0,
+    "y": 1200,
+    "width": 1080,
+    "height": 190
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 220,
+    "bottom": 1620
+  }
+}

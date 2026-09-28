@@ -1,0 +1,21 @@
+import {CRMAdapter} from '../command-center/crm.js';
+import {GrowthAgent} from '../command-center/growth.js';
+import {OperationsAgent} from '../command-center/operations.js';
+import {operationalEvidence} from '../command-center/context.js';
+const CCReadCore={CRMAdapter,GrowthAgent,OperationsAgent,operationalEvidence};
+// Synthetic UI test binding only. All services are in memory; no network adapter.
+export function createSandbox(data){
+ const OWNER='synthetic-owner@example.test',SCHEMA=data.fields,ENUMS=data.enums;
+ const memory=[],props=new Map();
+ const sheet={getLastRow:()=>memory.length,setFrozenRows(){},getRange(r,c,n=1,w=1){return {getDisplayValues:()=>Array.from({length:n},(_,i)=>Array.from({length:w},(_,j)=>String(memory[r+i-1]?.[c+j-1]??''))),setValues(v){v.forEach((x,i)=>memory[r+i-1]=x);return this;},setBackground(){return this;},setFontColor(){return this;}};},appendRow(row){memory.push(row);}};
+ const db=()=>({getSheetByName:()=>memory.length?sheet:null,insertSheet:()=>sheet});
+ const db_=db,rows_=name=>data.records[name]||[],commercialState_=()=>({records:{},coverage:{}});
+ const requireSession_=token=>{if(token!=='synthetic-session')throw Error('AUTH_REQUIRED');};
+ const owner_=()=>{};
+ const SpreadsheetApp={flush(){}},LockService={getScriptLock:()=>({waitLock(){},releaseLock(){}})};
+ const PropertiesService={getScriptProperties:()=>({getProperty:k=>props.get(k)||null,setProperty:(k,v)=>props.set(k,v)})};
+ const Utilities={getUuid:()=>crypto.randomUUID(),formatDate:()=>new Date().toISOString().slice(0,10)};
+ // Deterministic equality checksum ONLY for local simulation, never authentication.
+ // Real Apps Script uses its existing SHA-256 authHash_ implementation.
+ const authHash_=value=>{let a=2166136261,b=5381;for(const c of value){a=Math.imul(a^c.charCodeAt(0),16777619);b=Math.imul(b,33)^c.charCodeAt(0);}return [a,b,a^b,a+b].map(n=>(n>>>0).toString(16).padStart(8,'0')).join('');};
+ const saveRecordLocked_=(entity,input)=>{const records=data.records[entity];if(!records||entity==='Activity')throw Error('Invalid record type');const old=input.id?records.find(r=>r.id===input.id):null;if(input.id&&!old)throw Error('Record missing');if(old&&String(old.version)!==String(input.version))throw Error('Stale record');const record={...old,...input};if(!record.name?.trim())throw Error('Name required');for(const [field,allowed] of Object.entries(ENUMS[entity]||{})){if(!record[field])record[field]=allowed[0];if(!allowed.includes(record[field]))throw Error('Invalid '+field);}record.id=old?.id||'SYN-'+crypto.randomUUID().slice(0,8);record.version=String(Number(old?.version||0)+1);record.updatedAt=new Date().toISOString();if(old)Object.assign(old,record);else records.push(record);return record;};

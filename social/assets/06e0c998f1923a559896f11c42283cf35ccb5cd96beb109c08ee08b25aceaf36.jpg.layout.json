@@ -1,0 +1,212 @@
+{
+  "designVersion": 2,
+  "visualStyle": "reference-data-editorial",
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "CYPRUS PROPERTY",
+      "x": 60,
+      "y": 62,
+      "width": 215,
+      "height": 14,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "The Smarty Solution",
+      "x": 799,
+      "y": 124,
+      "width": 213,
+      "height": 20,
+      "size": 21
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 812,
+      "y": 158,
+      "width": 200,
+      "height": 15,
+      "size": 15
+    },
+    {
+      "text": "BUILDING",
+      "x": 60,
+      "y": 162,
+      "width": 275,
+      "height": 40,
+      "size": 52,
+      "inverse": false
+    },
+    {
+      "text": "PERMITS ARE NOT",
+      "x": 60,
+      "y": 222,
+      "width": 529,
+      "height": 40,
+      "size": 52,
+      "inverse": false
+    },
+    {
+      "text": "PROPERTY SALES.",
+      "x": 60,
+      "y": 282,
+      "width": 519,
+      "height": 40,
+      "size": 52,
+      "inverse": false
+    },
+    {
+      "text": "+21.1%",
+      "x": 60,
+      "y": 354,
+      "width": 469,
+      "height": 86,
+      "size": 112,
+      "inverse": false
+    },
+    {
+      "text": "BUILDING PERMITS | MAY 2026 YOY",
+      "x": 60,
+      "y": 470,
+      "width": 416,
+      "height": 22,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "Authorised construction activity, not",
+      "x": 60,
+      "y": 516,
+      "width": 420,
+      "height": 23,
+      "size": 23,
+      "inverse": false
+    },
+    {
+      "text": "completed sales or rental demand.",
+      "x": 60,
+      "y": 548,
+      "width": 397,
+      "height": 23,
+      "size": 23,
+      "inverse": false
+    },
+    {
+      "text": "WHAT IT MEASURES",
+      "x": 714,
+      "y": 275,
+      "width": 233,
+      "height": 16,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "Authorised construction activity.",
+      "x": 714,
+      "y": 306,
+      "width": 285,
+      "height": 18,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "WHAT IT DOES NOT",
+      "x": 714,
+      "y": 477,
+      "width": 228,
+      "height": 16,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "Property sales or rental demand.",
+      "x": 714,
+      "y": 508,
+      "width": 291,
+      "height": 18,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "Does your plan still work under this test?",
+      "x": 84,
+      "y": 736,
+      "width": 468,
+      "height": 19,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "LARNACA CASTLE, CYPRUS",
+      "x": 60,
+      "y": 1190,
+      "width": 299,
+      "height": 17,
+      "size": 20,
+      "inverse": true
+    },
+    {
+      "text": "CYSTAT | MAY 2026",
+      "x": 60,
+      "y": 1260,
+      "width": 154,
+      "height": 16,
+      "size": 16,
+      "inverse": true
+    },
+    {
+      "text": "CONNECT · DEVELOP · INVEST",
+      "x": 764,
+      "y": 1190,
+      "width": 256,
+      "height": 13,
+      "size": 17,
+      "inverse": true
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 743,
+      "y": 1261,
+      "width": 277,
+      "height": 13,
+      "size": 18,
+      "inverse": true
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 832,
+    "y": 46,
+    "width": 180,
+    "height": 69
+  },
+  "photoSha256": "c6a4caacaaf97e1a5277d7b26d285e56f149d32da590cf93623c783482b11bcc",
+  "palette": {
+    "cream": "#fbfaf6",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "white": "#ffffff"
+  },
+  "categoryRule": false,
+  "photoRegion": {
+    "x": 0,
+    "y": 820,
+    "width": 1080,
+    "height": 330
+  },
+  "photoTransition": {
+    "y": 760,
+    "height": 220,
+    "mode": "cream-to-photo-fade"
+  },
+  "safeArea": {
+    "left": 48,
+    "right": 1032,
+    "top": 48,
+    "bottom": 1320
+  }
+}

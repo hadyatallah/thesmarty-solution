@@ -1,0 +1,95 @@
+{
+  "version": 2,
+  "status": "active",
+  "feed": {
+    "width": 1080,
+    "height": 1350,
+    "aspectRatio": "4:5",
+    "templates": [
+      "insight-data",
+      "question-debate",
+      "place-opportunity"
+    ],
+    "primaryVisualStyles": [
+      "reference-data-editorial",
+      "reference-checklist-editorial",
+      "reference-integrated-editorial"
+    ],
+    "plainFullFramePhotoAllowed": false
+  },
+  "vertical": {
+    "width": 1080,
+    "height": 1920,
+    "aspectRatio": "9:16",
+    "feedAssetReuseAllowed": false
+  },
+  "palette": {
+    "dominant": "light-off-white",
+    "primary": "deep-navy",
+    "accents": [
+      "tss-teal",
+      "muted-slate-blue",
+      "pale-sky-blue"
+    ]
+  },
+  "fixedElements": {
+    "categoryLabel": "top-left",
+    "rule": false,
+    "logo": "top-right-original-asset",
+    "wordmark": "The Smarty Solution",
+    "tagline": "Connect · Develop · Invest",
+    "footer": "THESMARTYSOLUTION.COM",
+    "locationLabel": true,
+    "sourceLabel": true,
+    "fullWidthLowerPhotographyPreferred": true,
+    "photoTransition": "soft-tonal-blend"
+  },
+  "geography": {
+    "occupiedCyprusImageryAllowed": false,
+    "preferredRepublicOfCyprusAreas": [
+      "Larnaca",
+      "Limassol",
+      "Nicosia",
+      "Paphos",
+      "Paralimni",
+      "Protaras",
+      "Ayia Napa",
+      "Troodos",
+      "Platres",
+      "Lefkara"
+    ]
+  },
+  "publishing": {
+    "maxHashtags": 5,
+    "duplicateWindowDays": 30,
+    "requireBrandTemplate": true,
+    "requireFactCheckForFactualClaims": true,
+    "requireSafeMarginCheck": true,
+    "requireCropCheck": true,
+    "firstPostsRequireUserApproval": 10
+  },
+  "content": {
+    "audiences": [
+      "investors",
+      "entrepreneurs",
+      "people-relocating"
+    ],
+    "coreTopics": [
+      "Cyprus property",
+      "taxes and comparable tax differences",
+      "European relocation and housing comparisons"
+    ],
+    "evidence": "official primary sources and credible original market studies; no unsupported forecasts or migration motives",
+    "targetUsefulShare": 0.8,
+    "targetPromotionShare": 0.2
+  },
+  "visualRequirement": {
+    "pictureRequiredForEveryPost": true,
+    "feedRequiresVerifiedRealPhoto": true,
+    "storyRequiresVerifiedRealPhoto": true,
+    "reelRequiresVerifiedRealPhotoOrVideo": true,
+    "textOnlyPostsAllowed": false,
+    "noLocationImageryAllowed": false,
+    "legacyTextOnlyReuseAllowed": false
+  }
+}

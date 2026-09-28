@@ -1,0 +1,50 @@
+{
+  "at": "2026-09-22T21:36:05.290738+00:00",
+  "environment": "Signed-in Vercel Preview, Apps Script candidate Version 11",
+  "frontendCommit": "faee562f44db596bb37d053fa5f5d0866429cb5d",
+  "backend": "tss-cc-0.3.0",
+  "tests": [
+    {
+      "id": "LIVE-LEDGER-02",
+      "expected": "Candidate native ledger available",
+      "actual": "Backend version visible, actions empty, schedules not enabled",
+      "result": "PASS",
+      "sideEffects": "Read only"
+    },
+    {
+      "id": "LIVE-BRIEF-01",
+      "expected": "Daily brief durably prepared with audit",
+      "actual": "Job a3101c46-cb44-4d07-924e-b1ab09324616 completed 2026-09-22T21:24:23.086Z with running/completed audit rows",
+      "result": "PASS",
+      "sideEffects": "Internal ledger metadata only"
+    },
+    {
+      "id": "LIVE-BRIEF-02",
+      "expected": "Repeated request does not duplicate job",
+      "actual": "Same job ID, two original audit rows",
+      "result": "PASS",
+      "sideEffects": "No duplicate job observed"
+    },
+    {
+      "id": "LIVE-MODEL-01",
+      "expected": "Existing model can translate synthetic phrase",
+      "actual": "2026-09-22T21:27:24.535Z HTTP200, answerLength33, containsGreek true, finishReason stop",
+      "result": "PASS",
+      "sideEffects": "Synthetic model request; no messages"
+    },
+    {
+      "id": "LIVE-BILINGUAL-02",
+      "expected": "English and Greek personalized draft",
+      "actual": "Sender correct; Greek purpose translation unavailable and visibly blocked",
+      "result": "FAIL",
+      "sideEffects": "Draft only; no send"
+    },
+    {
+      "id": "LIVE-APPROVAL-02",
+      "expected": "Internal Cancelled task exact server proposal",
+      "actual": "Proposal could not be prepared: connection error. No exact approval issued. Subsequent ledger refresh unavailable. Outcome of proposal persistence not confirmed.",
+      "result": "FAIL",
+      "sideEffects": "No execute called; proposal persistence needs reconciliation"
+    }
+  ]
+}

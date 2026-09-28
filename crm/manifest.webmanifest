@@ -1,0 +1,69 @@
+{
+  "id": "/crm/",
+  "name": "The Smarty Solution CRM",
+  "short_name": "TSS CRM",
+  "description": "Private CRM workspace for The Smarty Solution.",
+  "start_url": "/crm/",
+  "scope": "/crm/",
+  "display": "standalone",
+  "background_color": "#f3f6f7",
+  "theme_color": "#142f40",
+  "icons": [
+    {
+      "src": "/crm/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Today",
+      "short_name": "Today",
+      "url": "/crm/?view=Today",
+      "icons": [
+        {
+          "src": "/crm/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Management",
+      "short_name": "Management",
+      "url": "/crm/?view=Management",
+      "icons": [
+        {
+          "src": "/crm/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Clients & Delivery",
+      "short_name": "Clients",
+      "url": "/crm/?view=Clients",
+      "icons": [
+        {
+          "src": "/crm/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Outreach",
+      "short_name": "Outreach",
+      "url": "/crm/?view=Outreach",
+      "icons": [
+        {
+          "src": "/crm/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}

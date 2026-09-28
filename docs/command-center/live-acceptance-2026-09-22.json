@@ -1,0 +1,48 @@
+{
+  "environment": "Authenticated stable Vercel Preview + Apps Script Version 11",
+  "version": "e6c66d5928603003683c6600ae3246f977fe7d56",
+  "tests": [
+    {
+      "testId": "LIVE-GATEWAY-02",
+      "at": "2026-09-22T22:01:09Z",
+      "testData": "Internal task TAS-af063c45 / action 84631d13e95c2c95f7356cb192ae349e",
+      "expected": "Exact approved creation executes once with existing backend validation and audit",
+      "actual": "One Cancelled task with exact name TSS INTERNAL QA Gateway 2026-09-23, no company or due date; task count changed 8 to 9",
+      "result": "PASS",
+      "evidence": "Native ledger proposed 21:55:58.800Z, approved 21:59:32.514Z, executing 21:59:36.221Z, succeeded 21:59:42.251Z; refreshed task list and record detail show TAS-af063c45 created 21:59:41.888Z",
+      "sideEffects": "One authorized synthetic cancelled task. No external send. Existing company/lifecycle attention counts unchanged."
+    },
+    {
+      "testId": "LIVE-GATEWAY-03",
+      "at": "2026-09-22T22:00:14.937Z",
+      "testData": "Action 498c5f764800784fdc3ea7105a10b55b",
+      "expected": "Rejected malformed draft never executes",
+      "actual": "cancelled, audit rejected at 21:50:45.167Z; task absent from refreshed list",
+      "result": "PASS",
+      "evidence": "Native ledger plus refreshed nine-task list",
+      "sideEffects": "No task created by rejected action."
+    },
+    {
+      "testId": "LIVE-BILINGUAL-01",
+      "at": "2026-09-22T22:03:22.133Z",
+      "testData": "Prime Surfaces Ltd; draft purpose requested company profile",
+      "expected": "English and Greek text, sender info@thesmartysolution.com, no send",
+      "actual": "Both languages displayed, correct sender and draft-only limitation",
+      "result": "PASS",
+      "evidence": "Signed-in Command Center response and Version 11 doPost execution",
+      "sideEffects": "Model translation request only. No mailbox draft or outbound email."
+    },
+    {
+      "testId": "LIVE-SYNC-01",
+      "environment": "Owner-only Apps Script Head editor; existing Gmail capture",
+      "version": "EmailSync.gs source hash in test-evidence.json; Head repair, not Version 11",
+      "at": "2026-09-22T22:08:44.536Z",
+      "testData": "Existing read-only inbox scan; no matching new message",
+      "expected": "Scan completes without external sends, clears its lease and advances successful scan marker",
+      "actual": "Completed in 4.478 seconds; scanned 0, created 0, updated 0, morePending false, leaseActive false",
+      "result": "PASS",
+      "evidence": "Owner-only ccEmailSyncCheck execution log; started 22:08:40.058Z; lastSuccessfulScanAt 1790114920261",
+      "sideEffects": "Scan success metadata only. No new ticket, CRM record edit, or external message. This does not exercise a large live batch or prove concurrent load handling."
+    }
+  ]
+}

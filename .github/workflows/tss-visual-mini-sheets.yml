@@ -1,0 +1,59 @@
+name: TSS visual batch mini sheets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tss-visual-mini-sheets.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  mini:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Build mini inspection sheets
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs/promises';
+          import sharp from 'sharp';
+          const manifests=(await fs.readdir('content-queue')).filter(f=>f.startsWith('2026-09-20-')&&f.endsWith('.json')).sort();
+          const entries=[];
+          for(const f of manifests){
+            const x=JSON.parse(await fs.readFile('content-queue/'+f,'utf8'));
+            if(!x.asset?.path) continue;
+            if(x.format==='reel'){
+              let n=1;
+              for(const a of x.asset.sceneAssets||[]) entries.push({label:x.id+' S'+n++,path:a.path});
+            } else entries.push({label:x.id,path:x.asset.path});
+          }
+          await fs.mkdir('social/inspection',{recursive:true});
+          for(let start=0,part=1;start<entries.length;start+=4,part++){
+            const batch=entries.slice(start,start+4), W=640,H=900, comps=[];
+            const canvas=sharp({create:{width:W,height:H,channels:3,background:'#f4f4f0'}});
+            for(let i=0;i<batch.length;i++){
+              const e=batch[i], col=i%2,row=Math.floor(i/2),x=10+col*315,y=10+row*440;
+              const img=await sharp(e.path).resize({width:295,height:385,fit:'inside',background:'#ffffff'}).jpeg({quality:35}).toBuffer();
+              comps.push({input:img,left:x+(295-(await sharp(img).metadata()).width)/2|0,top:y});
+              const safe=e.label.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+              comps.push({input:Buffer.from('<svg width="295" height="42" xmlns="http://www.w3.org/2000/svg"><rect width="295" height="42" fill="#fff"/><text x="6" y="16" font-family="Arial" font-size="10" fill="#082746">'+safe+'</text></svg>'),left:x,top:y+390});
+            }
+            await canvas.composite(comps).jpeg({quality:25}).toFile('social/inspection/mini-'+part+'.jpg');
+          }
+          NODE
+      - name: Commit mini sheets
+        run: |
+          git config user.name "TSS Social Automation"
+          git config user.email "actions@users.noreply.github.com"
+          git add social/inspection/mini-*.jpg
+          git commit -m "Add mini TSS visual inspection sheets"
+          git push origin HEAD:main

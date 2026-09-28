@@ -1,0 +1,230 @@
+{
+  "designVersion": 2,
+  "visualStyle": "reference-data-editorial",
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "PROPERTY / EUROPE",
+      "x": 60,
+      "y": 62,
+      "width": 229,
+      "height": 16,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "The Smarty Solution",
+      "x": 799,
+      "y": 124,
+      "width": 213,
+      "height": 20,
+      "size": 21
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 812,
+      "y": 158,
+      "width": 200,
+      "height": 15,
+      "size": 15
+    },
+    {
+      "text": "EU PROPERTY.",
+      "x": 60,
+      "y": 162,
+      "width": 405,
+      "height": 40,
+      "size": 52,
+      "inverse": false
+    },
+    {
+      "text": "DIFFERENT",
+      "x": 60,
+      "y": 222,
+      "width": 322,
+      "height": 38,
+      "size": 52,
+      "inverse": false
+    },
+    {
+      "text": "CYCLES.",
+      "x": 60,
+      "y": 282,
+      "width": 231,
+      "height": 40,
+      "size": 52,
+      "inverse": false
+    },
+    {
+      "text": "+17.8%",
+      "x": 60,
+      "y": 354,
+      "width": 469,
+      "height": 85,
+      "size": 112,
+      "inverse": false
+    },
+    {
+      "text": "PORTUGAL HOUSE PRICES",
+      "x": 60,
+      "y": 470,
+      "width": 302,
+      "height": 16,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "Q1 2026 compared with Q1 2025. Eurostat",
+      "x": 60,
+      "y": 516,
+      "width": 496,
+      "height": 23,
+      "size": 23,
+      "inverse": false
+    },
+    {
+      "text": "house price index.",
+      "x": 60,
+      "y": 548,
+      "width": 208,
+      "height": 23,
+      "size": 23,
+      "inverse": false
+    },
+    {
+      "text": "FINLAND: -2.0%",
+      "x": 714,
+      "y": 275,
+      "width": 186,
+      "height": 16,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "House prices fell over the same",
+      "x": 714,
+      "y": 306,
+      "width": 283,
+      "height": 18,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "annual period.",
+      "x": 714,
+      "y": 331,
+      "width": 125,
+      "height": 18,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "THE MEASURE",
+      "x": 714,
+      "y": 477,
+      "width": 165,
+      "height": 16,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "Nominal transaction prices, not",
+      "x": 714,
+      "y": 508,
+      "width": 279,
+      "height": 18,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "rental yields.",
+      "x": 714,
+      "y": 533,
+      "width": 113,
+      "height": 18,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "WHICH MARKET WOULD YOU STUDY BEFORE BUYING?",
+      "x": 84,
+      "y": 736,
+      "width": 603,
+      "height": 14,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "PETRA TOU ROMIOU / CYPRUS",
+      "x": 60,
+      "y": 1190,
+      "width": 334,
+      "height": 16,
+      "size": 20,
+      "inverse": true
+    },
+    {
+      "text": "Eurostat | house price index | Q1 2026",
+      "x": 60,
+      "y": 1260,
+      "width": 304,
+      "height": 16,
+      "size": 16,
+      "inverse": true
+    },
+    {
+      "text": "CONNECT · DEVELOP · INVEST",
+      "x": 764,
+      "y": 1190,
+      "width": 256,
+      "height": 13,
+      "size": 17,
+      "inverse": true
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 743,
+      "y": 1261,
+      "width": 277,
+      "height": 13,
+      "size": 18,
+      "inverse": true
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 832,
+    "y": 46,
+    "width": 180,
+    "height": 69
+  },
+  "photoSha256": "71c16cfb45d2b453ab0f88d87d131d5218e345ab77cca71cfb8d871138a8f7c5",
+  "palette": {
+    "cream": "#fbfaf6",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "white": "#ffffff"
+  },
+  "categoryRule": false,
+  "photoRegion": {
+    "x": 0,
+    "y": 820,
+    "width": 1080,
+    "height": 330
+  },
+  "photoTransition": {
+    "y": 760,
+    "height": 220,
+    "mode": "cream-to-photo-fade"
+  },
+  "safeArea": {
+    "left": 48,
+    "right": 1032,
+    "top": 48,
+    "bottom": 1320
+  }
+}

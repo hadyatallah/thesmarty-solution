@@ -1,0 +1,63 @@
+name: TSS visual batch inspection PDF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tss-visual-batch-inspection-pdf.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Install Pillow
+        run: python3 -m pip install pillow
+      - name: Build inspection PDF
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          from PIL import Image, ImageOps, ImageDraw, ImageFont
+          manifests=sorted(Path('content-queue').glob('2026-09-20-*.json'))
+          entries=[]
+          for p in manifests:
+              x=json.loads(p.read_text())
+              if not x.get('asset',{}).get('path'): continue
+              if x['format']=='reel':
+                  for i,a in enumerate(x['asset'].get('sceneAssets',[]),1):
+                      entries.append((f"{x['id']} | scene {i}",a['path']))
+              else:
+                  entries.append((x['id'],x['asset']['path']))
+          pages=[]
+          for start in range(0,len(entries),4):
+              batch=entries[start:start+4]
+              page=Image.new('RGB',(1240,1754),'#f3f3ef')
+              draw=ImageDraw.Draw(page)
+              for idx,(label,path) in enumerate(batch):
+                  col=idx%2; row=idx//2
+                  x0=30+col*605; y0=30+row*850
+                  img=Image.open(path).convert('RGB')
+                  target=(540,720)
+                  fit=ImageOps.contain(img,target)
+                  px=x0+(540-fit.width)//2; py=y0+45+(720-fit.height)//2
+                  page.paste(fit,(px,py))
+                  draw.rectangle((x0,y0,x0+540,y0+34),fill='white')
+                  draw.text((x0+8,y0+8),label,fill='#082746')
+              pages.append(page)
+          out='social/visual-batch-inspection.pdf'
+          pages[0].save(out,'PDF',save_all=True,append_images=pages[1:],resolution=110)
+          print(out, len(pages), 'pages')
+          PY
+      - name: Commit inspection PDF
+        run: |
+          git config user.name "TSS Social Automation"
+          git config user.email "actions@users.noreply.github.com"
+          git add social/visual-batch-inspection.pdf
+          git commit -m "Add temporary TSS visual inspection PDF"
+          git push origin HEAD:main

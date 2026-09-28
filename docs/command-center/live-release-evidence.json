@@ -1,0 +1,42 @@
+{
+  "at": "2026-09-22T21:06:27.194983+00:00",
+  "environment": "Authenticated Vercel Preview browser, existing Version 10 production API",
+  "version": "Existing open browser page; latest bilingual bundle not verified",
+  "tests": [
+    {
+      "id": "LIVE-LOGIN-01",
+      "expected": "Authorized TSS session and live CRM",
+      "actual": "Sign out button, synced dashboard, 2874 companies, 5 prospects, 0 qualified leads",
+      "result": "PASS",
+      "sideEffects": "None; read only"
+    },
+    {
+      "id": "LIVE-DOSSIER-01",
+      "expected": "Exact Prime Surfaces dossier with available communications",
+      "actual": "TSS-CY-2872, one contact, one opportunity, two tasks, three captured email entries and partial-history notices",
+      "result": "PASS",
+      "sideEffects": "None; read only"
+    },
+    {
+      "id": "LIVE-GATEWAY-01",
+      "expected": "Action backend available",
+      "actual": "Unknown action",
+      "result": "FAIL",
+      "sideEffects": "No write executed"
+    },
+    {
+      "id": "LIVE-BILINGUAL-01",
+      "expected": "Current bilingual candidate displayed and reviewed",
+      "actual": "Open older page produced English only; latest candidate not loaded",
+      "result": "BLOCKED",
+      "sideEffects": "Draft only, no external message"
+    },
+    {
+      "id": "CANDIDATE-DEPLOY-01",
+      "expected": "Separate candidate backend created without changing Production",
+      "actual": "Automatic approval review rejected Anyone access scope; dialog cancelled",
+      "result": "BLOCKED",
+      "sideEffects": "No deployment created"
+    }
+  ]
+}

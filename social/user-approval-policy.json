@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "requiredCount": 10,
+  "approver": "Hady",
+  "firstPostIds": [
+    "tss-review-01-cyprus-property-seasonality-feed",
+    "tss-review-02-property-transfer-fees-feed",
+    "tss-review-03-housing-income-share-feed",
+    "tss-review-04-investor-brief-feed",
+    "tss-review-05-british-emigration-feed",
+    "tss-review-06-ireland-tax-residency-feed",
+    "tss-review-07-europe-property-cycles-feed",
+    "tss-review-08-europe-living-costs-story",
+    "tss-review-09-property-title-checks-story",
+    "tss-review-10-cyprus-relocation-priorities-reel"
+  ],
+  "approvals": {
+    "tss-review-01-cyprus-property-seasonality-feed": {
+      "approvedBy": "Hady",
+      "approvedAt": "2026-09-14T21:46:15.881Z",
+      "contentSha256": "8c817152264dea898e6f16070cd21afbe607eb679f16aeddd4c4b990218b653e",
+      "authorizationReference": "Explicit publication approval in the TSS Work chat"
+    },
+    "tss-review-02-property-transfer-fees-feed": {
+      "approvedBy": "Hady",
+      "approvedAt": "2026-09-15T04:42:26.551Z",
+      "contentSha256": "1ee1541dbccb8ad2f39a4d893446d147a0666132578a2efb0359bbd4085457c6",
+      "authorizationReference": "Explicit publication approval for Post 2 Revision 2 in the TSS Work chat."
+    },
+    "tss-review-03-housing-income-share-feed": {
+      "approvedBy": "Hady",
+      "approvedAt": "2026-09-15T22:45:55.064Z",
+      "contentSha256": "57a5636caf65b8dac9fa37a90e36cd53356359fbbb4f7fcb39d1fdd23a18cb15",
+      "authorizationReference": "Explicit approval to proceed with Post 3 in the TSS Work chat."
+    },
+    "tss-review-04-investor-brief-feed": {
+      "approvedBy": "Hady",
+      "approvedAt": "2026-09-16T06:56:22.866Z",
+      "contentSha256": "4d3fbd1c1cc90f712dfd5e64b8e0d2c59afaf27462a471cf14f59ca7d4cb98e9",
+      "authorizationReference": "Explicit approval for Post 4 Revision 3 on Instagram and Facebook in the TSS Work chat."
+    },
+    "tss-review-05-british-emigration-feed": {
+      "approvedBy": "Hady",
+      "approvedAt": "2026-09-16T11:05:30.000Z",
+      "contentSha256": "cda7e8eea41c00f3bfbaddceadfd988565c2f07a3d50c72fea1676b3b827ae0e",
+      "authorizationReference": "Explicit instruction to publish Post 5 Revision 2 to Instagram and Facebook in the TSS Work chat."
+    },
+    "tss-test-greece-q2-2026-feed": {
+      "approvedBy": "Hady",
+      "approvedAt": "2026-09-20T18:42:33.601Z",
+      "contentSha256": "c6ac85958891cf8d69d21960513eb0c8afb36d347ed8b7cd4fbb7c10b3d6c6ba",
+      "authorizationReference": "Explicit “Approve and post” instruction in TSS social semi-automated chat on 20 September 2026."
+    }
+  },
+  "note": "Semi-automated mode activated 20 September 2026. No TSS social post may publish without Hady's explicit approval of the exact final content. Historical approvals are preserved. Automatic-after-QA authorization is disabled.",
+  "automationAuthorization": null
+}

@@ -1,0 +1,212 @@
+{
+  "designVersion": 2,
+  "visualStyle": "reference-data-editorial",
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "CYPRUS BUSINESS",
+      "x": 60,
+      "y": 62,
+      "width": 205,
+      "height": 14,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "The Smarty Solution",
+      "x": 799,
+      "y": 124,
+      "width": 213,
+      "height": 20,
+      "size": 21
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 812,
+      "y": 158,
+      "width": 200,
+      "height": 15,
+      "size": 15
+    },
+    {
+      "text": "CYPRUS",
+      "x": 60,
+      "y": 162,
+      "width": 228,
+      "height": 40,
+      "size": 52,
+      "inverse": false
+    },
+    {
+      "text": "ELECTRICITY:",
+      "x": 60,
+      "y": 222,
+      "width": 373,
+      "height": 40,
+      "size": 52,
+      "inverse": false
+    },
+    {
+      "text": "BUSINESS COSTS.",
+      "x": 60,
+      "y": 282,
+      "width": 510,
+      "height": 40,
+      "size": 52,
+      "inverse": false
+    },
+    {
+      "text": "€24.29",
+      "x": 60,
+      "y": 354,
+      "width": 429,
+      "height": 86,
+      "size": 112,
+      "inverse": false
+    },
+    {
+      "text": "PER 100 KWH | CYPRUS NON-HOUSEHOLD",
+      "x": 60,
+      "y": 470,
+      "width": 493,
+      "height": 22,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "A business electricity benchmark, not a",
+      "x": 60,
+      "y": 516,
+      "width": 452,
+      "height": 23,
+      "size": 23,
+      "inverse": false
+    },
+    {
+      "text": "small-business bill quote.",
+      "x": 60,
+      "y": 548,
+      "width": 287,
+      "height": 23,
+      "size": 23,
+      "inverse": false
+    },
+    {
+      "text": "EU AVERAGE",
+      "x": 714,
+      "y": 275,
+      "width": 144,
+      "height": 16,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "€18.37 per 100 kWh in H2 2025.",
+      "x": 714,
+      "y": 306,
+      "width": 287,
+      "height": 18,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "SCOPE",
+      "x": 714,
+      "y": 477,
+      "width": 75,
+      "height": 16,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "Annual use of 500 to 2,000 MWh.",
+      "x": 714,
+      "y": 508,
+      "width": 295,
+      "height": 16,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "Which country should we compare next?",
+      "x": 84,
+      "y": 736,
+      "width": 458,
+      "height": 19,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "PAPHOS CASTLE, CYPRUS",
+      "x": 60,
+      "y": 1190,
+      "width": 285,
+      "height": 17,
+      "size": 20,
+      "inverse": true
+    },
+    {
+      "text": "EUROSTAT | H2 2025",
+      "x": 60,
+      "y": 1260,
+      "width": 165,
+      "height": 16,
+      "size": 16,
+      "inverse": true
+    },
+    {
+      "text": "CONNECT · DEVELOP · INVEST",
+      "x": 764,
+      "y": 1190,
+      "width": 256,
+      "height": 13,
+      "size": 17,
+      "inverse": true
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 743,
+      "y": 1261,
+      "width": 277,
+      "height": 13,
+      "size": 18,
+      "inverse": true
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 832,
+    "y": 46,
+    "width": 180,
+    "height": 69
+  },
+  "photoSha256": "560965147a1c035ae48c9155079dfe8b8f8ae8a5a1fe9a2ad5f7435a3c809c6f",
+  "palette": {
+    "cream": "#fbfaf6",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "white": "#ffffff"
+  },
+  "categoryRule": false,
+  "photoRegion": {
+    "x": 0,
+    "y": 820,
+    "width": 1080,
+    "height": 330
+  },
+  "photoTransition": {
+    "y": 760,
+    "height": 220,
+    "mode": "cream-to-photo-fade"
+  },
+  "safeArea": {
+    "left": 48,
+    "right": 1032,
+    "top": 48,
+    "bottom": 1320
+  }
+}

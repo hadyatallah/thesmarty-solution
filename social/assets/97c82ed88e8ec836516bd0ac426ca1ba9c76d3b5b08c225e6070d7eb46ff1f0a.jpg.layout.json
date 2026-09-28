@@ -1,0 +1,132 @@
+{
+  "designVersion": 2,
+  "visualStyle": "reference-integrated-editorial",
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 72,
+      "y": 62,
+      "width": 265,
+      "height": 23,
+      "size": 23
+    },
+    {
+      "text": "CYPRUS BUSINESS",
+      "x": 72,
+      "y": 628,
+      "width": 205,
+      "height": 14,
+      "size": 20
+    },
+    {
+      "text": "YOUR PARTNER NEEDS TO",
+      "x": 72,
+      "y": 696,
+      "width": 829,
+      "height": 44,
+      "size": 57
+    },
+    {
+      "text": "BRING MORE THAN",
+      "x": 72,
+      "y": 764,
+      "width": 600,
+      "height": 43,
+      "size": 57
+    },
+    {
+      "text": "CONTACTS.",
+      "x": 72,
+      "y": 832,
+      "width": 352,
+      "height": 43,
+      "size": 57
+    },
+    {
+      "text": "Before expanding, define what the partner must actually deliver:",
+      "x": 72,
+      "y": 908,
+      "width": 887,
+      "height": 26,
+      "size": 27
+    },
+    {
+      "text": "access, execution, technical capability, local knowledge, follow-up",
+      "x": 72,
+      "y": 946,
+      "width": 911,
+      "height": 26,
+      "size": 27
+    },
+    {
+      "text": "or capital. A long contact list is not a capability plan.",
+      "x": 72,
+      "y": 984,
+      "width": 723,
+      "height": 26,
+      "size": 27
+    },
+    {
+      "text": "Does your plan still work under this test?",
+      "x": 98,
+      "y": 1042,
+      "width": 533,
+      "height": 23,
+      "size": 23
+    },
+    {
+      "text": "PANO LEFKARA, CYPRUS",
+      "x": 72,
+      "y": 1210,
+      "width": 245,
+      "height": 16,
+      "size": 18
+    },
+    {
+      "text": "EDITORIAL VIEW / NOT A FORECAST",
+      "x": 72,
+      "y": 1246,
+      "width": 288,
+      "height": 13,
+      "size": 16
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 731,
+      "y": 1246,
+      "width": 277,
+      "height": 13,
+      "size": 18
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 842,
+    "y": 62,
+    "width": 138,
+    "height": 53
+  },
+  "photoSha256": "5336ef1793e4772c1a32d9a1f2776b062203bcb8be0851b5e5f88b2538e981d4",
+  "palette": {
+    "cream": "#fbf8f1",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1"
+  },
+  "photoRegion": {
+    "x": 250,
+    "y": 170,
+    "width": 758,
+    "height": 430
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 48,
+    "bottom": 1302
+  }
+}

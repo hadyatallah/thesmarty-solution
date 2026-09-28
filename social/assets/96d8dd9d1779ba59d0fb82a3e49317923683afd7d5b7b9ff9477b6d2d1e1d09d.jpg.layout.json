@@ -1,0 +1,133 @@
+{
+  "designVersion": 2,
+  "visualStyle": "reference-photo-editorial",
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 78,
+      "y": 78,
+      "width": 287,
+      "height": 24,
+      "size": 25
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 78,
+      "y": 122,
+      "width": 237,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "UNPOPULAR OPINION / CYPRUS PROPERTY",
+      "x": 78,
+      "y": 658,
+      "width": 457,
+      "height": 16,
+      "size": 19
+    },
+    {
+      "text": "WOULD YOUR PROPERTY",
+      "x": 78,
+      "y": 726,
+      "width": 810,
+      "height": 45,
+      "size": 58
+    },
+    {
+      "text": "PLAN WORK WITHOUT",
+      "x": 78,
+      "y": 795,
+      "width": 723,
+      "height": 45,
+      "size": 58
+    },
+    {
+      "text": "PEAK SEASON?",
+      "x": 78,
+      "y": 864,
+      "width": 485,
+      "height": 45,
+      "size": 58
+    },
+    {
+      "text": "Test the quiet months. Lower the occupancy assumption. Keep",
+      "x": 78,
+      "y": 951,
+      "width": 859,
+      "height": 26,
+      "size": 27
+    },
+    {
+      "text": "the costs that continue all year.",
+      "x": 78,
+      "y": 989,
+      "width": 434,
+      "height": 26,
+      "size": 27
+    },
+    {
+      "text": "WHAT WOULD YOU STRESS-TEST FIRST?",
+      "x": 126,
+      "y": 1072,
+      "width": 527,
+      "height": 18,
+      "size": 24
+    },
+    {
+      "text": "PANO LEFKARA / CYPRUS",
+      "x": 78,
+      "y": 1194,
+      "width": 251,
+      "height": 15,
+      "size": 18
+    },
+    {
+      "text": "EDITORIAL VIEW / NOT A FORECAST",
+      "x": 78,
+      "y": 1230,
+      "width": 288,
+      "height": 13,
+      "size": 16
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 705,
+      "y": 1230,
+      "width": 277,
+      "height": 13,
+      "size": 18
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 850,
+    "y": 72,
+    "width": 142,
+    "height": 54
+  },
+  "photoSha256": "5336ef1793e4772c1a32d9a1f2776b062203bcb8be0851b5e5f88b2538e981d4",
+  "palette": {
+    "cream": "#fbf8f1",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "sky": "#e5f0f2"
+  },
+  "photoRegion": {
+    "x": 0,
+    "y": 190,
+    "width": 1080,
+    "height": 435
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 48,
+    "bottom": 1302
+  }
+}

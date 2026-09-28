@@ -1,0 +1,146 @@
+{
+  "designVersion": 2,
+  "format": "story",
+  "width": 1080,
+  "height": 1920,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 763,
+      "y": 324,
+      "width": 245,
+      "height": 24,
+      "size": 24
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 771,
+      "y": 364,
+      "width": 237,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "PROPERTY / DUE DILIGENCE",
+      "x": 72,
+      "y": 238,
+      "width": 312,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "BUYING IN CYPRUS?",
+      "x": 72,
+      "y": 398,
+      "width": 693,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "CHECK BEFORE SIGNING.",
+      "x": 72,
+      "y": 472,
+      "width": 864,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "TITLE. CHARGES.",
+      "x": 72,
+      "y": 568,
+      "width": 638,
+      "height": 52,
+      "size": 68
+    },
+    {
+      "text": "PERMITS.",
+      "x": 72,
+      "y": 648,
+      "width": 349,
+      "height": 52,
+      "size": 68
+    },
+    {
+      "text": "Ask an independent lawyer to check the property's documents",
+      "x": 72,
+      "y": 748,
+      "width": 883,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "and liabilities. General information.",
+      "x": 72,
+      "y": 786,
+      "width": 493,
+      "height": 22,
+      "size": 28
+    },
+    {
+      "text": "A viewing cannot replace due diligence.",
+      "x": 97,
+      "y": 846,
+      "width": 590,
+      "height": 26,
+      "size": 26
+    },
+    {
+      "text": "LARNACA CASTLE / CYPRUS",
+      "x": 72,
+      "y": 1488,
+      "width": 305,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "UK FCDO guidance | updated 2019",
+      "x": 72,
+      "y": 1527,
+      "width": 309,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 72,
+      "y": 1592,
+      "width": 310,
+      "height": 14,
+      "size": 20
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 774,
+    "y": 220,
+    "width": 230,
+    "height": 88
+  },
+  "photoSha256": "c6a4caacaaf97e1a5277d7b26d285e56f149d32da590cf93623c783482b11bcc",
+  "palette": {
+    "cream": "#faf8f3",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "sky": "#e9f1f7"
+  },
+  "categoryRule": false,
+  "photoTransition": {
+    "y": 1040,
+    "height": 160,
+    "mode": "cream-to-photo-fade"
+  },
+  "photoRegion": {
+    "x": 0,
+    "y": 1200,
+    "width": 1080,
+    "height": 190
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 220,
+    "bottom": 1620
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "designVersion": 2,
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "The Smarty Solution",
+      "x": 763,
+      "y": 168,
+      "width": 245,
+      "height": 24,
+      "size": 24
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 771,
+      "y": 208,
+      "width": 237,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "TAX / BUSINESS COSTS",
+      "x": 72,
+      "y": 82,
+      "width": 254,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "CYPRUS VS IRELAND.",
+      "x": 72,
+      "y": 242,
+      "width": 735,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "COMPARE THE SAME TAX.",
+      "x": 72,
+      "y": 316,
+      "width": 886,
+      "height": 48,
+      "size": 62
+    },
+    {
+      "text": "19% vs 23%",
+      "x": 72,
+      "y": 412,
+      "width": 447,
+      "height": 52,
+      "size": 68
+    },
+    {
+      "text": "Standard VAT rates. Different from taxes on company profits.",
+      "x": 72,
+      "y": 512,
+      "width": 855,
+      "height": 28,
+      "size": 28
+    },
+    {
+      "text": "Which business cost would you compare first?",
+      "x": 97,
+      "y": 572,
+      "width": 678,
+      "height": 26,
+      "size": 26
+    },
+    {
+      "text": "PAPHOS CASTLE / CYPRUS",
+      "x": 72,
+      "y": 1193,
+      "width": 291,
+      "height": 16,
+      "size": 20
+    },
+    {
+      "text": "European Commission | checked 14 Sep 2026",
+      "x": 72,
+      "y": 1232,
+      "width": 408,
+      "height": 18,
+      "size": 18
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 72,
+      "y": 1270,
+      "width": 310,
+      "height": 14,
+      "size": 20
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 774,
+    "y": 64,
+    "width": 230,
+    "height": 88
+  },
+  "photoSha256": "560965147a1c035ae48c9155079dfe8b8f8ae8a5a1fe9a2ad5f7435a3c809c6f",
+  "palette": {
+    "cream": "#faf8f3",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "sky": "#e9f1f7"
+  },
+  "photoRegion": {
+    "x": 72,
+    "y": 720,
+    "width": 936,
+    "height": 455
+  },
+  "safeArea": {
+    "left": 72,
+    "right": 1008,
+    "top": 64,
+    "bottom": 1298
+  }
+}

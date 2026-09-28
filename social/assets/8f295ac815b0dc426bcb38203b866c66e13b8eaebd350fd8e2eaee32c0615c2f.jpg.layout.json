@@ -1,0 +1,221 @@
+{
+  "designVersion": 2,
+  "visualStyle": "reference-data-editorial",
+  "format": "feed",
+  "width": 1080,
+  "height": 1350,
+  "textRegions": [
+    {
+      "text": "TAX / RELOCATION",
+      "x": 60,
+      "y": 62,
+      "width": 203,
+      "height": 16,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "The Smarty Solution",
+      "x": 799,
+      "y": 124,
+      "width": 213,
+      "height": 20,
+      "size": 21
+    },
+    {
+      "text": "Connect · Develop · Invest",
+      "x": 812,
+      "y": 158,
+      "width": 200,
+      "height": 15,
+      "size": 15
+    },
+    {
+      "text": "IRELAND: COUNT",
+      "x": 60,
+      "y": 162,
+      "width": 494,
+      "height": 40,
+      "size": 52,
+      "inverse": false
+    },
+    {
+      "text": "BOTH TAX YEARS.",
+      "x": 60,
+      "y": 222,
+      "width": 512,
+      "height": 40,
+      "size": 52,
+      "inverse": false
+    },
+    {
+      "text": "183+",
+      "x": 60,
+      "y": 294,
+      "width": 304,
+      "height": 85,
+      "size": 112,
+      "inverse": false
+    },
+    {
+      "text": "DAYS IN ONE TAX YEAR",
+      "x": 60,
+      "y": 410,
+      "width": 270,
+      "height": 16,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "Tax residence can also depend on the",
+      "x": 60,
+      "y": 456,
+      "width": 435,
+      "height": 23,
+      "size": 23,
+      "inverse": false
+    },
+    {
+      "text": "previous year.",
+      "x": 60,
+      "y": 488,
+      "width": 158,
+      "height": 23,
+      "size": 23,
+      "inverse": false
+    },
+    {
+      "text": "280+ DAYS",
+      "x": 714,
+      "y": 275,
+      "width": 129,
+      "height": 16,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "Across the current and preceding",
+      "x": 714,
+      "y": 306,
+      "width": 295,
+      "height": 18,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "tax years together.",
+      "x": 714,
+      "y": 331,
+      "width": 169,
+      "height": 18,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "30-DAY EXCEPTION",
+      "x": 714,
+      "y": 477,
+      "width": 220,
+      "height": 16,
+      "size": 21,
+      "inverse": false
+    },
+    {
+      "text": "30 days or less in the year does",
+      "x": 714,
+      "y": 508,
+      "width": 284,
+      "height": 18,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "not meet the presence tests.",
+      "x": 714,
+      "y": 533,
+      "width": 256,
+      "height": 18,
+      "size": 18,
+      "inverse": false
+    },
+    {
+      "text": "CHECK BOTH YEARS BEFORE PLANNING YOUR MOVE.",
+      "x": 84,
+      "y": 736,
+      "width": 591,
+      "height": 14,
+      "size": 20,
+      "inverse": false
+    },
+    {
+      "text": "PAPHOS CASTLE / CYPRUS",
+      "x": 60,
+      "y": 1190,
+      "width": 291,
+      "height": 16,
+      "size": 20,
+      "inverse": true
+    },
+    {
+      "text": "Irish Revenue | checked 16 Sep 2026",
+      "x": 60,
+      "y": 1260,
+      "width": 294,
+      "height": 16,
+      "size": 16,
+      "inverse": true
+    },
+    {
+      "text": "CONNECT · DEVELOP · INVEST",
+      "x": 764,
+      "y": 1190,
+      "width": 256,
+      "height": 13,
+      "size": 17,
+      "inverse": true
+    },
+    {
+      "text": "THESMARTYSOLUTION.COM",
+      "x": 743,
+      "y": 1261,
+      "width": 277,
+      "height": 13,
+      "size": 18,
+      "inverse": true
+    }
+  ],
+  "logoSha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+  "logoRegion": {
+    "x": 832,
+    "y": 46,
+    "width": 180,
+    "height": 69
+  },
+  "photoSha256": "560965147a1c035ae48c9155079dfe8b8f8ae8a5a1fe9a2ad5f7435a3c809c6f",
+  "palette": {
+    "cream": "#fbfaf6",
+    "navy": "#082746",
+    "teal": "#14848b",
+    "slate": "#456f8a",
+    "pale": "#e6eef1",
+    "white": "#ffffff"
+  },
+  "categoryRule": false,
+  "photoRegion": {
+    "x": 0,
+    "y": 820,
+    "width": 1080,
+    "height": 330
+  },
+  "photoTransition": {
+    "y": 760,
+    "height": 220,
+    "mode": "cream-to-photo-fade"
+  },
+  "safeArea": {
+    "left": 48,
+    "right": 1032,
+    "top": 48,
+    "bottom": 1320
+  }
+}

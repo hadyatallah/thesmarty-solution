@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "status": "active",
+  "description": "Decision problems to research for TSS audiences. These are editorial directions, not factual claims about every audience member.",
+  "needs": [
+    {"id": "investor-full-acquisition-cost", "audience": "investors", "decisionProblem": "Understand the complete acquisition cost rather than only the advertised price.", "pillars": ["cyprus-property", "europe-comparisons"]},
+    {"id": "investor-downside-resilience", "audience": "investors", "decisionProblem": "Test whether an investment still works under weaker occupancy, demand or pricing assumptions.", "pillars": ["cyprus-property", "cyprus-economy-business"]},
+    {"id": "investor-title-and-permit-risk", "audience": "investors", "decisionProblem": "Know which legal, title, charge and permit checks belong before commitment.", "pillars": ["cyprus-property"]},
+    {"id": "investor-market-comparison", "audience": "investors", "decisionProblem": "Compare countries using the same measure, period and asset type.", "pillars": ["europe-comparisons", "tax-relocation"]},
+    {"id": "investor-opportunity-fit", "audience": "investors", "decisionProblem": "Match an opportunity to objective, budget, timeframe and risk tolerance.", "pillars": ["cyprus-property", "tss-positioning"]},
+    {"id": "entrepreneur-demand-validation", "audience": "entrepreneurs", "decisionProblem": "Validate a real customer problem before committing capital or building a route to market.", "pillars": ["cyprus-economy-business", "cyprus-lebanon"]},
+    {"id": "entrepreneur-partner-capability", "audience": "entrepreneurs", "decisionProblem": "Assess what a local or investment partner can actually deliver beyond capital.", "pillars": ["cyprus-economy-business", "tss-positioning"]},
+    {"id": "entrepreneur-cross-border-fit", "audience": "entrepreneurs", "decisionProblem": "Identify what pricing, delivery or customer experience must change between markets.", "pillars": ["cyprus-lebanon", "cyprus-economy-business"]},
+    {"id": "entrepreneur-operating-cost", "audience": "entrepreneurs", "decisionProblem": "Separate tax headlines from the broader cost and practicality of operating a business.", "pillars": ["tax-relocation", "cyprus-economy-business"]},
+    {"id": "relocator-tax-residence", "audience": "people-relocating", "decisionProblem": "Understand residence tests, exceptions and cross-border implications before moving.", "pillars": ["tax-relocation"]},
+    {"id": "relocator-housing-budget", "audience": "people-relocating", "decisionProblem": "Estimate housing costs using measures relevant to a newcomer and the intended city.", "pillars": ["tax-relocation", "europe-comparisons", "cyprus-property"]},
+    {"id": "relocator-everyday-costs", "audience": "people-relocating", "decisionProblem": "Compare a personal monthly basket rather than relying on a generic national ranking.", "pillars": ["europe-comparisons", "tax-relocation"]},
+    {"id": "relocator-evidence-vs-narrative", "audience": "people-relocating", "decisionProblem": "Separate measured migration or cost data from unsupported claims about why people move.", "pillars": ["tax-relocation", "europe-comparisons"]}
+  ]
+}
