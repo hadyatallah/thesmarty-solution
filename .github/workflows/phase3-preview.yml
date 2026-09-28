@@ -1,0 +1,25 @@
+name: TSS Company Data Center Phase 3 Preview
+
+on:
+  pull_request:
+    paths:
+      - 'phase3-preview/**'
+      - '.github/workflows/phase3-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview-safety-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run Data Center synthetic acceptance tests
+        run: node --test phase3-preview/data-center/tests/phase3.test.mjs
+      - name: Check module syntax
+        run: node --check phase3-preview/data-center/engine.mjs
