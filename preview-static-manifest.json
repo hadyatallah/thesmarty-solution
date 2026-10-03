@@ -1,0 +1,350 @@
+[
+  {
+    "path": "public/about.html",
+    "bytes": 5578,
+    "sha256": "168468181c9365ff1ba7b45624eba2f8eb0025cf43599308d8fe601740eb4144",
+    "gitBlob": "468cc0420c1d45dfae8d635bb2083008cdccee7d"
+  },
+  {
+    "path": "public/analytics/index.html",
+    "bytes": 131,
+    "sha256": "7ed6f075a22b5cd4126a74208c3e599a29ecf0f321a5814c55d77f5c6822a0c7",
+    "gitBlob": "56f737278d25f9a67a722adc889f27d9882c4383"
+  },
+  {
+    "path": "public/anti-spam.js",
+    "bytes": 5076,
+    "sha256": "3b0cbddcc52148609fc251479773d7309d695052140cf15520e8f45fb15c0fc6",
+    "gitBlob": "e0a2cbdf5834ac0d1fe2307b36d4538c7a680e32"
+  },
+  {
+    "path": "public/aphrodites-rock-cyprus.webp",
+    "bytes": 393534,
+    "sha256": "f9cd42ca8afac7955b6e35f00815f96473a9dbd71276b72493ceea185c875304",
+    "gitBlob": "032c07b97d3312f010e200a200719de7572640a2"
+  },
+  {
+    "path": "public/business-growth.html",
+    "bytes": 5679,
+    "sha256": "846fe180bd1edc4f8e82e907ff7c28daed3a7dd9549e5d5461cc278515b0d60a",
+    "gitBlob": "aaff24a0dc00da21376df68112999b3108bcf3b4"
+  },
+  {
+    "path": "public/business-systems.html",
+    "bytes": 6069,
+    "sha256": "868885bfb3e325ed256994049723fe7c35fc1c7da8b9401b397b127ff93aa3ee",
+    "gitBlob": "254bbcb2c84f9a051d7e02fc8ac4e96d25acffae"
+  },
+  {
+    "path": "public/command-center/company-lookup.js",
+    "bytes": 2766,
+    "sha256": "8a4cc98248d58732e20b4d567d42bdefe9a42e78c8ddbad25855204c61eea641",
+    "gitBlob": "782a8735c79f0084efb0dd3daf67f5071944d997"
+  },
+  {
+    "path": "public/command-center/context.js",
+    "bytes": 5420,
+    "sha256": "6d07dc7f4f380221bd88d3340beb488034590cd9c1da2b691cb4cd688cc0a6bc",
+    "gitBlob": "f3f63e15dfa7832a8d820d757f8344e414c69631"
+  },
+  {
+    "path": "public/command-center/crm.js",
+    "bytes": 7115,
+    "sha256": "2519cd290641a3d2b89d20165f67ae6e71e02c9ba8a67db56955afb0fcc4e0d3",
+    "gitBlob": "097ca94e9ddd2196f8551518d2162ded5edb6df4"
+  },
+  {
+    "path": "public/command-center/email-hours.js",
+    "bytes": 901,
+    "sha256": "9ebb91b269a639d2cca5ab657d70f7a7843b90e2c421d6321011da532b416b10",
+    "gitBlob": "516a834ae086e968296714a0462cc9a229f8671f"
+  },
+  {
+    "path": "public/command-center/email-send-policy.js",
+    "bytes": 2687,
+    "sha256": "4bc8dd2464b2a01392510179474c0b932881e411740c5799f48af93e27dd885c",
+    "gitBlob": "ac2b566e28ddcf41cbccd5c04effc209b91e248e"
+  },
+  {
+    "path": "public/command-center/gateway.js",
+    "bytes": 6890,
+    "sha256": "fa7125579c7dd7b644b8310244f0b808f9cd68fb070ac5718288904de5a5ca8e",
+    "gitBlob": "66abeff2a323cbbbd5b7cc9519240d60047e81a3"
+  },
+  {
+    "path": "public/command-center/growth.js",
+    "bytes": 12663,
+    "sha256": "677bd3c92e8c1050c83eb1dd6d6966b6729dfc8713f8f28edc66b0dc2cd277a2",
+    "gitBlob": "1dce2b730bb501de2024010e8d8aa69c35c94e25"
+  },
+  {
+    "path": "public/command-center/manager.js",
+    "bytes": 4685,
+    "sha256": "37d2c4546d90804e3d89eca474fd0da50636a85e2e1085b285e09acf635ebdde",
+    "gitBlob": "2acdb4a2be1976bc8216c3aafc91f1f966226ea2"
+  },
+  {
+    "path": "public/command-center/operations.js",
+    "bytes": 5566,
+    "sha256": "e9b1a22d088b83e1690153ace861b4c4eb0923ab5e004ee1c50c7c56dfb4c076",
+    "gitBlob": "f76b8e78778ddfa2c5ad03a1cd2fb02afcbc5712"
+  },
+  {
+    "path": "public/command-center/prompts.js",
+    "bytes": 2078,
+    "sha256": "7b3abf39349e2c770646d7e72d8538c4c53ca546efdd10b691001f66f8523c22",
+    "gitBlob": "dbd6f5d6f6ed4f8289715f8f59ed40a2361e98ff"
+  },
+  {
+    "path": "public/command-center/workflows.js",
+    "bytes": 4864,
+    "sha256": "e17078130a1c372b426ff60432a4d46c7fd7b7a8ae0a6e607e703633e3434eca",
+    "gitBlob": "432cc83c60a794cb00f86f308a28ced8a7934477"
+  },
+  {
+    "path": "public/command-center-preview/app.js",
+    "bytes": 2092,
+    "sha256": "f8321e370b9028532ad65c56081e01970f1ea6796ae91dfb034c4353857ccef2",
+    "gitBlob": "438ad36a7a434d16a288065f3e006f7848c4a1c3"
+  },
+  {
+    "path": "public/command-center-preview/fixture.js",
+    "bytes": 2170,
+    "sha256": "24b613c25092090cc6da98d8bc6aa65a82a69a1125cd237f7fe1865fe11f4f82",
+    "gitBlob": "18eab9fe1f34f22a2c8456d6381bed62aaf2020c"
+  },
+  {
+    "path": "public/command-center-preview/index.html",
+    "bytes": 75183,
+    "sha256": "594fa6a1319b421634b195b5f531ed614e216ec73297c8ed89fe46f579aae6c2",
+    "gitBlob": "95662f1195d06f6e29ed77181ea34220a1039c97"
+  },
+  {
+    "path": "public/command-center-preview/page.html",
+    "bytes": 3518,
+    "sha256": "a713ff0c8f53f066dce54ce406d792ddf2e6eae37cbb7b2e6fd9e4af3f1c7a9d",
+    "gitBlob": "3f411497ac205aed5a629683f67ec17dbc6bd1e1"
+  },
+  {
+    "path": "public/command-center-preview/runtime.js",
+    "bytes": 18620,
+    "sha256": "0bc636f7753af6b7beb962b8592459f6f52e15f6121899a6eac17a8291e63808",
+    "gitBlob": "75da2d94988214e61bd0b270e3783dda00f40c19"
+  },
+  {
+    "path": "public/contact.html",
+    "bytes": 13976,
+    "sha256": "70b61026aa1a38cfb1cf858410bcda1d1912f4cd1bcf71c6575c1e324fd1e83a",
+    "gitBlob": "6ff2f6f755d239cdac93d3650c8749dfdc3940af"
+  },
+  {
+    "path": "public/crm/assistant.js",
+    "bytes": 40264,
+    "sha256": "70513e3315ea48ac040c5f52d1fafed15aa149b5076763caf86c5f7d32bd1e73",
+    "gitBlob": "36fda145879bf5cfe4cfbc92f3a7bc6efb87ba6e"
+  },
+  {
+    "path": "public/crm/command-center.js",
+    "bytes": 17497,
+    "sha256": "c74e12f8be3878c9474b6632b6be8c36465467660eb58ec9e55c87f40a97aa3a",
+    "gitBlob": "02b1c24b07884d46c44144cf6ef4797fd794541d"
+  },
+  {
+    "path": "public/crm/commercial-network/agent.js",
+    "bytes": 5765,
+    "sha256": "67a064d8b8e2bf47466b588b277e5a8e401268a0543801aacbc8778d3c2e35c1",
+    "gitBlob": "185686095a28b0de2249b1267597ee5a5ae8a5c5"
+  },
+  {
+    "path": "public/crm/commercial-network-schema.js",
+    "bytes": 14839,
+    "sha256": "c4495d34f2256ef171d7952fa35545b72bdfbc0a3845586ed916ea319e65a085",
+    "gitBlob": "70eefe1553d71e178bf234ec1395a3d294f63c6a"
+  },
+  {
+    "path": "public/crm/commercial-network-workflow.js",
+    "bytes": 10538,
+    "sha256": "2785a47fe21f74738b4cc90872b610dbe53767e74ecc5b5f12a67330c27ab6ad",
+    "gitBlob": "2698eb096b8d9a1e72b62fdc1b94b0a692780f82"
+  },
+  {
+    "path": "public/crm/commercial-network.css",
+    "bytes": 1071,
+    "sha256": "66d605234b4be43b5372464c24e2343597bc8cdc2e1a390e9db16bfb61eff46c",
+    "gitBlob": "3e06e3408ac87e39cfe2e6fc3e3578be58683853"
+  },
+  {
+    "path": "public/crm/commercial-network.js",
+    "bytes": 37130,
+    "sha256": "fae0f72814c41276d42d24a95949fa08db31a2fe8c5c0884bcb7dd7799082915",
+    "gitBlob": "eefa9808aaf1ceaca483f411dfd414d2e735c12b"
+  },
+  {
+    "path": "public/crm/icon.svg",
+    "bytes": 360,
+    "sha256": "422c0dc34c7db996b1f2593b64ce95f889d4df9b4d868b17842710629ab9032f",
+    "gitBlob": "1fa0e455a8ac692b20a816e0976f9503f985665e"
+  },
+  {
+    "path": "public/crm/index.html",
+    "bytes": 91843,
+    "sha256": "f6c6d1be5c950506acc1713ae2bc214fb37c3066ddf7cfbcb9fd19dc321e5309",
+    "gitBlob": "b784456932b3c60149b4109307834f02c548fd61"
+  },
+  {
+    "path": "public/crm/manifest.webmanifest",
+    "bytes": 1438,
+    "sha256": "70a1a4aa6e2ee73849e397c8797d540deb5474c70529517d867c039062e7b3fb",
+    "gitBlob": "da67d9b381645753385b2dfbb3cc45b9d789f0da"
+  },
+  {
+    "path": "public/crm/outlook-send.js",
+    "bytes": 8635,
+    "sha256": "b2cc04a76e3caf05990050aecb37cc13ddfdd93f5d7a010362a4cea05f406aaa",
+    "gitBlob": "f03bf0d80f4daadc078bd8403ac9705c9ff37c8c"
+  },
+  {
+    "path": "public/crm/service-worker.js",
+    "bytes": 1064,
+    "sha256": "fb0f565a90ba533c1c843576b6619ccddbd3da16be1a204d926e30429bd224c1",
+    "gitBlob": "c2f0d99b8d4593a841d9d618ad97e84e371ef499"
+  },
+  {
+    "path": "public/cyprus-investment-opportunities.html",
+    "bytes": 4518,
+    "sha256": "dc285c4fa986257c6b0de21b8516710e199f84ced8fe389f02d793c4f65affa9",
+    "gitBlob": "0b87e2745405e488f9d41dadeda520615693d47e"
+  },
+  {
+    "path": "public/cyprus-map.png",
+    "bytes": 394454,
+    "sha256": "04655c84deea8727ccf3db2a4463f35e5fd55ae98ae5fe758b80c80bdc7ac10c",
+    "gitBlob": "dbe027556d552f5a659ff648e076f51e4015ce81"
+  },
+  {
+    "path": "public/divisions.html",
+    "bytes": 6549,
+    "sha256": "80f30f831791f68b493b532e5957cd5b553dee7d571ab0f2b9cd9736f9b7e198",
+    "gitBlob": "a5afad6d99e68a4078f5acb4c929ceea73a6c306"
+  },
+  {
+    "path": "public/hero-connection.webp",
+    "bytes": 51078,
+    "sha256": "6f6cb39b4fc726ea93516d7ad23f686d11922530653cd7f2ce8ebadf6c7ed456",
+    "gitBlob": "a6fdea70a5eba92289ae1946e6fb397aa80f715d"
+  },
+  {
+    "path": "public/hero.jpg",
+    "bytes": 1,
+    "sha256": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+    "gitBlob": "f76dd238ade08917e6712764a16a22005a50573d"
+  },
+  {
+    "path": "public/how-we-work.html",
+    "bytes": 5353,
+    "sha256": "402445eabf46cf2f73e942a26a1af6fde89f06288751e624620b744fc01729d5",
+    "gitBlob": "bac7221b8d61a75161ca3638f49b90db63a58b9e"
+  },
+  {
+    "path": "public/index.html",
+    "bytes": 7859,
+    "sha256": "7a707ab1fb1408d3ba8ee4befbe68a4f4ae6df0ddef6b6ddd6e89d75e36f5014",
+    "gitBlob": "1c86385d88d6797c8791a5e1b505420b0abcf269"
+  },
+  {
+    "path": "public/kiti-enquiry.html",
+    "bytes": 8624,
+    "sha256": "1ca98b8b37149522aea50b3f76e197e391c7b1d59ee9c642522877e9e43ead1c",
+    "gitBlob": "6add4e8623d8e9c85aa3478b50d6d0090936c944"
+  },
+  {
+    "path": "public/kiti-location.webp",
+    "bytes": 124226,
+    "sha256": "656b961f1a00eebffad4b44a7c3d30c266831f5b858b00c7f4f53aa41273cd5a",
+    "gitBlob": "9701d3783eca310144273862a086253466a91db1"
+  },
+  {
+    "path": "public/logo-mark-light.png",
+    "bytes": 22755,
+    "sha256": "151f4f674c370b46861496961ec31dee75a0e22fc533bc2730e3e6a7add7e548",
+    "gitBlob": "531bbdbad209c80cc17e993622ddb8940291a654"
+  },
+  {
+    "path": "public/logo-mark.png",
+    "bytes": 31390,
+    "sha256": "1ca3fecb2dd2f53a78b208cac3426e3d0200552ad72afb3537a17ee93d361459",
+    "gitBlob": "cbe1e03fa27914711db33085ae9cce5d745ed972"
+  },
+  {
+    "path": "public/logo.jpg",
+    "bytes": 50757,
+    "sha256": "4be3988b19c945ab024531a65d2c3570504439dc83f0d23f5b60bff69dd68d86",
+    "gitBlob": "67f068868935c3ebd65985688844f7e7a78f3cf6"
+  },
+  {
+    "path": "public/market-entry.html",
+    "bytes": 5816,
+    "sha256": "892c583fd0d7043903589af9a8a654eb8660adbf4638dd616d951f781a844809",
+    "gitBlob": "b778418f09b005c83003ba50597e3a831e58e0e6"
+  },
+  {
+    "path": "public/opportunities.html",
+    "bytes": 5415,
+    "sha256": "b83d6774b203c651712c160cc24ba52d1c78f1ca00604672b0499979e6df5a4a",
+    "gitBlob": "cee390bd83f61500728f660ddb756d57704fdcf2"
+  },
+  {
+    "path": "public/opportunity-development.html",
+    "bytes": 6624,
+    "sha256": "1b4bf791921993c165b9603695094d947d8918b5302a5ac4ad2e7d8d79fd05ea",
+    "gitBlob": "5cfbd7040a7d4e43432737a5dad1437851dc3b3c"
+  },
+  {
+    "path": "public/opportunity-kiti.html",
+    "bytes": 9578,
+    "sha256": "17ce52ad80f1aa2f1148fa3069cf54c78bfbf730b50bbe103a614832b43a63b6",
+    "gitBlob": "d2854f03fed9ed0e7513bb324468a930d6cfbe99"
+  },
+  {
+    "path": "public/privacy.html",
+    "bytes": 5344,
+    "sha256": "8ba0c0b462fa3ad1970465298f8b98e001a5cfa088dc2bb795cbee8fce4c6a48",
+    "gitBlob": "e774ce76eccee2d5f5a68afca2128b110716691e"
+  },
+  {
+    "path": "public/projects.html",
+    "bytes": 4443,
+    "sha256": "9257c61adf0379ff9f9d45ba653b3b98263d55868517c489ed054c0a19e282ef",
+    "gitBlob": "b0933de3ab2ff0ce88043eefa512cbfcd52b5610"
+  },
+  {
+    "path": "public/script.js",
+    "bytes": 39921,
+    "sha256": "fc91980a4bc584b09fe9a2636577df26066fa7b4e8eedaf5a4c32f17239d8176",
+    "gitBlob": "e8b53e0941d9d34c9f421a7c125a418889ebc76f"
+  },
+  {
+    "path": "public/sme-investment-partnerships-cyprus.html",
+    "bytes": 4910,
+    "sha256": "6a3247ac2f854b83c4e8e90504e393be570370c19881556487f3f52ddcb8cde3",
+    "gitBlob": "a5cf27ab00ce6b792cf30c03495dd40a1845b5bb"
+  },
+  {
+    "path": "public/strategic-connections.html",
+    "bytes": 5607,
+    "sha256": "a21551c3a4f6f4f4e55ffdad310f9ee35d8eadb3cb24a0e629e5c68c0e63d491",
+    "gitBlob": "b335c4a0046631f38d9872c57f89a4b8faf00af3"
+  },
+  {
+    "path": "public/style.css",
+    "bytes": 17271,
+    "sha256": "380df2b19480e3ef5ce48a22983a52392af123ab36224b4b9b3ccaa1e96495e5",
+    "gitBlob": "708aa862f7bf77569b18dd8c9201e41a4960115d"
+  },
+  {
+    "path": "public/whatsapp-icon.png",
+    "bytes": 33734,
+    "sha256": "c25bbfa6049f350db78ce861811b237553cfb4c9b1958c1943bc92b852237db1",
+    "gitBlob": "64737736e4feceaf979ab58e2f474b52bca957b3"
+  }
+]

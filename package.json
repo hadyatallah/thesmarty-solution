@@ -1,11 +1,8 @@
 {
-  "name": "the-smarty-solution",
+  "name": "tss-isolated-acceptance-scaffold",
   "private": true,
-  "version": "1.0.0",
   "type": "module",
-  "dependencies": {
-    "dejavu-fonts-ttf": "2.37.3",
-    "openai": "^5.0.0",
-    "sharp": "^0.34.3"
+  "scripts": {
+    "build": "node preview-build.mjs"
   }
 }
