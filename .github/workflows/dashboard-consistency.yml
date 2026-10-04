@@ -7,6 +7,7 @@ on:
       - 'command-center/**'
       - 'scripts/build-task-metrics.mjs'
       - 'tests/dashboard*'
+      - 'tests/command-center/**'
       - 'tests/browser-dashboard.py'
       - '.github/workflows/dashboard-consistency.yml'
 permissions:
@@ -28,6 +29,7 @@ jobs:
           node-version: '22'
       - name: Check shared bundle, syntax and read-side regressions
         run: |
+          set -euo pipefail
           mkdir -p evidence/dashboard
           node scripts/build-task-metrics.mjs --check
           node --check crm/assistant.js
