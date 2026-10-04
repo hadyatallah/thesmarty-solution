@@ -1,0 +1,45 @@
+name: TSS dashboard consistency
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'crm/**'
+      - 'command-center/**'
+      - 'tests/dashboard*'
+      - 'tests/browser-dashboard.py'
+      - '.github/workflows/dashboard-consistency.yml'
+permissions:
+  contents: read
+concurrency:
+  group: tss-dashboard-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  isolated-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preserve exact tracked source for restricted review
+        run: |
+          mkdir -p evidence/dashboard
+          git archive --format=zip --output=evidence/dashboard/baseline-source.zip 0df9299453fb0c407d71df3b09c992782788285e crm command-center tests .github/workflows script.js anti-spam.js contact.html kiti-enquiry.html style.css google-apps-script-form-backend.gs
+          git rev-parse HEAD > evidence/dashboard/checked-out-commit.txt
+          sha256sum evidence/dashboard/baseline-source.zip > evidence/dashboard/baseline-source.sha256
+      - name: Preserve prior Node safety checks
+        run: node --test tests/urgent*.test.mjs tests/enquiry-transport.test.mjs
+      - name: Dashboard tests when present
+        run: |
+          if compgen -G 'tests/dashboard*.test.mjs' > /dev/null; then node --test tests/dashboard*.test.mjs; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dashboard-source-and-results
+          path: evidence/dashboard/
+          retention-days: 14
+          if-no-files-found: error
