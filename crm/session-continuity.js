@@ -7,7 +7,7 @@
  const LOGOUT_INTENT='tss-crm-browser-signout-pending-v1';
  const EXTRA=new Set(['/api/crm-command','/api/crm-research','/api/outlook/status','/api/outlook/oauth/start','/api/outlook/disconnect','/api/outlook/send/propose','/api/outlook/send/approve']);
  const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- function create({fetcher=global.fetch.bind(global),clock=Date.now,ready=()=>{},cleared=()=>{}}={}){
+ function create({fetcher=global.fetch.bind(global),clock=Date.now,ready=()=>{},cleared=()=>{},expiryChanged=()=>{}}={}){
   let current=null,epoch=0,enabled=false,pendingLogin=false;
   const pendingLogout=()=>{try{return global.localStorage?.getItem(LOGOUT_INTENT)==='1';}catch{return false;}};
   const logoutIntent=value=>{try{value?global.localStorage?.setItem(LOGOUT_INTENT,'1'):global.localStorage?.removeItem(LOGOUT_INTENT);}catch{}};
@@ -23,12 +23,20 @@
    finally{clearTimeout(timer);}
   }
   function reset(){epoch++;current=null;}
+  function narrowExpiry(s,data){
+   if(data.sessionExpiresAt===undefined)return;
+   if(!Number.isSafeInteger(data.sessionExpiresAt)||data.sessionExpiresAt<=0)throw Error('NATIVE_CONTRACT_UNVERIFIED');
+   const expiresAt=Math.min(s.expiresAt,data.sessionExpiresAt);
+   if(expiresAt!==s.expiresAt){s.expiresAt=expiresAt;expiryChanged(expiresAt);}
+   // Preserve a known operation acknowledgement even if its request finished
+   // after expiry. The narrowed deadline blocks the next operation; no replay.
+  }
   function accept(meta){
    if(!meta||!new RegExp('^'+MARKER+'[a-f0-9]{32}$').test(meta.marker)||!/^[a-f0-9]{64}$/.test(meta.csrf)||!Number.isSafeInteger(meta.expiresAt)||meta.expiresAt<=clock()||typeof meta.trusted!=='boolean')throw Error('NATIVE_CONTRACT_UNVERIFIED');
    current=meta;return ready(meta);
   }
   const api={
-   reset,enabled:()=>enabled,active:()=>!!current,
+   reset,enabled:()=>enabled,active:()=>!!current&&clock()<current.expiresAt,
    async retryLogout(){
     try{const d=await post(PATH,{op:'resume'});current=d.result;return await api.logout(false);}
     catch(e){if(e.message==='AUTH_REQUIRED'){logoutIntent(false);return {localSignedOut:true,serverRevocationConfirmed:true};}return {localSignedOut:false,serverRevocationConfirmed:false};}
@@ -55,11 +63,11 @@
     if(['askAssistant','ccState','ccPropose','ccDecide','ccExecute','ccPrepareBrief'].includes(fn))data=await post('/api/crm-command',{fn,args},s.csrf);
     else if(fn==='ccResearchWebsite')data=await post('/api/crm-research',{session:s.marker,url:tail[0]},s.csrf);
     else data=await post(PATH,{op:'rpc',marker:s.marker,fn,args:tail},s.csrf);
-    if(n!==epoch||current!==s)throw Error('SESSION_CHANGED');return data.result;
+    if(n!==epoch||current!==s)throw Error('SESSION_CHANGED');narrowExpiry(s,data);return data.result;
    },
    async service(path,body){
-    const s=current,n=epoch;if(!s||body.session!==s.marker||!EXTRA.has(path))throw Error('AUTH_REQUIRED');
-    const data=await post(path,body,s.csrf);if(n!==epoch||current!==s)throw Error('SESSION_CHANGED');return data;
+    const s=current,n=epoch;if(!s||clock()>=s.expiresAt||body.session!==s.marker||!EXTRA.has(path))throw Error('AUTH_REQUIRED');
+    const data=await post(path,body,s.csrf);if(n!==epoch||current!==s)throw Error('SESSION_CHANGED');narrowExpiry(s,data);return data;
    },
    async logout(all=false){
     const s=current;logoutIntent(true);reset();cleared();

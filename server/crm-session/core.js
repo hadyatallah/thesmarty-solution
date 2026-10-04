@@ -9,8 +9,12 @@ export const MARKER = 'tss-cookie-v1:';
 export const MAX_MS = 60 * 60 * 1000;
 const ORIGINS = new Set(['https://www.thesmartysolution.com', 'https://thesmartysolution.com']);
 const ERROR_CODES = new Set(['AUTH_REQUIRED','SESSION_CHANGED','CSRF_REJECTED','ORIGIN_NOT_ALLOWED','INVALID_REQUEST','METHOD_NOT_ALLOWED','ACTION_NOT_ALLOWED','SESSION_NOT_CONFIGURED','NATIVE_CONTRACT_UNVERIFIED','CRM_CONNECTION_UNCERTAIN','SIGNIN_REJECTED']);
+// Exact, non-sensitive messages recovered from the complete historical writer.
+// Dynamic/native exception text is never passed through. Deployed parity remains gated.
+const BUSINESS_ERRORS=new Set(['This record changed on another device. Refresh before saving.','Record no longer exists. Refresh and retry.','Name is required','Name is too long','Invalid date','Invalid amount','Invalid email','Linked record not found','A company with that exact name already exists','Record missing or duplicate ID. Refresh before saving.','Links must start with https:// or http://']);
 export const fail = code => { throw Error(code); };
-export const safeCode = e => ERROR_CODES.has(e?.message) ? e.message : 'CRM_CONNECTION_UNCERTAIN';
+export const statusForError=(code,fallback=400)=>['AUTH_REQUIRED','SESSION_CHANGED','SIGNIN_REJECTED'].includes(code)?401:code==='CRM_CONNECTION_UNCERTAIN'?503:BUSINESS_ERRORS.has(code)?(/record changed|Record no longer|Record missing/.test(code)?409:422):fallback;
+export const safeCode = e => (ERROR_CODES.has(e?.message)||BUSINESS_ERRORS.has(e?.message)) ? e.message : 'CRM_CONNECTION_UNCERTAIN';
 export const timingSafe = (a,b) => typeof a === 'string' && typeof b === 'string' && a.length === b.length && a.length <= 4096 && Buffer.byteLength(a)===Buffer.byteLength(b) && crypto.timingSafeEqual(Buffer.from(a),Buffer.from(b));
 export function settings(env=process.env) {
   // Release remains off until both implementation and native-contract acceptance pass.
@@ -95,7 +99,8 @@ export async function nativeCall(fn,args,{fetcher=fetch,timeoutMs=55000}={}) {
     if(!value||typeof value.ok!=='boolean')fail('CRM_CONNECTION_UNCERTAIN');
     if(!value.ok) {
       if(/AUTH_REQUIRED|SESSION_CHANGED/.test(String(value.error||'')))fail('AUTH_REQUIRED');
-      // Do not expose unreviewed native exceptions. Specific business error mapping is a release-contract gate.
+      if(fn==='saveRecord'&&BUSINESS_ERRORS.has(value.error))fail(value.error);
+      // Unknown messages remain uncertain; never echo private native exception text.
       fail(fn==='googleSignIn'?'SIGNIN_REJECTED':'CRM_CONNECTION_UNCERTAIN');
     }
     return value.result;
@@ -110,12 +115,17 @@ export function validNativeCheck(value,now=Date.now()) {
   if(value.email && value.email!==OWNER)fail('AUTH_REQUIRED');
   return {expiresAt:value.expiresAt};
 }
-export async function resolveBrowserSession(req,marker,{env=process.env,now=Date.now(),call=nativeCall}={}) {
+export function capNativeExpiry(session,checked,now=Date.now()) {
+  const expiresAt=Math.min(session.expiresAt,checked.expiresAt);
+  if(!Number.isSafeInteger(expiresAt)||expiresAt<=now)fail('AUTH_REQUIRED');
+  return expiresAt;
+}
+export async function resolveBrowserSession(req,marker,{env=process.env,now,clock=now===undefined?Date.now:()=>now,call=nativeCall}={}) {
   const config=settings(env);if(!config.enabled)fail('SESSION_NOT_CONFIGURED');
-  trustedOrigin(req);if(req.headers.host!=='api.thesmartysolution.com')fail('ORIGIN_NOT_ALLOWED');const s=activeSession(req,config.key,now);csrf(req,s.csrf);
+  trustedOrigin(req);if(req.headers.host!=='api.thesmartysolution.com')fail('ORIGIN_NOT_ALLOWED');const s=activeSession(req,config.key,clock());csrf(req,s.csrf);
   if(marker!==MARKER+s.id)fail('SESSION_CHANGED');
-  const checked=validNativeCheck(await call('checkSession',[s.token]),now);
-  return {...s,expiresAt:Math.min(s.expiresAt,checked.expiresAt)};
+  const checked=validNativeCheck(await call('checkSession',[s.token]),clock());
+  return {...s,expiresAt:capNativeExpiry(s,checked,clock())};
 }
 export function withBrowserSession(handler,shape='session',deps={}) {
   return async(req,res)=>{
@@ -133,7 +143,15 @@ export function withBrowserSession(handler,shape='session',deps={}) {
       const next=shape==='args'?{...body,args:[s.token,...body.args.slice(1)]}:{...body,session:s.token};
       // Preserve IncomingMessage/Vercel getters and methods; spreading drops prototype headers.
       const forwarded=new Proxy(req,{get:(target,key)=>key==='body'?next:Reflect.get(target,key,target)});
-      return handler(forwarded,res);
-    }catch(e){const code=safeCode(e);return res.status(['AUTH_REQUIRED','SESSION_CHANGED'].includes(code)?401:code==='CRM_CONNECTION_UNCERTAIN'?503:403).json({ok:false,error:code});}
+      // Add only non-secret deadline metadata; preserve existing business results,
+      // status chaining and cookie headers. This does not extend or rewrite cookies.
+      let reply;
+      reply=new Proxy(res,{get:(target,key)=>{
+        if(key==='status')return code=>{target.status(code);return reply;};
+        if(key==='json')return value=>target.json(value?.ok===true?{...value,sessionExpiresAt:s.expiresAt}:value);
+        const value=Reflect.get(target,key,target);return typeof value==='function'?value.bind(target):value;
+      }});
+      return await handler(forwarded,reply);
+    }catch(e){const code=safeCode(e);return res.status(statusForError(code,403)).json({ok:false,error:code});}
   };
 }

@@ -7,8 +7,10 @@ on:
       - 'command-center/**'
       - 'scripts/build-task-metrics.mjs'
       - 'tests/dashboard*'
+      - 'tests/status-display.test.mjs'
       - 'tests/command-center/**'
       - 'tests/browser-dashboard.py'
+      - 'tests/browser-status-display.py'
       - '.github/workflows/dashboard-consistency.yml'
 permissions:
   contents: read
@@ -33,25 +35,31 @@ jobs:
           mkdir -p evidence/dashboard
           node scripts/build-task-metrics.mjs --check
           node --check crm/assistant.js
+          node --check crm/status-display.js
           node --check command-center/crm.js
-          node --test tests/dashboard.test.mjs tests/urgent*.test.mjs tests/enquiry-transport.test.mjs tests/command-center/phase*.test.js tests/command-center/context.test.js tests/command-center/lookup-availability.test.js tests/command-center/ui.test.js | tee evidence/dashboard/node-tests.txt
+          node --test tests/dashboard.test.mjs tests/urgent*.test.mjs tests/enquiry-transport.test.mjs tests/assistant-formatting.test.mjs tests/command-center/phase*.test.js tests/command-center/context.test.js tests/command-center/lookup-availability.test.js tests/command-center/ui.test.js tests/status-display.test.mjs | tee evidence/dashboard/node-tests.txt
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install isolated browser-test runtime
         run: |
+          set -euo pipefail
           python -m pip install playwright==1.63.0
           python -m playwright install --with-deps chromium
       - name: Test real CRM renderers using synthetic state only
         run: python tests/browser-dashboard.py
+      - name: Test truthful status and canonical classification using synthetic state
+        run: python tests/browser-status-display.py
       - name: Preserve released cache, draft and website safety
         run: |
+          set -euo pipefail
           python tests/browser-cache-regression.py
           python tests/browser-command-routing.py
           python tests/browser-enquiry.py
       - name: Retain exact candidate source and checksums
         if: always()
         run: |
+          set -euo pipefail
           git rev-parse HEAD > evidence/dashboard/checked-out-commit.txt
           git archive --format=zip --output=evidence/dashboard/candidate-source.zip HEAD crm command-center scripts/build-task-metrics.mjs tests .github/workflows/dashboard-consistency.yml
           sha256sum evidence/dashboard/candidate-source.zip > evidence/dashboard/candidate-source.sha256
@@ -61,6 +69,7 @@ jobs:
           name: dashboard-source-and-results
           path: |
             evidence/dashboard/
+            evidence/status-display/
             evidence/enquiry/
             evidence/chromium*.json
           retention-days: 14

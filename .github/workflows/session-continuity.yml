@@ -39,12 +39,14 @@ jobs:
           python-version: '3.12'
       - name: Prepare isolated test browser
         run: |
+          set -euo pipefail
           python -m pip install playwright==1.63.0
           python -m playwright install --with-deps chromium
       - name: Run actual shell and cookie lifecycle against synthetic authority
         run: python tests/session-browser.py
       - name: Preserve prior frontend browser acceptance
         run: |
+          set -euo pipefail
           python tests/browser-cache-regression.py
           python tests/browser-command-routing.py
           python tests/browser-dashboard.py
@@ -52,6 +54,7 @@ jobs:
       - name: Preserve exact source and evidence
         if: always()
         run: |
+          set -euo pipefail
           mkdir -p evidence/session
           git rev-parse HEAD > evidence/session/checked-out-commit.txt
           git archive --format=zip --output=evidence/session/baseline-source.zip f5cccfb1458583862ec882c0a326f8858cdb33c2 api crm command-center tests scripts package.json package-lock.json vercel.json
