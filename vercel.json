@@ -11,5 +11,23 @@
       "destination": "/opportunities.html",
       "permanent": true
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/outlook/ingestion/enable",
+      "destination": "/api/outlook/status?captureAction=enable"
+    },
+    {
+      "source": "/api/outlook/ingestion/status",
+      "destination": "/api/outlook/status?captureAction=status"
+    },
+    {
+      "source": "/api/outlook/ingestion/disable",
+      "destination": "/api/outlook/status?captureAction=disable"
+    },
+    {
+      "source": "/api/outlook/sync",
+      "destination": "/api/outlook/status?captureAction=sync"
+    }
   ]
 }
