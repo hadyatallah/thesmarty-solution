@@ -26,6 +26,7 @@ function showOutcome(card,button,status,result){
  if(label)label.textContent=({succeeded:'Sent · email',accepted:'Accepted by Microsoft · email',uncertain:'Send status not confirmed · email',blocked:'Draft only · email'})[result.state];
 }
 async function post(path,body){
+ const c=globalThis.TSSBrowserSession?.activeClient;if(c?.handles(body.session))return c.service(path,body);
  const r=await fetch(API+path,{method:'POST',credentials:'include',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
  const data=await r.json();
  if(!r.ok||data?.ok!==true)throw Error(data?.error||'EMAIL_RESPONSE_UNCONFIRMED');

@@ -1,5 +1,6 @@
+import {withBrowserSession} from '../../server/crm-session/core.js';
 import {baseHeaders,cors,requireTrustedOrigin,cookies,open,verifyCrmSession,refreshToken,graphMe,assertMailbox,sessionEnvelope,cookie,clearCookie,SESSION_COOKIE} from './_lib.js';
-export default async function handler(req,res){
+async function handler(req,res){
  baseHeaders(res);cors(req,res);
  if(req.method==='OPTIONS')return res.status(204).end();
  if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({ok:false,error:'METHOD_NOT_ALLOWED'});}
@@ -16,3 +17,4 @@ export default async function handler(req,res){
   return res.status(e.message==='AUTH_REQUIRED'?401:200).json({ok:true,connected:false,error:e.message==='AUTH_REQUIRED'?'AUTH_REQUIRED':'OUTLOOK_RECONNECT_REQUIRED'});
  }
 }
+export default withBrowserSession(handler);

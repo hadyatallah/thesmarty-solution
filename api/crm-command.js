@@ -1,9 +1,10 @@
+import {withBrowserSession} from '../server/crm-session/core.js';
 // Transport only. Apps Script remains the authority for sessions, schemas and approvals.
 const BACKEND='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
 const METHODS=new Set(['askAssistant','ccState','ccPropose','ccDecide','ccExecute','ccPrepareBrief']);
 export const config={maxDuration:60};
 const ALLOWED_ORIGINS=new Set(['https://www.thesmartysolution.com','https://thesmartysolution.com']);
-function cors(req,res){let origin='';try{origin=new URL(req.headers.origin).origin;}catch{}if(origin&&ALLOWED_ORIGINS.has(origin)){res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Access-Control-Allow-Credentials','true');res.setHeader('Vary','Origin');}res.setHeader('Access-Control-Allow-Headers','Content-Type');res.setHeader('Access-Control-Allow-Methods','POST, OPTIONS');return origin;}
+function cors(req,res){let origin='';try{origin=new URL(req.headers.origin).origin;}catch{}if(origin&&ALLOWED_ORIGINS.has(origin)){res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Access-Control-Allow-Credentials','true');res.setHeader('Vary','Origin');}res.setHeader('Access-Control-Allow-Headers','Content-Type, X-TSS-CRM-Request, X-TSS-CRM-CSRF');res.setHeader('Access-Control-Allow-Methods','POST, OPTIONS');return origin;}
 export function makeHandler(fetcher=fetch){return async(req,res)=>{
  res.setHeader('Cache-Control','private, no-store');res.setHeader('X-Content-Type-Options','nosniff');cors(req,res);
  const fail=(status,error)=>res.status(status).json({ok:false,error});
@@ -38,4 +39,4 @@ export function makeHandler(fetcher=fetch){return async(req,res)=>{
   return fail(502,'CRM_CONNECTION_UNCERTAIN: Refresh the action ledger before retrying a change.');
  }finally{clearTimeout(timer);}
 };}
-export default makeHandler();
+export default withBrowserSession(makeHandler(),'args');

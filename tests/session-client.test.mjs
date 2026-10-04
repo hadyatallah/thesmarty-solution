@@ -1,0 +1,41 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import fs from 'node:fs';
+const source=fs.readFileSync(new URL('../crm/session-continuity.js',import.meta.url),'utf8');
+const meta={marker:'tss-cookie-v1:'+'a'.repeat(32),csrf:'b'.repeat(64),expiresAt:1791120000000,trusted:false};
+function fixture(behavior={}){
+ const calls=[],writes=[],storage=new Map(),elements=new Map(),callbacks=[];
+ const context={URL,AbortController,Error,TypeError,setTimeout,clearTimeout,console,Date,localStorage:{getItem:k=>storage.get(k),setItem:(k,v)=>{writes.push([k,v]);storage.set(k,v);},removeItem:k=>{writes.push([k,null]);storage.delete(k);}},document:{head:{appendChild(){}},getElementById:id=>{if(!elements.has(id))elements.set(id,{innerHTML:'',textContent:'',checked:false});return elements.get(id);}},google:{accounts:{id:{initialize:opts=>callbacks.push(opts),renderButton(){}}}}};
+ context.fetch=async(url,opts)=>{
+  const body=opts.body?JSON.parse(opts.body):null;calls.push({url,opts,body});
+  if(behavior.failConfig&&opts.method==='GET')throw TypeError('offline');
+  if(opts.method==='GET')return {ok:true,json:async()=>({ok:true,enabled:behavior.enabled!==false})};
+  if(behavior.custom)return behavior.custom(url,opts,body);
+  if(body.op==='resume')return {ok:true,json:async()=>({ok:true,result:meta})};
+  if(body.op==='begin')return {ok:true,json:async()=>({ok:true,result:{nonce:'synthetic-nonce',csrf:'b'.repeat(64)}})};
+  if(body.op==='login')return {ok:true,json:async()=>({ok:true,result:meta})};
+  if(body.op==='logout')return {ok:true,json:async()=>({ok:true,result:{localSignedOut:true,serverRevocationConfirmed:true}})};
+  return {ok:true,json:async()=>({ok:true,result:{synthetic:true}})};
+ };
+ vm.createContext(context);vm.runInContext(source,context);
+ const client=context.TSSBrowserSession.create({clock:()=>1791118800000,ready:m=>context.observed=m,cleared:()=>{context.cleared=true;}});
+ return {client,calls,writes,storage,elements,callbacks,context};
+}
+test('disabled config never attempts login or resume automatically',async()=>{const f=fixture({enabled:false});assert.equal(await f.client.initialize(),false);assert.equal(f.calls.length,1);assert.equal(f.callbacks.length,0);});
+test('unavailable config does not fall back to less secure login silently',async()=>{const f=fixture({failConfig:true});await assert.rejects(f.client.initialize(),/No sign-in was attempted/);assert.equal(f.calls.length,1);});
+test('resume stores only non-secret metadata in memory, never web storage',async()=>{const f=fixture();await f.client.initialize();await f.client.resume();assert.equal(f.client.handles(meta.marker),true);assert.equal(f.context.observed.marker,meta.marker);assert.equal(f.writes.length,0);assert.equal(f.calls[1].body.op,'resume');});
+test('new login leaves trust unchecked and waits for Google callback',async()=>{const f=fixture();await f.client.initialize();await f.client.showLogin();assert.match(f.elements.get('main').innerHTML,/type="checkbox"/);assert.doesNotMatch(f.elements.get('main').innerHTML,/checked/);assert.equal(f.calls.filter(x=>x.body?.op==='login').length,0);assert.equal(f.callbacks[0].auto_select,false);});
+test('login verification transports credential but never saves it',async()=>{const f=fixture();await f.client.initialize();await f.client.showLogin();await f.callbacks[0].callback({credential:'synthetic-google-credential'});const sent=f.calls.find(x=>x.body?.op==='login');assert.equal(sent.body.trusted,false);assert.equal(sent.opts.headers['X-TSS-CRM-CSRF'],'b'.repeat(64));assert.equal(f.writes.length,0);assert.equal(f.context.observed.marker,meta.marker);});
+test('repeated Google callback does not duplicate login request',async()=>{const f=fixture();await f.client.initialize();await f.client.showLogin();await f.callbacks[0].callback({credential:'synthetic'});await f.callbacks[0].callback({credential:'synthetic'});assert.equal(f.calls.filter(x=>x.body?.op==='login').length,1);});
+test('RPC uses public marker and cookie credentials with CSRF',async()=>{const f=fixture();await f.client.initialize();await f.client.resume();await f.client.rpc('getState',[meta.marker]);const sent=f.calls.at(-1);assert.equal(sent.opts.credentials,'include');assert.equal(sent.opts.redirect,'error');assert.equal(sent.body.marker,meta.marker);assert.equal(sent.opts.headers['X-TSS-CRM-CSRF'],meta.csrf);assert.deepEqual(sent.body.args,[]);});
+for(const fn of ['ccState','ccPropose','ccDecide','ccExecute','ccPrepareBrief','askAssistant'])test('existing command route kept for '+fn,async()=>{const f=fixture();await f.client.initialize();await f.client.resume();await f.client.rpc(fn,[meta.marker,{synthetic:true}]);assert.match(f.calls.at(-1).url,/\/api\/crm-command$/);assert.equal(f.calls.at(-1).body.fn,fn);});
+for(const path of ['/api/outlook/status','/api/outlook/send/propose','/api/outlook/send/approve','/api/outlook/oauth/start','/api/outlook/disconnect'])test('existing Outlook path and cookie scope kept '+path,async()=>{const f=fixture();await f.client.initialize();await f.client.resume();await f.client.service(path,{session:meta.marker,id:'synthetic'});assert.equal(f.calls.at(-1).url,'https://api.thesmartysolution.com'+path);assert.equal(f.calls.at(-1).opts.credentials,'include');assert.equal(f.calls.at(-1).opts.headers['X-TSS-CRM-CSRF'],meta.csrf);});
+test('wrong marker and arbitrary service URL cannot be sent',async()=>{const f=fixture();await f.client.initialize();await f.client.resume();const n=f.calls.length;await assert.rejects(f.client.service('/api/outlook/send/approve',{session:'wrong'}),/AUTH_REQUIRED/);await assert.rejects(f.client.service('https://evil.invalid/',{session:meta.marker}),/AUTH_REQUIRED/);assert.equal(f.calls.length,n);});
+test('logout clears local UI before completion and never retries automatically',async()=>{const f=fixture();await f.client.initialize();await f.client.resume();await f.client.logout();assert.equal(f.client.active(),false);assert.equal(f.context.cleared,true);assert.equal(f.calls.filter(x=>x.body?.op==='logout').length,1);assert.equal(f.storage.size,0);assert.equal(f.writes.some(x=>String(x[1]).includes(meta.marker)),false);});
+test('in-flight response cannot redraw after logout',async()=>{let release;const f=fixture();await f.client.initialize();await f.client.resume();const c=f.context.fetch;/* change behavior through injected closure in a separate fixture */
+ const behavior={custom:async(url,opts,b)=>b.op==='resume'?{ok:true,json:async()=>({ok:true,result:meta})}:b.op==='rpc'?new Promise(r=>release=r):{ok:true,json:async()=>({ok:true,result:{localSignedOut:true,serverRevocationConfirmed:true}})}};
+ const x=fixture(behavior);await x.client.initialize();await x.client.resume();const p=x.client.rpc('getState',[meta.marker]);await x.client.logout();release({ok:true,json:async()=>({ok:true,result:{synthetic:true}})});await assert.rejects(p,/SESSION_CHANGED/);});
+test('uncertain logout blocks automatic resume with a nonsecret tombstone',async()=>{const behavior={};const f=fixture(behavior);await f.client.initialize();await f.client.resume();behavior.custom=async()=>{throw TypeError('offline');};const r=await f.client.logout();assert.equal(r.localSignedOut,false);assert.equal(r.serverRevocationConfirmed,false);assert.equal(f.storage.get('tss-crm-browser-signout-pending-v1'),'1');const n=f.calls.length;await assert.rejects(f.client.resume(),/Previous sign-out/);assert.equal(f.calls.length,n);await f.client.showLogin();assert.match(f.elements.get('main').innerHTML,/Sign-out not confirmed/);assert.equal(f.callbacks.length,0);});
+test('session failure response does not return cached business data',async()=>{const b={};const f=fixture(b);await f.client.initialize();await f.client.resume();b.custom=async()=>({ok:false,json:async()=>({ok:false,error:'AUTH_REQUIRED'})});await assert.rejects(f.client.rpc('getState',[meta.marker]),/AUTH_REQUIRED/);});
+test('active cookie route has no native-token web storage or external secret log',()=>{assert.doesNotMatch(source,/localStorage\.setItem\([^\n]*(token|credential|csrf)/);assert.doesNotMatch(source,/console\.(log|warn|info|error)/);assert.doesNotMatch(source,/sessionStorage/);});
