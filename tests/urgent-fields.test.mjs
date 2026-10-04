@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+const sourceRoot=process.env.TSS_SOURCE_ROOT||(fs.existsSync(path.join(root,'patched'))?path.join(root,'patched'):root);
+const code=fs.readFileSync(path.join(sourceRoot,'command-center/manager.js'),'utf8').replace(/^import .*;\r?\n/gm,'').replace(/\bexport /g,'');
+const context=vm.createContext({});
+vm.runInContext(code+'\nglobalThis.detect=isHistoricalEmailLogRequest;',context);
+for(const query of ['Record the email address for Example Company','Save the email address already provided','Update the email field for this contact','Record the e-mail address in the company record'])test('email-address edit is not historical-message logging: '+query,()=>assert.equal(context.detect(query),false));

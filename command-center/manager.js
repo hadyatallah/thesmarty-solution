@@ -7,6 +7,8 @@ import {isCommunicationDraftRequest,communicationRequest} from './growth.js';
 export function isHistoricalEmailLogRequest(command) {
  const q=String(command||'').trim().toLowerCase()
   .replace(/^(?:(?:please|kindly|can you|could you|would you|i need you to|i want you to|we need to)\s+)+/, '');
+ // Email-address edits are ordinary record requests, not historical message logging.
+ if(/\be-?mail\s+(?:address|field)\b/.test(q))return false;
  if(!/\b(?:e-?mails?|messages?|correspondence|replies|reply)\b/.test(q))return false;
  if(/^(?:log|record|register|import|backfill|reconcile|capture|attach|link)\b/.test(q))return true;
  if(/^(?:add|save)\b/.test(q)&&/\b(?:already|sent|received|existing|historical|previous|past|timeline|history|activity)\b/.test(q))return true;

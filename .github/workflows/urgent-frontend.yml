@@ -7,7 +7,7 @@ on:
       - 'crm/assistant.js'
       - 'crm/command-center.js'
       - 'command-center/**'
-      - 'tests/urgent-frontend.test.mjs'
+      - 'tests/urgent*.test.mjs'
       - 'tests/browser-cache-regression.py'
       - 'tests/browser-command-routing.py'
       - '.github/workflows/urgent-frontend.yml'
@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: '22'
       - name: Run isolated router and cache regression tests
-        run: node --test tests/urgent-frontend.test.mjs
+        run: node --test tests/urgent*.test.mjs
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
