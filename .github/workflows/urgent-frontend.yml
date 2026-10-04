@@ -4,9 +4,12 @@ on:
     branches: [main]
     paths:
       - 'crm/service-worker.js'
-      - 'command-center/manager.js'
+      - 'crm/assistant.js'
+      - 'crm/command-center.js'
+      - 'command-center/**'
       - 'tests/urgent-frontend.test.mjs'
       - 'tests/browser-cache-regression.py'
+      - 'tests/browser-command-routing.py'
       - '.github/workflows/urgent-frontend.yml'
 permissions:
   contents: read
@@ -36,3 +39,5 @@ jobs:
         run: python -m playwright install --with-deps chromium
       - name: Test actual service-worker lifecycle with synthetic localhost data
         run: python tests/browser-cache-regression.py
+      - name: Test actual frontend modules and submit handler with synthetic localhost data
+        run: python tests/browser-command-routing.py
