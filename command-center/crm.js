@@ -1,18 +1,15 @@
+import {calendarToday,calendarDate,isClosedRecord,isActionOpen,recordDueValue,recordCoverage,taskSummary} from './taskdates.js';
 // Pure read-side rules. This module never mutates CRM records.
 export const VERSION = 'tss-cc-0.1.0';
 export const normalize = v => String(v ?? '').normalize('NFKC').toLowerCase().replace(/\b(ltd|limited|llc|plc)\b/g, '').replace(/[^\p{L}\p{N}@.]+/gu, ' ').trim().replace(/\s+/g, ' ');
-export const closed = r => [r.status, r.stage].some(x => ['Done','Cancelled','Closed','Resolved','Won','Lost','Do not contact','Not suitable'].includes(x));
-export const day = (now = new Date()) => new Intl.DateTimeFormat('en-CA', {timeZone:'Asia/Nicosia',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
-export const validDate = v => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}/.test(v) && Number.isFinite(Date.parse(v));
+export const closed = isClosedRecord;
+export const day = calendarToday;
+export const validDate = v => typeof v === 'string' && calendarDate(v) !== null;
 export const age = (v, now) => validDate(v) ? Math.floor((now - Date.parse(v)) / 86400000) : null;
 export class CRMAdapter {
   constructor(snapshot) { this.snapshot = snapshot || {}; }
   rows(entity) { return Array.isArray(this.snapshot.records?.[entity]) ? this.snapshot.records[entity] : []; }
-  coverage(entity) {
-    const meta = this.snapshot.coverage?.[entity] || this.snapshot.dataCoverage?.[entity];
-    const available = Array.isArray(this.snapshot.records?.[entity]) && meta?.available !== false;
-    return {available, loaded:this.rows(entity).length, total:meta?.total ?? null, complete:available && meta?.complete === true, source:'CRM getState', asOf:this.snapshot.updatedAt || null};
-  }
+  coverage(entity) { return recordCoverage(this.snapshot,entity); }
   lookup(query) {
     const q = String(query || '').trim();
     const rows = this.rows('Companies');
@@ -40,10 +37,11 @@ export class CRMAdapter {
     const today = day(now), items = [], limitations = [];
     for (const e of ['Companies','Tasks','Tickets','Opportunities']) {
       if (!this.coverage(e).available) limitations.push(e + ' unavailable');
+      else if (!this.coverage(e).complete) limitations.push(e + ' population may be partial; counts describe loaded records only');
       for (const r of this.rows(e)) {
-        if (closed(r)) continue;
-        const due = r.dueDate || r.followUp;
-        if (validDate(due) && due.slice(0,10) <= today) items.push({kind:due.slice(0,10)<today?'overdue':'due_today',entity:e,id:r.id,name:r.name,date:due});
+        if (!isActionOpen(e,r)) continue;
+        const due = calendarDate(recordDueValue(e,r));
+        if (due && due <= today) items.push({kind:due<today?'overdue':'due_today',entity:e,id:r.id,name:r.name,date:due});
         if ((e === 'Opportunities' || (e === 'Companies' && ['Prospect','Qualified Lead','Opportunity'].includes(r.lifecycle))) && !String(r.nextAction || '').trim()) items.push({kind:'missing_next_action',entity:e,id:r.id,name:r.name});
         if (e === 'Opportunities') {
           // Owner is not a live operational schema field today. Do not invent one.
@@ -56,7 +54,11 @@ export class CRMAdapter {
     }
     if (!(Number(this.control('opportunityInactivityDays')) > 0)) limitations.push('Opportunity inactivity rule unavailable; dormant classification withheld');
     if (!(this.snapshot.fields?.Opportunities || []).includes('owner')) limitations.push('Opportunity ownership is not exposed by the current schema');
-    return {asOf:now.toISOString(),period:'Current open records as of '+today,populations:Object.fromEntries(['Companies','Opportunities','Tasks','Tickets'].map(e=>[e,this.coverage(e)])),items,limitations};
+    const tasks=taskSummary(this.rows('Tasks'),this.rows('Companies'),now);
+    limitations.push('Task totals: '+tasks.open+' Open, '+tasks.overdue+' overdue, '+tasks.undated+' without a due date. Internal QA included: '+tasks.qa.open+' Open / '+tasks.qa.overdue+' overdue.');
+    if(tasks.invalidDate)limitations.push(tasks.invalidDate+' Open task date(s) require review and are not classified as overdue');
+    if(tasks.unrecognizedStatus)limitations.push(tasks.unrecognizedStatus+' task status(es) are unrecognized and not counted as Open');
+    return {asOf:now.toISOString(),taskSummary:tasks,period:'Current open records as of '+today,populations:Object.fromEntries(['Companies','Opportunities','Tasks','Tickets'].map(e=>[e,this.coverage(e)])),items,limitations};
   }
   quality() {
     const duplicates = [], issues = [], seen = new Map();

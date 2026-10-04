@@ -1,0 +1,67 @@
+name: TSS dashboard consistency
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'crm/**'
+      - 'command-center/**'
+      - 'scripts/build-task-metrics.mjs'
+      - 'tests/dashboard*'
+      - 'tests/command-center/**'
+      - 'tests/browser-dashboard.py'
+      - '.github/workflows/dashboard-consistency.yml'
+permissions:
+  contents: read
+concurrency:
+  group: tss-dashboard-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  isolated-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check shared bundle, syntax and read-side regressions
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/dashboard
+          node scripts/build-task-metrics.mjs --check
+          node --check crm/assistant.js
+          node --check command-center/crm.js
+          node --test tests/dashboard.test.mjs tests/urgent*.test.mjs tests/enquiry-transport.test.mjs tests/command-center/phase*.test.js tests/command-center/context.test.js tests/command-center/lookup-availability.test.js tests/command-center/ui.test.js | tee evidence/dashboard/node-tests.txt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated browser-test runtime
+        run: |
+          python -m pip install playwright==1.63.0
+          python -m playwright install --with-deps chromium
+      - name: Test real CRM renderers using synthetic state only
+        run: python tests/browser-dashboard.py
+      - name: Preserve released cache, draft and website safety
+        run: |
+          python tests/browser-cache-regression.py
+          python tests/browser-command-routing.py
+          python tests/browser-enquiry.py
+      - name: Retain exact candidate source and checksums
+        if: always()
+        run: |
+          git rev-parse HEAD > evidence/dashboard/checked-out-commit.txt
+          git archive --format=zip --output=evidence/dashboard/candidate-source.zip HEAD crm command-center scripts/build-task-metrics.mjs tests .github/workflows/dashboard-consistency.yml
+          sha256sum evidence/dashboard/candidate-source.zip > evidence/dashboard/candidate-source.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dashboard-source-and-results
+          path: |
+            evidence/dashboard/
+            evidence/enquiry/
+            evidence/chromium*.json
+          retention-days: 14
+          if-no-files-found: error
