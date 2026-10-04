@@ -35,7 +35,7 @@ test('unknown/inherited IDs never get a fallback',()=>{assert.equal(ui.legacyCla
 test('hint escapes legacy text',()=>{assert.doesNotMatch(ui.legacyClassificationHint({id:'SYN'}, {SYN:'<img onerror=x>'}),/<img/);});
 function shellHarness(overrideHtml=html){
  const store=new Map(),main={innerHTML:''},nodes={main,signOutButton:{},sync:{}};
- const sandbox={TSSStatusDisplay:ui,Date,localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},state:null,stateObservation:{source:'not-verified'},sessionToken:'synthetic',STATE_CACHE_KEY:'fixture',STATE_CACHE_MAX_MS:604800000,validateLoadedState:()=>[],el:k=>nodes[k]||{},render:()=>{},loadAiState:()=>{},updateAppBadge:()=>{},notice:()=>{},dataIssueView:()=>{},isInstalledApp:()=>false,esc:x=>x,classificationOverlay:{'SYN-1':'Legacy'}};
+ const sandbox={TSSStatusDisplay:ui,Date,localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v)},state:null,cookieSessionClient:null,stateObservation:{source:'not-verified'},sessionToken:'synthetic',STATE_CACHE_KEY:'fixture',STATE_CACHE_MAX_MS:604800000,validateLoadedState:()=>[],el:k=>nodes[k]||{},render:()=>{},loadAiState:()=>{},updateAppBadge:()=>{},notice:()=>{},dataIssueView:()=>{},isInstalledApp:()=>false,esc:x=>x,classificationOverlay:{'SYN-1':'Legacy'}};
  vm.createContext(sandbox);
  for(const n of ['cacheState','loadCachedState','showCachedState','refresh','systemHealth','outreachView','filtered']){
   const line=overrideHtml.split('\n').find(x=>x.startsWith('function '+n+'(')||x.startsWith('async function '+n+'('));assert.ok(line,n+' exists');vm.runInContext(line,sandbox);
@@ -51,3 +51,5 @@ test('failed actual refresh records failure even when retaining earlier state',a
 test('no auth routes, mailbox calls or live integration in presentation module',()=>{assert.doesNotMatch(source,/\bfetch\s*\(|\brpc\s*\(|\bcall\s*\(|localStorage|document\.cookie/);});
 
 test('24-hour rollover is invalid telemetry, not a real observed date',()=>{assert.equal(ui.snapshotStatus({updatedAt:'2026-10-03T24:00:00Z'},{source:'api',receivedAt:now},now).label,'Not verified');});
+
+test('draft cookie mode never caches records after frontend integration',()=>{const h=shellHarness();h.sandbox.cookieSessionClient={};h.sandbox.state=snapshot();h.sandbox.cacheState();assert.equal(h.store.has('fixture'),false);assert.equal(h.sandbox.showCachedState(),false);});

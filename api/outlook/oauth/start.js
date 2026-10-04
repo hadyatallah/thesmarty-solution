@@ -1,6 +1,7 @@
+import {withBrowserSession} from '../../../server/crm-session/core.js';
 import crypto from 'node:crypto';
 import {baseHeaders,cors,requireTrustedOrigin,verifyCrmSession,pkce,authorizeUrl,seal,cookie,FLOW_COOKIE} from '../_lib.js';
-export default async function handler(req,res){
+async function handler(req,res){
  baseHeaders(res);cors(req,res);
  if(req.method==='OPTIONS')return res.status(204).end();
  if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({ok:false,error:'METHOD_NOT_ALLOWED'});}
@@ -17,3 +18,4 @@ export default async function handler(req,res){
   return res.status(code===401?401:500).json({ok:false,error:code});
  }
 }
+export default withBrowserSession(handler);

@@ -1,3 +1,4 @@
+import {withBrowserSession} from '../../../server/crm-session/core.js';
 import {baseHeaders,cors,requireTrustedOrigin,cookies,open,refreshToken,graphMe,assertMailbox,seal,cookie,SESSION_COOKIE} from '../_lib.js';
 import {validateMessage,enforceSendPreflight,assertEmailControls} from '../../../command-center/email-send-policy.js';
 
@@ -11,7 +12,7 @@ async function crmState(session){
 }
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 
-export default async function handler(req,res){
+async function handler(req,res){
  baseHeaders(res);cors(req,res);
  if(req.method==='OPTIONS')return res.status(204).end();
  if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({ok:false,error:'METHOD_NOT_ALLOWED'});}
@@ -100,3 +101,4 @@ export default async function handler(req,res){
   return res.status(error==='AUTH_REQUIRED'?401:error==='EMAIL_SEND_UNCERTAIN'?409:400).json({ok:false,error});
  }
 }
+export default withBrowserSession(handler);

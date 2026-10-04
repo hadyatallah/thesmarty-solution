@@ -1,0 +1,69 @@
+name: TSS session continuity
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'api/**'
+      - 'server/crm-session/**'
+      - 'crm/**'
+      - 'tests/session-*'
+      - '.github/workflows/session-continuity.yml'
+permissions:
+  contents: read
+concurrency:
+  group: tss-session-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  isolated-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run security and compatibility checks
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/session
+          node --check api/crm-session.js
+          node --check server/crm-session/core.js
+          node --check crm/session-continuity.js
+          node --test tests/session-*.test.mjs | tee evidence/session/node-tests.txt
+          node --test tests/dashboard.test.mjs tests/urgent*.test.mjs tests/enquiry-transport.test.mjs tests/command-center/phase*.test.js tests/command-center/context.test.js tests/command-center/lookup-availability.test.js tests/command-center/ui.test.js | tee evidence/session/prior-node-tests.txt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare isolated test browser
+        run: |
+          set -euo pipefail
+          python -m pip install playwright==1.63.0
+          python -m playwright install --with-deps chromium
+      - name: Run actual shell and cookie lifecycle against synthetic authority
+        run: python tests/session-browser.py
+      - name: Preserve prior frontend browser acceptance
+        run: |
+          set -euo pipefail
+          python tests/browser-cache-regression.py
+          python tests/browser-command-routing.py
+          python tests/browser-dashboard.py
+          python tests/browser-enquiry.py
+      - name: Preserve exact source and evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/session
+          git rev-parse HEAD > evidence/session/checked-out-commit.txt
+          git archive --format=zip --output=evidence/session/baseline-source.zip f5cccfb1458583862ec882c0a326f8858cdb33c2 api crm command-center tests scripts package.json package-lock.json vercel.json
+          git archive --format=zip --output=evidence/session/candidate-source.zip HEAD api server crm command-center tests scripts package.json package-lock.json vercel.json .github/workflows/session-continuity.yml
+          sha256sum evidence/session/*source.zip > evidence/session/source-checksums.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: session-continuity-evidence
+          path: evidence/
+          retention-days: 14
+          if-no-files-found: error

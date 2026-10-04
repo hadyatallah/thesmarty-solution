@@ -1,3 +1,4 @@
+import {withBrowserSession} from '../server/crm-session/core.js';
 import https from 'node:https';
 import {lookup} from 'node:dns/promises';
 import {isIP} from 'node:net';
@@ -43,7 +44,7 @@ export function extractEvidence(page,now=new Date()){
  return {facts:[...(title?[{text:'Website title: '+title,url:page.url,checkedAt,kind:'observed_page_metadata'}]:[]),...(description?[{text:'Company website description: '+description,url:page.url,checkedAt,kind:'company_claim_not_independently_verified'}]:[])],assumptions:[],recommendations:['Review the source and CRM communication history before choosing an outreach angle.'],limitations:['Website metadata only; not a full company investigation. Company descriptions are self-published claims. No need, budget, buying intent or TSS fit is inferred. No public search or social-platform coverage.']};
 }
 const ALLOWED_ORIGINS=new Set(['https://www.thesmartysolution.com','https://thesmartysolution.com']);
-function cors(req,res){let origin='';try{origin=new URL(req.headers.origin).origin;}catch{}if(origin&&ALLOWED_ORIGINS.has(origin)){res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Access-Control-Allow-Credentials','true');res.setHeader('Vary','Origin');}res.setHeader('Access-Control-Allow-Headers','Content-Type');res.setHeader('Access-Control-Allow-Methods','POST, OPTIONS');}
+function cors(req,res){let origin='';try{origin=new URL(req.headers.origin).origin;}catch{}if(origin&&ALLOWED_ORIGINS.has(origin)){res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Access-Control-Allow-Credentials','true');res.setHeader('Vary','Origin');}res.setHeader('Access-Control-Allow-Headers','Content-Type, X-TSS-CRM-Request, X-TSS-CRM-CSRF');res.setHeader('Access-Control-Allow-Methods','POST, OPTIONS');}
 export function makeResearchHandler({authenticate=crmTransport(),fetchPage=fetchPublicPage}={}){return async(req,res)=>{
  res.setHeader('Cache-Control','private, no-store');res.setHeader('X-Content-Type-Options','nosniff');cors(req,res);
  if(req.method==='OPTIONS')return res.status(204).end();
@@ -55,4 +56,4 @@ export function makeResearchHandler({authenticate=crmTransport(),fetchPage=fetch
  try{return res.status(200).json({ok:true,result:extractEvidence(await fetchPage(body.url))});}
  catch{return res.status(422).json({ok:false,error:'Public website unavailable or unsupported. No research facts were invented.'});}
 };}
-export default makeResearchHandler();
+export default withBrowserSession(makeResearchHandler(),'session');
