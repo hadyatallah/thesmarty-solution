@@ -56,14 +56,17 @@ def run(browser,variant,zone,width):
   metric=lambda label:page.locator('.metric').filter(has=page.locator('span',has_text=label)).locator('strong').first.inner_text()
   # Exact label lookup avoids a similarly named metric.
   metrics=page.evaluate("Object.fromEntries([...document.querySelectorAll('.metric')].map(e=>[e.querySelector('span').textContent,e.querySelector('strong').textContent]))")
+  management_width=page.evaluate('document.documentElement.scrollWidth')
   checks={'managementOpen':metrics.get('Open tasks')=='6','managementOverdue':metrics.get('Overdue tasks')=='3'}
   if variant=='patched':
+   checks['managementNoHorizontalOverflow']=management_width<=width
    text=page.locator('main').inner_text();checks['qaSeparate']='Internal QA included: 1 Open / 1 overdue' in text
    checks['undatedVisible']='1 Open without a due date' in text;checks['invalidAndStatusReview']='1 Open task date(s), 1 unrecognized task status(es)' in text
    checks['partialCoverageHonest']='complete task coverage is not confirmed' in text
    page.screenshot(path=str(OUT/f'dashboard-{width}.png'),full_page=True)
   page.evaluate('go("Reports")');reports=page.evaluate("Object.fromEntries([...document.querySelectorAll('.metric')].map(e=>[e.querySelector('span').textContent,e.querySelector('strong').textContent]))")
   checks['reportsOverdue']=reports.get('Overdue tasks')=='3'
+  if variant=='patched':checks['reportsNoHorizontalOverflow']=page.evaluate('document.documentElement.scrollWidth<=innerWidth')
   page.evaluate('go("Today")');today=page.evaluate("Object.fromEntries([...document.querySelectorAll('.metric')].map(e=>[e.querySelector('span').textContent,e.querySelector('strong').textContent]))")
   checks['todayAllRecordTotal']=today.get('Overdue records')=='5';checks['todayTimestampAndTicket']=today.get('Records due today')=='2'
   if variant=='patched':
@@ -79,13 +82,14 @@ def run(browser,variant,zone,width):
    checks['layoutNoHorizontalOverflow']=page.evaluate('document.documentElement.scrollWidth<=innerWidth')
   checks['recordsUnchanged']=page.evaluate('JSON.stringify(state.records)')==json.dumps(data['records'],ensure_ascii=False,separators=(',',':'))
   checks['noBrowserErrors']=not errors;checks['noOtherExternalRequests']=not forbidden
-  return {'variant':variant,'timezone':zone,'width':width,'checks':checks,'management':metrics,'today':today,'errors':errors,'blocked':forbidden,'syntheticStatusRequests':len(intercepted)}
+  return {'variant':variant,'timezone':zone,'width':width,'managementScrollWidth':management_width,'checks':checks,'management':metrics,'today':today,'errors':errors,'blocked':forbidden,'syntheticStatusRequests':len(intercepted)}
  finally:context.close();server.shutdown();server.server_close()
 with sync_playwright() as p:
  browser=p.chromium.launch(headless=True)
- results=[run(browser,'baseline','Asia/Nicosia',1280)]+[run(browser,'patched',z,w) for z,w in [('Asia/Nicosia',1280),('America/Los_Angeles',768),('Pacific/Kiritimati',390)]]
+ results=[run(browser,'baseline','Asia/Nicosia',1280),run(browser,'baseline','Asia/Nicosia',390)]+[run(browser,'patched',z,w) for z,w in [('Asia/Nicosia',1280),('America/Los_Angeles',768),('Pacific/Kiritimati',390)]]
  version=browser.version;browser.close()
 report={'environment':'Actual shell/read modules; synthetic state; intercepted status; no authentication or live writes','chromium':version,'results':results}
 (OUT/'browser-results.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 assert not results[0]['checks']['managementOpen'] and not results[0]['checks']['managementOverdue'],'Baseline faults not reproduced'
-assert all(all(r['checks'].values()) for r in results[1:]),'Patched dashboard browser check failed'
+assert next(r for r in results if r['variant']=='baseline' and r['width']==390)['managementScrollWidth']>390,'Baseline mobile overflow not reproduced'
+assert all(all(r['checks'].values()) for r in results if r['variant']=='patched'),'Patched dashboard browser check failed'
