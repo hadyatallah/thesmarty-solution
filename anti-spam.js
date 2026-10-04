@@ -93,6 +93,12 @@
     resetProof(form);
 
     form.addEventListener('submit', (event) => {
+      // Keep the original status and proof while a dispatched request is unresolved.
+      if (['sending', 'processing'].includes(form.dataset.tssSubmissionState)) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        return;
+      }
       setStatus(form, '');
 
       const honeypot = form.querySelector('input[name="website"]');
@@ -146,7 +152,7 @@
 
     form.addEventListener('tss:submission-processing', () => {
       markSubmitted();
-      resetProof(form);
+      // Unknown receipt is not a new enquiry. Retain the original submission proof.
     });
   };
 
