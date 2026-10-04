@@ -1,0 +1,44 @@
+name: TSS session continuity
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'api/crm-session.js'
+      - 'server/crm-session/**'
+      - 'crm/**'
+      - 'tests/session-*'
+      - '.github/workflows/session-continuity.yml'
+permissions:
+  contents: read
+concurrency:
+  group: tss-session-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  isolated-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Retain exact source baseline
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/session
+          git archive --format=zip --output=evidence/session/baseline-source.zip f5cccfb1458583862ec882c0a326f8858cdb33c2 api crm command-center tests scripts package.json package-lock.json vercel.json script.js anti-spam.js contact.html kiti-enquiry.html style.css
+          sha256sum evidence/session/baseline-source.zip > evidence/session/baseline-source.sha256
+      - name: Run session tests when present
+        run: |
+          set -euo pipefail
+          if compgen -G 'tests/session-*.test.mjs' > /dev/null; then node --test tests/session-*.test.mjs | tee evidence/session/node-tests.txt; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: session-continuity-evidence
+          path: evidence/session/
+          retention-days: 14
+          if-no-files-found: error
