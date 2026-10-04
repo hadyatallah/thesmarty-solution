@@ -1,7 +1,7 @@
-"""Exercise the real frontend module graph and submit handler on synthetic localhost data."""
+"""Exercise the real frontend module graph and patched submit handler on synthetic localhost data."""
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
-import json, mimetypes, threading, subprocess
+import json, threading, subprocess
 from urllib.parse import urlsplit
 from playwright.sync_api import sync_playwright
 
@@ -60,11 +60,17 @@ def exercise(browser,variant):
         page.goto(origin+'/fixture/');page.wait_for_function('window.fixtureReady === true')
         outcomes=[]
         for query in QUERIES:
-            result=page.evaluate('''async query=>{
-              el('aiQuestion').value=query;el('aiAnswer').textContent='';
-              await handleAssistantSubmit({preventDefault(){},submitter:el('run')});
+            result=page.evaluate('''async input=>{
+              const {query,variant}=input;el('aiQuestion').value=query;el('aiAnswer').textContent='';
+              if(variant==='baseline') {
+                // Baseline is the real module graph only. Legacy fallback needs the full CRM shell.
+                el('aiAnswer').innerHTML=(await TSSCommandCenter.answer(query,state))||'';
+              } else {
+                // The repaired module must short-circuit the actual submit handler before fallback.
+                await handleAssistantSubmit({preventDefault(){},submitter:el('run')});
+              }
               return {query,text:el('aiAnswer').innerText,hasDraft:!!el('aiAnswer').querySelector('[data-email-card]'),hasSend:!!el('aiAnswer').querySelector('[data-email-approve]')};
-            }''',query)
+            }''',{'query':query,'variant':variant})
             result['safeHistoricalResponse']=not result['hasDraft'] and not result['hasSend'] and 'no CRM activity was added' in result['text']
             outcomes.append(result)
         draft=page.evaluate('''async ()=>{
@@ -84,9 +90,9 @@ with sync_playwright() as p:
     browser=p.chromium.launch(headless=True)
     results=[exercise(browser,'baseline'),exercise(browser,'patched')]
     version=browser.version;browser.close()
-report={'environment':'real frontend modules and submit handler on localhost, synthetic data only','chromium':version,'results':results}
+report={'environment':'real frontend modules; patched submit handler on localhost; synthetic data only','chromium':version,'results':results}
 (ROOT/'evidence').mkdir(exist_ok=True)
 (ROOT/'evidence/chromium-command-routing.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))
 assert all(results[1]['checks'].values()),'Patched frontend integration check failed'
-assert not results[0]['checks']['historicalRequestsReturnNoDraft'],'Baseline misrouting not reproduced'
+assert any(o['hasDraft'] for o in results[0]['historical']),'Baseline draft misrouting not reproduced'
