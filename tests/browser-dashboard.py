@@ -44,6 +44,8 @@ def run(browser,variant,zone,width):
  def route_request(route):
   u=route.request.url
   if u.startswith(origin+'/'):route.continue_();return
+  if u=='https://api.thesmartysolution.com/api/outlook/ingestion/status':
+   route.fulfill(status=200,content_type='application/json',body='{"ok":true,"enabled":false,"bound":false,"mailbox":"synthetic@example.test"}');return
   if u=='https://api.thesmartysolution.com/api/outlook/status':
    intercepted.append('synthetic Outlook status');route.fulfill(status=200,content_type='application/json',body='{"ok":true,"connected":false}');return
   forbidden.append(u.split('?')[0]);route.abort()
