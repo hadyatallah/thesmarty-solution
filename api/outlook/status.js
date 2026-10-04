@@ -1,5 +1,12 @@
+import enableCapture from '../../server/outlook/enable.js';
+import captureStatus from '../../server/outlook/status.js';
+import disableCapture from '../../server/outlook/disable.js';
+import syncCapture from '../../server/outlook/sync.js';
+const captureHandlers={enable:enableCapture,status:captureStatus,disable:disableCapture,sync:syncCapture};
 import {baseHeaders,cors,requireTrustedOrigin,cookies,open,verifyCrmSession,refreshToken,graphMe,assertMailbox,sessionEnvelope,cookie,clearCookie,SESSION_COOKIE} from './_lib.js';
 export default async function handler(req,res){
+ const action=req.query?.captureAction;
+ if(typeof action==='string' && Object.hasOwn(captureHandlers,action))return captureHandlers[action](req,res);
  baseHeaders(res);cors(req,res);
  if(req.method==='OPTIONS')return res.status(204).end();
  if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({ok:false,error:'METHOD_NOT_ALLOWED'});}

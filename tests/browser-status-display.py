@@ -37,6 +37,8 @@ def run(browser,variant,width):
  errors=[];blocked=[];status_calls=[];checks={}
  def intercept(route):
   if route.request.url.startswith(origin+'/'):route.continue_();return
+  if route.request.url=='https://api.thesmartysolution.com/api/outlook/ingestion/status':
+   route.fulfill(status=200,content_type='application/json',body='{"ok":true,"enabled":false,"bound":false,"mailbox":"synthetic@example.test"}');return
   if route.request.url=='https://api.thesmartysolution.com/api/outlook/status':status_calls.append('synthetic');route.fulfill(status=200,content_type='application/json',body='{"ok":true,"connected":false}');return
   blocked.append(route.request.url.split('?')[0]);route.abort()
  ctx.route('**/*',intercept)

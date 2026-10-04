@@ -45,7 +45,7 @@ def exercise(browser,variant):
             elif route=='/command-center/manager.js': body,kind=manager,'text/javascript'
             else:
                 candidate=(ROOT/route.lstrip('/')).resolve()
-                allowed=(route.startswith('/command-center/') or route in ['/crm/command-center.js','/crm/outlook-send.js','/crm/assistant.js'])
+                allowed=(route.startswith('/command-center/') or route in ['/crm/command-center.js','/crm/outlook-send.js','/crm/outlook-capture.js','/crm/assistant.js'])
                 if not allowed or not candidate.is_relative_to(ROOT) or not candidate.is_file() or candidate.suffix!='.js':
                     self.send_error(404);return
                 body,kind=candidate.read_bytes(),'text/javascript'
