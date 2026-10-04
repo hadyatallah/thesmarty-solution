@@ -149,48 +149,69 @@ class TssSubmissionError extends Error {
   }
 }
 
+// This is a client waiting limit, not proof that a server-side write was cancelled.
+const TSS_ENQUIRY_WAIT_MS = 45000;
+const TSS_UNCONFIRMED_MESSAGE = 'We could not confirm whether your enquiry was received. Your details are still here. Please check your email or contact TSS on WhatsApp before sending it again.';
+
 async function submitTssEnquiry_(data) {
-  let response;
-
-  try {
-    response = await fetch(TSS_FORM_ENDPOINT, {
-      method: 'POST',
-      body: tssFormParams_(data),
-      redirect: 'follow'
-    });
-  } catch (error) {
-    if (navigator.onLine === false) {
-      throw new TssSubmissionError('OFFLINE', 'No internet connection');
+  // Before dispatch we can safely offer a retry. After dispatch the outcome may be unknown.
+  if (navigator.onLine === false) {
+    throw new TssSubmissionError('OFFLINE', 'No internet connection');
+  }
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  const unconfirmed = () => ({ state: 'processing', payload: null });
+  const rejectedCodes = new Set(['DUPLICATE', 'EXPIRED_FORM', 'FORM_VERIFICATION_REQUIRED',
+    'INVALID_EMAIL', 'INVALID_REQUEST', 'RATE_LIMITED', 'SERVICE_BUSY', 'SPAM_REJECTED', 'TOO_FAST']);
+  let timer;
+  const read = async () => {
+    let response;
+    try {
+      response = await fetch(TSS_FORM_ENDPOINT, {
+        method: 'POST',
+        body: tssFormParams_(data),
+        redirect: 'follow',
+        ...(controller ? { signal: controller.signal } : {})
+      });
+    } catch (error) {
+      return unconfirmed();
     }
-    return { state: 'processing', payload: null };
-  }
+    // An HTTP error or unreadable response cannot establish that no record was written.
+    if (response.type === 'opaque' || !response.ok) return unconfirmed();
+    let payload;
+    try { payload = await response.json(); } catch (error) { return unconfirmed(); }
+    if (payload && payload.ok === false && payload.recorded !== true && rejectedCodes.has(payload.code)) {
+      throw new TssSubmissionError(payload.code, 'Submission rejected', payload);
+    }
+    if (!payload || payload.ok !== true) return unconfirmed();
+    const hasReference = typeof payload.enquiryId === 'string' && payload.enquiryId.trim().length > 0;
+    return { state: payload.recorded === true && hasReference ? 'confirmed' : 'processing', payload };
+  };
+  const timeout = new Promise((resolve) => {
+    timer = setTimeout(() => {
+      resolve(unconfirmed());
+      if (controller) controller.abort();
+    }, TSS_ENQUIRY_WAIT_MS);
+  });
+  try { return await Promise.race([read(), timeout]); }
+  finally { clearTimeout(timer); }
+}
 
-  if (response.type === 'opaque') {
-    return { state: 'processing', payload: null };
-  }
+function tssFormLocked_(form) {
+  return ['sending', 'processing'].includes(form.dataset.tssSubmissionState);
+}
 
-  if (!response.ok) {
-    throw new TssSubmissionError('HTTP_ERROR', `Submission failed with status ${response.status}`);
-  }
-
-  let payload;
-  try {
-    payload = await response.json();
-  } catch (error) {
-    return { state: 'processing', payload: null };
-  }
-
-  if (!payload || payload.ok !== true) {
-    throw new TssSubmissionError(
-      payload && payload.code ? payload.code : 'REJECTED',
-      payload && payload.error ? payload.error : 'Submission rejected',
-      payload
-    );
-  }
-
-  return {
-    state: payload.recorded === true && payload.enquiryId ? 'confirmed' : 'processing',
-    payload
+function tssLockForm_(form) {
+  const controls = Array.from(form.querySelectorAll('input,select,textarea,button'));
+  const previous = controls.map((control) => [control, control.disabled]);
+  form.dataset.tssSubmissionState = 'sending';
+  form.setAttribute('aria-busy', 'true');
+  controls.forEach((control) => { control.disabled = true; });
+  return () => {
+    previous.forEach(([control, disabled]) => { control.disabled = disabled; });
+    form.setAttribute('aria-busy', 'false');
+    if (form.dataset.tssSubmissionState !== 'processing') {
+      form.dataset.tssSubmissionState = 'ready';
+    }
   };
 }
 
@@ -329,7 +350,7 @@ function tssCreateNonce_() {
   document.querySelectorAll('form[data-tss-form]').forEach((form) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      if (!form.reportValidity()) return;
+      if (tssFormLocked_(form) || !form.reportValidity()) return;
 
       const button = form.querySelector('button[type="submit"]');
       const originalLabel = button ? button.textContent : '';
@@ -371,11 +392,10 @@ function tssCreateNonce_() {
         data.set('source_opportunity', 'Kiti Residential Development Opportunity');
       }
 
-      if (button) {
-        button.disabled = true;
-        button.textContent = 'Sending...';
-      }
-      setTssFormStatus_(status, '', '');
+      // Build the complete payload before disabling controls, including inactive-route state.
+      const unlock = tssLockForm_(form);
+      if (button) button.textContent = 'Sending...';
+      setTssFormStatus_(status, 'sending', 'Sending your enquiry...');
 
       try {
         const result = await submitTssEnquiry_(data);
@@ -396,23 +416,26 @@ function tssCreateNonce_() {
           setTssFormStatus_(status, 'success', `Thank you. Your enquiry has been received.${emailMessage}${reference}`);
           if (button) button.textContent = 'Sent';
         } else {
+          form.dataset.tssSubmissionState = 'processing';
           form.dispatchEvent(new CustomEvent('tss:submission-processing'));
           setTssFormStatus_(
             status,
             'processing',
-            'Your request was sent for processing, but we could not confirm the backend response. Please wait for the confirmation email before submitting it again.'
+            TSS_UNCONFIRMED_MESSAGE
           );
           if (button) button.textContent = 'Processing';
         }
       } catch (error) {
+        if (error && error.code === 'DUPLICATE') {
+          form.dataset.tssSubmissionState = 'processing';
+          form.dispatchEvent(new CustomEvent('tss:submission-processing'));
+        }
         setTssFormStatus_(status, 'error', tssFormErrorMessage_(error));
-        if (button) button.textContent = originalLabel || 'Try again';
       } finally {
+        unlock();
         if (button) {
-          setTimeout(() => {
-            button.disabled = false;
-            button.textContent = originalLabel;
-          }, 2500);
+          button.disabled = form.dataset.tssSubmissionState === 'processing';
+          button.textContent = button.disabled ? 'Check receipt before resending' : originalLabel;
         }
       }
     });
@@ -636,7 +659,9 @@ function tssRenderAgentReply_(container, value) {
 
     leadBox.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const elapsed = Date.now() - leadStartedAt;
+      if (tssFormLocked_(leadBox) || !leadBox.reportValidity()) return;
+      const proofStart = Number(leadBox.querySelector('input[name="form_started_at"]').value) || leadStartedAt;
+      const elapsed = Date.now() - proofStart;
       const honeypot = leadBox.querySelector('input[name="website"]');
       if (honeypot && honeypot.value.trim()) {
         addMessage('status', 'We could not verify this submission. Please use the website contact form or WhatsApp instead.', 'status');
@@ -648,13 +673,13 @@ function tssRenderAgentReply_(container, value) {
       }
       leadBox.querySelector('input[name="form_elapsed_ms"]').value = String(elapsed);
       const button = leadBox.querySelector('button');
-      button.disabled = true;
-      button.textContent = 'Sending...';
       const data = new FormData(leadBox);
       data.append('interest', 'AI assistant website enquiry');
-      data.append('message', 'Qualified lead submitted through the TSS Business Assistant.');
+      data.append('message', 'Enquiry submitted through the TSS Business Assistant for review.');
       data.append('source', window.location.href);
       data.append('conversation', messages.map((m) => `${m.role}: ${m.content}`).join('\n\n'));
+      const unlock = tssLockForm_(leadBox);
+      button.textContent = 'Sending...';
       try {
         const result = await submitTssEnquiry_(data);
         if (result.state === 'confirmed') {
@@ -670,15 +695,22 @@ function tssRenderAgentReply_(container, value) {
           confirmationMessage.textContent = `${emailText}${reference} A member of the team can follow up using the details you provided.`;
           leadBox.replaceChildren(confirmationHeading, confirmationMessage);
         } else {
+          leadBox.dataset.tssSubmissionState = 'processing';
           leadBox.dispatchEvent(new CustomEvent('tss:submission-processing'));
           button.disabled = true;
           button.textContent = 'Processing';
-          addMessage('status', 'Your details were sent for processing, but the backend response could not be confirmed. Please wait for the confirmation email before trying again.', 'status');
+          addMessage('status', TSS_UNCONFIRMED_MESSAGE, 'status');
         }
       } catch (error) {
-        button.disabled = false;
-        button.textContent = 'Try again';
+        if (error && error.code === 'DUPLICATE') {
+          leadBox.dataset.tssSubmissionState = 'processing';
+          leadBox.dispatchEvent(new CustomEvent('tss:submission-processing'));
+        }
         addMessage('status', tssFormErrorMessage_(error), 'status');
+      } finally {
+        unlock();
+        button.disabled = leadBox.dataset.tssSubmissionState === 'processing';
+        button.textContent = button.disabled ? 'Check receipt before resending' : 'Send for review';
       }
       body.scrollTop = body.scrollHeight;
     });
@@ -813,5 +845,4 @@ function tssRenderAgentReply_(container, value) {
   notice.querySelector('.tss-consent-accept').addEventListener('click', () => choose('accepted'));
   notice.querySelector('.tss-consent-reject').addEventListener('click', () => choose('rejected'));
 })();
-
 
