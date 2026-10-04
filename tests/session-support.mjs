@@ -15,7 +15,7 @@ export function harness(){
    return behavior.wrongResult||{token,expiresAt:now+behavior.ttl};
   }
   const s=store.get(args[0]);if(!s||s.revoked||now>=s.expiresAt)throw Error('AUTH_REQUIRED');
-  if(fn==='checkSession')return behavior.check||true;
+  if(fn==='checkSession')return behavior.check||{expiresAt:s.expiresAt};
   if(fn==='signOut'||fn==='signOutAll'){if(behavior.logoutFails)throw Error('CRM_CONNECTION_UNCERTAIN');for(const [token,v] of store)if(token===args[0]||fn==='signOutAll')v.revoked=true;return true;}
   if(fn==='getState')return {updatedAt:new Date(now).toISOString(),aiEnabled:false,enums:{},fields:{},records:{...Object.fromEntries(['Companies','Contacts','Tasks','Tickets','Opportunities','Activity','Outreach','Email Activity','System Control','Automation Log','Revenue Tracker','Proposal Tracker','Prospect Queue'].map(k=>[k,[]])),Companies:[{id:'synthetic-company',name:'Synthetic Example',status:'Active',lifecycle:'Company'}]},...(behavior.leak?{token:args[0]}:{})};
   if(fn==='saveRecord')return {id:'synthetic-record',audited:true};

@@ -39,16 +39,16 @@ export function makeHandler({env=process.env,clock=Date.now,call=nativeCall}={})
       if(typeof body.trusted!=='boolean')fail('INVALID_REQUEST');
       const native=await call('googleSignIn',[body.credential,flow.nonce]);
       if(typeof native?.token!=='string'||!native.token||native.token.length>2048||!Number.isSafeInteger(native.expiresAt)||native.expiresAt<=now)fail('NATIVE_CONTRACT_UNVERIFIED');
-      validNativeCheck(await call('checkSession',[native.token]));
-      const session={v:1,host:req.headers.host,owner:OWNER,token:native.token,id:crypto.randomBytes(16).toString('hex'),csrf:crypto.randomBytes(32).toString('hex'),issuedAt:now,expiresAt:Math.min(now+MAX_MS,native.expiresAt),trusted:body.trusted};
+      const checked=validNativeCheck(await call('checkSession',[native.token]),clock());
+      const session={v:1,host:req.headers.host,owner:OWNER,token:native.token,id:crypto.randomBytes(16).toString('hex'),csrf:crypto.randomBytes(32).toString('hex'),issuedAt:now,expiresAt:Math.min(now+MAX_MS,native.expiresAt,checked.expiresAt),trusted:body.trusted};
       res.setHeader('Set-Cookie',[sessionCookie(SESSION_COOKIE,seal(session,config.key,'session'),{expiresAt:session.expiresAt,now,persistent:session.trusted}),clearCookie(FLOW_COOKIE)]);
       return res.status(200).json({ok:true,result:publicSession(session)});
     }
     const s=activeSession(req,config.key,now);
     if(body.op==='resume') {
       // Same-origin/credentialed CORS + non-simple request is required before disclosing CSRF.
-      validNativeCheck(await call('checkSession',[s.token]));
-      return res.status(200).json({ok:true,result:publicSession(s)});
+      const checked=validNativeCheck(await call('checkSession',[s.token]),clock());
+      return res.status(200).json({ok:true,result:publicSession({...s,expiresAt:Math.min(s.expiresAt,checked.expiresAt)})});
     }
     csrf(req,s.csrf);
     if(body.marker!==MARKER+s.id)fail('SESSION_CHANGED');
@@ -59,13 +59,13 @@ export function makeHandler({env=process.env,clock=Date.now,call=nativeCall}={})
       let revoked=false;
       try {
         await call(body.all?'signOutAll':'signOut',[s.token]);
-        try { validNativeCheck(await call('checkSession',[s.token])); }
+        try { validNativeCheck(await call('checkSession',[s.token]),clock()); }
         catch(e){if(e.message==='AUTH_REQUIRED')revoked=true;}
       }catch(e){if(e.message==='AUTH_REQUIRED')revoked=true;}
       return res.status(200).json({ok:true,result:{localSignedOut:true,serverRevocationConfirmed:revoked}});
     }
     if(body.op!=='rpc'||!RPC.has(body.fn)||!Array.isArray(body.args)||body.args.length!==RPC.get(body.fn))fail('ACTION_NOT_ALLOWED');
-    validNativeCheck(await call('checkSession',[s.token]));
+    validNativeCheck(await call('checkSession',[s.token]),clock());
     const result=body.fn==='checkSession'?true:await call(body.fn,[s.token,...body.args]);
     // Never echo an auth secret in a business response, even on an unexpected native contract.
     if(JSON.stringify(result)?.includes(s.token))fail('NATIVE_CONTRACT_UNVERIFIED');

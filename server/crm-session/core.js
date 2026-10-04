@@ -101,18 +101,21 @@ export async function nativeCall(fn,args,{fetcher=fetch,timeoutMs=55000}={}) {
     return value.result;
   }catch(e){fail(safeCode(e));}finally{clearTimeout(timer);}
 }
-export function validNativeCheck(value) {
-  // The current clients rely on {ok:true} plus no thrown auth error. Reject explicit negatives.
-  // The real deployed checkSession invalidation/expiry contract still requires live acceptance.
-  if(value===false||value===null||value===undefined||value?.valid===false||value?.authenticated===false)fail('AUTH_REQUIRED');
-  if(value!==true && !(value && typeof value==='object' && (value.valid===true||value.authenticated===true||value.ok===true)))fail('NATIVE_CONTRACT_UNVERIFIED');
-  if(value?.email && value.email!==OWNER)fail('AUTH_REQUIRED');
+export function validNativeCheck(value,now=Date.now()) {
+  // The recovered native source returns {expiresAt}, not a generic success flag.
+  // Source provenance and deployed-version parity remain separate activation gates.
+  if(value===false||value===null||value===undefined||value?.valid===false||value?.authenticated===false||value?.ok===false)fail('AUTH_REQUIRED');
+  if(!value||typeof value!=='object'||Array.isArray(value)||!Number.isSafeInteger(value.expiresAt))fail('NATIVE_CONTRACT_UNVERIFIED');
+  if(value.expiresAt<=now)fail('AUTH_REQUIRED');
+  if(value.email && value.email!==OWNER)fail('AUTH_REQUIRED');
+  return {expiresAt:value.expiresAt};
 }
 export async function resolveBrowserSession(req,marker,{env=process.env,now=Date.now(),call=nativeCall}={}) {
   const config=settings(env);if(!config.enabled)fail('SESSION_NOT_CONFIGURED');
   trustedOrigin(req);if(req.headers.host!=='api.thesmartysolution.com')fail('ORIGIN_NOT_ALLOWED');const s=activeSession(req,config.key,now);csrf(req,s.csrf);
   if(marker!==MARKER+s.id)fail('SESSION_CHANGED');
-  validNativeCheck(await call('checkSession',[s.token]));return s;
+  const checked=validNativeCheck(await call('checkSession',[s.token]),now);
+  return {...s,expiresAt:Math.min(s.expiresAt,checked.expiresAt)};
 }
 export function withBrowserSession(handler,shape='session',deps={}) {
   return async(req,res)=>{
