@@ -5,6 +5,7 @@ on:
     paths:
       - 'crm/**'
       - 'command-center/**'
+      - 'scripts/build-task-metrics.mjs'
       - 'tests/dashboard*'
       - 'tests/browser-dashboard.py'
       - '.github/workflows/dashboard-consistency.yml'
@@ -25,21 +26,40 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Preserve exact tracked source for restricted review
+      - name: Check shared bundle, syntax and read-side regressions
         run: |
           mkdir -p evidence/dashboard
-          git archive --format=zip --output=evidence/dashboard/baseline-source.zip 0df9299453fb0c407d71df3b09c992782788285e crm command-center tests .github/workflows script.js anti-spam.js contact.html kiti-enquiry.html style.css google-apps-script-form-backend.gs
-          git rev-parse HEAD > evidence/dashboard/checked-out-commit.txt
-          sha256sum evidence/dashboard/baseline-source.zip > evidence/dashboard/baseline-source.sha256
-      - name: Preserve prior Node safety checks
-        run: node --test tests/urgent*.test.mjs tests/enquiry-transport.test.mjs
-      - name: Dashboard tests when present
+          node scripts/build-task-metrics.mjs --check
+          node --check crm/assistant.js
+          node --check command-center/crm.js
+          node --test tests/dashboard.test.mjs tests/urgent*.test.mjs tests/enquiry-transport.test.mjs tests/command-center/phase*.test.js tests/command-center/context.test.js tests/command-center/lookup-availability.test.js tests/command-center/ui.test.js | tee evidence/dashboard/node-tests.txt
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated browser-test runtime
         run: |
-          if compgen -G 'tests/dashboard*.test.mjs' > /dev/null; then node --test tests/dashboard*.test.mjs; fi
+          python -m pip install playwright==1.63.0
+          python -m playwright install --with-deps chromium
+      - name: Test real CRM renderers using synthetic state only
+        run: python tests/browser-dashboard.py
+      - name: Preserve released cache, draft and website safety
+        run: |
+          python tests/browser-cache-regression.py
+          python tests/browser-command-routing.py
+          python tests/browser-enquiry.py
+      - name: Retain exact candidate source and checksums
+        if: always()
+        run: |
+          git rev-parse HEAD > evidence/dashboard/checked-out-commit.txt
+          git archive --format=zip --output=evidence/dashboard/candidate-source.zip HEAD crm command-center scripts/build-task-metrics.mjs tests .github/workflows/dashboard-consistency.yml
+          sha256sum evidence/dashboard/candidate-source.zip > evidence/dashboard/candidate-source.sha256
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: dashboard-source-and-results
-          path: evidence/dashboard/
+          path: |
+            evidence/dashboard/
+            evidence/enquiry/
+            evidence/chromium*.json
           retention-days: 14
           if-no-files-found: error

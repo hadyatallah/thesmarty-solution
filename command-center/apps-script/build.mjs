@@ -1,7 +1,7 @@
 import {readFileSync,writeFileSync} from 'node:fs';
 // Dependency-free packaging of the pure read modules. Each module retains its
 // own lexical scope. No Node or network shim is shipped to Apps Script.
-const names=['crm','growth','operations','context'],exportsByModule={};
+const names=['taskdates','crm','growth','operations','context'],exportsByModule={};
 let out='// Generated from tested read modules. Do not edit.\nvar CCReadCore=(function(){\n';
 for(const name of names){
  let src=readFileSync(`command-center/${name}.js`,'utf8');

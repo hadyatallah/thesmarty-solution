@@ -1,5 +1,5 @@
 import {CRMAdapter} from '../command-center/crm.js';
-import {Manager} from '../command-center/manager.js?v=2acdb4a2be19';
+import {Manager} from '../command-center/manager.js?v=7dfe62e5ad42';
 import {GrowthAgent} from '../command-center/growth.js?v=4';
 import {OperationsAgent} from '../command-center/operations.js';
 import {operationalEvidence,notificationItems} from '../command-center/context.js';

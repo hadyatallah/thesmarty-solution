@@ -130,7 +130,7 @@ function lexicalCandidates(text){
 }
 function workingSummary(){
   const r=state.records,actions=actionableRecords();
-  return {today:today(),companies:r.Companies.length,prospects:r.Companies.filter(function(x){return x.lifecycle==='Prospect';}).length,qualifiedLeads:r.Companies.filter(function(x){return x.lifecycle==='Qualified Lead';}).length,overdue:actions.filter(function(x){return overdue(x[1]);}).length,dueToday:actions.filter(function(x){return dueToday(x[1]);}).length,dueSoon:actions.filter(function(x){return dueSoon(x[1]);}).length,openOpportunities:r.Opportunities.filter(function(x){return !done(x);}).length};
+  return {today:today(),companies:r.Companies.length,prospects:r.Companies.filter(function(x){return x.lifecycle==='Prospect';}).length,qualifiedLeads:r.Companies.filter(function(x){return x.lifecycle==='Qualified Lead';}).length,overdue:actions.filter(function(x){return overdue(x[1],x[0]);}).length,dueToday:actions.filter(function(x){return dueToday(x[1],x[0]);}).length,dueSoon:actions.filter(function(x){return dueSoon(x[1],x[0]);}).length,openOpportunities:r.Opportunities.filter(function(x){return !done(x);}).length};
 }
 function recentConversation(){return aiConversation.slice(-6).map(function(x){return x.role+': '+String(x.text||'').slice(0,700);}).join('\n');}
 function parseAssistantJson(text){
@@ -201,11 +201,10 @@ function localCommunicationAnswer(text){
 }
 
 function isoDateAdd(base,days){
-  const d=new Date(base+'T12:00:00+03:00');d.setDate(d.getDate()+days);
-  return new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Nicosia',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);
+  return TSSTaskMetrics.addCalendarDays(base,days);
 }
 function nextWeekRange(){
-  const now=today(),d=new Date(now+'T12:00:00+03:00'),dow=d.getDay();
+  const now=today(),dow=TSSTaskMetrics.calendarWeekday(now);
   const toMonday=((8-dow)%7)||7;
   const start=isoDateAdd(now,toMonday),end=isoDateAdd(start,6);
   return {start:start,end:end};
@@ -213,16 +212,17 @@ function nextWeekRange(){
 function localDuePeriodAnswer(text){
   const q=String(text||'').toLowerCase();
   if(!(q.includes('next week')||q.includes('this week')||q.includes('next 7 days')||q.includes('next seven days')))return '';
-  const r=state.records,range=q.includes('this week')?{start:today(),end:isoDateAdd(today(),7-new Date(today()+'T12:00:00+03:00').getDay())}:q.includes('next week')?nextWeekRange():{start:today(),end:isoDateAdd(today(),7)};
+  const r=state.records,range=q.includes('this week')?{start:today(),end:isoDateAdd(today(),(7-TSSTaskMetrics.calendarWeekday(today()))%7)}:q.includes('next week')?nextWeekRange():{start:today(),end:isoDateAdd(today(),7)};
   const byCompany=new Map();
   function add(companyId,date,action,source){
+    date=TSSTaskMetrics.calendarDate(date);
     if(!companyId||!date||date<range.start||date>range.end)return;
     const comp=(r.Companies||[]).find(function(x){return x.id===companyId;});
     if(!comp)return;
     if(!byCompany.has(companyId))byCompany.set(companyId,{company:comp,items:[]});
     byCompany.get(companyId).items.push({date:date,action:action||'Follow up',source:source});
   }
-  (r.Tasks||[]).forEach(function(t){if(!done(t))add(t.companyId,t.dueDate,t.name||t.notes,'Task');});
+  (r.Tasks||[]).forEach(function(t){if(TSSTaskMetrics.isOpenTask(t))add(t.companyId,t.dueDate,t.name||t.notes,'Task');});
   (r.Companies||[]).forEach(function(x){
     if(x.followUp&&x.communicationStatus!=='Do not contact')add(x.id,x.followUp,x.nextAction||'Company follow-up','Company');
   });
