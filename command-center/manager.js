@@ -3,13 +3,26 @@ import {companyLookupQuery} from './company-lookup.js';
 import {registry} from './prompts.js';
 import {approvalSummary,notificationItems} from './context.js';
 import {isCommunicationDraftRequest,communicationRequest} from './growth.js';
+// Logging existing correspondence must never create a new outbound draft.
+export function isHistoricalEmailLogRequest(command) {
+ const q=String(command||'').trim().toLowerCase()
+  .replace(/^(?:(?:please|kindly|can you|could you|would you|i need you to|i want you to|we need to)\s+)+/, '');
+ // Email-address edits are ordinary record requests, not historical message logging.
+ if(/\be-?mail\s+(?:address|field)\b/.test(q))return false;
+ if(!/\b(?:e-?mails?|messages?|correspondence|replies|reply)\b/.test(q))return false;
+ if(/^(?:log|record|register|import|backfill|reconcile|capture|attach|link)\b/.test(q))return true;
+ if(/^(?:add|save)\b/.test(q)&&/\b(?:already|sent|received|existing|historical|previous|past|timeline|history|activity)\b/.test(q))return true;
+ return /^mark\b/.test(q)&&/\bas\s+(?:already\s+)?(?:sent|received)\b/.test(q);
+}
 export class Manager {
  constructor({crm,growth,operations,runtime=null}={}){this.crm=crm;this.growth=growth;this.operations=operations;this.runtime=runtime;}
  async run(command,now=new Date()) {
   const q=String(command||'').trim(); if(!q||q.length>3000)throw Error('INVALID_COMMAND');
   const jobs=[];const add=(name,fn)=>jobs.push({name,fn});
-  const lookup=companyLookupQuery(q,this.crm);
-  if(lookup!==null)add('CRM',()=>this.crm.coverage('Companies').available?this.crm.dossier(lookup):{unavailable:'Company records are unavailable. Refresh the CRM and try again.'});
+  const historicalLog=isHistoricalEmailLogRequest(q);
+  const lookup=historicalLog?null:companyLookupQuery(q,this.crm);
+  if(historicalLog)add('Communications',()=>({status:'unavailable',code:'HISTORICAL_EMAIL_LOGGING_UNAVAILABLE',message:'This is a request to record existing correspondence, not to send a new email. This assistant does not provide a governed historical-email logging action. No draft was created, nothing was sent, and no CRM activity was added.'}));
+  else if(lookup!==null)add('CRM',()=>this.crm.coverage('Companies').available?this.crm.dossier(lookup):{unavailable:'Company records are unavailable. Refresh the CRM and try again.'});
   else if(/weekly|management (?:review|report)/i.test(q)){add('CRM',()=>this.crm.weekly(now));if(this.growth){add('Communications',()=>this.growth.incoming());add('Growth',()=>this.growth.prospects());}if(this.operations){add('Operations',()=>this.operations.summary(now));add('Content',()=>this.operations.content(now));}add('Approvals',()=>approvalSummary(this.runtime));}
   else if(/duplicate|incomplete|data (?:quality|problems)|inconsistent/i.test(q))add('CRM',()=>this.crm.quality());
   else if(/important (?:emails|replies)|incoming|unanswered/i.test(q))add('Communications',()=>this.growth?this.growth.incoming():{unavailable:'Email adapter is unavailable'});

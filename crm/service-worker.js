@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tss-crm-pwa-v4';
+const CACHE_NAME = 'tss-crm-pwa-v5';
 const STATIC_ASSETS = [
   '/crm/manifest.webmanifest',
   '/crm/icon.svg'
@@ -7,17 +7,18 @@ const STATIC_ASSETS = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS))
+      .then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)))
-    )
+      // CacheStorage is shared by the origin. Only retire this app's versions.
+      Promise.all(keys.filter(key => /^tss-crm-pwa-v\d+$/.test(key) && key !== CACHE_NAME)
+        .map(key => caches.delete(key)))
+    ).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
@@ -26,13 +27,20 @@ self.addEventListener('fetch', event => {
   if (url.origin !== self.location.origin) return;
   if (!STATIC_ASSETS.includes(url.pathname)) return;
 
-  event.respondWith(
-    caches.match(event.request).then(cached =>
-      cached || fetch(event.request).then(response => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
-        return response;
-      })
-    )
-  );
+  event.respondWith((async () => {
+    let cache;
+    try {
+      cache = await caches.open(CACHE_NAME);
+      // Do not read matching responses from another application's cache.
+      const cached = await cache.match(event.request);
+      if (cached) return cached;
+    } catch {
+      // Optional static caching must not block a working network response.
+    }
+    const response = await fetch(event.request);
+    if (cache && response.ok && !response.redirected) {
+      event.waitUntil(cache.put(event.request, response.clone()).catch(() => {}));
+    }
+    return response;
+  })());
 });
