@@ -14,7 +14,7 @@ window.el=id=>document.getElementById(id);
 window.esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 window.call=(...args)=>{window.unexpectedCalls.push(args[0]);throw Error('Live/backend calls forbidden in this test');};
 window.unexpectedCalls=[];window.sessionToken='synthetic-not-a-real-session';
-window.state={aiEnabled:false,records:{Companies:[{id:'fixture',name:'Example Company',email:'synthetic@example.invalid',status:'Needs verification'}],Contacts:[],Tasks:[],Tickets:[],Opportunities:[],Activity:[],'Email Activity':[],Outreach:[],'System Control':[],'Automation Log':[]},coverage:{}};
+window.state={aiEnabled:false,records:{Companies:[{id:'fixture',name:'Example Company',email:'synthetic@example.invalid',status:'Needs verification'}],Contacts:[],Tasks:[],Tickets:[],Opportunities:[],Activity:[],'Email Activity':[{id:'fixture-old-mail',companyId:'fixture',direction:'sent',messageDate:'2026-09-01T09:00:00Z',subject:'Synthetic prior conversation'}],Outreach:[],'System Control':[],'Automation Log':[]},coverage:{}};
 window.formatAssistantText=value=>esc(value);
 </script><script src="/crm/assistant.js"></script><script type="module">
 import {commandCenter} from '/crm/command-center.js';
