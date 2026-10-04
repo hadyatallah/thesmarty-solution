@@ -1,0 +1,75 @@
+name: Temporary dashboard source assembly
+on:
+  pull_request:
+    branches: [main]
+    paths: ['.dashboard-candidate-input.zip', '.github/workflows/dashboard-assemble.yml']
+permissions:
+  contents: read
+jobs:
+  assemble:
+    if: github.repository == 'hadyatallah/thesmarty-solution' && github.event.pull_request.number == 45 && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref == 'codex/tss-dashboard-consistency-20261004'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify source-only input and apply checksum-guarded transform
+        run: |
+          mkdir -p evidence/assembly
+          cp .dashboard-candidate-input.zip evidence/assembly/input.zip
+          python - <<'PY'
+          from pathlib import Path
+          import base64,hashlib,zipfile,io
+          data=Path('.dashboard-candidate-input.zip').read_bytes()
+          expected='9108aed1a1d852529edb96c0eddda9b37353725ad7db8bfe8e0ab23afad0cdf1'
+          if hashlib.sha256(data).hexdigest()!=expected:
+            text=base64.b64encode(data).decode()
+            for old,new in [('7VvemjKOX','7VvemKOX'),('NnZpfZCU','NnZvfZCU'),('Hw+H8/5Fk','Hw+H/8/5Fk'),('LWq5U9m','LWqU9m')]:
+              text=text.replace(old,new)
+            data=base64.b64decode(text+'===')
+          assert hashlib.sha256(data).hexdigest()==expected,'Input transport checksum mismatch; no candidate produced'
+          allowed={'command-center/taskdates.js','scripts/build-task-metrics.mjs','scripts/apply-dashboard-patch.py','tests/dashboard.test.mjs','tests/browser-dashboard.py','.github/workflows/dashboard-consistency.yml'}
+          with zipfile.ZipFile(io.BytesIO(data)) as z:
+            assert set(z.namelist())==allowed and len(z.namelist())==len(allowed)
+            for name in allowed:
+              target=Path(name);target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(z.read(name))
+          PY
+          python scripts/apply-dashboard-patch.py
+          node scripts/build-task-metrics.mjs --check
+          node --check crm/assistant.js
+          node --test tests/dashboard.test.mjs tests/urgent*.test.mjs tests/enquiry-transport.test.mjs
+      - name: Store verified source blobs only, without updating a branch or deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64,hashlib,json,os,urllib.request
+          expected={'command-center/taskdates.js':'df0886bb56d496b9e2325c5f07643ffcf33e593d9eaea760fb3a2e4961215211','crm/task-metrics.js':'38441f46e9a248f0bd7c241fd2f385a5d9167ca06eba6689640c85b68b36238f','scripts/build-task-metrics.mjs':'171ad19f6eacac63aed24d0f598fcab6041132366d1ad85567e9ab11c1e38df4','tests/dashboard.test.mjs':'c557ccacf05069e22e4b7b4105ffa735ad1cdfeec7931b3a74900c541829171c','tests/browser-dashboard.py':'ce452cd5fa7e0dbb8fbcc9ab6161f4ac5e85890dcad6265699321a8cd1827994','command-center/crm.js':'535e7f7a5e232e019d41823592438e9b0f43fe910ea77390ce853c95f816fa95','crm/index.html':'ee2b287afd8e0fc68f348b452dac85f02e96252c5df7590194b99768aadfced4','crm/assistant.js':'b07f412ac4287926362723be6736e9a8fbd66eb9232db3355b2ad4bcf72a24e3','crm/command-center.js':'da7d82e3efe83c2d1a79d1891761e26a2eb52821ed938d65123b68e666404d74','command-center/apps-script/build.mjs':'ab5057051bda9576ceec710ebaf50158b02d14745fcf884678436f79b0d31820','.github/workflows/dashboard-consistency.yml':'aef9d1e9101e3b0192d610512e35f0d1f58c8938c225a81926a733866ece21a7'}
+          for name,digest in expected.items():
+            assert hashlib.sha256(Path(name).read_bytes()).hexdigest()==digest,'Source checksum mismatch: '+name
+          manifest=[]
+          for name,digest in expected.items():
+            data=Path(name).read_bytes()
+            body=json.dumps({'content':base64.b64encode(data).decode(),'encoding':'base64'}).encode()
+            request=urllib.request.Request('https://api.github.com/repos/hadyatallah/thesmarty-solution/git/blobs',data=body,method='POST',headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json','Content-Type':'application/json','X-GitHub-Api-Version':'2022-11-28'})
+            with urllib.request.urlopen(request,timeout=30) as response: result=json.load(response)
+            assert result['sha']==hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()
+            manifest.append({'path':name,'sha':result['sha'],'sha256':digest})
+          Path('evidence/assembly/blob-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          print(json.dumps(manifest,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dashboard-assembly-evidence
+          path: evidence/assembly/
+          retention-days: 14
+          if-no-files-found: error
