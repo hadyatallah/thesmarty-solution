@@ -84,3 +84,17 @@ test('blocks redirect away from Google ContentService',async()=>{
   let n=0;const fetcher=async()=>{n++;return response(302,{location:'https://example.com/steal'});};
   const h=harness(fetcher);await h.run();assert.equal(h.state.status,502);assert.equal(n,1);assert.equal(h.state.body.error,'REDIRECT_BLOCKED');
 });
+
+
+test('getState is not replayed inside one slow gateway request',async()=>{
+  let n=0;const fetcher=async()=>{n++;return response(503);};
+  const h=harness(fetcher,{body:{fn:'getState',args:['token']}});
+  await h.run();assert.equal(h.state.status,502);assert.equal(n,1);
+});
+
+test('gateway source uses short bounded bootstrap attempts',()=>{
+  const source=fs.readFileSync(path.join(root,'api/crm.js'),'utf8');
+  assert.match(source,/body\.fn==='beginGoogleLogin'\?3/);
+  assert.match(source,/body\.fn==='beginGoogleLogin'\?18000/);
+  assert.match(source,/body\.fn==='getState'\?45000/);
+});
