@@ -54,6 +54,33 @@ async function dispatch(fetcher,payload,signal){
   return {value,upstreamStatus};
 }
 
+export async function hedgedBeginGoogleLogin(fetcher,payload,{delays=[0,2500,6000],timeoutMs=18000}={}){
+  let settled=false;const controllers=[],timers=[];
+  const attempt=(delay,index)=>new Promise((resolve,reject)=>{
+    const launch=async()=>{
+      if(settled)return reject(Error('HEDGE_CANCELLED'));
+      const controller=new AbortController();controllers.push(controller);
+      const timeout=setTimeout(()=>controller.abort(),timeoutMs);timers.push(timeout);
+      try{
+        const result=await dispatch(fetcher,payload,controller.signal);
+        const nonce=result?.value?.ok&&result?.value?.result?.nonce;
+        if(typeof nonce!=='string'||nonce.length<16)throw Error('UPSTREAM_APPLICATION');
+        resolve({...result,hedge:index});
+      }catch(e){reject(e)}
+      finally{clearTimeout(timeout)}
+    };
+    if(delay===0)launch();else timers.push(setTimeout(launch,delay));
+  });
+  try{
+    const result=await Promise.any(delays.map((d,i)=>attempt(d,i+1)));
+    settled=true;controllers.forEach(c=>c.abort());timers.forEach(clearTimeout);
+    return result;
+  }catch(error){
+    settled=true;controllers.forEach(c=>c.abort());timers.forEach(clearTimeout);
+    const e=Error('UPSTREAM_UNAVAILABLE');e.cause=error;throw e;
+  }
+}
+
 export function makeHandler(fetcher=fetch){return async(req,res)=>{
   res.setHeader('Cache-Control','private, no-store');
   res.setHeader('X-Content-Type-Options','nosniff');
@@ -70,8 +97,18 @@ export function makeHandler(fetcher=fetch){return async(req,res)=>{
   if(Buffer.byteLength(payload)>1048576)return fail(413,'REQUEST_TOO_LARGE');
 
   const started=Date.now();
-  const maxAttempts=body.fn==='beginGoogleLogin'?3:(SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn))?2:1;
-  const attemptTimeoutMs=body.fn==='beginGoogleLogin'?18000:body.fn==='checkSession'?18000:body.fn==='googleSignIn'?25000:body.fn==='getState'?45000:55000;
+  if(body.fn==='beginGoogleLogin'){
+    try{
+      const {value,upstreamStatus,hedge}=await hedgedBeginGoogleLogin(fetcher,payload);
+      console.info(JSON.stringify({component:'crm-gateway',operation:body.fn,hedge,elapsedMs:Date.now()-started,upstreamStatus,outcome:'ok'}));
+      return res.status(200).json(value);
+    }catch(error){
+      console.warn(JSON.stringify({component:'crm-gateway',operation:body.fn,elapsedMs:Date.now()-started,code:'HEDGED_BOOTSTRAP_UNAVAILABLE'}));
+      return fail(502,'CRM_BACKEND_UNAVAILABLE',{retryable:true});
+    }
+  }
+  const maxAttempts=(SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn))?2:1;
+  const attemptTimeoutMs=body.fn==='checkSession'?18000:body.fn==='googleSignIn'?25000:body.fn==='getState'?45000:55000;
   let lastError=null,lastTimedOut=false;
   for(let attempt=1;attempt<=maxAttempts;attempt++){
     const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),attemptTimeoutMs);
