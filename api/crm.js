@@ -3,7 +3,7 @@
 // This layer removes browser cross-origin/redirect fragility and adds bounded transport handling.
 const BACKEND='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
 const METHODS=new Set(['beginGoogleLogin','googleSignIn','checkSession','getState','saveRecord','signOut','signOutAll']);
-const SAFE_RETRY_METHODS=new Set(['beginGoogleLogin','checkSession','getState']);
+const SAFE_RETRY_METHODS=new Set(['beginGoogleLogin','checkSession']);
 const DEFINITIVE_HTTP_RETRY_METHODS=new Set(['googleSignIn']);
 export const config={maxDuration:60};
 
@@ -70,28 +70,26 @@ export function makeHandler(fetcher=fetch){return async(req,res)=>{
   if(Buffer.byteLength(payload)>1048576)return fail(413,'REQUEST_TOO_LARGE');
 
   const started=Date.now();
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),55000);
-  const maxAttempts=(SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn))?2:1;
-  let lastError=null;
-  try{
-    for(let attempt=1;attempt<=maxAttempts;attempt++){
-      try{
-        const {value,upstreamStatus}=await dispatch(fetcher,payload,controller.signal);
-        console.info(JSON.stringify({component:'crm-gateway',operation:body.fn,attempt,elapsedMs:Date.now()-started,upstreamStatus,outcome:'ok'}));
-        return res.status(200).json(value);
-      }catch(error){
-        lastError=error;
-        const safeReadRetry=SAFE_RETRY_METHODS.has(body.fn)&&['UPSTREAM_UNAVAILABLE','NON_JSON_RESPONSE'].includes(error?.message);
-        const definiteAuthInfraRetry=DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn)&&error?.message==='UPSTREAM_UNAVAILABLE'&&[429,502,503,504].includes(Number(error?.upstreamStatus));
-        const retryable=!controller.signal.aborted&&attempt<maxAttempts&&(safeReadRetry||definiteAuthInfraRetry);
-        console.warn(JSON.stringify({component:'crm-gateway',operation:body.fn,attempt,elapsedMs:Date.now()-started,stage:error?.stage||'dispatch',code:controller.signal.aborted?'UPSTREAM_TIMEOUT':error?.message||'UPSTREAM_NETWORK',upstreamStatus:error?.upstreamStatus??null,retrying:retryable}));
-        if(!retryable)break;
-        await sleep(250);
-      }
-    }
-    const code=controller.signal.aborted?'UPSTREAM_TIMEOUT':lastError?.message==='REDIRECT_BLOCKED'?'REDIRECT_BLOCKED':'CRM_BACKEND_UNAVAILABLE';
-    return fail(502,code,{retryable:SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn)});
-  }finally{clearTimeout(timer);}
+  const maxAttempts=body.fn==='beginGoogleLogin'?3:(SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn))?2:1;
+  const attemptTimeoutMs=body.fn==='beginGoogleLogin'?18000:body.fn==='checkSession'?18000:body.fn==='googleSignIn'?25000:body.fn==='getState'?45000:55000;
+  let lastError=null,lastTimedOut=false;
+  for(let attempt=1;attempt<=maxAttempts;attempt++){
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),attemptTimeoutMs);
+    try{
+      const {value,upstreamStatus}=await dispatch(fetcher,payload,controller.signal);
+      console.info(JSON.stringify({component:'crm-gateway',operation:body.fn,attempt,elapsedMs:Date.now()-started,attemptElapsedLimitMs:attemptTimeoutMs,upstreamStatus,outcome:'ok'}));
+      return res.status(200).json(value);
+    }catch(error){
+      lastError=error;lastTimedOut=controller.signal.aborted;
+      const safeReadRetry=SAFE_RETRY_METHODS.has(body.fn)&&error?.message!=='REDIRECT_BLOCKED';
+      const definiteAuthInfraRetry=DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn)&&error?.message==='UPSTREAM_UNAVAILABLE'&&[429,502,503,504].includes(Number(error?.upstreamStatus));
+      const retryable=attempt<maxAttempts&&(safeReadRetry||definiteAuthInfraRetry);
+      console.warn(JSON.stringify({component:'crm-gateway',operation:body.fn,attempt,elapsedMs:Date.now()-started,attemptElapsedLimitMs:attemptTimeoutMs,stage:error?.stage||'dispatch',code:lastTimedOut?'UPSTREAM_TIMEOUT':error?.message||'UPSTREAM_NETWORK',upstreamStatus:error?.upstreamStatus??null,retrying:retryable}));
+      if(!retryable)break;
+      await sleep(250);
+    }finally{clearTimeout(timer);}
+  }
+  const code=lastTimedOut?'UPSTREAM_TIMEOUT':lastError?.message==='REDIRECT_BLOCKED'?'REDIRECT_BLOCKED':'CRM_BACKEND_UNAVAILABLE';
+  return fail(502,code,{retryable:SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn)});
 };}
 export default makeHandler();
