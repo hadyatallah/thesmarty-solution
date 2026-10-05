@@ -59,17 +59,20 @@ async function restoreTrustedSession(){let saved;try{saved=JSON.parse(localStora
 async function showLogin(message=''){
  const generation=++loginGeneration;
  el('main').innerHTML='<section class="panel" style="max-width:490px;margin:35px auto"><h2>Admin login</h2><p class="muted">Sign in with your authorised TSS Google account.</p><p id="loginError" class="error" role="alert">'+esc(message)+'</p><div id="googleButton">Connecting to Google…</div><p class="muted" style="font-size:13px;margin-top:20px">Google handles your password. This browser keeps the secure CRM session while it remains valid. Use Sign out on shared devices.</p><a href="/">Back to the TSS website</a><p><button onclick="showLogin()">Retry login</button></p></section>';
+ let slowLoginTimer=0;
  try{
+  slowLoginTimer=setTimeout(()=>{if(generation===loginGeneration&&el('loginError'))el('loginError').textContent='Google CRM is responding slowly. Still trying automatically…'},6500);
   const challenge=await rpc('beginGoogleLogin');
+  clearTimeout(slowLoginTimer);
   if(!window.google?.accounts?.id)await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=resolve;s.onerror=()=>reject(Error('Google sign-in could not load. Please retry.'));document.head.appendChild(s)});
   if(generation!==loginGeneration)return;
   google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,nonce:challenge.nonce,auto_select:false,callback:async response=>{
    if(generation!==loginGeneration)return;
    el('googleButton').textContent='Verifying your account…';
-   try{const r=await rpc('googleSignIn',response.credential,challenge.nonce);if(generation!==loginGeneration){await rpc('signOut',r.token);return}sessionToken=r.token;sessionExpiry=r.expiresAt;rememberTrustedSession();await refresh();}catch(e){if(generation===loginGeneration)showLogin(e.message)}
+   try{const r=await rpc('googleSignIn',response.credential,challenge.nonce);if(generation!==loginGeneration){await rpc('signOut',r.token);return}sessionToken=r.token;sessionExpiry=r.expiresAt;rememberTrustedSession();if(el('loginError'))el('loginError').textContent='Signed in. Loading your CRM workspace…';await refresh();}catch(e){if(generation===loginGeneration)showLogin(e.message)}
   }});
   el('googleButton').textContent='';google.accounts.id.renderButton(el('googleButton'),{theme:'outline',size:'large',text:'signin_with',width:280});
- }catch(e){if(generation===loginGeneration&&el('loginError')){el('googleButton').textContent='';el('loginError').textContent=e.message}}
+ }catch(e){clearTimeout(slowLoginTimer);if(generation===loginGeneration&&el('loginError')){el('googleButton').textContent='';el('loginError').textContent=e.message}}
 }
 async function logout(all=false){const token=sessionToken;clearSession(true);window.google?.accounts?.id?.disableAutoSelect();showLogin('Signed out.');try{await rpc(all?'signOutAll':'signOut',token)}catch(e){notice('Local sign-out complete. The server session will expire automatically.')}}
 async function startLogin(){try{localStorage.removeItem('tss-crm-session-v1');sessionStorage.removeItem('tss-crm-session-v1')}catch(e){}if(await restoreTrustedSession())return;showLogin();}
