@@ -41,3 +41,7 @@ test('login copy no longer promises logout on reload',()=>{
   assert.doesNotMatch(html,/CRM access ends when you leave or reload this page/);
   assert.match(html,/keeps the secure CRM session while it remains valid/);
 });
+test('successful Google authentication can render only previously authenticated cached state before live refresh',()=>{
+  assert.match(html,/const cached=loadCachedState\(\);if\(cached\)\{state=cached\.state/);
+  assert.match(html,/render\(\);refresh\(\);return/);
+});

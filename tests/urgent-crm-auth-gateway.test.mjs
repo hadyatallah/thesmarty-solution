@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {makeHandler} from '../api/crm.js';
+import {makeHandler,hedgedBeginGoogleLogin} from '../api/crm.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -36,17 +36,17 @@ test('beginGoogleLogin follows Apps Script receipt redirect server-side',async()
   const calls=[];
   const fetcher=async(url,opts)=>{calls.push({url,method:opts.method});return calls.length===1
     ?response(302,{location:'https://script.googleusercontent.com/macros/echo?x=1'})
-    :response(200,{json:{ok:true,result:{nonce:'fixture'}}});};
+    :response(200,{json:{ok:true,result:{nonce:'fixture-nonce-1234567890'}}});};
   const h=harness(fetcher);await h.run();
-  assert.equal(h.state.status,200);assert.equal(h.state.body.result.nonce,'fixture');
+  assert.equal(h.state.status,200);assert.equal(h.state.body.result.nonce,'fixture-nonce-1234567890');
   assert.deepEqual(calls.map(x=>x.method),['POST','GET']);
 });
 
-test('read-only auth bootstrap retries one transient upstream HTTP failure',async()=>{
+test('hedged bootstrap takes the first valid nonce after a slow or failed peer',async()=>{
   let n=0;
-  const fetcher=async()=>++n===1?response(503):response(200,{json:{ok:true,result:{nonce:'fixture'}}});
-  const h=harness(fetcher);await h.run();
-  assert.equal(h.state.status,200);assert.equal(n,2);
+  const fetcher=async()=>{n++;if(n===1)return response(503);return response(200,{json:{ok:true,result:{nonce:'fixture-nonce-1234567890'}}});};
+  const r=await hedgedBeginGoogleLogin(fetcher,JSON.stringify({fn:'beginGoogleLogin',args:[]}),{delays:[0,5],timeoutMs:50});
+  assert.equal(r.value.result.nonce,'fixture-nonce-1234567890');assert.equal(n,2);
 });
 
 test('googleSignIn retries one definitive infrastructure HTTP failure',async()=>{
@@ -75,14 +75,18 @@ test('rejects unapproved origin and unsupported action without upstream call',as
 });
 
 test('allows project preview origin for isolated acceptance',async()=>{
-  const fetcher=async()=>response(200,{json:{ok:true,result:{nonce:'fixture'}}});
+  const fetcher=async()=>response(200,{json:{ok:true,result:{nonce:'fixture-nonce-1234567890'}}});
   const h=harness(fetcher,{origin:'https://thesmarty-solution-agent-git-fix-crm-auth-gateway-20261005-tss21.vercel.app'});
   await h.run();assert.equal(h.state.status,200);
 });
 
-test('blocks redirect away from Google ContentService',async()=>{
+test('hedged bootstrap rejects redirects away from Google ContentService',async()=>{
   let n=0;const fetcher=async()=>{n++;return response(302,{location:'https://example.com/steal'});};
-  const h=harness(fetcher);await h.run();assert.equal(h.state.status,502);assert.equal(n,1);assert.equal(h.state.body.error,'REDIRECT_BLOCKED');
+  await assert.rejects(
+    hedgedBeginGoogleLogin(fetcher,JSON.stringify({fn:'beginGoogleLogin',args:[]}),{delays:[0,1,2],timeoutMs:25}),
+    /UPSTREAM_UNAVAILABLE/
+  );
+  assert.equal(n,3);
 });
 
 
@@ -92,9 +96,11 @@ test('getState is not replayed inside one slow gateway request',async()=>{
   await h.run();assert.equal(h.state.status,502);assert.equal(n,1);
 });
 
-test('gateway source uses short bounded bootstrap attempts',()=>{
+test('gateway source uses staggered hedges only for login bootstrap',()=>{
   const source=fs.readFileSync(path.join(root,'api/crm.js'),'utf8');
-  assert.match(source,/body\.fn==='beginGoogleLogin'\?3/);
-  assert.match(source,/body\.fn==='beginGoogleLogin'\?18000/);
+  assert.match(source,/delays=\[0,2500,6000\]/);
+  assert.match(source,/timeoutMs=18000/);
+  assert.match(source,/if\(body\.fn==='beginGoogleLogin'\)/);
   assert.match(source,/body\.fn==='getState'\?45000/);
+  assert.doesNotMatch(source,/hedgedBeginGoogleLogin\(fetcher,payload\)[\s\S]{0,300}saveRecord/);
 });
