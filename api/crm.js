@@ -4,6 +4,7 @@
 const BACKEND='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
 const METHODS=new Set(['beginGoogleLogin','googleSignIn','checkSession','getState','saveRecord','signOut','signOutAll']);
 const SAFE_RETRY_METHODS=new Set(['beginGoogleLogin','checkSession','getState']);
+const DEFINITIVE_HTTP_RETRY_METHODS=new Set(['googleSignIn']);
 export const config={maxDuration:60};
 
 const PROD_ORIGINS=new Set(['https://www.thesmartysolution.com','https://thesmartysolution.com']);
@@ -59,12 +60,6 @@ export function makeHandler(fetcher=fetch){return async(req,res)=>{
   cors(req,res);
   const fail=(status,error,extra={})=>res.status(status).json({ok:false,error,...extra});
   if(req.method==='OPTIONS')return res.status(204).end();
-  if(req.method==='GET'&&req.query?.smoke==='1'){
-    const started=Date.now(),controller=new AbortController(),timer=setTimeout(()=>controller.abort(),55000);
-    try{const {value,upstreamStatus}=await dispatch(fetcher,JSON.stringify({fn:'beginGoogleLogin',args:[]}),controller.signal);return res.status(200).json({smoke:true,elapsedMs:Date.now()-started,upstreamStatus,ok:!!value?.ok,hasNonce:typeof value?.result?.nonce==='string'&&value.result.nonce.length>10});}
-    catch(error){return res.status(502).json({smoke:true,elapsedMs:Date.now()-started,ok:false,error:controller.signal.aborted?'UPSTREAM_TIMEOUT':error?.message||'UPSTREAM_NETWORK'});}
-    finally{clearTimeout(timer);}
-  }
   if(req.method!=='POST'){res.setHeader('Allow','POST');return fail(405,'METHOD_NOT_ALLOWED');}
   const origin=String(req.headers.origin||'');
   if(!origin||!allowedOrigin(origin))return fail(403,'ORIGIN_NOT_ALLOWED');
@@ -77,7 +72,7 @@ export function makeHandler(fetcher=fetch){return async(req,res)=>{
   const started=Date.now();
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),55000);
-  const maxAttempts=SAFE_RETRY_METHODS.has(body.fn)?2:1;
+  const maxAttempts=(SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn))?2:1;
   let lastError=null;
   try{
     for(let attempt=1;attempt<=maxAttempts;attempt++){
@@ -87,14 +82,16 @@ export function makeHandler(fetcher=fetch){return async(req,res)=>{
         return res.status(200).json(value);
       }catch(error){
         lastError=error;
-        const retryable=!controller.signal.aborted&&attempt<maxAttempts&&['UPSTREAM_UNAVAILABLE','NON_JSON_RESPONSE'].includes(error?.message);
+        const safeReadRetry=SAFE_RETRY_METHODS.has(body.fn)&&['UPSTREAM_UNAVAILABLE','NON_JSON_RESPONSE'].includes(error?.message);
+        const definiteAuthInfraRetry=DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn)&&error?.message==='UPSTREAM_UNAVAILABLE'&&[429,502,503,504].includes(Number(error?.upstreamStatus));
+        const retryable=!controller.signal.aborted&&attempt<maxAttempts&&(safeReadRetry||definiteAuthInfraRetry);
         console.warn(JSON.stringify({component:'crm-gateway',operation:body.fn,attempt,elapsedMs:Date.now()-started,stage:error?.stage||'dispatch',code:controller.signal.aborted?'UPSTREAM_TIMEOUT':error?.message||'UPSTREAM_NETWORK',upstreamStatus:error?.upstreamStatus??null,retrying:retryable}));
         if(!retryable)break;
         await sleep(250);
       }
     }
     const code=controller.signal.aborted?'UPSTREAM_TIMEOUT':lastError?.message==='REDIRECT_BLOCKED'?'REDIRECT_BLOCKED':'CRM_BACKEND_UNAVAILABLE';
-    return fail(502,code,{retryable:SAFE_RETRY_METHODS.has(body.fn)});
+    return fail(502,code,{retryable:SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn)});
   }finally{clearTimeout(timer);}
 };}
 export default makeHandler();
