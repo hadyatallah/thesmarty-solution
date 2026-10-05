@@ -19,7 +19,7 @@ export function validatePdfContent(expected,input){
  if(bytes.toString('base64')!==contentBytes)throw Error('EMAIL_ATTACHMENT_INVALID');
  if(!bytes.length)throw Error('EMAIL_ATTACHMENT_INVALID');
  if(bytes.length>PDF_MAX_BYTES)throw Error('EMAIL_ATTACHMENT_TOO_LARGE');
- if(bytes.subarray(0,5).toString('ascii')!=='%PDF-')throw Error('EMAIL_ATTACHMENT_NOT_PDF');
+ if(!bytes.subarray(0,5).equals(Buffer.from('%PDF-')))throw Error('EMAIL_ATTACHMENT_NOT_PDF');
  if(bytes.length!==approved.size||crypto.createHash('sha256').update(bytes).digest('hex')!==approved.sha256)throw Error('EMAIL_ATTACHMENT_CHANGED');
  return {'@odata.type':'#microsoft.graph.fileAttachment',name:approved.filename,contentType:approved.mimeType,contentBytes};
 }
