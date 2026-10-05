@@ -59,6 +59,12 @@ export function makeHandler(fetcher=fetch){return async(req,res)=>{
   cors(req,res);
   const fail=(status,error,extra={})=>res.status(status).json({ok:false,error,...extra});
   if(req.method==='OPTIONS')return res.status(204).end();
+  if(req.method==='GET'&&req.query?.smoke==='1'){
+    const started=Date.now(),controller=new AbortController(),timer=setTimeout(()=>controller.abort(),55000);
+    try{const {value,upstreamStatus}=await dispatch(fetcher,JSON.stringify({fn:'beginGoogleLogin',args:[]}),controller.signal);return res.status(200).json({smoke:true,elapsedMs:Date.now()-started,upstreamStatus,ok:!!value?.ok,hasNonce:typeof value?.result?.nonce==='string'&&value.result.nonce.length>10});}
+    catch(error){return res.status(502).json({smoke:true,elapsedMs:Date.now()-started,ok:false,error:controller.signal.aborted?'UPSTREAM_TIMEOUT':error?.message||'UPSTREAM_NETWORK'});}
+    finally{clearTimeout(timer);}
+  }
   if(req.method!=='POST'){res.setHeader('Allow','POST');return fail(405,'METHOD_NOT_ALLOWED');}
   const origin=String(req.headers.origin||'');
   if(!origin||!allowedOrigin(origin))return fail(403,'ORIGIN_NOT_ALLOWED');
