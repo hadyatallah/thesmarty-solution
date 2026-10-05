@@ -1,12 +1,12 @@
 export default async function handler(req,res){
   if(req.method!=='GET')return res.status(405).json({ok:false,error:'GET only'});
-  const target='https://www.thesmartysolution.com/api/crm';
+  const target='https://thesmarty-solution-agent-qr31cflql-tss21.vercel.app/api/crm';
   const started=Date.now();
   try{
     const r=await fetch(target,{
       method:'POST',
       redirect:'manual',
-      headers:{'Content-Type':'application/json','Origin':'https://www.thesmartysolution.com'},
+      headers:{'Content-Type':'application/json','Origin':'https://thesmarty-solution-agent-qr31cflql-tss21.vercel.app'},
       body:JSON.stringify({fn:'beginGoogleLogin',args:[]})
     });
     const body=await r.json().catch(()=>null);
