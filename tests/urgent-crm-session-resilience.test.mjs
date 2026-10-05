@@ -45,3 +45,10 @@ test('successful Google authentication can render only previously authenticated 
   assert.match(html,/const cached=loadCachedState\(\);if\(cached\)\{state=cached\.state/);
   assert.match(html,/render\(\);refresh\(\);return/);
 });
+
+test('successful authentication is not misrepresented as a login failure when getState is delayed',()=>{
+  assert.match(html,/Signed in successfully\./);
+  assert.match(html,/CRM data is taking longer than expected to load/);
+  assert.match(html,/Retry loading data/);
+  assert.match(html,/Signed in · CRM data delayed/);
+});
