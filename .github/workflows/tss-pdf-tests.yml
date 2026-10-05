@@ -1,0 +1,33 @@
+name: TSS PDF attachment contract
+on:
+  pull_request:
+    paths:
+      - 'crm/outlook-send.js'
+      - 'api/outlook/send/**'
+      - 'command-center/email-attachment*.js'
+      - 'command-center/email-signature.js'
+      - 'tests/pdf-attachments.test.mjs'
+      - '.github/workflows/tss-pdf-tests.yml'
+  push:
+    branches: ['feat/crm-pdf-attachments-20261005']
+    paths:
+      - 'crm/outlook-send.js'
+      - 'api/outlook/send/**'
+      - 'command-center/email-attachment*.js'
+      - 'command-center/email-signature.js'
+      - 'tests/pdf-attachments.test.mjs'
+      - '.github/workflows/tss-pdf-tests.yml'
+permissions:
+  contents: read
+jobs:
+  isolated-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/pdf-attachments.test.mjs
