@@ -69,7 +69,7 @@ async function showLogin(message=''){
   google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,nonce:challenge.nonce,auto_select:false,callback:async response=>{
    if(generation!==loginGeneration)return;
    el('googleButton').textContent='Verifying your account…';
-   try{const r=await rpc('googleSignIn',response.credential,challenge.nonce);if(generation!==loginGeneration){await rpc('signOut',r.token);return}sessionToken=r.token;sessionExpiry=r.expiresAt;rememberTrustedSession();if(el('loginError'))el('loginError').textContent='Signed in. Loading your CRM workspace…';await refresh();}catch(e){if(generation===loginGeneration)showLogin(e.message)}
+   try{const r=await rpc('googleSignIn',response.credential,challenge.nonce);if(generation!==loginGeneration){await rpc('signOut',r.token);return}sessionToken=r.token;sessionExpiry=r.expiresAt;rememberTrustedSession();if(el('loginError'))el('loginError').textContent='Signed in. Loading your CRM workspace…';const cached=loadCachedState();if(cached){state=cached.state;stateObservation={source:'cache',receivedAt:cached.savedAt};el('signOutButton').hidden=false;el('sync').textContent='Last synced '+new Date(cached.savedAt).toLocaleString();render();refresh();return}await refresh();}catch(e){if(generation===loginGeneration)showLogin(e.message)}
   }});
   el('googleButton').textContent='';google.accounts.id.renderButton(el('googleButton'),{theme:'outline',size:'large',text:'signin_with',width:280});
  }catch(e){clearTimeout(slowLoginTimer);if(generation===loginGeneration&&el('loginError')){el('googleButton').textContent='';el('loginError').textContent=e.message}}
