@@ -35,7 +35,7 @@ document.addEventListener('click',event=>{const button=event.target.closest?.('b
 const label=k=>labels[k]||(k.charAt(0).toUpperCase()+k.slice(1)).replace(/([a-z])([A-Z])/g,'$1 $2');
 const today=()=>TSSTaskMetrics.calendarToday();
 const GOOGLE_CLIENT_ID='103840050410-80lukup1okjnkmt6qvmd9s2mbvi3uakf.apps.googleusercontent.com';
-const CRM_API='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
+const CRM_API='/api/crm';
 let sessionExpiry=0,loginGeneration=0;
 async function rpc(fn,...args){
  beginOperation(operationText(fn));
