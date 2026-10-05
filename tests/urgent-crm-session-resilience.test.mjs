@@ -52,3 +52,5 @@ test('successful authentication is not misrepresented as a login failure when ge
   assert.match(html,/Retry loading data/);
   assert.match(html,/Signed in · CRM data delayed/);
 });
+
+// CI trigger: final login-state regression gate.
