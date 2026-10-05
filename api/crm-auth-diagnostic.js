@@ -1,24 +1,25 @@
-export default async function handler(req, res) {
-  if (req.method !== 'GET') return res.status(405).json({ ok:false, error:'GET only' });
-  const target = 'https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
-  const post = async payload => {
-    const started = Date.now();
-    const r = await fetch(target, {
-      method:'POST', redirect:'follow', cache:'no-store',
-      headers:{'Content-Type':'text/plain;charset=UTF-8'},
-      body:JSON.stringify(payload)
+export default async function handler(req,res){
+  if(req.method!=='GET')return res.status(405).json({ok:false,error:'GET only'});
+  const target='https://www.thesmartysolution.com/api/crm';
+  const started=Date.now();
+  try{
+    const r=await fetch(target,{
+      method:'POST',
+      redirect:'manual',
+      headers:{'Content-Type':'application/json','Origin':'https://www.thesmartysolution.com'},
+      body:JSON.stringify({fn:'beginGoogleLogin',args:[]})
     });
-    const text = await r.text();
-    let body=text; try{body=JSON.parse(text)}catch{}
-    return {elapsedMs:Date.now()-started,status:r.status,ok:r.ok,url:r.url,contentType:r.headers.get('content-type')||'',body};
-  };
-  try {
-    const begin = await post({fn:'beginGoogleLogin',args:[]});
-    let invalidCredential = null;
-    const nonce = begin && begin.body && begin.body.result && begin.body.result.nonce;
-    if (nonce) invalidCredential = await post({fn:'googleSignIn',args:['invalid-diagnostic-token',nonce]});
-    return res.status(200).json({diagnostic:true,begin,invalidCredential});
-  } catch(e) {
-    return res.status(200).json({diagnostic:true,networkError:String(e&&e.message||e)});
+    const body=await r.json().catch(()=>null);
+    return res.status(200).json({
+      diagnostic:true,
+      elapsedMs:Date.now()-started,
+      gatewayStatus:r.status,
+      gatewayOk:r.ok,
+      bodyOk:!!body?.ok,
+      hasNonce:typeof body?.result?.nonce==='string'&&body.result.nonce.length>10,
+      error:body?.error||null
+    });
+  }catch(e){
+    return res.status(200).json({diagnostic:true,elapsedMs:Date.now()-started,gatewayStatus:0,gatewayOk:false,bodyOk:false,hasNonce:false,error:String(e?.message||e)});
   }
 }
