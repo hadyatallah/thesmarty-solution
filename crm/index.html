@@ -18,6 +18,7 @@ const AI_ACTION_KEY='tss-crm-ai-actions-v2';
 const AI_PENDING_KEY='tss-crm-ai-pending-v2';
 const AI_UNDO_KEY='tss-crm-ai-undo-v2';
 const TRUSTED_SESSION_MAX_MS=30*24*60*60*1000;
+const TRUSTED_BROWSER_SESSION_MAX_MS=8*60*60*1000;
 const STATE_CACHE_MAX_MS=7*24*60*60*1000;
 const COMMAND_API='https://api.thesmartysolution.com';
 const isInstalledApp=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
@@ -48,31 +49,37 @@ async function rpc(fn,...args){
 }
 async function call(fn,...args){const requestedSession=sessionToken;try{const r=await rpc(fn,requestedSession,...args);if(sessionToken!==requestedSession)throw Error('SESSION_CHANGED');return r}catch(e){if(String(e.message).includes('AUTH_REQUIRED')&&sessionToken===requestedSession){clearSession();showLogin('Your session ended. Please sign in again.');}throw e}}
 function clearSession(removeTrusted=true){sessionToken='';sessionExpiry=0;state=null;loginGeneration++;if(removeTrusted){try{localStorage.removeItem(TRUSTED_SESSION_KEY)}catch(e){}}el('dialog').close();el('dialog').innerHTML='';el('nav').innerHTML='';el('main').innerHTML='';el('notice').textContent='';el('signOutButton').hidden=true;el('sync').textContent='Private workspace';}
-function rememberTrustedSession(){if(!isInstalledApp()||!sessionToken)return;try{localStorage.setItem(TRUSTED_SESSION_KEY,JSON.stringify({token:sessionToken,serverExpiry:sessionExpiry,deviceExpiry:Date.now()+TRUSTED_SESSION_MAX_MS}))}catch(e){}}
+function rememberTrustedSession(){if(!sessionToken)return;const ttl=isInstalledApp()?TRUSTED_SESSION_MAX_MS:TRUSTED_BROWSER_SESSION_MAX_MS;try{localStorage.setItem(TRUSTED_SESSION_KEY,JSON.stringify({token:sessionToken,serverExpiry:sessionExpiry,deviceExpiry:Date.now()+ttl}))}catch(e){}}
 function cacheState(){if(!state)return;try{localStorage.setItem(STATE_CACHE_KEY,JSON.stringify({schema:2,savedAt:Date.now(),state}))}catch(e){}}
 function loadCachedState(){let saved;try{saved=JSON.parse(localStorage.getItem(STATE_CACHE_KEY)||'null')}catch(e){}if(saved?.schema!==2||!saved.state||!Number.isFinite(saved.savedAt)||saved.savedAt<=0||saved.savedAt>Date.now()||Date.now()-saved.savedAt>STATE_CACHE_MAX_MS)return null;return saved}
 function showCachedState(reason=''){const saved=loadCachedState();if(!saved)return false;state=saved.state;stateObservation={source:'cache',receivedAt:saved.savedAt};el('signOutButton').hidden=false;el('sync').textContent='Last synced '+new Date(saved.savedAt).toLocaleString();render();notice('CRM server unavailable. Showing your last synced workspace.'+(reason?' '+reason:''));return true}
-async function restoreTrustedSession(){if(!isInstalledApp())return false;let saved;try{saved=JSON.parse(localStorage.getItem(TRUSTED_SESSION_KEY)||'null')}catch(e){}if(!saved?.token||!saved.deviceExpiry||Date.now()>=saved.deviceExpiry){clearSession(true);return false}sessionToken=saved.token;sessionExpiry=Number(saved.serverExpiry||0);try{await rpc('checkSession',sessionToken);await refresh();return true}catch(e){const msg=String(e.message||e);if(/AUTH_REQUIRED|SESSION_CHANGED/.test(msg)){clearSession(true);return false}if(showCachedState())return true;return false}}
+async function restoreTrustedSession(){let saved;try{saved=JSON.parse(localStorage.getItem(TRUSTED_SESSION_KEY)||'null')}catch(e){}if(!saved?.token||!saved.deviceExpiry||Date.now()>=saved.deviceExpiry){clearSession(true);return false}sessionToken=saved.token;sessionExpiry=Number(saved.serverExpiry||0);
+ if(sessionExpiry&&Date.now()<sessionExpiry){const cached=loadCachedState();if(cached){state=cached.state;stateObservation={source:'cache',receivedAt:cached.savedAt};el('signOutButton').hidden=false;el('sync').textContent='Last synced '+new Date(cached.savedAt).toLocaleString();render();refresh();return true}await refresh();return true}
+ try{const checked=await rpc('checkSession',sessionToken);if(checked?.expiresAt)sessionExpiry=Number(checked.expiresAt);else sessionExpiry=Date.now()+5*60*1000;rememberTrustedSession();await refresh();return true}catch(e){const msg=String(e.message||e);if(/AUTH_REQUIRED|SESSION_CHANGED/.test(msg)){clearSession(true);return false}if(showCachedState('Secure session verification is delayed.'))return true;return false}}
 async function showLogin(message=''){
  const generation=++loginGeneration;
- el('main').innerHTML='<section class="panel" style="max-width:490px;margin:35px auto"><h2>Admin login</h2><p class="muted">Sign in with your authorised TSS Google account.</p><p id="loginError" class="error" role="alert">'+esc(message)+'</p><div id="googleButton">Connecting to Google…</div><p class="muted" style="font-size:13px;margin-top:20px">Google handles your password. CRM access ends when you leave or reload this page, or after one hour.</p><a href="/">Back to the TSS website</a><p><button onclick="showLogin()">Retry login</button></p></section>';
+ el('main').innerHTML='<section class="panel" style="max-width:490px;margin:35px auto"><h2>Admin login</h2><p class="muted">Sign in with your authorised TSS Google account.</p><p id="loginError" class="error" role="alert">'+esc(message)+'</p><div id="googleButton">Connecting to Google…</div><p class="muted" style="font-size:13px;margin-top:20px">Google handles your password. This browser keeps the secure CRM session while it remains valid. Use Sign out on shared devices.</p><a href="/">Back to the TSS website</a><p><button onclick="showLogin()">Retry login</button></p></section>';
+ let slowLoginTimer=0;
  try{
+  slowLoginTimer=setTimeout(()=>{if(generation===loginGeneration&&el('loginError'))el('loginError').textContent='Google CRM is responding slowly. Still trying automatically…'},6500);
   const challenge=await rpc('beginGoogleLogin');
+  clearTimeout(slowLoginTimer);
   if(!window.google?.accounts?.id)await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://accounts.google.com/gsi/client';s.onload=resolve;s.onerror=()=>reject(Error('Google sign-in could not load. Please retry.'));document.head.appendChild(s)});
   if(generation!==loginGeneration)return;
   google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,nonce:challenge.nonce,auto_select:false,callback:async response=>{
    if(generation!==loginGeneration)return;
    el('googleButton').textContent='Verifying your account…';
-   try{const r=await rpc('googleSignIn',response.credential,challenge.nonce);if(generation!==loginGeneration){await rpc('signOut',r.token);return}sessionToken=r.token;sessionExpiry=r.expiresAt;rememberTrustedSession();await refresh();}catch(e){if(generation===loginGeneration)showLogin(e.message)}
+   try{const r=await rpc('googleSignIn',response.credential,challenge.nonce);if(generation!==loginGeneration){await rpc('signOut',r.token);return}sessionToken=r.token;sessionExpiry=r.expiresAt;rememberTrustedSession();if(el('loginError'))el('loginError').textContent='Signed in. Loading your CRM workspace…';await refresh();}catch(e){if(generation===loginGeneration)showLogin(e.message)}
   }});
   el('googleButton').textContent='';google.accounts.id.renderButton(el('googleButton'),{theme:'outline',size:'large',text:'signin_with',width:280});
- }catch(e){if(generation===loginGeneration&&el('loginError')){el('googleButton').textContent='';el('loginError').textContent=e.message}}
+ }catch(e){clearTimeout(slowLoginTimer);if(generation===loginGeneration&&el('loginError')){el('googleButton').textContent='';el('loginError').textContent=e.message}}
 }
 async function logout(all=false){const token=sessionToken;clearSession(true);window.google?.accounts?.id?.disableAutoSelect();showLogin('Signed out.');try{await rpc(all?'signOutAll':'signOut',token)}catch(e){notice('Local sign-out complete. The server session will expire automatically.')}}
 async function startLogin(){try{localStorage.removeItem('tss-crm-session-v1');sessionStorage.removeItem('tss-crm-session-v1')}catch(e){}if(await restoreTrustedSession())return;showLogin();}
-window.addEventListener('pagehide',()=>{if(isInstalledApp()){rememberTrustedSession();return}const token=sessionToken;clearSession(false);if(token)fetch(CRM_API,{method:'POST',credentials:'omit',keepalive:true,headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({fn:'signOut',args:[token]})}).catch(()=>{})});
-window.addEventListener('pageshow',e=>{if(e.persisted){if(isInstalledApp())startLogin();else showLogin()}});
-setInterval(()=>{if(sessionToken&&sessionExpiry&&Date.now()>=sessionExpiry){if(isInstalledApp()){rpc('checkSession',sessionToken).then(()=>{rememberTrustedSession()}).catch(()=>{clearSession(true);showLogin('Your session ended. Please sign in again.')})}else{clearSession(true);showLogin('Your session ended. Please sign in again.')}}},15000);
+window.addEventListener('pagehide',()=>{rememberTrustedSession()});
+window.addEventListener('pageshow',e=>{if(e.persisted){if(sessionToken){rememberTrustedSession();refresh()}else startLogin()}});
+let sessionCheckInFlight=false;
+setInterval(()=>{if(sessionToken&&sessionExpiry&&Date.now()>=sessionExpiry&&!sessionCheckInFlight){sessionCheckInFlight=true;rpc('checkSession',sessionToken).then(r=>{if(r?.expiresAt)sessionExpiry=Number(r.expiresAt);else sessionExpiry=Date.now()+5*60*1000;rememberTrustedSession()}).catch(()=>{clearSession(true);showLogin('Your session ended. Please sign in again.')}).finally(()=>{sessionCheckInFlight=false})}},15000);
 function notice(s){el('notice').textContent=s;setTimeout(()=>{if(el('notice').textContent===s)el('notice').textContent=''},6500)}
 function company(id){return state.records.Companies.find(r=>r.id===id)?.name||''}
 function done(r){return TSSTaskMetrics.isClosedRecord(r)}
