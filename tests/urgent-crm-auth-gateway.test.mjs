@@ -49,10 +49,16 @@ test('read-only auth bootstrap retries one transient upstream HTTP failure',asyn
   assert.equal(h.state.status,200);assert.equal(n,2);
 });
 
-test('googleSignIn is never replayed after an uncertain upstream failure',async()=>{
-  let n=0;const fetcher=async()=>{n++;return response(503);};
+test('googleSignIn retries one definitive infrastructure HTTP failure',async()=>{
+  let n=0;const fetcher=async()=>++n===1?response(503):response(200,{json:{ok:true,result:{token:'fixture',expiresAt:123}}});
   const h=harness(fetcher,{body:{fn:'googleSignIn',args:['credential','nonce']}});
-  await h.run();assert.equal(h.state.status,502);assert.equal(n,1);assert.equal(h.state.body.retryable,false);
+  await h.run();assert.equal(h.state.status,200);assert.equal(n,2);assert.equal(h.state.body.result.token,'fixture');
+});
+
+test('googleSignIn is never replayed after an ambiguous network failure',async()=>{
+  let n=0;const fetcher=async()=>{n++;throw Error('socket reset');};
+  const h=harness(fetcher,{body:{fn:'googleSignIn',args:['credential','nonce']}});
+  await h.run();assert.equal(h.state.status,502);assert.equal(n,1);assert.equal(h.state.body.retryable,true);
 });
 
 test('saveRecord is never replayed after an uncertain upstream failure',async()=>{
