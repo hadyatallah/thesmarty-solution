@@ -126,6 +126,7 @@ def run(browser,width):
         checks['packManifestVisible']='Pack manifest' in text and 'PACK-' in text
         checks['packFingerprintVisible']='Content fingerprint' in text
         checks['packDraftOnly']='Approval state' in text and 'Draft' in text
+        checks['developerPackPreview']='Developer pack preview' in text and 'Opportunity at a glance' in text and 'Express qualified interest through TSS.' in text
 
         page.locator('[data-view="Presentation"]').click()
         text=page.locator('#workspace').inner_text()
@@ -164,6 +165,8 @@ def run(browser,width):
         checks['assistantResponseCategory']='Qualified interest signal' in text
         checks['assistantProposalId']='ASP-' in text
         checks['assistantNoExternalAction']='External action: NO' in text and 'Human approval required' in text
+        checks['assistantSafeDraft']='Safe draft preview' in text and 'Further planning or technical material can only be shared through the appropriate controlled disclosure stage.' in text
+        checks['assistantNoRestrictedIdentity']='Principal identity is not included in the information currently approved for disclosure.' in text
         page.screenshot(path=str(OUT/f'assistant-{width}.png'),full_page=True)
 
         page.locator('[data-view="Analytics"]').click()
