@@ -20,6 +20,7 @@ ALLOWED={
     '/crm/kiti-pilot-model.js':('crm/kiti-pilot-model.js','text/javascript; charset=utf-8'),
     '/crm/kiti-pilot-governance.js':('crm/kiti-pilot-governance.js','text/javascript; charset=utf-8'),
     '/crm/kiti-pilot-backend.js':('crm/kiti-pilot-backend.js','text/javascript; charset=utf-8'),
+    '/crm/kiti-pilot-data-center-snapshot.js':('crm/kiti-pilot-data-center-snapshot.js','text/javascript; charset=utf-8'),
 }
 
 class Handler(BaseHTTPRequestHandler):
@@ -96,12 +97,15 @@ def run(browser,width):
 
         page.locator('[data-view="Matches"]').click()
         text=page.locator('#workspace').inner_text()
-        checks['gelfancoFixture']='Gelfanco' in text and 'TSS-CY-001' in text
+        checks['gelfancoFixture']='Gelfanco Ltd' in text and 'TSS-CY-001' in text
         checks['mandatoryPass']='Mandatory' in text and 'PASS' in text
         checks['priorityReview']='Priority Review' in text
         checks['appetiteUnknown']='Current appetite' in text and 'Unknown' in text
         checks['gapsVisible']='Current appetite unknown' in text and 'Capacity unknown' in text
         checks['matchOutreachBlocked']='Outreach authority not granted' in text
+        checks['governedDataCenterReadback']='Governed Data Center readback' in text and 'Needs Review' in text and 'Observed Current Project Commercialization' in text
+        checks['governedEvidenceRefs']='EV-P3-0001' in text and 'EV-7267B12B92D94F15' in text
+        checks['profileVersionReadback']='Snapshot profile version 23' in text
         page.screenshot(path=str(OUT/f'matches-{width}.png'),full_page=True)
 
         page.locator('[data-view="Communications"]').click()
