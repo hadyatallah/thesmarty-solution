@@ -17,9 +17,9 @@ MODEL=(ROOT/'crm/kiti-pilot-model.js').read_text()
 UI=(ROOT/'crm/kiti-pilot.js').read_text()
 
 # Test the actual repository files while removing only ES-module transport syntax.
-HTML_INLINE=re.sub(r'<script\\s+type="module"\\s+src="/crm/kiti-pilot\\.js"></script>','',HTML)
-MODEL_INLINE=re.sub(r'\\bexport\\s+','',MODEL)
-UI_INLINE=re.sub(r"^import\\s*\\{[\\s\\S]*?\\}\\s*from\\s*['\"]\\./kiti-pilot-model\\.js['\"];\\s*", '', UI, count=1)
+HTML_INLINE=re.sub(r'<script\s+type="module"\s+src="/crm/kiti-pilot\.js"></script>','',HTML)
+MODEL_INLINE=re.sub(r'\bexport\s+','',MODEL)
+UI_INLINE=re.sub(r"^import\s*\{[\s\S]*?\}\s*from\s*['\"]\./kiti-pilot-model\.js['\"];\s*", '', UI, count=1)
 
 def run(browser,width):
     errors=[]
