@@ -248,3 +248,26 @@ test('safe D3 reply may include only supplied planning summary and approved stru
   assert.match(draft.body,/Joint Venture/);
   assert.equal(draft.externalAction,false);
 });
+
+
+test('explicit interest is preserved when primary response category is professional review',()=>{
+  const p=createAssistantProposal({
+    sourceMessageId:'MSG-PRO-1',opportunityId:'COP',matchId:'MAT',
+    messageText:'We are interested. Our lawyer would like a legal review before proceeding.',
+    createdAt:'2026-10-06T12:00:00Z'
+  });
+  assert.equal(p.responseCategory,'Professional / technical query');
+  assert.ok(p.proposedChanges.some(x=>x.field==='engagementState'&&x.value==='Interested'));
+  assert.equal(p.qualificationChange,null);
+});
+
+test('suppression overrides simultaneous positive wording',()=>{
+  const p=createAssistantProposal({
+    sourceMessageId:'MSG-SUP-2',opportunityId:'COP',matchId:'MAT',
+    messageText:'We were interested, but please do not contact us again.',
+    createdAt:'2026-10-06T12:01:00Z'
+  });
+  assert.equal(p.responseCategory,'Suppression');
+  assert.ok(p.proposedChanges.some(x=>x.field==='suppression'));
+  assert.equal(p.proposedChanges.some(x=>x.field==='engagementState'&&x.value==='Interested'),false);
+});
