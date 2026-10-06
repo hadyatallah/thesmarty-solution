@@ -1,3 +1,6 @@
+> **SUPERSEDED FOR THIS PILOT BRANCH**  
+> Use `docs/TSS_Commercial_Network_Kiti_Pilot_Implementation_Addendum_v0.1.md` as the current proposed addendum. This file is retained only as earlier branch history and must not be treated as a separate governing specification.
+
 # TSS Commercial Network Opportunity Workflow & Kiti Pilot Implementation Addendum
 ## Version 0.1 — Controlled DEV Pilot
 **Date:** 6 October 2026
