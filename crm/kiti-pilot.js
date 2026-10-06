@@ -106,7 +106,7 @@ function mandate(){
 
 function criteria(){
   const m=fixture.matches[0];
-  const rows=m.criteria.map(c=>`<tr><td>${esc(c.type)}</td><td>${esc(c.name)}</td><td>${esc(c.outcome)}</td><td>${esc(c.outcome==='Unknown'?'Evidence required before relying on this criterion':'Recorded fixture evidence')}</td></tr>`).join('');
+  const rows=m.criteria.map(c=>`<tr><td>${esc(c.type)}</td><td>${esc(c.name)}</td><td>${esc(c.outcome)}</td><td>${esc((c.evidenceIds||[]).length?(c.evidenceIds||[]).join(', '):(c.outcome==='Unknown'?'Evidence required before relying on this criterion':'Governed snapshot evidence'))}</td></tr>`).join('');
   $('workspace').innerHTML=`
     <section class="panel">
       <h3>Target criteria</h3>
@@ -195,7 +195,7 @@ function activity(){
 
 function matches(){
   const m=fixture.matches[0];
-  const criteria=m.criteria.map(c=>`<tr><td>${esc(c.type)}</td><td>${esc(c.name)}</td><td>${esc(c.outcome)}</td></tr>`).join('');
+  const criteria=m.criteria.map(c=>`<tr><td>${esc(c.type)}</td><td>${esc(c.name)}</td><td>${esc(c.outcome)}</td><td>${esc((c.evidenceIds||[]).join(', ')||'—')}</td></tr>`).join('');
   $('workspace').innerHTML=`
     <section class="panel">
       <div class="row"><div><h3>${esc(m.companyName)}</h3><p class="muted">${esc(m.companyId)}</p></div>${badge(candidateQueueGroup(m))}</div>
@@ -205,8 +205,13 @@ function matches(){
         <div><strong>Mandatory</strong><p>${esc(aggregateMandatory(m.criteria))}</p></div>
         <div><strong>Outreach</strong><p>${esc(outreachGate({mandate:fixture.mandate,match:m}).reason)}</p></div>
       </div>
+      <div class="notice ok">
+        <strong>Governed Data Center readback</strong><br>
+        Profile disposition: ${esc(m.dataCenterDisposition)} · Activity: ${esc(m.developmentActivity)} · Operating status: ${esc(m.operatingStatus)}<br>
+        Snapshot profile version ${esc(m.evidenceSnapshotVersion)} · updated ${esc(m.evidenceSnapshotUpdatedAt)}
+      </div>
       <h3>Criteria</h3>
-      <div class="table-wrap"><table><thead><tr><th>Type</th><th>Criterion</th><th>Outcome</th></tr></thead><tbody>${criteria}</tbody></table></div>
+      <div class="table-wrap"><table><thead><tr><th>Type</th><th>Criterion</th><th>Outcome</th><th>Evidence refs</th></tr></thead><tbody>${criteria}</tbody></table></div>
       <h3 class="section-title">Known gaps</h3>
       <div class="list">${m.gaps.map(g=>`<div class="gap">${esc(g)}</div>`).join('')}</div>
     </section>`;
