@@ -9,6 +9,12 @@ import {
   interpretMessage,
   validateDraftClaims
 } from './kiti-pilot-model.js';
+import {
+  createPackManifest,
+  createActivityEvent,
+  createAssistantProposal,
+  deriveCommercialAnalytics
+} from './kiti-pilot-governance.js';
 
 const fixture = kitiFixture();
 const $ = id => document.getElementById(id);
@@ -158,20 +164,24 @@ function presentation(){
     </div>`;
 }
 
-function activity(){
-  const events=[
-    ['09:00','Opportunity fixture loaded','Accepted · Targeting'],
-    ['09:01','Research-only Mandate fixture loaded','Research Granted · Outreach Not Granted'],
-    ['09:02','Target criteria evaluated','Mandatory PASS · appetite Unknown'],
-    ['09:03','Gelfanco Match fixture surfaced','Under Qualification · Not Contacted'],
-    ['09:04','Communication gate evaluated','BLOCKED · no external action']
+function activityEvents(){
+  return [
+    createActivityEvent({idempotencyKey:'KITI:LOAD',entityType:'Commercial Opportunity',recordId:fixture.opportunity.id,action:'Opportunity Fixture Loaded',timestamp:'2026-10-06T09:00:00Z',newState:'Accepted · Targeting'}),
+    createActivityEvent({idempotencyKey:'KITI:MANDATE',entityType:'Mandate',recordId:fixture.mandate.id,action:'Mandate Fixture Loaded',timestamp:'2026-10-06T09:01:00Z',newState:'Research Granted · Outreach Not Granted'}),
+    createActivityEvent({idempotencyKey:'KITI:CRITERIA',entityType:'Match',recordId:fixture.matches[0].id,action:'Criteria Evaluated',timestamp:'2026-10-06T09:02:00Z',newState:'Mandatory PASS · appetite Unknown'}),
+    createActivityEvent({idempotencyKey:'KITI:MATCH',entityType:'Match',recordId:fixture.matches[0].id,action:'Match Fixture Surfaced',timestamp:'2026-10-06T09:03:00Z',newState:'Under Qualification · Not Contacted'}),
+    createActivityEvent({idempotencyKey:'KITI:BLOCK',entityType:'Match',recordId:fixture.matches[0].id,action:'Governance Block',timestamp:'2026-10-06T09:04:00Z',newState:'BLOCKED · no external action',details:{reason:'Outreach authority not granted'}})
   ];
+}
+
+function activity(){
+  const events=activityEvents();
   $('workspace').innerHTML=`
     <section class="panel">
       <h3>Activity and audit fixture</h3>
-      <p class="muted">Synthetic events demonstrate the required reconstructable history. No live Activity rows are written.</p>
-      <div class="table-wrap"><table><thead><tr><th>Time</th><th>Event</th><th>Result</th></tr></thead><tbody>
-      ${events.map(e=>`<tr><td>${esc(e[0])}</td><td>${esc(e[1])}</td><td>${esc(e[2])}</td></tr>`).join('')}
+      <p class="muted">Synthetic events use deterministic idempotency keys and demonstrate reconstructable history. No live Activity rows are written.</p>
+      <div class="table-wrap"><table><thead><tr><th>Time</th><th>Event</th><th>Result</th><th>Event ID</th></tr></thead><tbody>
+      ${events.map(e=>`<tr><td>${esc(e.timestamp.slice(11,16))}</td><td>${esc(e.action)}</td><td>${esc(e.newState)}</td><td>${esc(e.eventId)}</td></tr>`).join('')}
       </tbody></table></div>
     </section>`;
 }
@@ -211,6 +221,24 @@ function packs(){
     structures:{minLevel:'D1'},caveat:{minLevel:'D1'},landownerIdentity:{restricted:true},confidentialStudies:{restricted:true}
   };
   const projection=packProjection({facts,requestedLevel:'D3',mandateCeiling:fixture.mandate.maxDisclosureLevel,recipientLevel:'D2',fieldRules:rules});
+  const manifest=createPackManifest({
+    requestId:'REQ-KITI-D1-DEVELOPER-001',
+    opportunityId:fixture.opportunity.id,
+    mandateId:fixture.mandate.id,
+    matchId:fixture.matches[0].id,
+    recipientCompanyId:fixture.matches[0].companyId,
+    audienceRole:'Developer',
+    requestedDisclosureLevel:'D3',
+    effectiveDisclosureLevel:projection.effectiveLevel,
+    templateVersion:'developer-pilot-v1',
+    opportunityVersion:'1',
+    mandateVersion:'1',
+    matchVersion:'1',
+    includedFields:projection.included,
+    excludedFields:projection.excluded,
+    documentRefs:[{id:'DOC-KITI-D1-TEASER',version:'1'}],
+    generatedAt:'2026-10-06T09:05:00Z'
+  });
   $('workspace').innerHTML=`
     <section class="panel">
       <h3>Opportunity Pack pre-generation check</h3>
@@ -220,6 +248,9 @@ function packs(){
         <div class="panel metric"><span>Recipient level</span><strong>D2</strong></div>
         <div class="panel metric"><span>Effective</span><strong>${esc(projection.effectiveLevel)}</strong></div>
       </div>
+      <div class="rowline"><span>Pack manifest</span><strong>${esc(manifest.packId)}</strong></div>
+      <div class="rowline"><span>Content fingerprint</span><strong>${esc(manifest.contentFingerprint)}</strong></div>
+      <div class="rowline"><span>Approval state</span><strong>${esc(manifest.approvalStatus)}</strong></div>
       <h3>Included facts</h3>
       <div class="list">${Object.entries(projection.included).map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('')}</div>
       <h3 class="section-title">Excluded</h3>
@@ -237,23 +268,40 @@ function assistant(){
       <div id="assistantResult"></div>
     </section>`;
   $('interpretBtn').onclick=()=>{
-    const result=interpretMessage($('messageInput').value);
+    const message=$('messageInput').value;
+    const result=interpretMessage(message);
+    const proposal=createAssistantProposal({
+      sourceMessageId:'MSG-KITI-SYN-001',
+      opportunityId:fixture.opportunity.id,
+      matchId:fixture.matches[0].id,
+      messageText:message,
+      createdAt:'2026-10-06T09:06:00Z'
+    });
     $('assistantResult').innerHTML=`
       <div class="assistant-card">
         <h3>Detected</h3>
         <div class="list">${result.detected.map(x=>`<div>${esc(x)}</div>`).join('')||'<div>Nothing material detected.</div>'}</div>
+        <div class="rowline"><span>Response category</span><strong>${esc(proposal.responseCategory)}</strong></div>
+        <div class="rowline"><span>Proposal ID</span><strong>${esc(proposal.proposalId)}</strong></div>
         <h3 class="section-title">Proposed CRM changes</h3>
-        <div class="list">${result.proposals.map(x=>`<div class="rowline"><span>${esc(x.field)}</span><strong>${esc(x.value)}</strong></div>`).join('')||'<div>No state proposal.</div>'}</div>
+        <div class="list">${proposal.proposedChanges.map(x=>`<div class="rowline"><span>${esc(x.field)}</span><strong>${esc(x.value)}</strong></div>`).join('')||'<div>No state proposal.</div>'}</div>
         <p><strong>Qualification:</strong> NO CHANGE</p>
+        <p><strong>External action:</strong> NO · Human approval required</p>
       </div>`;
   };
 }
 
 function analytics(){
-  const states=['Identified','Research Required','Under Qualification','Qualified','Qualified With Gaps','Shortlisted','Outreach Approved','Interested','Introduced','Active Discussion','Outcome'];
-  const values={'Identified':1,'Research Required':0,'Under Qualification':1,'Qualified':0,'Qualified With Gaps':0,'Shortlisted':0,'Outreach Approved':0,'Interested':0,'Introduced':0,'Active Discussion':0,'Outcome':0};
-  $('workspace').innerHTML='<section class="panel"><h3>Kiti commercial progression</h3><p class="muted">Fixture counts only. No close probability or weighted pipeline.</p>'+
-    states.map(s=>`<div class="rowline"><span>${esc(s)}</span><strong>${values[s]}</strong></div>`).join('')+
+  const analytics=deriveCommercialAnalytics({matches:fixture.matches,events:activityEvents()});
+  const qualification=['Identified','Research Required','Under Qualification','Qualified','Qualified With Gaps','Shortlisted','Outreach Approved'];
+  const engagement=['Not Contacted','Contacted','Awaiting Response','Interested','Introduced','Active Discussion','Negotiation','Closed'];
+  $('workspace').innerHTML='<section class="panel"><h3>Kiti commercial progression</h3><p class="muted">Derived from synthetic Match state and Activity events. No close probability, weighted pipeline or Match Score.</p>'+
+    '<h3>Qualification</h3>'+
+    qualification.map(s=>`<div class="rowline"><span>${esc(s)}</span><strong>${analytics.qualification[s]||0}</strong></div>`).join('')+
+    '<h3 class="section-title">Engagement</h3>'+
+    engagement.map(s=>`<div class="rowline"><span>${esc(s)}</span><strong>${analytics.engagement[s]||0}</strong></div>`).join('')+
+    `<div class="rowline"><span>Governance blocks</span><strong>${analytics.governanceBlocks}</strong></div>`+
+    `<div class="rowline"><span>Audited synthetic events</span><strong>${analytics.eventCount}</strong></div>`+
     '<div class="section-title"></div><div class="notice block">Governance attention: Outreach authority is not granted.</div></section>';
 }
 
