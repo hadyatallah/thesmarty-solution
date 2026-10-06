@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "capturedDate": "2026-10-06",
+  "environment": "Commercial Network DEV2",
+  "source": "Connected TSS Google Sheets read-only connector",
+  "workbookTitle": "TSS CRM - Commercial Network P0 DEV2 - 2026-10-03",
+  "sheetCount": 27,
+  "companies": {
+    "count": 2876,
+    "unique": 2876,
+    "orderedChecksum": "1659140c087a961a",
+    "sortedChecksum": "82d918e59db50ae8"
+  },
+  "retainedAudit": {
+    "activityCount": 97,
+    "agentLedgerCount": 36
+  },
+  "commercialNetworkEntities": {
+    "Company Roles": {
+      "nonemptyIds": 0
+    },
+    "Commercial Signals": {
+      "nonemptyIds": 0
+    },
+    "Commercial Opportunities": {
+      "nonemptyIds": 0
+    },
+    "Mandates": {
+      "nonemptyIds": 0
+    },
+    "Matches": {
+      "nonemptyIds": 0
+    },
+    "Partner Relationships": {
+      "nonemptyIds": 0
+    }
+  },
+  "interpretation": {
+    "matchesAcceptedP123Readback": true,
+    "p0RestartRequired": false,
+    "oldDevRequired": false,
+    "productionAcceptance": false,
+    "nextGate": "FULL_P0_5_RELEASE_CANDIDATE_COMPATIBILITY"
+  },
+  "privacy": {
+    "privateWorkbookAndScriptIdsOmitted": true
+  }
+}
