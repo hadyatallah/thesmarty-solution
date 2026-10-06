@@ -70,7 +70,8 @@ export const KITI_GELFANCO_GOVERNED_SNAPSHOT = Object.freeze({
     'Assess operating status and operating geography.',
     'Assess digital footprint and public contact routes.',
     'Assess group relationships.',
-    'Current appetite for the TSS Kiti Opportunity remains Unknown.'
+    'Current appetite for the TSS Kiti Opportunity remains Unknown.',
+    'Capacity remains Unknown.'
   ]
 });
 
