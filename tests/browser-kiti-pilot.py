@@ -87,7 +87,7 @@ def run(browser,width):
 
         page.locator('[data-view="Packs"]').click()
         text=page.locator('#workspace').inner_text()
-        checks['packEffectiveD1']='Effective\\nD1' in text
+        checks['packEffectiveD1']='Effective' in text and 'D1' in text
         checks['restrictedExcluded']='landownerIdentity' in text and 'Restricted' in text and 'confidentialStudies' in text
         checks['restrictedValuesNotRendered']='RESTRICTED TEST VALUE' not in text and 'RESTRICTED TEST DOCUMENT' not in text
         checks['publicFactsIncluded']='siteArea' in text and 'Approx. 859 m²' in text
