@@ -9,7 +9,9 @@ import {
   dedupeActivityEvents,
   classifyCommercialResponse,
   createAssistantProposal,
-  deriveCommercialAnalytics
+  deriveCommercialAnalytics,
+  runSyntheticPositiveJourney,
+  runSyntheticNegativeJourney
 } from '../crm/kiti-pilot-governance.js';
 
 test('stable stringify is key-order independent',()=>{
@@ -138,4 +140,30 @@ test('analytics preserves qualification and engagement as separate dimensions',(
   assert.equal(a.weightedPipeline,null);
   assert.equal(a.closeProbability,null);
   assert.equal(a.matchScore,null);
+});
+
+
+test('positive Kiti acceptance journey progresses only after explicit synthetic approvals',()=>{
+  const r=runSyntheticPositiveJourney();
+  assert.equal(r.outcome,'PASS');
+  assert.equal(r.realExternalAction,false);
+  assert.equal(r.match.engagementState,'Closed');
+  assert.equal(r.disclosure.beforeNda,'D1');
+  assert.equal(r.disclosure.afterNda,'D3');
+  assert.equal(r.proposal.qualificationChange,null);
+  assert.ok(r.events.some(e=>e.action==='Governance Block'));
+  assert.ok(r.events.some(e=>e.action==='Professional Handoff'));
+  assert.ok(r.events.some(e=>e.action==='Outcome Recorded'));
+});
+
+test('negative Kiti journey blocks a suppressed otherwise-ready candidate',()=>{
+  const r=runSyntheticNegativeJourney();
+  assert.equal(r.outcome,'PASS');
+  assert.equal(r.gate.allowed,false);
+  assert.match(r.gate.reason,/suppressed|do not contact/i);
+  assert.equal(r.sendAttempted,false);
+  assert.equal(r.realExternalAction,false);
+  assert.equal(r.match.engagementState,'Not Contacted');
+  assert.equal(r.company.unchanged,true);
+  assert.equal(r.events[0].action,'Governance Block');
 });
