@@ -31,7 +31,7 @@ def run(browser,width):
     page.on('request',lambda r: requests.append(r.url))
     try:
         page.set_content(HTML_INLINE,wait_until='load')
-        page.add_script_tag(content=MODEL_INLINE+'\\n'+UI_INLINE)
+        page.add_script_tag(content=MODEL_INLINE+'\n'+UI_INLINE)
         page.evaluate("document.dispatchEvent(new Event('DOMContentLoaded'))")
         page.wait_for_selector('[data-view="Overview"].active')
         body=page.locator('body').inner_text()
