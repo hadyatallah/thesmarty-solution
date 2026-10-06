@@ -1,3 +1,5 @@
+import {outreachGate,effectiveDisclosure} from './kiti-pilot-model.js';
+
 const RESPONSE_CATEGORIES = Object.freeze([
   'No relevant response',
   'Administrative',
@@ -253,3 +255,111 @@ export function deriveCommercialAnalytics({matches=[],events=[]}={}){
 }
 
 export {RESPONSE_CATEGORIES};
+
+
+export function runSyntheticPositiveJourney(){
+  const company={id:'TSS-CY-SYN-DEV',name:'Synthetic Developer'};
+  const opportunity={id:'COP-KITI-PILOT',status:'Accepted',developmentStage:'Targeting',version:'1'};
+  const mandate={
+    id:'MAN-KITI-SYN',status:'Active',authorityResearch:'Granted',authorityOutreach:'Not Granted',
+    maxDisclosureLevel:'D1',version:'1'
+  };
+  const match={
+    id:'MAT-KITI-SYN',companyId:company.id,qualificationState:'Under Qualification',
+    engagementState:'Not Contacted',version:'1',suppressed:false
+  };
+  const events=[];
+  const add=(key,action,priorState,newState,details={})=>events.push(createActivityEvent({
+    idempotencyKey:key,entityType:'Match',recordId:match.id,action,
+    timestamp:'2026-10-06T10:'+String(events.length).padStart(2,'0')+':00Z',
+    priorState,newState,details
+  }));
+
+  const firstGate=outreachGate({mandate,match,suppressed:match.suppressed,recipientKnown:true});
+  add('J:1','Governance Block',match.engagementState,match.engagementState,{reason:firstGate.reason});
+  match.qualificationState='Qualified With Gaps';
+  add('J:2','Qualification Change','Under Qualification','Qualified With Gaps',{humanApproved:true});
+  match.qualificationState='Shortlisted';
+  add('J:3','Qualification Change','Qualified With Gaps','Shortlisted',{humanApproved:true});
+
+  mandate.authorityOutreach='Granted';
+  mandate.version='2';
+  match.qualificationState='Outreach Approved';
+  match.version='2';
+  add('J:4','Qualification Change','Shortlisted','Outreach Approved',{humanApproved:true});
+  const secondGate=outreachGate({mandate,match,suppressed:false,recipientKnown:true});
+  if(!secondGate.allowed) throw Error('POSITIVE_JOURNEY_OUTREACH_GATE_FAILED');
+  match.engagementState='Contacted';
+  add('J:5','Engagement Change','Not Contacted','Contacted',{providerAccepted:true});
+
+  const proposal=createAssistantProposal({
+    sourceMessageId:'MSG-KITI-SYN-POS',
+    opportunityId:opportunity.id,
+    matchId:match.id,
+    messageText:'We are interested. Please send the planning information.',
+    createdAt:'2026-10-06T10:06:00Z'
+  });
+  if(!proposal.proposedChanges.some(x=>x.field==='engagementState'&&x.value==='Interested')) throw Error('POSITIVE_JOURNEY_INTEREST_PROPOSAL_FAILED');
+  match.engagementState='Interested';
+  add('J:6','Engagement Change','Contacted','Interested',{humanApproved:true,responseCategory:proposal.responseCategory});
+
+  const beforeNda=effectiveDisclosure({mandateCeiling:'D1',recipientLevel:'D2',documentLevel:'D3'});
+  if(beforeNda!=='D1') throw Error('POSITIVE_JOURNEY_DISCLOSURE_PRECONDITION_FAILED');
+  add('J:7','Governance Block','D1','D1',{reason:'D3 planning material requested above current disclosure ceiling'});
+
+  mandate.maxDisclosureLevel='D3';
+  mandate.version='3';
+  const afterNda=effectiveDisclosure({mandateCeiling:'D3',recipientLevel:'D3',documentLevel:'D3'});
+  if(afterNda!=='D3') throw Error('POSITIVE_JOURNEY_DISCLOSURE_POSTCONDITION_FAILED');
+  add('J:8','Disclosure Gate','D1','D3',{ndaVerified:true,humanApproved:true});
+
+  match.engagementState='Introduced';
+  add('J:9','Engagement Change','Interested','Introduced',{humanApproved:true});
+  match.engagementState='Active Discussion';
+  add('J:10','Engagement Change','Introduced','Active Discussion',{humanApproved:true});
+  add('J:11','Professional Handoff','Active Discussion','Active Discussion',{humanApproved:true});
+  match.engagementState='Closed';
+  add('J:12','Outcome Recorded','Active Discussion','Closed',{outcome:'Synthetic acceptance outcome'});
+
+  return {
+    outcome:'PASS',
+    externalCommunicationSimulated:true,
+    realExternalAction:false,
+    company,
+    opportunity,
+    mandate,
+    match,
+    proposal,
+    disclosure:{beforeNda,afterNda},
+    events:dedupeActivityEvents(events)
+  };
+}
+
+export function runSyntheticNegativeJourney(){
+  const company={id:'TSS-CY-SYN-BLOCKED',name:'Synthetic Suppressed Developer',unchanged:true};
+  const mandate={id:'MAN-KITI-SYN-NEG',status:'Active',authorityOutreach:'Granted',maxDisclosureLevel:'D3'};
+  const match={
+    id:'MAT-KITI-SYN-NEG',companyId:company.id,qualificationState:'Outreach Approved',
+    engagementState:'Not Contacted',suppressed:true
+  };
+  const gate=outreachGate({mandate,match,suppressed:true,recipientKnown:true});
+  const event=createActivityEvent({
+    idempotencyKey:'NEG:SUPPRESSION',
+    entityType:'Match',
+    recordId:match.id,
+    action:'Governance Block',
+    timestamp:'2026-10-06T11:00:00Z',
+    priorState:'Not Contacted',
+    newState:'Not Contacted',
+    details:{reason:gate.reason}
+  });
+  return {
+    outcome:gate.allowed?'FAIL':'PASS',
+    realExternalAction:false,
+    sendAttempted:false,
+    company,
+    match,
+    gate,
+    events:[event]
+  };
+}
