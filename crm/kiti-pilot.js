@@ -235,6 +235,20 @@ function packs(){
     excludedFields:projection.excluded,
     nextStep:'Express qualified interest through TSS.'
   });
+  const professionalPack=buildRolePack({
+    audienceRole:'Professional Handoff',
+    effectiveDisclosureLevel:projection.effectiveLevel,
+    includedFields:projection.included,
+    excludedFields:projection.excluded,
+    professionalScope:'Review only the specifically assigned planning, legal or technical question.',
+    nextStep:'Provide professional review within the agreed scope.'
+  });
+  const investorPack=buildRolePack({
+    audienceRole:'Investor / Capital Provider',
+    effectiveDisclosureLevel:projection.effectiveLevel,
+    includedFields:projection.included,
+    excludedFields:projection.excluded
+  });
   const manifest=createPackManifest({
     requestId:'REQ-KITI-D1-DEVELOPER-001',
     opportunityId:fixture.opportunity.id,
@@ -267,6 +281,9 @@ function packs(){
       <div class="rowline"><span>Approval state</span><strong>${esc(manifest.approvalStatus)}</strong></div>
       <h3>Developer pack preview</h3>
       <div class="list">${rolePack.sections.map(section=>`<div class="panel"><strong>${esc(section.heading)}</strong>${Object.entries(section.fields).map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(Array.isArray(v)?v.join(', '):v)}</strong></div>`).join('')}</div>`).join('')}</div>
+      <h3 class="section-title">Professional handoff preview</h3>
+      <div class="list">${professionalPack.sections.map(section=>`<div class="panel"><strong>${esc(section.heading)}</strong>${Object.entries(section.fields).map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(Array.isArray(v)?v.join(', '):v)}</strong></div>`).join('')}</div>`).join('')}</div>
+      <div class="notice block section-title"><strong>Investor pack:</strong> ${esc(investorPack.reason)}</div>
       <h3>Included facts</h3>
       <div class="list">${Object.entries(projection.included).map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('')}</div>
       <h3 class="section-title">Excluded</h3>
