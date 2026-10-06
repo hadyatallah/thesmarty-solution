@@ -101,7 +101,7 @@ def run(browser,width):
         checks['mandatoryPass']='Mandatory' in text and 'PASS' in text
         checks['priorityReview']='Priority Review' in text
         checks['appetiteUnknown']='Current appetite' in text and 'Unknown' in text
-        checks['gapsVisible']='Current appetite unknown' in text and 'Capacity unknown' in text
+        checks['gapsVisible']='Current appetite for the TSS Kiti Opportunity remains Unknown.' in text and 'Capacity remains Unknown.' in text
         checks['matchOutreachBlocked']='Outreach authority not granted' in text
         checks['governedDataCenterReadback']='Governed Data Center readback' in text and 'Needs Review' in text and 'Observed Current Project Commercialization' in text
         checks['governedEvidenceRefs']='EV-P3-0001' in text and 'EV-7267B12B92D94F15' in text
