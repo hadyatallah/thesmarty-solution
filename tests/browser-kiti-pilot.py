@@ -127,6 +127,8 @@ def run(browser,width):
         checks['packFingerprintVisible']='Content fingerprint' in text
         checks['packDraftOnly']='Approval state' in text and 'Draft' in text
         checks['developerPackPreview']='Developer pack preview' in text and 'Opportunity at a glance' in text and 'Express qualified interest through TSS.' in text
+        checks['professionalPackPreview']='Professional handoff preview' in text and 'Review only the specifically assigned planning, legal or technical question.' in text
+        checks['investorPackDeferred']='Investor pack:' in text and 'deferred pending the approved professional/regulatory route' in text
 
         page.locator('[data-view="Presentation"]').click()
         text=page.locator('#workspace').inner_text()
