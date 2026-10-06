@@ -15,6 +15,11 @@ import {
   createAssistantProposal,
   deriveCommercialAnalytics
 } from './kiti-pilot-governance.js';
+import {
+  DEV2_CN_BACKEND_CONTRACT,
+  createKitiDev2Client,
+  syntheticDev2RpcFixture
+} from './kiti-pilot-backend.js';
 
 const fixture = kitiFixture();
 const $ = id => document.getElementById(id);
@@ -258,6 +263,53 @@ function packs(){
     </section>`;
 }
 
+function runtime(){
+  $('workspace').innerHTML=`
+    <section class="panel">
+      <h3>DEV2 runtime adapter</h3>
+      <p class="muted">Isolated contract check only. This view does not call the live CRM or execute writes.</p>
+      <div class="rowline"><span>Backend version</span><strong>${esc(DEV2_CN_BACKEND_CONTRACT.backendVersion)}</strong></div>
+      <div class="rowline"><span>Read contract</span><strong>${esc(DEV2_CN_BACKEND_CONTRACT.read)}</strong></div>
+      <div class="rowline"><span>Candidate contract</span><strong>${esc(DEV2_CN_BACKEND_CONTRACT.candidates)}</strong></div>
+      <div class="rowline"><span>Transition contract</span><strong>${esc(DEV2_CN_BACKEND_CONTRACT.prepareTransition)}</strong></div>
+      <div class="rowline"><span>Communication gate</span><strong>${esc(DEV2_CN_BACKEND_CONTRACT.communicationGate)}</strong></div>
+      <div class="actions"><button class="primary" id="runtimeCheckBtn">Run isolated adapter check</button></div>
+      <div id="runtimeResult"></div>
+    </section>`;
+  $('runtimeCheckBtn').onclick=async()=>{
+    const fixtureRpc=syntheticDev2RpcFixture();
+    const client=createKitiDev2Client(fixtureRpc.rpc);
+    $('runtimeCheckBtn').disabled=true;
+    try{
+      const state=await client.readState('SYNTHETIC-TOKEN');
+      const candidates=await client.readCandidates('SYNTHETIC-TOKEN','MAN-KITI-SYN',{companyId:'TSS-CY-001'});
+      const proposal=await client.prepareQualificationTransition('SYNTHETIC-TOKEN','MAT-SYN','Qualified With Gaps',{
+        expectedVersion:'1',
+        requestId:'REQ-RUNTIME-SYN-001',
+        reason:'Synthetic human-reviewed evidence'
+      });
+      const gate=await client.communicationGate('SYNTHETIC-TOKEN','MAT-SYN');
+      const names=fixtureRpc.calls.map(x=>x.name);
+      const forbidden=names.some(x=>['saveCommercialNetworkRecord','ccDecide','ccExecute'].includes(x));
+      $('runtimeResult').innerHTML=`
+        <div class="assistant-card">
+          <div class="rowline"><span>Read permission</span><strong>${state.permissions?.canRead?'PASS':'FAIL'}</strong></div>
+          <div class="rowline"><span>Candidate records</span><strong>${esc(candidates.candidates.length)}</strong></div>
+          <div class="rowline"><span>Mandatory result</span><strong>${esc(candidates.candidates[0]?.mandatoryCriteriaResult||'')}</strong></div>
+          <div class="rowline"><span>Appetite</span><strong>${esc(candidates.candidates[0]?.criteria.find(x=>x.name==='Current appetite')?.outcome||'Unknown')}</strong></div>
+          <div class="rowline"><span>Transition result</span><strong>${esc(proposal.status)} · human review only</strong></div>
+          <div class="rowline"><span>External communication</span><strong>${gate.allowed?'AVAILABLE':'BLOCKED'}</strong></div>
+          <div class="rowline"><span>Forbidden write/execute call</span><strong>${forbidden?'FAIL':'NONE'}</strong></div>
+          <p class="muted">Calls: ${esc(names.join(' → '))}</p>
+        </div>`;
+    }catch(error){
+      $('runtimeResult').innerHTML='<div class="notice block">Runtime adapter check failed: '+esc(error.message||error)+'</div>';
+    }finally{
+      $('runtimeCheckBtn').disabled=false;
+    }
+  };
+}
+
 function assistant(){
   $('workspace').innerHTML=`
     <section class="panel">
@@ -305,7 +357,7 @@ function analytics(){
     '<div class="section-title"></div><div class="notice block">Governance attention: Outreach authority is not granted.</div></section>';
 }
 
-const views={Overview:overview,Readiness:readiness,Mandate:mandate,Criteria:criteria,Matches:matches,Communications:communications,Documents:documents,Packs:packs,Presentation:presentation,Activity:activity,Assistant:assistant,Analytics:analytics};
+const views={Overview:overview,Readiness:readiness,Mandate:mandate,Criteria:criteria,Matches:matches,Communications:communications,Documents:documents,Packs:packs,Presentation:presentation,Activity:activity,Runtime:runtime,Assistant:assistant,Analytics:analytics};
 
 function selectView(name){
   document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name));
