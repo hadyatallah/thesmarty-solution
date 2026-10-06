@@ -13,6 +13,7 @@ on:
       - 'tests/browser-status-display.py'
       - 'tests/kiti-pilot.test.mjs'
       - 'tests/kiti-pilot-backend.test.mjs'
+      - 'tests/kiti-pilot-governance.test.mjs'
       - 'tests/browser-kiti-pilot.py'
       - '.github/workflows/dashboard-consistency.yml'
 permissions:
@@ -40,7 +41,7 @@ jobs:
           node --check crm/assistant.js
           node --check crm/status-display.js
           node --check command-center/crm.js
-          node --test tests/dashboard.test.mjs tests/urgent*.test.mjs tests/enquiry-transport.test.mjs tests/assistant-formatting.test.mjs tests/command-center/phase*.test.js tests/command-center/context.test.js tests/command-center/lookup-availability.test.js tests/command-center/ui.test.js tests/status-display.test.mjs tests/kiti-pilot.test.mjs tests/kiti-pilot-backend.test.mjs | tee evidence/dashboard/node-tests.txt
+          node --test tests/dashboard.test.mjs tests/urgent*.test.mjs tests/enquiry-transport.test.mjs tests/assistant-formatting.test.mjs tests/command-center/phase*.test.js tests/command-center/context.test.js tests/command-center/lookup-availability.test.js tests/command-center/ui.test.js tests/status-display.test.mjs tests/kiti-pilot.test.mjs tests/kiti-pilot-backend.test.mjs tests/kiti-pilot-governance.test.mjs | tee evidence/dashboard/node-tests.txt
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
