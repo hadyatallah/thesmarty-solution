@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "decisionDate": "2026-10-06",
+  "project": "TSS CRM - Commercial Network P0 DEV",
+  "devScriptId": "1qvsyUWC7pojvhLL_6iiF0ziMdW2ZZSFCHpIwymxdNVLTJpuenPZZh61H",
+  "authority": {
+    "artifactName": "P0AcceptanceFixtures.gs",
+    "libraryFileId": "file_000000003d4082109032453341665ce0",
+    "libraryVersionId": "1",
+    "sizeBytes": 43755,
+    "sha256": "0a8f4a3ec5645de8631a428679e1cef5450c240faa917922ab8e625a569a29d9",
+    "totalLines": 484,
+    "requiredMarkers": [
+      "function p0RunPersistentAcceptance32_(token)",
+      "function p0VerifyPersistentAcceptanceSessionCleanup()",
+      "P0_ACCEPTANCE_RESULT=",
+      "P0_ACCEPTANCE_SESSION_CLEANUP="
+    ],
+    "status": "SOLE_APPROVED_P0_FIXTURE_AUTHORITY"
+  },
+  "quarantine": {
+    "liveFileName": "P0AcceptanceFixtures.gs",
+    "status": "PROVENANCE_UNRESOLVED_DO_NOT_EXECUTE_DO_NOT_OVERWRITE",
+    "classification": "P5",
+    "reason": "Live editor observations conflict and exact saved bytes were never captured."
+  },
+  "separateLegacyArtifact": {
+    "artifactName": "P0DevAcceptance.gs",
+    "libraryFileId": "file_00000000c1d081f4ad02f69f96223fff",
+    "status": "SEPARATE_OCT1_RUNNER_NOT_INSTALL_AUTHORITY"
+  },
+  "preInstallEightFileBaseline": {
+    "appsscript.json": {"bytes":431,"sha256":"85b7160301aa2d68f2491c6ae4a8bdde6b8b9a0816293f9ec5a364fe29dced79"},
+    "Code.gs": {"bytes":378079,"sha256":"b1b4017f1f34c10567d74bcc33a36829de69731fdfd8ac1b5c8b3fc04ed65067"},
+    "CommandCenter.gs": {"bytes":42626,"sha256":"59edf1239f4021864e5dc2350081392306398af8890e1ca6f3c89c281a379da6"},
+    "CommercialNetwork.gs": {"bytes":36892,"sha256":"afc4fdd998a0749c87d2f6588dcf807819f8384591f589f8d7fe2d1e7b4a2a6c"},
+    "HttpAcceptance.gs": {"bytes":2996,"sha256":"0646f53ce7bd21193177d5ddb4397118e448a11019bc47597c4e54a3179481b6"},
+    "P0AcceptanceAuthBridge.gs": {"bytes":4612,"sha256":"ccb0ffb84968a3652f927469a96a8e7ff45858700a34e8d3aa984706b48ad867"},
+    "P0DevIsolationDiagnostic.gs": {"bytes":5261,"sha256":"7eb4bf4c30f63942f75c7f1edac0c546b3e1d8969552bf8accebd2124c60ad8a"},
+    "UntitledAiDiagnostic.gs": {"bytes":4594,"sha256":"195b643453447cd0f906a7c18f146763cd6f9ac3cc7e8413292d2419878c36fa"}
+  },
+  "releaseRule": {
+    "mayExecute": false,
+    "requirements": [
+      "Obtain stable raw saved-source export of the current live ninth file.",
+      "Do not execute the current live ninth file.",
+      "Do not overwrite the current live ninth file.",
+      "Before installing the authority fixture, establish a trustworthy restorable baseline of the DEV project.",
+      "After installation, recapture exact project source and require the authority fixture SHA-256 to equal the approved hash before execution.",
+      "Only then run P0 persistent acceptance and cleanup verification."
+    ]
+  }
+}
