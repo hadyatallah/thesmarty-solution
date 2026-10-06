@@ -202,9 +202,12 @@ export function createAssistantProposal({
   const at=required(createdAt,'ASSISTANT_CREATED_AT_REQUIRED');
   const category=classifyCommercialResponse(text);
   const proposedChanges=[];
-  if(category==='Qualified interest signal') proposedChanges.push({field:'engagementState',value:'Interested'});
-  if(category==='Not interested') proposedChanges.push({field:'engagementState',value:'Not Interested'});
-  if(category==='Suppression') proposedChanges.push({field:'suppression',value:'Do not contact',protectedWorkflow:true});
+  const suppression=/remove me|do not contact|unsubscribe/i.test(text);
+  const negative=/\bnot interested\b|\bno interest\b|\bdecline\b|\bpass on this\b/i.test(text);
+  const positive=/\binterested\b|\bkeen to explore\b|\bwould like to explore\b|\blet(?:'|’)s discuss\b|\blet us discuss\b/i.test(text);
+  if(suppression) proposedChanges.push({field:'suppression',value:'Do not contact',protectedWorkflow:true});
+  else if(negative) proposedChanges.push({field:'engagementState',value:'Not Interested'});
+  else if(positive) proposedChanges.push({field:'engagementState',value:'Interested'});
   const requests=[];
   if(/planning|permit|approval/i.test(text)) requests.push('Planning information');
   if(/joint venture|\bjv\b/i.test(text)) requests.push('JV structure');
