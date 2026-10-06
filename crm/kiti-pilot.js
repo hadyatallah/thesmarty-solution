@@ -13,7 +13,9 @@ import {
   createPackManifest,
   createActivityEvent,
   createAssistantProposal,
-  deriveCommercialAnalytics
+  deriveCommercialAnalytics,
+  buildRolePack,
+  createSafeReplyDraft
 } from './kiti-pilot-governance.js';
 import {
   DEV2_CN_BACKEND_CONTRACT,
@@ -226,6 +228,13 @@ function packs(){
     structures:{minLevel:'D1'},caveat:{minLevel:'D1'},landownerIdentity:{restricted:true},confidentialStudies:{restricted:true}
   };
   const projection=packProjection({facts,requestedLevel:'D3',mandateCeiling:fixture.mandate.maxDisclosureLevel,recipientLevel:'D2',fieldRules:rules});
+  const rolePack=buildRolePack({
+    audienceRole:'Developer',
+    effectiveDisclosureLevel:projection.effectiveLevel,
+    includedFields:projection.included,
+    excludedFields:projection.excluded,
+    nextStep:'Express qualified interest through TSS.'
+  });
   const manifest=createPackManifest({
     requestId:'REQ-KITI-D1-DEVELOPER-001',
     opportunityId:fixture.opportunity.id,
@@ -256,6 +265,8 @@ function packs(){
       <div class="rowline"><span>Pack manifest</span><strong>${esc(manifest.packId)}</strong></div>
       <div class="rowline"><span>Content fingerprint</span><strong>${esc(manifest.contentFingerprint)}</strong></div>
       <div class="rowline"><span>Approval state</span><strong>${esc(manifest.approvalStatus)}</strong></div>
+      <h3>Developer pack preview</h3>
+      <div class="list">${rolePack.sections.map(section=>`<div class="panel"><strong>${esc(section.heading)}</strong>${Object.entries(section.fields).map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(Array.isArray(v)?v.join(', '):v)}</strong></div>`).join('')}</div>`).join('')}</div>
       <h3>Included facts</h3>
       <div class="list">${Object.entries(projection.included).map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('')}</div>
       <h3 class="section-title">Excluded</h3>
@@ -329,6 +340,12 @@ function assistant(){
       messageText:message,
       createdAt:'2026-10-06T09:06:00Z'
     });
+    const draft=createSafeReplyDraft({
+      opportunityTitle:KITI_PUBLIC_FACTS.title,
+      effectiveDisclosureLevel:fixture.mandate.maxDisclosureLevel,
+      messageText:message,
+      allowedFacts:{structures:KITI_PUBLIC_FACTS.structures.join(', ')}
+    });
     $('assistantResult').innerHTML=`
       <div class="assistant-card">
         <h3>Detected</h3>
@@ -339,6 +356,8 @@ function assistant(){
         <div class="list">${proposal.proposedChanges.map(x=>`<div class="rowline"><span>${esc(x.field)}</span><strong>${esc(x.value)}</strong></div>`).join('')||'<div>No state proposal.</div>'}</div>
         <p><strong>Qualification:</strong> NO CHANGE</p>
         <p><strong>External action:</strong> NO · Human approval required</p>
+        <h3 class="section-title">Safe draft preview</h3>
+        <div class="assistant-message">${esc(draft.body)}</div>
       </div>`;
   };
 }
