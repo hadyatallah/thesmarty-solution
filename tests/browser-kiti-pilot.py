@@ -19,6 +19,7 @@ ALLOWED={
     '/crm/kiti-pilot.js':('crm/kiti-pilot.js','text/javascript; charset=utf-8'),
     '/crm/kiti-pilot-model.js':('crm/kiti-pilot-model.js','text/javascript; charset=utf-8'),
     '/crm/kiti-pilot-governance.js':('crm/kiti-pilot-governance.js','text/javascript; charset=utf-8'),
+    '/crm/kiti-pilot-backend.js':('crm/kiti-pilot-backend.js','text/javascript; charset=utf-8'),
 }
 
 class Handler(BaseHTTPRequestHandler):
@@ -138,6 +139,19 @@ def run(browser,width):
         checks['activitySynthetic']='Synthetic events use deterministic idempotency keys' in text and 'No live Activity rows are written' in text
         checks['activityOutreachBlock']='Governance Block' in text and 'BLOCKED · no external action' in text
         checks['activityEventIds']='AE-' in text
+
+        page.locator('[data-view="Runtime"]').click()
+        page.locator('#runtimeCheckBtn').click()
+        page.wait_for_selector('#runtimeResult .assistant-card')
+        text=page.locator('#runtimeResult').inner_text()
+        checks['runtimeReadPass']='Read permission' in text and 'PASS' in text
+        checks['runtimeCandidatePass']='Candidate records' in text and '1' in text
+        checks['runtimeMandatoryPass']='Mandatory result' in text and 'PASS' in text
+        checks['runtimeAppetiteUnknown']='Appetite' in text and 'Unknown' in text
+        checks['runtimeProposalOnly']='proposed · human review only' in text
+        checks['runtimeExternalBlocked']='External communication' in text and 'BLOCKED' in text
+        checks['runtimeNoForbiddenWrite']='Forbidden write/execute call' in text and 'NONE' in text
+        checks['runtimeCallsOnlyAccepted']='getCommercialNetworkState' in text and 'getCommercialNetworkCandidates' in text and 'prepareCommercialNetworkTransition' in text and 'getCommercialNetworkCommunicationGate' in text
 
         page.locator('[data-view="Assistant"]').click()
         page.locator('#interpretBtn').click()
