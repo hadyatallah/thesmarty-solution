@@ -69,7 +69,7 @@ def run(browser,width):
         page.wait_for_selector('[data-view="Overview"].active',state='visible')
         body=page.locator('body').inner_text()
 
-        checks['syntheticBoundary']='SYNTHETIC / NO OUTREACH' in body
+        checks['controlledBoundary']='CONTROLLED PILOT / NO OUTREACH' in body
         checks['correctTitle']='Kiti Residential Development Opportunity' in body
         checks['initialPhaseLaunch']=page.locator('#phase').inner_text()=='LAUNCH'
         checks['outreachBlocked']='Outreach blocked: Outreach authority not granted' in page.locator('#authority').inner_text()
@@ -198,7 +198,7 @@ def run(browser,width):
         server.server_close()
 
 report={
-    'environment':'Actual repository Kiti ES modules served only on localhost. Synthetic fixture only; all non-local requests blocked.',
+    'environment':'Actual repository Kiti ES modules served only on localhost. Governed read-only Data Center snapshot plus synthetic Mandate/engagement fixtures; all non-local requests blocked.',
     'results':[]
 }
 try:
