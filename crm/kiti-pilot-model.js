@@ -1,3 +1,5 @@
+import {governedKitiMatchFixture} from './kiti-pilot-data-center-snapshot.js';
+
 export const DISCLOSURE_ORDER = ['D0','D1','D2','D3','D4','D5','D6'];
 
 export const KITI_PUBLIC_FACTS = Object.freeze({
@@ -166,22 +168,6 @@ export function kitiFixture(){
       maxDisclosureLevel:'D1',
       criteriaReady:true
     },
-    matches:[{
-      id:'MAT-KITI-GELFANCO-FIXTURE',
-      companyId:'TSS-CY-001',
-      companyName:'Gelfanco',
-      qualificationState:'Under Qualification',
-      engagementState:'Not Contacted',
-      criteria:[
-        {type:'Mandatory',name:'Developer Role',outcome:'Meets'},
-        {type:'Mandatory',name:'Residential development capability',outcome:'Meets'},
-        {type:'Preferred',name:'Cyprus relevance',outcome:'Meets'},
-        {type:'Preferred',name:'Kiti relevance',outcome:'Meets'},
-        {type:'Informational',name:'Current appetite',outcome:'Unknown'},
-        {type:'Informational',name:'Capacity',outcome:'Unknown'}
-      ],
-      gaps:['Current appetite unknown','JV/acquisition preference unknown','Capacity unknown'],
-      suppressed:false
-    }]
+    matches:[governedKitiMatchFixture()]
   };
 }
