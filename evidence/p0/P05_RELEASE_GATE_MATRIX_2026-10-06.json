@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "decisionDate": "2026-10-06",
+  "environment": "Commercial Network DEV2",
+  "scope": "FULL_P0_5_RELEASE_CANDIDATE_COMPATIBILITY",
+  "acceptedEvidence": {
+    "p0Foundation": {
+      "status": "PASS",
+      "cases": "32/32",
+      "restartRequired": false
+    },
+    "p05NativeSubset": {
+      "status": "PASS_SUBSET",
+      "cases": "16/16"
+    },
+    "p123BackendSubset": {
+      "status": "PASS_SUBSET",
+      "cases": "16/16"
+    },
+    "currentDev2Readback": {
+      "status": "PASS",
+      "companies": "2876/2876 unique",
+      "orderedChecksum": "1659140c087a961a",
+      "sortedChecksum": "82d918e59db50ae8",
+      "activityCount": 97,
+      "agentLedgerCount": 36,
+      "sixCommercialNetworkEntityTabsEmpty": true
+    },
+    "currentChatPilotCI": {
+      "status": "PASS",
+      "boundary": "repository/browser compatibility only; not native deployed Apps Script acceptance"
+    }
+  },
+  "remainingGates": [
+    {
+      "id": "P05-A",
+      "name": "Exact cleaned release candidate",
+      "status": "OPEN",
+      "chatExecutableNow": true,
+      "requirement": "Identify and freeze the exact candidate source set, excluding temporary acceptance helpers from any Production candidate."
+    },
+    {
+      "id": "P05-B",
+      "name": "Protected frontend / Command Center / PWA-mobile compatibility",
+      "status": "PARTIAL",
+      "chatExecutableNow": true,
+      "requirement": "Run compatibility against the exact release candidate. Existing repository CI supports but does not replace native release-candidate acceptance."
+    },
+    {
+      "id": "P05-C",
+      "name": "Enquiry integration compatibility",
+      "status": "PARTIAL",
+      "chatExecutableNow": true,
+      "requirement": "Preserve frontend transport and retry behavior. Live Apps Script persistence/matching/notification acceptance remains separate."
+    },
+    {
+      "id": "P05-D",
+      "name": "Assistant contracts",
+      "status": "PARTIAL",
+      "chatExecutableNow": true,
+      "requirement": "Preserve current assistant/context behavior on the exact release candidate."
+    },
+    {
+      "id": "P05-E",
+      "name": "Existing mail projection and email-sync compatibility",
+      "status": "PARTIAL",
+      "chatExecutableNow": false,
+      "requirement": "Native subset synthetic projection cases passed. Exact deployed/current mail compatibility still requires the governed Apps Script environment."
+    },
+    {
+      "id": "P05-F",
+      "name": "Deployed DEV transport and real authentication",
+      "status": "OPEN_BLOCKED_BY_AVAILABLE_CHAT_CONNECTORS",
+      "chatExecutableNow": false,
+      "requirement": "Requires supported Apps Script deployment/runtime authentication access. Do not replace with mocks."
+    },
+    {
+      "id": "P05-G",
+      "name": "Full protected legacy suite on exact release candidate",
+      "status": "OPEN",
+      "chatExecutableNow": "PARTIAL",
+      "requirement": "Reuse accepted native/local evidence where applicable, but execute the remaining exact-candidate protected compatibility gate."
+    },
+    {
+      "id": "P05-H",
+      "name": "Production backup / rollback / promotion / smoke",
+      "status": "NOT_STARTED",
+      "chatExecutableNow": false,
+      "requirement": "Only after all pre-Production release gates pass and explicit Production approval is granted."
+    }
+  ],
+  "decision": {
+    "sourceOfTruthGate": "CLOSED",
+    "oldDev": "QUARANTINED_HISTORICAL_ONLY",
+    "nextExecutableWork": "PREPARE_EXACT_CLEAN_RELEASE_CANDIDATE_AND_RUN_CHAT_EXECUTABLE_COMPATIBILITY",
+    "productionPromotionAuthorized": false,
+    "externalOutreachAuthorized": false
+  }
+}
