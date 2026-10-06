@@ -363,3 +363,131 @@ export function runSyntheticNegativeJourney(){
     events:[event]
   };
 }
+
+
+export function buildRolePack({
+  audienceRole,
+  opportunityFacts={},
+  effectiveDisclosureLevel='D0',
+  includedFields={},
+  excludedFields=[],
+  professionalScope='',
+  nextStep=''
+}={}){
+  const role=required(audienceRole,'ROLE_PACK_AUDIENCE_REQUIRED');
+  const level=required(effectiveDisclosureLevel,'ROLE_PACK_DISCLOSURE_REQUIRED');
+  const allowed=normalize(includedFields);
+  const excluded=(excludedFields||[]).map(x=>({key:String(x.key||''),reason:String(x.reason||'Excluded')}));
+  const common={
+    title:String(opportunityFacts.title||allowed.title||''),
+    location:String(opportunityFacts.location||allowed.location||''),
+    disclosureLevel:level,
+    generatedFromApprovedProjection:true
+  };
+  if(role==='Developer'){
+    return {
+      audienceRole:role,
+      ...common,
+      sections:[
+        {heading:'Opportunity at a glance',fields:{
+          title:allowed.title||common.title,
+          location:allowed.location||common.location,
+          siteArea:allowed.siteArea||'Unknown',
+          conceptStage:allowed.conceptStage||'Unknown'
+        }},
+        {heading:'Potential structures',fields:{structures:allowed.structures||'Unknown'}},
+        {heading:'Due diligence',fields:{caveat:allowed.caveat||'Subject to appropriate due diligence.'}},
+        {heading:'Next step',fields:{nextStep:nextStep||'Request controlled follow-up through TSS.'}}
+      ],
+      excluded,
+      externalReady:level!=='D0'
+    };
+  }
+  if(role==='Professional Handoff'){
+    return {
+      audienceRole:role,
+      ...common,
+      sections:[
+        {heading:'Case summary',fields:{
+          title:allowed.title||common.title,
+          location:allowed.location||common.location,
+          scope:professionalScope||'Scope must be confirmed before handoff.'
+        }},
+        {heading:'Known facts',fields:allowed},
+        {heading:'Known exclusions',fields:{excluded:excluded.map(x=>x.key).filter(Boolean)}},
+        {heading:'Required output',fields:{nextStep:nextStep||'Provide professional review within the agreed scope.'}}
+      ],
+      excluded,
+      externalReady:false
+    };
+  }
+  if(role==='Investor / Capital Provider'){
+    return {
+      audienceRole:role,
+      ...common,
+      sections:[],
+      excluded,
+      externalReady:false,
+      deferred:true,
+      reason:'External investor distribution is deferred pending the approved professional/regulatory route.'
+    };
+  }
+  throw Error('ROLE_PACK_AUDIENCE_UNSUPPORTED:'+role);
+}
+
+export function createSafeReplyDraft({
+  recipientName='',
+  opportunityTitle,
+  effectiveDisclosureLevel='D0',
+  messageText,
+  allowedFacts={},
+  professionalReviewRequired=false
+}={}){
+  const title=required(opportunityTitle,'REPLY_OPPORTUNITY_REQUIRED');
+  const text=required(messageText,'REPLY_MESSAGE_REQUIRED');
+  const level=required(effectiveDisclosureLevel,'REPLY_DISCLOSURE_REQUIRED');
+  const category=classifyCommercialResponse(text);
+  const lines=[];
+  lines.push(recipientName?('Dear '+recipientName+','):'Hello,');
+  lines.push('');
+  if(category==='Qualified interest signal') lines.push('Thank you for your interest in '+title+'.');
+  else lines.push('Thank you for your message regarding '+title+'.');
+
+  const asksOwner=/who owns|owner identity|landowner/i.test(text);
+  const asksPlanning=/planning|permit|approval/i.test(text);
+  const asksJv=/joint venture|\bjv\b/i.test(text);
+
+  if(asksOwner){
+    lines.push('Principal identity is not included in the information currently approved for disclosure.');
+  }
+  if(asksPlanning){
+    if(['D3','D4','D5','D6'].includes(level) && allowedFacts.planningSummary){
+      lines.push(String(allowedFacts.planningSummary));
+    }else{
+      lines.push('Further planning or technical material can only be shared through the appropriate controlled disclosure stage.');
+    }
+  }
+  if(asksJv){
+    if(allowedFacts.structures){
+      lines.push('The currently approved opportunity information identifies these potential structures: '+String(allowedFacts.structures)+'.');
+    }else{
+      lines.push('The commercial structure would need to be reviewed within the approved opportunity process.');
+    }
+  }
+  if(professionalReviewRequired){
+    lines.push('The point raised requires the appropriate professional review before a substantive response is provided.');
+  }
+  lines.push('We can confirm the appropriate next step once the required qualification and disclosure checks are complete.');
+  lines.push('');
+  lines.push('Kind regards,');
+  lines.push('The Smarty Solution');
+
+  return {
+    responseCategory:category,
+    effectiveDisclosureLevel:level,
+    body:lines.join('\n'),
+    restrictedIdentityDisclosed:false,
+    externalAction:false,
+    requiresHumanApproval:true
+  };
+}
