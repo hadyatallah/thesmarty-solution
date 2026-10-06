@@ -28,37 +28,41 @@
     },
     "currentChatPilotCI": {
       "status": "PASS",
-      "boundary": "repository/browser compatibility only; not native deployed Apps Script acceptance"
+      "githubActionsRun": 94,
+      "commit": "2e0af29998029955fa8d7e9078b62fb639b4f6c8",
+      "nodeTests": "423/423",
+      "browserCompatibility": "PASS",
+      "boundary": "Repository/browser compatibility only; not native deployed Apps Script acceptance."
     }
   },
   "remainingGates": [
     {
       "id": "P05-A",
       "name": "Exact cleaned release candidate",
-      "status": "OPEN",
-      "chatExecutableNow": true,
-      "requirement": "Identify and freeze the exact candidate source set, excluding temporary acceptance helpers from any Production candidate."
+      "status": "PARTIAL_BLOCKED_BY_NATIVE_SOURCE_PACKAGE_ACCESS",
+      "chatExecutableNow": "PARTIAL",
+      "requirement": "Frontend/repository candidate is frozen and chat-accepted. Exact cleaned native Apps Script candidate requires chat-accessible accepted 22-file source package or supported native source read API."
     },
     {
       "id": "P05-B",
       "name": "Protected frontend / Command Center / PWA-mobile compatibility",
-      "status": "PARTIAL",
+      "status": "PASS_REPOSITORY_SCOPE",
       "chatExecutableNow": true,
-      "requirement": "Run compatibility against the exact release candidate. Existing repository CI supports but does not replace native release-candidate acceptance."
+      "requirement": "Run 94 passed CRM renderer, status, Kiti responsive/browser and released frontend compatibility checks. Native exact-candidate compatibility remains open."
     },
     {
       "id": "P05-C",
       "name": "Enquiry integration compatibility",
-      "status": "PARTIAL",
+      "status": "PASS_FRONTEND_SCOPE",
       "chatExecutableNow": true,
-      "requirement": "Preserve frontend transport and retry behavior. Live Apps Script persistence/matching/notification acceptance remains separate."
+      "requirement": "Run 94 passed protected enquiry routing/retry/validation/responsive transport checks. Live Apps Script persistence/matching/notification acceptance remains open."
     },
     {
       "id": "P05-D",
       "name": "Assistant contracts",
-      "status": "PARTIAL",
+      "status": "PASS_REPOSITORY_SCOPE",
       "chatExecutableNow": true,
-      "requirement": "Preserve current assistant/context behavior on the exact release candidate."
+      "requirement": "Run 94 passed current assistant/context contracts in the 423/423 Node suite and browser routing checks. Native exact-candidate compatibility remains open."
     },
     {
       "id": "P05-E",
@@ -77,9 +81,9 @@
     {
       "id": "P05-G",
       "name": "Full protected legacy suite on exact release candidate",
-      "status": "OPEN",
+      "status": "PASS_REPOSITORY_SCOPE_ONLY",
       "chatExecutableNow": "PARTIAL",
-      "requirement": "Reuse accepted native/local evidence where applicable, but execute the remaining exact-candidate protected compatibility gate."
+      "requirement": "Run 94 passed 423/423 Node tests and all configured browser regression steps on the frozen repository candidate. Full protected native legacy suite awaits exact cleaned Apps Script candidate."
     },
     {
       "id": "P05-H",
@@ -92,7 +96,7 @@
   "decision": {
     "sourceOfTruthGate": "CLOSED",
     "oldDev": "QUARANTINED_HISTORICAL_ONLY",
-    "nextExecutableWork": "PREPARE_EXACT_CLEAN_RELEASE_CANDIDATE_AND_RUN_CHAT_EXECUTABLE_COMPATIBILITY",
+    "nextExecutableWork": "EXACT_NATIVE_SOURCE_PACKAGE_ACCESS_IS_NOW_THE_PRIMARY_FULL_P0_5_BLOCKER; CONTINUE CHAT-EXECUTABLE EVIDENCE/FRONTEND WORK WITHOUT RECONSTRUCTING NATIVE SOURCE",
     "productionPromotionAuthorized": false,
     "externalOutreachAuthorized": false
   }
