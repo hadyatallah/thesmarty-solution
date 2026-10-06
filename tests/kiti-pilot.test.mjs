@@ -12,9 +12,10 @@ import {
   validateDraftClaims
 } from '../crm/kiti-pilot-model.js';
 
-test('Kiti research-only fixture derives LOAD',()=>{
+test('Kiti research-only fixture derives internal LAUNCH while outreach stays blocked',()=>{
   const f=kitiFixture();
-  assert.equal(deriveOperatingPhase(f.opportunity,f.mandate,f.matches),'LOAD');
+  assert.equal(deriveOperatingPhase(f.opportunity,f.mandate,f.matches),'LAUNCH');
+  assert.equal(outreachGate({mandate:f.mandate,match:f.matches[0]}).allowed,false);
 });
 
 test('mandatory criteria aggregate PASS when all mandatory meet',()=>{
