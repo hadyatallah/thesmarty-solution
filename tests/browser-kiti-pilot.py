@@ -1,39 +1,69 @@
 """Chat-executable synthetic browser acceptance for the isolated Kiti pilot.
 
-Loads the repository-local HTML and JavaScript directly into Chromium without any
-network access. No CRM authentication, provider calls, Production data, Kiti
-outreach, or business-record writes are performed.
+Serves the actual repository-local Kiti ES-module files over localhost. All
+non-local requests are blocked. No CRM authentication, provider calls,
+Production data, Kiti outreach, or business-record writes are performed.
 """
 from pathlib import Path
-import json, os, re, traceback
+from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+from urllib.parse import urlsplit
+import json, threading, os, traceback
 from playwright.sync_api import sync_playwright
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=Path(os.environ.get('TSS_TEST_OUTPUT',str(ROOT/'evidence/kiti-pilot')))
 OUT.mkdir(parents=True,exist_ok=True)
 
-HTML=(ROOT/'crm/kiti-pilot.html').read_text()
-MODEL=(ROOT/'crm/kiti-pilot-model.js').read_text()
-UI=(ROOT/'crm/kiti-pilot.js').read_text()
+ALLOWED={
+    '/crm/kiti-pilot.html':('crm/kiti-pilot.html','text/html; charset=utf-8'),
+    '/crm/kiti-pilot.js':('crm/kiti-pilot.js','text/javascript; charset=utf-8'),
+    '/crm/kiti-pilot-model.js':('crm/kiti-pilot-model.js','text/javascript; charset=utf-8'),
+}
 
-# Test the actual repository files while removing only ES-module transport syntax.
-HTML_INLINE=re.sub(r'<script\s+type="module"\s+src="/crm/kiti-pilot\.js"></script>','',HTML)
-MODEL_INLINE=re.sub(r'\bexport\s+','',MODEL)
-UI_INLINE=re.sub(r"^import\s*\{[\s\S]*?\}\s*from\s*['\"]\./kiti-pilot-model\.js['\"];\s*", '', UI, count=1)
+class Handler(BaseHTTPRequestHandler):
+    def log_message(self,*args):
+        pass
+    def do_GET(self):
+        route=urlsplit(self.path).path
+        if route=='/':
+            route='/crm/kiti-pilot.html'
+        item=ALLOWED.get(route)
+        if not item:
+            self.send_error(404)
+            return
+        rel,kind=item
+        data=(ROOT/rel).read_bytes()
+        self.send_response(200)
+        self.send_header('Content-Type',kind)
+        self.send_header('Cache-Control','no-store')
+        self.send_header('Content-Length',str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
 
 def run(browser,width):
     errors=[]
-    requests=[]
+    blocked=[]
     checks={}
-    ctx=browser.new_context(viewport={'width':width,'height':1100},timezone_id='Asia/Nicosia',service_workers='block')
+    server=ThreadingHTTPServer(('127.0.0.1',0),Handler)
+    threading.Thread(target=server.serve_forever,daemon=True).start()
+    origin=f'http://127.0.0.1:{server.server_port}'
+    ctx=browser.new_context(
+        viewport={'width':width,'height':1100},
+        timezone_id='Asia/Nicosia',
+        service_workers='block'
+    )
+    def intercept(route):
+        if route.request.url.startswith(origin+'/'):
+            route.continue_()
+            return
+        blocked.append(route.request.url.split('?')[0])
+        route.abort()
+    ctx.route('**/*',intercept)
     page=ctx.new_page()
     page.on('pageerror',lambda e: errors.append(str(e)))
-    page.on('request',lambda r: requests.append(r.url))
     try:
-        page.set_content(HTML_INLINE,wait_until='load')
-        page.add_script_tag(content=MODEL_INLINE+'\n'+UI_INLINE)
-        page.evaluate("document.dispatchEvent(new Event('DOMContentLoaded'))")
-        page.wait_for_selector('[data-view="Overview"].active')
+        page.goto(origin+'/crm/kiti-pilot.html',wait_until='networkidle')
+        page.wait_for_selector('[data-view="Overview"].active',state='visible')
         body=page.locator('body').inner_text()
 
         checks['syntheticBoundary']='SYNTHETIC / NO OUTREACH' in body
@@ -87,7 +117,7 @@ def run(browser,width):
 
         page.locator('[data-view="Packs"]').click()
         text=page.locator('#workspace').inner_text()
-        checks['packEffectiveD1']='Effective' in text and 'D1' in text
+        checks['packEffectiveD1']='Effective\nD1' in text
         checks['restrictedExcluded']='landownerIdentity' in text and 'Restricted' in text and 'confidentialStudies' in text
         checks['restrictedValuesNotRendered']='RESTRICTED TEST VALUE' not in text and 'RESTRICTED TEST DOCUMENT' not in text
         checks['publicFactsIncluded']='siteArea' in text and 'Approx. 859 m²' in text
@@ -96,7 +126,7 @@ def run(browser,width):
         text=page.locator('#workspace').inner_text()
         checks['presentationD1']='Approved D1 projection' in text
         checks['presentationLockedFacts']='Approx. 859 m²' in text and 'Preliminary concept completed' in text
-        checks['presentationProtected']='Landowner identity' in text and '🔒 Not exposed' in text
+        checks['presentationProtected']='Landowner identity' in text and 'Not exposed' in text
         checks['presentationNoRestrictedValues']='RESTRICTED TEST VALUE' not in text and 'RESTRICTED TEST DOCUMENT' not in text
 
         page.locator('[data-view="Activity"]').click()
@@ -126,13 +156,18 @@ def run(browser,width):
         checks['validationFinancial']='financial projection' in validation.lower()
         checks['validationArea']='site area' in validation.lower()
         checks['noBrowserErrors']=not errors
-        checks['noExternalRequests']=not requests
+        checks['noExternalRequests']=not blocked
         page.screenshot(path=str(OUT/f'analytics-{width}.png'),full_page=True)
-        return {'width':width,'checks':checks,'errors':errors,'requests':requests}
+        return {'width':width,'checks':checks,'errors':errors,'blocked':blocked}
     finally:
         ctx.close()
+        server.shutdown()
+        server.server_close()
 
-report={'environment':'Repository-local Kiti pilot files rendered in Chromium with network disabled. Synthetic fixture only.','results':[]}
+report={
+    'environment':'Actual repository Kiti ES modules served only on localhost. Synthetic fixture only; all non-local requests blocked.',
+    'results':[]
+}
 try:
     with sync_playwright() as p:
         opts={'headless':True}
@@ -147,7 +182,7 @@ except Exception as e:
     report['error']=str(e)
     report['traceback']=traceback.format_exc()
 finally:
-    (OUT/'browser-results.json').write_text(json.dumps(report,indent=2)+'\\n')
+    (OUT/'browser-results.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report,indent=2))
 
 assert 'error' not in report, report.get('error')
