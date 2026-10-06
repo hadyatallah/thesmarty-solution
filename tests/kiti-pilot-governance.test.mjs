@@ -11,7 +11,9 @@ import {
   createAssistantProposal,
   deriveCommercialAnalytics,
   runSyntheticPositiveJourney,
-  runSyntheticNegativeJourney
+  runSyntheticNegativeJourney,
+  buildRolePack,
+  createSafeReplyDraft
 } from '../crm/kiti-pilot-governance.js';
 
 test('stable stringify is key-order independent',()=>{
@@ -166,4 +168,83 @@ test('negative Kiti journey blocks a suppressed otherwise-ready candidate',()=>{
   assert.equal(r.match.engagementState,'Not Contacted');
   assert.equal(r.company.unchanged,true);
   assert.equal(r.events[0].action,'Governance Block');
+});
+
+
+test('Developer pack uses only approved projection and preserves exclusions',()=>{
+  const pack=buildRolePack({
+    audienceRole:'Developer',
+    effectiveDisclosureLevel:'D1',
+    includedFields:{
+      title:'Kiti Residential Development Opportunity',
+      location:'Kiti, Larnaca District, Cyprus',
+      siteArea:'Approx. 859 m²',
+      conceptStage:'Preliminary concept completed',
+      structures:'Acquisition, Development Partnership, Joint Venture',
+      caveat:'Subject to planning, technical and commercial due diligence.'
+    },
+    excludedFields:[{key:'landownerIdentity',reason:'Restricted'}],
+    nextStep:'Express qualified interest through TSS.'
+  });
+  assert.equal(pack.audienceRole,'Developer');
+  assert.equal(pack.disclosureLevel,'D1');
+  assert.equal(pack.generatedFromApprovedProjection,true);
+  assert.equal(pack.externalReady,true);
+  assert.equal(pack.sections[0].fields.siteArea,'Approx. 859 m²');
+  assert.deepEqual(pack.excluded,[{key:'landownerIdentity',reason:'Restricted'}]);
+});
+
+test('Professional Handoff pack is factual and not external-ready',()=>{
+  const pack=buildRolePack({
+    audienceRole:'Professional Handoff',
+    effectiveDisclosureLevel:'D3',
+    includedFields:{title:'Kiti',location:'Kiti, Cyprus',planningSummary:'Controlled planning facts'},
+    excludedFields:[{key:'internalNotes',reason:'Internal'}],
+    professionalScope:'Review planning position only.'
+  });
+  assert.equal(pack.externalReady,false);
+  assert.equal(pack.sections[0].fields.scope,'Review planning position only.');
+  assert.ok(pack.sections.some(s=>s.heading==='Known exclusions'));
+});
+
+test('Investor pack remains deferred for external distribution',()=>{
+  const pack=buildRolePack({
+    audienceRole:'Investor / Capital Provider',
+    effectiveDisclosureLevel:'D1',
+    includedFields:{title:'Kiti'}
+  });
+  assert.equal(pack.deferred,true);
+  assert.equal(pack.externalReady,false);
+  assert.match(pack.reason,/deferred/i);
+});
+
+test('safe D1 reply refuses restricted owner identity and planning material',()=>{
+  const draft=createSafeReplyDraft({
+    recipientName:'Alex',
+    opportunityTitle:'Kiti Residential Development Opportunity',
+    effectiveDisclosureLevel:'D1',
+    messageText:'We are interested. Who owns the land and can you send the planning information?'
+  });
+  assert.equal(draft.responseCategory,'Qualified interest signal');
+  assert.equal(draft.restrictedIdentityDisclosed,false);
+  assert.equal(draft.externalAction,false);
+  assert.equal(draft.requiresHumanApproval,true);
+  assert.match(draft.body,/Principal identity is not included/i);
+  assert.match(draft.body,/controlled disclosure stage/i);
+  assert.doesNotMatch(draft.body,/RESTRICTED TEST VALUE/);
+});
+
+test('safe D3 reply may include only supplied planning summary and approved structures',()=>{
+  const draft=createSafeReplyDraft({
+    opportunityTitle:'Kiti Residential Development Opportunity',
+    effectiveDisclosureLevel:'D3',
+    messageText:'Can you send planning information and would a JV be considered?',
+    allowedFacts:{
+      planningSummary:'Approved planning summary fixture.',
+      structures:'Acquisition, Development Partnership, Joint Venture'
+    }
+  });
+  assert.match(draft.body,/Approved planning summary fixture/);
+  assert.match(draft.body,/Joint Venture/);
+  assert.equal(draft.externalAction,false);
 });
