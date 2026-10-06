@@ -135,7 +135,7 @@ def run(browser,width):
 
         page.locator('[data-view="Activity"]').click()
         text=page.locator('#workspace').inner_text()
-        checks['activitySynthetic']='Synthetic events demonstrate the required reconstructable history' in text
+        checks['activitySynthetic']='Synthetic events use deterministic idempotency keys' in text and 'No live Activity rows are written' in text
         checks['activityOutreachBlock']='Governance Block' in text and 'BLOCKED · no external action' in text
         checks['activityEventIds']='AE-' in text
 
@@ -154,8 +154,8 @@ def run(browser,width):
 
         page.locator('[data-view="Analytics"]').click()
         text=page.locator('#workspace').inner_text()
-        checks['analyticsFixtureOnly']='Fixture counts only' in text
-        checks['noForecastLanguage']='No close probability or weighted pipeline' in text
+        checks['analyticsFixtureOnly']='Derived from synthetic Match state and Activity events' in text
+        checks['noForecastLanguage']='No close probability, weighted pipeline or Match Score' in text
         checks['analyticsGovernance']='Outreach authority is not granted' in text
         checks['analyticsDerived']='Governance blocks' in text and 'Audited synthetic events' in text
         checks['analyticsNoScoring']='No close probability, weighted pipeline or Match Score' in text
