@@ -56,6 +56,12 @@ def run(browser,width):
         checks['mandateOutreachNotGranted']='Outreach' in text and 'Not Granted' in text
         checks['mandateD1']='Maximum disclosure' in text and 'D1' in text
 
+        page.locator('[data-view="Criteria"]').click()
+        text=page.locator('#workspace').inner_text()
+        checks['criteriaTypes']='Mandatory' in text and 'Preferred' in text and 'Informational' in text
+        checks['criteriaNoScore']='no numerical Match Score' in text
+        checks['criteriaAppetiteUnknown']='Current appetite remains Unknown' in text
+
         page.locator('[data-view="Matches"]').click()
         text=page.locator('#workspace').inner_text()
         checks['gelfancoFixture']='Gelfanco' in text and 'TSS-CY-001' in text
@@ -66,12 +72,37 @@ def run(browser,width):
         checks['matchOutreachBlocked']='Outreach authority not granted' in text
         page.screenshot(path=str(OUT/f'matches-{width}.png'),full_page=True)
 
+        page.locator('[data-view="Communications"]').click()
+        text=page.locator('#workspace').inner_text()
+        checks['communicationsSynthetic']='Synthetic communication timeline only' in text
+        checks['communicationsBlocked']='BLOCKED · Outreach authority not granted' in text
+        checks['communicationsProposalOnly']='Interpret and propose only' in text
+
+        page.locator('[data-view="Documents"]').click()
+        text=page.locator('#workspace').inner_text()
+        checks['documentsMetadataOnly']='Document metadata only' in text
+        checks['documentsD1Eligible']='Approved public teaser' in text and 'Eligible at current ceiling' in text
+        checks['documentsD3Blocked']='Planning / technical package' in text and 'Blocked pending authority and conditions' in text
+        checks['documentsProtectedLabels']='landowner identity' in text.lower() and 'confidential studies' in text.lower()
+
         page.locator('[data-view="Packs"]').click()
         text=page.locator('#workspace').inner_text()
         checks['packEffectiveD1']='Effective\\nD1' in text
         checks['restrictedExcluded']='landownerIdentity' in text and 'Restricted' in text and 'confidentialStudies' in text
         checks['restrictedValuesNotRendered']='RESTRICTED TEST VALUE' not in text and 'RESTRICTED TEST DOCUMENT' not in text
         checks['publicFactsIncluded']='siteArea' in text and 'Approx. 859 m²' in text
+
+        page.locator('[data-view="Presentation"]').click()
+        text=page.locator('#workspace').inner_text()
+        checks['presentationD1']='Approved D1 projection' in text
+        checks['presentationLockedFacts']='Approx. 859 m²' in text and 'Preliminary concept completed' in text
+        checks['presentationProtected']='Landowner identity' in text and '🔒 Not exposed' in text
+        checks['presentationNoRestrictedValues']='RESTRICTED TEST VALUE' not in text and 'RESTRICTED TEST DOCUMENT' not in text
+
+        page.locator('[data-view="Activity"]').click()
+        text=page.locator('#workspace').inner_text()
+        checks['activitySynthetic']='Synthetic events demonstrate the required reconstructable history' in text
+        checks['activityOutreachBlock']='Communication gate evaluated' in text and 'BLOCKED · no external action' in text
 
         page.locator('[data-view="Assistant"]').click()
         page.locator('#interpretBtn').click()
