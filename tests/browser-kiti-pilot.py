@@ -18,6 +18,7 @@ ALLOWED={
     '/crm/kiti-pilot.html':('crm/kiti-pilot.html','text/html; charset=utf-8'),
     '/crm/kiti-pilot.js':('crm/kiti-pilot.js','text/javascript; charset=utf-8'),
     '/crm/kiti-pilot-model.js':('crm/kiti-pilot-model.js','text/javascript; charset=utf-8'),
+    '/crm/kiti-pilot-governance.js':('crm/kiti-pilot-governance.js','text/javascript; charset=utf-8'),
 }
 
 class Handler(BaseHTTPRequestHandler):
@@ -121,6 +122,9 @@ def run(browser,width):
         checks['restrictedExcluded']='landownerIdentity' in text and 'Restricted' in text and 'confidentialStudies' in text
         checks['restrictedValuesNotRendered']='RESTRICTED TEST VALUE' not in text and 'RESTRICTED TEST DOCUMENT' not in text
         checks['publicFactsIncluded']='siteArea' in text and 'Approx. 859 m²' in text
+        checks['packManifestVisible']='Pack manifest' in text and 'PACK-' in text
+        checks['packFingerprintVisible']='Content fingerprint' in text
+        checks['packDraftOnly']='Approval state' in text and 'Draft' in text
 
         page.locator('[data-view="Presentation"]').click()
         text=page.locator('#workspace').inner_text()
@@ -132,7 +136,8 @@ def run(browser,width):
         page.locator('[data-view="Activity"]').click()
         text=page.locator('#workspace').inner_text()
         checks['activitySynthetic']='Synthetic events demonstrate the required reconstructable history' in text
-        checks['activityOutreachBlock']='Communication gate evaluated' in text and 'BLOCKED · no external action' in text
+        checks['activityOutreachBlock']='Governance Block' in text and 'BLOCKED · no external action' in text
+        checks['activityEventIds']='AE-' in text
 
         page.locator('[data-view="Assistant"]').click()
         page.locator('#interpretBtn').click()
@@ -142,6 +147,9 @@ def run(browser,width):
         checks['assistantJV']='JV structure queried' in text
         checks['assistantNoQualification']='Qualification: NO CHANGE' in text
         checks['assistantProposalInterested']='engagementState' in text and 'Interested' in text
+        checks['assistantResponseCategory']='Qualified interest signal' in text
+        checks['assistantProposalId']='ASP-' in text
+        checks['assistantNoExternalAction']='External action: NO' in text and 'Human approval required' in text
         page.screenshot(path=str(OUT/f'assistant-{width}.png'),full_page=True)
 
         page.locator('[data-view="Analytics"]').click()
@@ -149,6 +157,8 @@ def run(browser,width):
         checks['analyticsFixtureOnly']='Fixture counts only' in text
         checks['noForecastLanguage']='No close probability or weighted pipeline' in text
         checks['analyticsGovernance']='Outreach authority is not granted' in text
+        checks['analyticsDerived']='Governance blocks' in text and 'Audited synthetic events' in text
+        checks['analyticsNoScoring']='No close probability, weighted pipeline or Match Score' in text
         checks['fitsAnalytics']=page.evaluate('document.documentElement.scrollWidth<=innerWidth')
 
         validation=page.locator('#validationExample').inner_text()
