@@ -168,7 +168,7 @@ def run(browser,width):
         checks['assistantProposalId']='ASP-' in text
         checks['assistantNoExternalAction']='External action: NO' in text and 'Human approval required' in text
         checks['assistantSafeDraft']='Safe draft preview' in text and 'Further planning or technical material can only be shared through the appropriate controlled disclosure stage.' in text
-        checks['assistantNoRestrictedIdentity']='Principal identity is not included in the information currently approved for disclosure.' in text
+        checks['assistantNoRestrictedIdentity']='RESTRICTED TEST VALUE' not in text and 'landownerIdentity' not in text
         page.screenshot(path=str(OUT/f'assistant-{width}.png'),full_page=True)
 
         page.locator('[data-view="Analytics"]').click()
