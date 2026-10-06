@@ -37,7 +37,7 @@ export function deriveOperatingPhase(opportunity, mandate, matches=[]){
   const activeMandate = mandate?.status === 'Active';
   const criteriaReady = Boolean(mandate?.criteriaReady);
   const packageReady = Boolean(opportunity?.informationPackageReady);
-  if (!activeMandate || !criteriaReady || !packageReady || stage === 'Targeting') return 'LOAD';
+  if (!activeMandate || !criteriaReady || !packageReady) return 'LOAD';
   const converting = matches.some(m => ['Interested','Introduction Approved','Introduced','Active Discussion','Negotiation','Closed'].includes(m.engagementState));
   if (converting || ['Interest','Introduction','Active Discussion','Negotiation / Professional Handoff','Outcome'].includes(stage)) return 'CONVERT';
   return 'LAUNCH';
@@ -108,16 +108,16 @@ export function interpretMessage(text=''){
   const lower = s.toLowerCase();
   const detected = [];
   const proposals = [];
-  if (/\b(interested|keen to explore|would like to explore)\b/i.test(s)) {
+  const negativeInterest=/\bnot interested\b|\bno interest\b/i.test(s);
+  if (negativeInterest) {
+    detected.push('Explicitly not interested');
+    proposals.push({field:'engagementState',value:'Not Interested',confidence:'explicit'});
+  } else if (/\b(interested|keen to explore|would like to explore)\b/i.test(s)) {
     detected.push('Expressed interest');
     proposals.push({field:'engagementState',value:'Interested',confidence:'explicit'});
   }
   if (/planning|permit|approval/i.test(s)) detected.push('Planning information requested');
   if (/joint venture|\bjv\b/i.test(s)) detected.push('JV structure queried');
-  if (/not interested|no interest/i.test(s)) {
-    detected.push('Explicitly not interested');
-    proposals.push({field:'engagementState',value:'Not Interested',confidence:'explicit'});
-  }
   if (/remove me|do not contact|unsubscribe/i.test(s)) {
     detected.push('Do-not-contact instruction');
     proposals.push({field:'suppression',value:'Do not contact',confidence:'explicit'});
