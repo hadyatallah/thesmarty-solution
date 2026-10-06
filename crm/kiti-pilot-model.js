@@ -134,7 +134,7 @@ export function validateDraftClaims(draft='', lockedFacts={}){
   if (/full planning approval|fully approved planning/i.test(text) && !lockedFacts.planningApproval) failures.push('Unsupported claim: planning approval');
   if (/\b(irr|roi|return|yield|profit)\b/i.test(text) && !lockedFacts.financialProjectionApproved) failures.push('Unsupported financial projection');
   const area = lockedFacts.siteArea;
-  if (area && /\b\d{3,4}\s*m²\b/.test(text) && !text.includes(area.replace('Approx. ',''))) failures.push('Locked fact mismatch: site area');
+  if (area && /\b\d{3,4}\s*m²(?=\s|[.,;:!?)]|$)/.test(text) && !text.includes(area.replace('Approx. ',''))) failures.push('Locked fact mismatch: site area');
   return failures;
 }
 
