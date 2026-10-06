@@ -249,6 +249,22 @@ Any unauthorized disclosure, suppression bypass, authority bypass, canonical ide
 
 This addendum authorizes only controlled DEV preparation and testing.
 
+### Reconciled accepted baseline
+
+The current development path uses the accepted Commercial Network DEV2 checkpoint, not the quarantined old DEV project.
+
+Accepted restricted evidence records:
+- P0 DEV2 foundation: 32/32 persistent cases passed
+- P0.5 native subset: 16/16 cases passed, while full P0.5 remains pending
+- P1/P2/P3 DEV2 backend subset: 16/16 cases passed
+- Company Data Center Phase 3: closed on 3 October for the approved bounded Preview research/data/runtime scope
+
+The old DEV ninth-file provenance discrepancy remains historical/quarantined evidence and is not repaired or overwritten.
+
+The Kiti pilot may consume accepted Data Center evidence read-only while preserving all Needs Review, Unknown, stale/review-due and conflict states. The current pilot uses a governed read-only Gelfanco snapshot from the accepted Preview and does not copy private contact fields.
+
+The next release gate is the remaining **full P0.5 compatibility on an identified release candidate**, followed by sequential frontend/real-auth/provider/Production acceptance. Accepted P0 and Data Center Phase 3 are not restarted without specific new evidence.
+
 It does not authorize:
 - Production promotion
 - live Kiti outreach
