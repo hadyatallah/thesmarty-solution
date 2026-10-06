@@ -248,3 +248,18 @@ test('approved financial projection flag permits projection wording',()=>{
   const failures=validateDraftClaims('Expected ROI is 18%.',{financialProjectionApproved:true});
   assert.equal(failures.some(x=>/financial projection/i.test(x)),false);
 });
+
+
+test('Kiti fixture uses governed Data Center Gelfanco snapshot',()=>{
+  const f=kitiFixture();
+  const m=f.matches[0];
+  assert.equal(m.companyId,'TSS-CY-001');
+  assert.equal(m.companyName,'Gelfanco Ltd');
+  assert.equal(m.dataCenterDisposition,'Needs Review');
+  assert.equal(m.developmentActivity,'Observed Current Project Commercialization');
+  assert.equal(m.operatingStatus,'Operating Status Unknown');
+  assert.equal(m.evidenceSnapshotVersion,'23');
+  assert.ok(m.criteria.find(c=>c.name==='Developer Role').evidenceIds.includes('EV-P3-0001'));
+  assert.ok(m.criteria.find(c=>c.name==='Kiti relevance').evidenceIds.includes('EV-7267B12B92D94F15'));
+  assert.equal(m.criteria.find(c=>c.name==='Current appetite').outcome,'Unknown');
+});
