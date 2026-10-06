@@ -11,6 +11,16 @@ This addendum translates the approved Commercial Network architecture into a con
 
 It is additive. The existing authoritative entities remain Company, Contact, TSS Sales Opportunity, Company Role, Commercial Signal, Commercial Opportunity, Mandate, Match, Partner Relationship, Task, Activity and Communication.
 
+### Chat-only execution constraint
+
+For the current pilot, all work must be executable and reviewable from ChatGPT through connected tools, source-control actions, Drive/Sheets reads and writes, CI, deployment metadata, and other chat-accessible interfaces.
+
+Do not require Hady to leave the chat for routine testing, source inspection, branch/PR work, Drive review, CI review, or Preview metadata checks.
+
+If a gate genuinely requires direct user-presence in an external browser, a fresh interactive OAuth/consent action, a manual provider takeover, or another non-chat action, that gate must remain explicitly **DEFERRED / USER-PRESENCE REQUIRED** rather than being bypassed, weakened, or represented as passed.
+
+This constraint does not reduce security, authority, acceptance, or audit requirements.
+
 ## 2. Operating phases
 
 Prepare / Load / Launch / Convert are derived display phases only.
