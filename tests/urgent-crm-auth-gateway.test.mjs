@@ -104,3 +104,38 @@ test('gateway source uses staggered hedges only for login bootstrap',()=>{
   assert.match(source,/body\.fn==='getState'\?45000/);
   assert.doesNotMatch(source,/hedgedBeginGoogleLogin\(fetcher,payload\)[\s\S]{0,300}saveRecord/);
 });
+
+test('Commercial Network target forwards only approved read actions to configured DEV2 backend',async()=>{
+  const calls=[];
+  const fetcher=async(url,opts)=>{calls.push({url,body:JSON.parse(opts.body)});return response(200,{json:{ok:true,result:{commercialOpportunities:[]}}});};
+  const env={VERCEL_ENV:'preview',VERCEL_GIT_COMMIT_REF:'cn-opportunity-workspace-preview-20261007',TSS_CN_DEV2_BACKEND:'https://script.google.com/macros/s/AKfyFixtureDev2/exec'};
+  const state={status:null,body:null,headers:{}};
+  const req={method:'POST',headers:{origin:'https://thesmarty-solution-agent-git-cn-opportunity-workspace-preview-20261007-tss21.vercel.app'},body:{target:'commercial-network-dev2',fn:'getCommercialNetworkState',args:['fixture-session',{purpose:'commercial-network',includeArchived:false}]}};
+  const res={setHeader(k,v){state.headers[k]=v;return this;},status(n){state.status=n;return this;},json(v){state.body=v;return this;},end(){return this;}};
+  await makeHandler(fetcher,{env})(req,res);
+  assert.equal(state.status,200);assert.equal(calls.length,1);
+  assert.equal(calls[0].url,'https://script.google.com/macros/s/AKfyFixtureDev2/exec');
+  assert.equal(calls[0].body.fn,'getCommercialNetworkState');
+  assert.equal(calls[0].body.target,undefined);
+});
+
+test('Commercial Network preview gateway exposes no write action',async()=>{
+  let calls=0;const fetcher=async()=>{calls++;return response(200,{json:{ok:true}});};
+  const env={VERCEL_ENV:'preview',VERCEL_GIT_COMMIT_REF:'cn-opportunity-workspace-preview-20261007',TSS_CN_DEV2_BACKEND:'https://script.google.com/macros/s/AKfyFixtureDev2/exec'};
+  const state={status:null,body:null,headers:{}};
+  const req={method:'POST',headers:{origin:'https://www.thesmartysolution.com'},body:{target:'commercial-network-dev2',fn:'saveCommercialNetworkRecord',args:[]}};
+  const res={setHeader(k,v){state.headers[k]=v;return this;},status(n){state.status=n;return this;},json(v){state.body=v;return this;},end(){return this;}};
+  await makeHandler(fetcher,{env})(req,res);
+  assert.equal(state.status,400);assert.equal(state.body.error,'ACTION_NOT_ALLOWED');assert.equal(calls,0);
+});
+
+test('Commercial Network DEV2 gateway fails closed when backend endpoint is not configured',async()=>{
+  let calls=0;const fetcher=async()=>{calls++;return response(200,{json:{ok:true}});};
+  const env={VERCEL_ENV:'preview',VERCEL_GIT_COMMIT_REF:'cn-opportunity-workspace-preview-20261007'};
+  const state={status:null,body:null,headers:{}};
+  const req={method:'POST',headers:{origin:'https://www.thesmartysolution.com'},body:{target:'commercial-network-dev2',fn:'getCommercialNetworkState',args:[]}};
+  const res={setHeader(k,v){state.headers[k]=v;return this;},status(n){state.status=n;return this;},json(v){state.body=v;return this;},end(){return this;}};
+  await makeHandler(fetcher,{env})(req,res);
+  assert.equal(state.status,503);assert.equal(state.body.error,'DEV2_BACKEND_NOT_CONFIGURED');assert.equal(calls,0);
+});
+
