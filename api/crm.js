@@ -1,9 +1,11 @@
 // Same-origin transport for the native CRM Apps Script backend.
 // Apps Script remains authoritative for authentication, sessions, schemas and writes.
-// This layer removes browser cross-origin/redirect fragility and adds bounded transport handling.
-const BACKEND='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
-const METHODS=new Set(['beginGoogleLogin','googleSignIn','checkSession','getState','saveRecord','signOut','signOutAll']);
-const SAFE_RETRY_METHODS=new Set(['beginGoogleLogin','checkSession']);
+// Action Item 8 adds a preview-only, read-only target for the isolated Commercial Network DEV2 backend.
+const PROD_BACKEND='https://script.google.com/macros/s/AKfycbyVmqjxRsbdMoIrqGqETiFbOyOumjY3da_aUbThEn_8LdRN7CZFPDPMNUkWRaGJdHWRsQ/exec';
+const PROD_METHODS=new Set(['beginGoogleLogin','googleSignIn','checkSession','getState','saveRecord','signOut','signOutAll']);
+const CN_TARGET='commercial-network-dev2';
+const CN_READ_METHODS=new Set(['beginGoogleLogin','googleSignIn','checkSession','getCommercialNetworkState','signOut']);
+const SAFE_RETRY_METHODS=new Set(['beginGoogleLogin','checkSession','getCommercialNetworkState']);
 const DEFINITIVE_HTTP_RETRY_METHODS=new Set(['googleSignIn']);
 export const config={maxDuration:60};
 
@@ -26,10 +28,27 @@ function cors(req,res){
   return origin;
 }
 function sleep(ms){return new Promise(resolve=>setTimeout(resolve,ms));}
+function validAppsScriptBackend(raw=''){
+  if(!raw)return '';
+  let u;try{u=new URL(raw);}catch{return '';}
+  if(u.protocol!=='https:'||u.hostname!=='script.google.com'||u.username||u.password||u.port)return '';
+  if(!/^\/macros\/s\/[^/]+\/(?:exec|dev)$/.test(u.pathname))return '';
+  return u.href;
+}
+function resolveTarget(body,env){
+  const target=String(body?.target||'crm');
+  if(target==='crm')return {target,backend:PROD_BACKEND,methods:PROD_METHODS};
+  if(target!==CN_TARGET)return {error:'ACTION_NOT_ALLOWED'};
+  if(env.VERCEL_ENV&&env.VERCEL_ENV!=='preview')return {error:'DEV2_PREVIEW_ONLY'};
+  if(env.VERCEL_GIT_COMMIT_REF&&env.VERCEL_GIT_COMMIT_REF!=='cn-opportunity-workspace-preview-20261007')return {error:'DEV2_PREVIEW_ONLY'};
+  const backend=validAppsScriptBackend(String(env.TSS_CN_DEV2_BACKEND||''));
+  if(!backend)return {error:'DEV2_BACKEND_NOT_CONFIGURED',status:503};
+  return {target,backend,methods:CN_READ_METHODS};
+}
 
-async function dispatch(fetcher,payload,signal){
+async function dispatch(fetcher,payload,signal,backend=PROD_BACKEND){
   let stage='dispatch',upstreamStatus=null;
-  let response=await fetcher(BACKEND,{
+  let response=await fetcher(backend,{
     method:'POST',
     redirect:'manual',
     signal,
@@ -38,7 +57,7 @@ async function dispatch(fetcher,payload,signal){
   });
   upstreamStatus=response.status;
   if([301,302,303,307,308].includes(response.status)){
-    const target=new URL(response.headers.get('location')||'',BACKEND);
+    const target=new URL(response.headers.get('location')||'',backend);
     if(target.protocol!=='https:'||target.hostname!=='script.googleusercontent.com'||target.username||target.password||target.port) {
       const e=Error('REDIRECT_BLOCKED');e.stage=stage;e.upstreamStatus=upstreamStatus;throw e;
     }
@@ -54,7 +73,7 @@ async function dispatch(fetcher,payload,signal){
   return {value,upstreamStatus};
 }
 
-export async function hedgedBeginGoogleLogin(fetcher,payload,{delays=[0,2500,6000],timeoutMs=18000}={}){
+export async function hedgedBeginGoogleLogin(fetcher,payload,{delays=[0,2500,6000],timeoutMs=18000,backend=PROD_BACKEND}={}){
   let settled=false;const controllers=[],timers=[];
   const attempt=(delay,index)=>new Promise((resolve,reject)=>{
     const launch=async()=>{
@@ -62,7 +81,7 @@ export async function hedgedBeginGoogleLogin(fetcher,payload,{delays=[0,2500,600
       const controller=new AbortController();controllers.push(controller);
       const timeout=setTimeout(()=>controller.abort(),timeoutMs);timers.push(timeout);
       try{
-        const result=await dispatch(fetcher,payload,controller.signal);
+        const result=await dispatch(fetcher,payload,controller.signal,backend);
         const nonce=result?.value?.ok&&result?.value?.result?.nonce;
         if(typeof nonce!=='string'||nonce.length<16)throw Error('UPSTREAM_APPLICATION');
         resolve({...result,hedge:index});
@@ -81,52 +100,59 @@ export async function hedgedBeginGoogleLogin(fetcher,payload,{delays=[0,2500,600
   }
 }
 
-export function makeHandler(fetcher=fetch){return async(req,res)=>{
-  res.setHeader('Cache-Control','private, no-store');
-  res.setHeader('X-Content-Type-Options','nosniff');
-  cors(req,res);
-  const fail=(status,error,extra={})=>res.status(status).json({ok:false,error,...extra});
-  if(req.method==='OPTIONS')return res.status(204).end();
-  if(req.method!=='POST'){res.setHeader('Allow','POST');return fail(405,'METHOD_NOT_ALLOWED');}
-  const origin=String(req.headers.origin||'');
-  if(!origin||!allowedOrigin(origin))return fail(403,'ORIGIN_NOT_ALLOWED');
+export function makeHandler(fetcher=fetch,{env=process.env}={}){
+  return async(req,res)=>{
+    res.setHeader('Cache-Control','private, no-store');
+    res.setHeader('X-Content-Type-Options','nosniff');
+    cors(req,res);
+    const fail=(status,error,extra={})=>res.status(status).json({ok:false,error,...extra});
+    if(req.method==='OPTIONS')return res.status(204).end();
+    if(req.method!=='POST'){res.setHeader('Allow','POST');return fail(405,'METHOD_NOT_ALLOWED');}
+    const origin=String(req.headers.origin||'');
+    if(!origin||!allowedOrigin(origin))return fail(403,'ORIGIN_NOT_ALLOWED');
 
-  let body;try{body=typeof req.body==='string'?JSON.parse(req.body):req.body;}catch{return fail(400,'INVALID_REQUEST');}
-  if(!body||!METHODS.has(body.fn)||!Array.isArray(body.args)||body.args.length>8)return fail(400,'ACTION_NOT_ALLOWED');
-  const payload=JSON.stringify({fn:body.fn,args:body.args});
-  if(Buffer.byteLength(payload)>1048576)return fail(413,'REQUEST_TOO_LARGE');
+    let body;try{body=typeof req.body==='string'?JSON.parse(req.body):req.body;}catch{return fail(400,'INVALID_REQUEST');}
+    if(!body||!Array.isArray(body.args)||body.args.length>8)return fail(400,'ACTION_NOT_ALLOWED');
+    const route=resolveTarget(body,env);
+    if(route.error)return fail(route.status||403,route.error);
+    if(!route.methods.has(body.fn))return fail(400,'ACTION_NOT_ALLOWED');
 
-  const started=Date.now();
-  if(body.fn==='beginGoogleLogin'){
-    try{
-      const {value,upstreamStatus,hedge}=await hedgedBeginGoogleLogin(fetcher,payload);
-      console.info(JSON.stringify({component:'crm-gateway',operation:body.fn,hedge,elapsedMs:Date.now()-started,upstreamStatus,outcome:'ok'}));
-      return res.status(200).json(value);
-    }catch(error){
-      console.warn(JSON.stringify({component:'crm-gateway',operation:body.fn,elapsedMs:Date.now()-started,code:'HEDGED_BOOTSTRAP_UNAVAILABLE'}));
-      return fail(502,'CRM_BACKEND_UNAVAILABLE',{retryable:true});
+    const payload=JSON.stringify({fn:body.fn,args:body.args});
+    if(Buffer.byteLength(payload)>1048576)return fail(413,'REQUEST_TOO_LARGE');
+
+    const started=Date.now();
+    if(body.fn==='beginGoogleLogin'){
+      try{
+        const {value,upstreamStatus,hedge}=await hedgedBeginGoogleLogin(fetcher,payload,{backend:route.backend});
+        console.info(JSON.stringify({component:'crm-gateway',target:route.target,operation:body.fn,hedge,elapsedMs:Date.now()-started,upstreamStatus,outcome:'ok'}));
+        return res.status(200).json(value);
+      }catch(error){
+        console.warn(JSON.stringify({component:'crm-gateway',target:route.target,operation:body.fn,elapsedMs:Date.now()-started,code:'HEDGED_BOOTSTRAP_UNAVAILABLE'}));
+        return fail(502,'CRM_BACKEND_UNAVAILABLE',{retryable:true});
+      }
     }
-  }
-  const maxAttempts=(SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn))?2:1;
-  const attemptTimeoutMs=body.fn==='checkSession'?18000:body.fn==='googleSignIn'?25000:body.fn==='getState'?45000:55000;
-  let lastError=null,lastTimedOut=false;
-  for(let attempt=1;attempt<=maxAttempts;attempt++){
-    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),attemptTimeoutMs);
-    try{
-      const {value,upstreamStatus}=await dispatch(fetcher,payload,controller.signal);
-      console.info(JSON.stringify({component:'crm-gateway',operation:body.fn,attempt,elapsedMs:Date.now()-started,attemptElapsedLimitMs:attemptTimeoutMs,upstreamStatus,outcome:'ok'}));
-      return res.status(200).json(value);
-    }catch(error){
-      lastError=error;lastTimedOut=controller.signal.aborted;
-      const safeReadRetry=SAFE_RETRY_METHODS.has(body.fn)&&error?.message!=='REDIRECT_BLOCKED';
-      const definiteAuthInfraRetry=DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn)&&error?.message==='UPSTREAM_UNAVAILABLE'&&[429,502,503,504].includes(Number(error?.upstreamStatus));
-      const retryable=attempt<maxAttempts&&(safeReadRetry||definiteAuthInfraRetry);
-      console.warn(JSON.stringify({component:'crm-gateway',operation:body.fn,attempt,elapsedMs:Date.now()-started,attemptElapsedLimitMs:attemptTimeoutMs,stage:error?.stage||'dispatch',code:lastTimedOut?'UPSTREAM_TIMEOUT':error?.message||'UPSTREAM_NETWORK',upstreamStatus:error?.upstreamStatus??null,retrying:retryable}));
-      if(!retryable)break;
-      await sleep(250);
-    }finally{clearTimeout(timer);}
-  }
-  const code=lastTimedOut?'UPSTREAM_TIMEOUT':lastError?.message==='REDIRECT_BLOCKED'?'REDIRECT_BLOCKED':'CRM_BACKEND_UNAVAILABLE';
-  return fail(502,code,{retryable:SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn)});
-};}
+
+    const maxAttempts=(SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn))?2:1;
+    const attemptTimeoutMs=body.fn==='checkSession'?18000:body.fn==='googleSignIn'?25000:['getState','getCommercialNetworkState'].includes(body.fn)?45000:55000;
+    let lastError=null,lastTimedOut=false;
+    for(let attempt=1;attempt<=maxAttempts;attempt++){
+      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),attemptTimeoutMs);
+      try{
+        const {value,upstreamStatus}=await dispatch(fetcher,payload,controller.signal,route.backend);
+        console.info(JSON.stringify({component:'crm-gateway',target:route.target,operation:body.fn,attempt,elapsedMs:Date.now()-started,attemptElapsedLimitMs:attemptTimeoutMs,upstreamStatus,outcome:'ok'}));
+        return res.status(200).json(value);
+      }catch(error){
+        lastError=error;lastTimedOut=controller.signal.aborted;
+        const safeReadRetry=SAFE_RETRY_METHODS.has(body.fn)&&error?.message!=='REDIRECT_BLOCKED';
+        const definiteAuthInfraRetry=DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn)&&error?.message==='UPSTREAM_UNAVAILABLE'&&[429,502,503,504].includes(Number(error?.upstreamStatus));
+        const retryable=attempt<maxAttempts&&(safeReadRetry||definiteAuthInfraRetry);
+        console.warn(JSON.stringify({component:'crm-gateway',target:route.target,operation:body.fn,attempt,elapsedMs:Date.now()-started,attemptElapsedLimitMs:attemptTimeoutMs,stage:error?.stage||'dispatch',code:lastTimedOut?'UPSTREAM_TIMEOUT':error?.message||'UPSTREAM_NETWORK',upstreamStatus:error?.upstreamStatus??null,retrying:retryable}));
+        if(!retryable)break;
+        await sleep(250);
+      }finally{clearTimeout(timer);}
+    }
+    const code=lastTimedOut?'UPSTREAM_TIMEOUT':lastError?.message==='REDIRECT_BLOCKED'?'REDIRECT_BLOCKED':'CRM_BACKEND_UNAVAILABLE';
+    return fail(502,code,{retryable:SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn)});
+  };
+}
 export default makeHandler();
