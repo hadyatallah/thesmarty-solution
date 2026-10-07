@@ -133,7 +133,7 @@ export function makeHandler(fetcher=fetch,{env=process.env}={}){
     }
 
     const maxAttempts=(SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn))?2:1;
-    const attemptTimeoutMs=body.fn==='checkSession'?18000:body.fn==='googleSignIn'?25000:['getState','getCommercialNetworkState'].includes(body.fn)?45000:55000;
+    const attemptTimeoutMs=body.fn==='checkSession'?18000:body.fn==='googleSignIn'?25000:body.fn==='getState'?45000:body.fn==='getCommercialNetworkState'?45000:55000;
     let lastError=null,lastTimedOut=false;
     for(let attempt=1;attempt<=maxAttempts;attempt++){
       const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),attemptTimeoutMs);
