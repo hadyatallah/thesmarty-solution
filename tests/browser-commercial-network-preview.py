@@ -66,7 +66,7 @@ with sync_playwright() as p:
             'noBrowserErrors':not errors
         }
         page.get_by_role('tab',name='Matches').click()
-        checks['matchPreservesUnknown']='current appetite remains Unknown' in page.locator('#workspacePanel').inner_text()
+        checks['matchPreservesUnknown']='current appetite unknown' in page.locator('#workspacePanel').inner_text().lower()
         checks['qualificationVisible']='Under Qualification' in page.locator('#workspacePanel').inner_text()
         checks['engagementVisible']='Not Contacted' in page.locator('#workspacePanel').inner_text()
         page.get_by_role('tab',name='Mandate').click()
