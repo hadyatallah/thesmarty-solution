@@ -95,3 +95,7 @@ report={'environment':'Actual shell/read modules; synthetic state; intercepted s
 assert not results[0]['checks']['managementOpen'] and not results[0]['checks']['managementOverdue'],'Baseline faults not reproduced'
 assert next(r for r in results if r['variant']=='baseline' and r['width']==390)['managementScrollWidth']>390,'Baseline mobile overflow not reproduced'
 assert all(all(r['checks'].values()) for r in results if r['variant']=='patched'),'Patched dashboard browser check failed'
+
+# Action Item 7: run the isolated Commercial Network desktop/tablet/mobile shell acceptance
+# in the same protected PR-only browser gate. This remains synthetic and performs no TSS authentication or writes.
+subprocess.check_call(['python',str(ROOT/'tests/browser-commercial-network-preview.py')],cwd=ROOT)
