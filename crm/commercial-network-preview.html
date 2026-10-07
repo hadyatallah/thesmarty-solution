@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>TSS Commercial Network — Opportunity Workspace Preview</title>
+<title>TSS Commercial Network — Opportunity Workspace DEV2</title>
 <style>
 :root{--navy:#142f40;--teal:#087f80;--bg:#f3f6f7;--line:#dbe4e7;--muted:#536871;--warn:#9a461d;--warnbg:#fff1e8;--ok:#176b4d;--okbg:#e8f5ee}
 *{box-sizing:border-box}
@@ -16,77 +16,38 @@ a{color:var(--teal)}
 header{background:var(--navy);color:white;padding:18px 24px;display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
 header h1{font-size:20px;margin:0}
 header small{color:#c8d9dd}
-.preview-badge{display:inline-block;margin-top:6px;padding:4px 8px;border-radius:999px;background:#f5d78e;color:#4f3a00;font-size:12px;font-weight:700}
+.preview-badge{display:inline-block;margin-top:6px;padding:4px 8px;border-radius:999px;background:#d9f0ea;color:#075d60;font-size:12px;font-weight:700}
 nav{padding:10px 24px;background:white;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 nav a{text-decoration:none;display:inline-flex;align-items:center;padding:0 2px}
-.nav-current{font-weight:700}
-.nav-spacer{flex:1}
+.nav-current{font-weight:700}.nav-spacer{flex:1}
 main{max-width:1420px;margin:auto;padding:24px}
-h2{font-size:27px;margin:0 0 4px}
-h3{font-size:18px;margin:0 0 10px}
-p{margin:6px 0 16px}
-.muted{color:var(--muted)}
+h2{font-size:27px;margin:0 0 4px}h3{font-size:18px;margin:0 0 10px}p{margin:6px 0 16px}.muted{color:var(--muted)}
 .workspace-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:start;margin-bottom:16px}
 .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .status-strip{display:grid;grid-template-columns:repeat(7,minmax(120px,1fr));gap:10px;margin:16px 0}
 .status-card,.panel,.readiness-item{background:white;border:1px solid var(--line);border-radius:10px}
-.status-card{padding:12px}
-.status-card small{display:block;color:var(--muted)}
-.status-card strong{display:block;margin-top:3px;overflow-wrap:anywhere}
-.alert{border:1px solid #e4b38f;background:var(--warnbg);color:#713915;border-radius:10px;padding:14px 16px;margin:14px 0}
-.alert strong{display:block}
-.tabs{display:flex;gap:8px;overflow:auto;padding:4px 0 12px}
-.tabs button{white-space:nowrap}
-.tabs button[aria-selected="true"]{background:#dff1ed;border-color:#8dc9bf;color:#075d60;font-weight:700}
-.panel{padding:20px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.full{grid-column:1/-1}
-.kv{display:grid;grid-template-columns:minmax(150px,210px) 1fr;gap:8px 14px;padding:8px 0;border-bottom:1px solid #edf1f2}
-.kv:last-child{border-bottom:0}
-.kv dt{color:var(--muted)}
-.kv dd{margin:0;overflow-wrap:anywhere}
-.readiness{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.readiness-item{padding:12px}
-.readiness-item strong{display:block}
-.readiness-state{font-size:12px;font-weight:700;margin-top:5px}
-.blocked{color:var(--warn)}
-.ready{color:var(--ok)}
-.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px;background:white}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}
-th{background:#eaf0f2}
-.badge{display:inline-block;font-size:12px;padding:3px 8px;border-radius:999px;background:#e9f1f1;white-space:nowrap}
-.badge.warn{background:var(--warnbg);color:var(--warn)}
-.empty{padding:32px 20px;text-align:center;border:1px dashed #bdcccf;border-radius:10px;color:var(--muted);background:white}
-.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
-.notice{font-size:13px;color:var(--muted);margin-top:12px}
-details{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:white}
-details+details{margin-top:8px}
-summary{cursor:pointer;font-weight:700}
+.status-card{padding:12px}.status-card small{display:block;color:var(--muted)}.status-card strong{display:block;margin-top:3px;overflow-wrap:anywhere}
+.alert{border:1px solid #e4b38f;background:var(--warnbg);color:#713915;border-radius:10px;padding:14px 16px;margin:14px 0}.alert strong{display:block}
+.good{border-color:#a8d5c4;background:var(--okbg);color:#15583f}
+.tabs{display:flex;gap:8px;overflow:auto;padding:4px 0 12px}.tabs button{white-space:nowrap}.tabs button[aria-selected="true"]{background:#dff1ed;border-color:#8dc9bf;color:#075d60;font-weight:700}
+.panel{padding:20px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.full{grid-column:1/-1}
+.kv{display:grid;grid-template-columns:minmax(150px,210px) 1fr;gap:8px 14px;padding:8px 0;border-bottom:1px solid #edf1f2}.kv:last-child{border-bottom:0}.kv dt{color:var(--muted)}.kv dd{margin:0;overflow-wrap:anywhere}
+.readiness{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.readiness-item{padding:12px}.readiness-item strong{display:block}.readiness-state{font-size:12px;font-weight:700;margin-top:5px}
+.blocked{color:var(--warn)}.ready{color:var(--ok)}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px;background:white}table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#eaf0f2}
+.badge{display:inline-block;font-size:12px;padding:3px 8px;border-radius:999px;background:#e9f1f1;white-space:nowrap}.badge.warn{background:var(--warnbg);color:var(--warn)}
+.empty{padding:32px 20px;text-align:center;border:1px dashed #bdcccf;border-radius:10px;color:var(--muted);background:white}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.notice{font-size:13px;color:var(--muted);margin-top:12px}.error{color:#a52b23}
+details{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:white}details+details{margin-top:8px}summary{cursor:pointer;font-weight:700}
 .mobile-cards{display:none}
-@media(max-width:980px){
-  .status-strip{grid-template-columns:repeat(3,1fr)}
-  .readiness{grid-template-columns:repeat(2,1fr)}
-}
+.connection{max-width:620px;margin:34px auto}.connection .panel{padding:24px}.connection-state{font-weight:700}
+@media(max-width:980px){.status-strip{grid-template-columns:repeat(3,1fr)}.readiness{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:760px){
-  header{padding:16px}
-  main{padding:16px}
-  nav{padding:9px 16px}
-  .workspace-head{grid-template-columns:1fr}
-  .actions{justify-content:flex-start}
-  .status-strip{grid-template-columns:repeat(2,1fr)}
-  .grid{grid-template-columns:1fr}
-  .full{grid-column:auto}
-  .readiness{grid-template-columns:1fr}
-  .table-wrap{display:none}
-  .mobile-cards{display:grid;gap:10px}
-  .mobile-card{background:white;border:1px solid var(--line);border-radius:10px;padding:14px}
-  .mobile-card strong{display:block}
+  header{padding:16px}main{padding:16px}nav{padding:9px 16px}.workspace-head{grid-template-columns:1fr}.actions{justify-content:flex-start}
+  .status-strip{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.full{grid-column:auto}.readiness{grid-template-columns:1fr}
+  .table-wrap{display:none}.mobile-cards{display:grid;gap:10px}.mobile-card{background:white;border:1px solid var(--line);border-radius:10px;padding:14px}.mobile-card strong{display:block}
 }
-@media(max-width:430px){
-  .status-strip{grid-template-columns:1fr}
-  h2{font-size:23px}
-}
+@media(max-width:430px){.status-strip{grid-template-columns:1fr}h2{font-size:23px}}
 </style>
 </head>
 <body>
@@ -94,7 +55,7 @@ summary{cursor:pointer;font-weight:700}
   <div>
     <h1>The Smarty Solution</h1>
     <small>Commercial Network · Opportunity Workspace</small><br>
-    <span class="preview-badge">DEV PREVIEW · SYNTHETIC DATA · READ ONLY</span>
+    <span class="preview-badge">DEV2 · AUTHENTICATED READ · READ ONLY</span>
   </div>
   <div><strong>Private CRM preview</strong><br><small>No Production writes</small></div>
 </header>
@@ -108,25 +69,38 @@ summary{cursor:pointer;font-weight:700}
   <a href="/crm/">Back to CRM</a>
 </nav>
 <main>
-  <section class="workspace-head">
-    <div>
-      <h2 id="opportunityTitle">Loading preview…</h2>
-      <p class="muted" id="opportunitySubtitle"></p>
-    </div>
-    <div class="actions" aria-label="Read-only workspace actions">
-      <button type="button" disabled title="Read-only preview">Edit Opportunity</button>
-      <button type="button" disabled title="Outreach is not authorized in this synthetic fixture">Prepare Communication</button>
+  <section id="connectionPanel" class="connection">
+    <div class="panel">
+      <h2>Commercial Network DEV2</h2>
+      <p class="muted">This preview reads the isolated Commercial Network DEV2 projection through its own authenticated session. Write actions are not exposed by the preview gateway.</p>
+      <p id="connectionState" class="connection-state">Connecting…</p>
+      <p id="connectionError" class="error" role="alert"></p>
+      <div id="googleButton"></div>
+      <button id="retryButton" type="button" hidden>Retry</button>
     </div>
   </section>
 
-  <div class="status-strip" id="statusStrip"></div>
-  <div class="alert" id="attentionBanner" role="status"></div>
+  <section id="emptyState" class="empty" hidden></section>
 
-  <div class="tabs" role="tablist" aria-label="Opportunity sections" id="workspaceTabs"></div>
-  <section id="workspacePanel" aria-live="polite"></section>
+  <section id="workspace" hidden>
+    <section class="workspace-head">
+      <div>
+        <h2 id="opportunityTitle"></h2>
+        <p class="muted" id="opportunitySubtitle"></p>
+      </div>
+      <div class="actions" aria-label="Read-only workspace actions">
+        <button type="button" disabled title="Action Item 8 is read only">Edit Opportunity</button>
+        <button type="button" disabled title="Action Item 8 does not expose communication writes">Prepare Communication</button>
+      </div>
+    </section>
+    <div class="status-strip" id="statusStrip"></div>
+    <div class="alert" id="attentionBanner" role="status"></div>
+    <div class="tabs" role="tablist" aria-label="Opportunity sections" id="workspaceTabs"></div>
+    <section id="workspacePanel" aria-live="polite"></section>
+  </section>
 
-  <p class="notice">This preview uses a synthetic fixture shaped to the accepted DEV2 Commercial Network schema. It does not read or write Production, does not create Kiti, and does not authorize outreach.</p>
+  <p class="notice">Action Item 8 is read only. No Commercial Network write method, Kiti creation, external communication, publication action, or Production workbook mutation is available from this preview.</p>
 </main>
-<script src="/crm/commercial-network-preview.js?v=20261007-1"></script>
+<script src="/crm/commercial-network-preview.js?v=20261007-2"></script>
 </body>
 </html>
