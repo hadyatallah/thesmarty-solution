@@ -104,3 +104,8 @@ test('gateway source uses staggered hedges only for login bootstrap',()=>{
   assert.match(source,/body\.fn==='getState'\?45000/);
   assert.doesNotMatch(source,/hedgedBeginGoogleLogin\(fetcher,payload\)[\s\S]{0,300}saveRecord/);
 });
+
+test('googleSignIn has a full native completion budget and remains single-dispatch on ambiguous failure',()=>{
+  const source=fs.readFileSync(path.join(root,'api/crm.js'),'utf8');
+  assert.match(source,/body\.fn==='googleSignIn'\?55000/);
+});
