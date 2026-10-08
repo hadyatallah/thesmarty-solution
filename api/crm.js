@@ -1,3 +1,4 @@
+import hubspotSyncHandler from '../lib/tssHubspotEnquiryHandler.mjs';
 // Same-origin transport for the native CRM Apps Script backend.
 // Apps Script remains authoritative for authentication, sessions, schemas and writes.
 // This layer removes browser cross-origin/redirect fragility and adds bounded transport handling.
@@ -148,4 +149,9 @@ export function makeHandler(fetcher=fetch){return async(req,res)=>{
   const code=lastTimedOut?'UPSTREAM_TIMEOUT':lastError?.message==='REDIRECT_BLOCKED'?'REDIRECT_BLOCKED':'CRM_BACKEND_UNAVAILABLE';
   return fail(502,code,{retryable:SAFE_RETRY_METHODS.has(body.fn)||DEFINITIVE_HTTP_RETRY_METHODS.has(body.fn)});
 };}
-export default makeHandler();
+// Isolated, authenticated route. All existing CRM requests use the original handler unchanged.
+const existingCrmHandler = makeHandler();
+export default function crmOrHubspotBridge(req, res) {
+  if (req.query?.tssHubspotSync === '1') return hubspotSyncHandler(req, res);
+  return existingCrmHandler(req, res);
+}
