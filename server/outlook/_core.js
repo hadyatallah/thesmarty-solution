@@ -28,15 +28,22 @@ export function initialDeltaUrl(folder,now=new Date()){
  u.searchParams.set('$top',String(OUTLOOK_PAGE_LIMIT));
  return u.href;
 }
-export function validateDeltaCursor(cursor,folder){
+export function cursorFolderRef(cursor){
+ let u;try{u=new URL(cursor);}catch{throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');}
+ const path=decodeURIComponent(u.pathname);
+ const match=path.match(/^\/v1\.0\/me\/mailFolders(?:\/([^/()]+)|\('([^']+)'\))\/messages\/delta$/i);
+ if(!match)throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');
+ return match[1]||match[2];
+}
+export function validateDeltaCursor(cursor,folder,{folderId=null}={}){
  if(!OUTLOOK_SYNC_FOLDERS.has(folder))throw Error('OUTLOOK_FOLDER_INVALID');
  if(!cursor)return '';
  if(typeof cursor!=='string'||cursor.length>8000)throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');
  let u;try{u=new URL(cursor);}catch{throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');}
  if(u.origin!==GRAPH_ORIGIN||u.username||u.password||u.port)throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');
- const decoded=decodeURIComponent(u.pathname).toLowerCase();
- if(!decoded.startsWith('/v1.0/me/mailfolders/')||!decoded.endsWith('/messages/delta'))throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');
- if(!decoded.includes('/'+folder+'/')&&!decoded.includes("('"+folder+"')"))throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');
+ const ref=cursorFolderRef(cursor);
+ const wellKnown=ref.toLowerCase()===folder.toLowerCase();
+ if(!wellKnown&&(!folderId||ref!==folderId))throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');
  return u.href;
 }
 export function normalizeDeltaPage(data){
