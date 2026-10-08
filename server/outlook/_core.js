@@ -31,7 +31,7 @@ export function initialDeltaUrl(folder,now=new Date()){
 export function cursorFolderRef(cursor){
  let u;try{u=new URL(cursor);}catch{throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');}
  const path=decodeURIComponent(u.pathname);
- const match=path.match(new RegExp("^/v1\\\\.0/me/mailFolders/(?:([^/]+)|\\\\('([^']+)'\\))/messages/delta$","i"));
+ const match=path.match(/^\/v1\.0\/me\/mailFolders(?:\/([^/()]+)|\('([^']+)'\))\/messages\/delta$/i);
  if(!match)throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');
  return match[1]||match[2];
 }
