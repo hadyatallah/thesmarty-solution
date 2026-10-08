@@ -6,7 +6,7 @@ const task = {
   id: 'TSK-WEB-2026-0031', name: 'Review Website enquiry TSS-2026-0031',
   companyId: 'COM-NEW-TEST', status: 'Open', dueDate: '2026-10-13',
   createdAt: '2026-10-09T06:05:00Z',
-  notes: 'Website enquiry TSS-2026-0031 | Reply to prospect@example.com. No marketing consent'
+  notes: 'Website enquiry TSS-2026-0031 | Source: Website | Reply to prospect@example.com. No marketing consent'
 };
 const company = { id: 'COM-NEW-TEST', name: 'Example Business', email: 'prospect@example.com' };
 const contact = { id: 'CON-0031', name: 'Example Contact', companyId: company.id, email: 'prospect@example.com' };
@@ -19,6 +19,7 @@ test('read source rows without treating empty rows as records', () => {
 });
 test('new website enquiries are eligible after the explicit cutoff', () => {
   assert.equal(classifyWebsiteTask(task, company, '2026-10-09T00:00:00Z'), 'eligible');
+  assert.equal(classifyWebsiteTask({ ...task, notes: task.notes.replace('Source: Website', 'Source: WhatsApp') }, company, '2026-10-09T00:00:00Z'), 'not_website');
   assert.equal(classifyWebsiteTask(task, company, '2026-10-10T00:00:00Z'), 'before_cutoff');
   assert.equal(classifyWebsiteTask({ ...task, status: 'Done' }, company, '2026-10-09T00:00:00Z'), 'not_open');
 });
@@ -44,6 +45,7 @@ function mockHub({ existingTask = null, companyFound = null, contactFound = null
       if (type === 'contacts') return contactFound ? [contactFound] : [];
       return [];
     },
+    async get() { return { associations: { companies: { results: [] } } }; },
     async defaultType(from, to) {
       return { 'tasks/companies': 192, 'tasks/contacts': 204, 'contacts/companies': 1 }[from + '/' + to];
     },
