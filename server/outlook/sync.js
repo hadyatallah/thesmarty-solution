@@ -1,5 +1,5 @@
 import {baseHeaders,open,refreshToken,graphMe,assertMailbox,seal} from '../../api/outlook/_lib.js';
-import {verifyBindingCapability,ingestionBindingPayload,initialDeltaUrl,validateDeltaCursor,normalizeDeltaPage} from './_core.js';
+import {verifyBindingCapability,ingestionBindingPayload,initialDeltaUrl,validateDeltaCursor,cursorFolderRef,normalizeDeltaPage} from './_core.js';
 
 export default async function handler(req,res){
  baseHeaders(res);
@@ -17,8 +17,19 @@ export default async function handler(req,res){
   const mailbox=assertMailbox(me);
   if(mailbox!==binding.mailbox)throw Error('OUTLOOK_RECONNECT_REQUIRED');
   let url;
-  try{url=validateDeltaCursor(cursor,folder)||initialDeltaUrl(folder,new Date());}
-  catch(e){if(e.message==='OUTLOOK_CURSOR_RESET_REQUIRED')cursorFailure='LOCAL_VALIDATION';throw e;}
+  try{
+   if(cursor){
+    const ref=cursorFolderRef(cursor);
+    let folderId=null;
+    if(ref.toLowerCase()!==folder.toLowerCase()){
+     const folderLookup=await fetch('https://graph.microsoft.com/v1.0/me/mailFolders/'+encodeURIComponent(folder),{headers:{Authorization:'Bearer '+token.access_token}});
+     if(!folderLookup.ok)throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');
+     const folderMeta=await folderLookup.json();
+     folderId=typeof folderMeta.id==='string'?folderMeta.id:null;
+    }
+    url=validateDeltaCursor(cursor,folder,{folderId});
+   }else url=initialDeltaUrl(folder,new Date());
+  }catch(e){if(e.message==='OUTLOOK_CURSOR_RESET_REQUIRED')cursorFailure='LOCAL_VALIDATION';throw e;}
   const graph=await fetch(url,{headers:{Authorization:'Bearer '+token.access_token,Prefer:'IdType="ImmutableId", odata.maxpagesize=25'}});
   if(graph.status===410){cursorFailure='GRAPH_HTTP_410';throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');}
   if(graph.status===429)throw Error('OUTLOOK_THROTTLED');
