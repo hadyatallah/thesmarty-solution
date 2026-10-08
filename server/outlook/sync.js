@@ -3,6 +3,7 @@ import {verifyBindingCapability,ingestionBindingPayload,initialDeltaUrl,validate
 
 export default async function handler(req,res){
  baseHeaders(res);
+ let cursorFailure=null; // Sanitized diagnostic only, never the cursor URL/token.
  if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({ok:false,error:'METHOD_NOT_ALLOWED'});}
  try{
   const body=typeof req.body==='string'?JSON.parse(req.body):req.body;
@@ -13,9 +14,11 @@ export default async function handler(req,res){
   let me;try{me=await graphMe(token.access_token);}catch{throw Error('OUTLOOK_RECONNECT_REQUIRED');}
   const mailbox=assertMailbox(me);
   if(mailbox!==binding.mailbox)throw Error('OUTLOOK_RECONNECT_REQUIRED');
-  const url=validateDeltaCursor(cursor,folder)||initialDeltaUrl(folder,new Date());
+  let url;
+  try{url=validateDeltaCursor(cursor,folder)||initialDeltaUrl(folder,new Date());}
+  catch(e){if(e.message==='OUTLOOK_CURSOR_RESET_REQUIRED')cursorFailure='LOCAL_VALIDATION';throw e;}
   const graph=await fetch(url,{headers:{Authorization:'Bearer '+token.access_token,Prefer:'IdType="ImmutableId", odata.maxpagesize=25'}});
-  if(graph.status===410)throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');
+  if(graph.status===410){cursorFailure='GRAPH_HTTP_410';throw Error('OUTLOOK_CURSOR_RESET_REQUIRED');}
   if(graph.status===429)throw Error('OUTLOOK_THROTTLED');
   if([401,403].includes(graph.status))throw Error('OUTLOOK_RECONNECT_REQUIRED');
   if(!graph.ok)throw Error('OUTLOOK_PROVIDER_UNAVAILABLE');
@@ -27,6 +30,6 @@ export default async function handler(req,res){
   const known=['OUTLOOK_RECONNECT_REQUIRED','OUTLOOK_CURSOR_RESET_REQUIRED','OUTLOOK_THROTTLED','OUTLOOK_FOLDER_INVALID','OUTLOOK_BROKER_UNAUTHORIZED','OUTLOOK_PROVIDER_UNAVAILABLE'];
   const error=known.includes(e.message)?e.message:'OUTLOOK_PROVIDER_UNAVAILABLE';
   const status=error==='OUTLOOK_BROKER_UNAUTHORIZED'?403:error==='OUTLOOK_CURSOR_RESET_REQUIRED'||error==='OUTLOOK_RECONNECT_REQUIRED'?409:error==='OUTLOOK_THROTTLED'?429:400;
-  return res.status(status).json({ok:false,error:error==='OUTLOOK_BROKER_UNAUTHORIZED'?'OUTLOOK_PROVIDER_UNAVAILABLE':error});
+  return res.status(status).json({ok:false,error:error==='OUTLOOK_BROKER_UNAUTHORIZED'?'OUTLOOK_PROVIDER_UNAVAILABLE':error,...(error==='OUTLOOK_CURSOR_RESET_REQUIRED'?{cursorFailure:cursorFailure||'UNSPECIFIED'}:{})});
  }
 }
