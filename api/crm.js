@@ -54,6 +54,25 @@ async function dispatch(fetcher,payload,signal){
   return {value,upstreamStatus};
 }
 
+async function serializedBeginGoogleLogin(fetcher,payload,{delays=[0,2500,6000],timeoutMs=18000}={}){
+  // Login challenges are one-use state in Apps Script. Do not overlap bootstrap requests:
+  // a slower losing request could overwrite the winning nonce and make googleSignIn reject it.
+  let lastError;
+  for(let i=0;i<delays.length;i++){
+    if(i)await sleep(delays[i]);
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),timeoutMs);
+    try{
+      const result=await dispatch(fetcher,payload,controller.signal);
+      const nonce=result?.value?.ok&&result?.value?.result?.nonce;
+      if(typeof nonce!=='string'||nonce.length<16)throw Error('UPSTREAM_APPLICATION');
+      return {...result,hedge:i+1};
+    }catch(e){lastError=e;}
+    finally{clearTimeout(timer);}
+  }
+  throw lastError||Error('UPSTREAM_UNAVAILABLE');
+}
+
 export async function hedgedBeginGoogleLogin(fetcher,payload,{delays=[0,2500,6000],timeoutMs=18000}={}){
   let settled=false;const controllers=[],timers=[];
   const attempt=(delay,index)=>new Promise((resolve,reject)=>{
@@ -99,7 +118,7 @@ export function makeHandler(fetcher=fetch){return async(req,res)=>{
   const started=Date.now();
   if(body.fn==='beginGoogleLogin'){
     try{
-      const {value,upstreamStatus,hedge}=await hedgedBeginGoogleLogin(fetcher,payload);
+      const {value,upstreamStatus,hedge}=await serializedBeginGoogleLogin(fetcher,payload);
       console.info(JSON.stringify({component:'crm-gateway',operation:body.fn,hedge,elapsedMs:Date.now()-started,upstreamStatus,outcome:'ok'}));
       return res.status(200).json(value);
     }catch(error){
