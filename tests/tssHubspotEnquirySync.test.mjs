@@ -29,6 +29,8 @@ test('internal QA and test submission are excluded even when open', () => {
 });
 test('matching requires unique source contact and the correct company', () => {
   assert.equal(matchSourceContact(task, [contact]).email, 'prospect@example.com');
+  const colonVariant = { ...task, notes: task.notes.replace('Reply to prospect@example.com', 'Reply to: prospect@example.com') };
+  assert.equal(matchSourceContact(colonVariant, [contact]).email, 'prospect@example.com');
   assert.equal(matchSourceContact(task, [contact, contact]).error, 'contact_ambiguous_or_missing');
   assert.equal(matchSourceContact(task, [{ ...contact, companyId: 'OTHER' }]).error, 'contact_ambiguous_or_missing');
 });
