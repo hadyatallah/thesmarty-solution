@@ -32,6 +32,9 @@ test('matching requires unique source contact and the correct company', () => {
   const colonVariant = { ...task, notes: task.notes.replace('Reply to prospect@example.com', 'Reply to: prospect@example.com') };
   assert.equal(matchSourceContact(colonVariant, [contact]).email, 'prospect@example.com');
   assert.equal(matchSourceContact(task, [contact, contact]).error, 'contact_ambiguous_or_missing');
+  const sourceCopy = { ...contact, id: 'OTHER-ID', notes: 'Unrelated prior interaction' };
+  const exactCopy = { ...contact, notes: 'Inbound enquiry TSS-2026-0031' };
+  assert.equal(matchSourceContact(task, [sourceCopy, exactCopy]).sourceContact.id, 'CON-0031');
   assert.equal(matchSourceContact(task, [{ ...contact, companyId: 'OTHER' }]).error, 'contact_ambiguous_or_missing');
 });
 test('due time uses Asia/Nicosia summer and winter offsets', () => {
@@ -47,7 +50,7 @@ function mockHub({ existingTask = null, companyFound = null, contactFound = null
       if (type === 'contacts') return contactFound ? [contactFound] : [];
       return [];
     },
-    async get() { return { associations: { companies: { results: [] } } }; },
+    async get() { return { associations: { companies: { results: companyFound ? [{ id: companyFound.id }] : [] } } }; },
     async defaultType(from, to) {
       return { 'tasks/companies': 192, 'tasks/contacts': 204, 'contacts/companies': 1 }[from + '/' + to];
     },
@@ -92,4 +95,10 @@ test('existing company and contact are reused without altering their properties'
   await syncOne(entry, { hub: x.hub, write: true, ownerId: '100713372' });
   assert.deepEqual(x.created.map(c => c.type), ['tasks']);
   assert.deepEqual(x.created[0].associations.map(a => a.to.id), ['101', '102']);
+});
+
+test('existing unassociated contact blocks rather than silently linking to a company', async () => {
+  const x = mockHub({ contactFound: { id: '102', properties: { email: contact.email } } });
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, ownerId: '1' }), /association requires manual review/);
+  assert.equal(x.created.length, 0);
 });
