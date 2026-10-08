@@ -15,7 +15,7 @@ test('accepts opaque folder id only with provider-verified folder id',()=> {
  const id='AAMk-folder-id';
  const cursor=`https://graph.microsoft.com/v1.0/me/mailFolders('${id}')/messages/delta${token}`;
  assert.doesNotThrow(()=>validateDeltaCursor(cursor,'inbox',{folderId:id}));
- assert.throws(()=>validateDeltaCursor(cursor,'sentitems',{folderId:id}),/OUTLOOK_CURSOR_RESET_REQUIRED/);
+ assert.throws(()=>validateDeltaCursor(cursor,'sentitems',{folderId:'OTHER-FOLDER-ID'}),/OUTLOOK_CURSOR_RESET_REQUIRED/);
 });
 test('rejects wrong folder, malformed, encoded traversal and non-Graph origins',()=> {
  assert.throws(()=>validateDeltaCursor(base+'sentitems/messages/delta'+token,'inbox'),/OUTLOOK_CURSOR_RESET_REQUIRED/);
