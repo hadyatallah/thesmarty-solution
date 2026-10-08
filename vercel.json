@@ -14,6 +14,10 @@
   ],
   "rewrites": [
     {
+      "source": "/api/tss-hubspot-enquiry-sync",
+      "destination": "/api/crm?tssHubspotSync=1"
+    },
+    {
       "source": "/api/outlook/ingestion/enable",
       "destination": "/api/outlook/status?captureAction=enable"
     },
