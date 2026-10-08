@@ -3,8 +3,11 @@ on:
   pull_request:
     paths:
       - 'lib/tssHubspotEnquirySync.mjs'
-      - 'api/tss-hubspot-enquiry-sync.js'
+      - 'lib/tssHubspotEnquiryHandler.mjs'
+      - 'api/crm.js'
+      - 'vercel.json'
       - 'tests/tssHubspotEnquirySync.test.mjs'
+      - 'tests/tssHubspotRoute.test.mjs'
       - '.github/workflows/tss-hubspot-enquiry-sync-tests.yml'
   workflow_dispatch:
 jobs:
@@ -18,8 +21,9 @@ jobs:
         with:
           node-version: '22'
       - name: Run pure offline tests (no credentials or network)
-        run: node --test tests/tssHubspotEnquirySync.test.mjs
+        run: node --test tests/tssHubspotEnquirySync.test.mjs tests/tssHubspotRoute.test.mjs
       - name: Check ESM syntax
         run: |
           node --check lib/tssHubspotEnquirySync.mjs
-          node --check api/tss-hubspot-enquiry-sync.js
+          node --check lib/tssHubspotEnquiryHandler.mjs
+          node --check api/crm.js
