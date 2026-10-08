@@ -9,11 +9,11 @@ test('accepts slash-form well-known folder cursor',()=> {
  assert.equal(validateDeltaCursor(base+'inbox/messages/delta'+token,'inbox').startsWith(base),true);
 });
 test('accepts OData parenthesis form for well-known folder',()=> {
- assert.doesNotThrow(()=>validateDeltaCursor(base+"('inbox')/messages/delta"+token,'inbox'));
+ assert.doesNotThrow(()=>validateDeltaCursor('https://graph.microsoft.com/v1.0/me/mailFolders(\\'inbox\\')/messages/delta'+token,'inbox'));
 });
 test('accepts opaque folder id only with provider-verified folder id',()=> {
  const id='AAMk-folder-id';
- const cursor=base+"('"+id+"')/messages/delta"+token;
+ const cursor='https://graph.microsoft.com/v1.0/me/mailFolders(\\''+id+"\\')/messages/delta"+token;
  assert.doesNotThrow(()=>validateDeltaCursor(cursor,'inbox',{folderId:id}));
  assert.throws(()=>validateDeltaCursor(cursor,'sentitems',{folderId:id}),/OUTLOOK_CURSOR_RESET_REQUIRED/);
 });
