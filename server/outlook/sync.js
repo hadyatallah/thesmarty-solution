@@ -4,10 +4,12 @@ import {verifyBindingCapability,ingestionBindingPayload,initialDeltaUrl,validate
 export default async function handler(req,res){
  baseHeaders(res);
  let cursorFailure=null; // Sanitized diagnostic only, never the cursor URL/token.
+ let diagnosticFolder=null; // Allowlisted folder only; never cursor data.
  if(req.method!=='POST'){res.setHeader('Allow','POST');return res.status(405).json({ok:false,error:'METHOD_NOT_ALLOWED'});}
  try{
   const body=typeof req.body==='string'?JSON.parse(req.body):req.body;
   const folder=String(body?.folder||'').toLowerCase(),cursor=body?.cursor||'';
+  diagnosticFolder=['inbox','sentitems'].includes(folder)?folder:null;
   let binding;try{binding=open(body?.binding);}catch{throw Error('OUTLOOK_RECONNECT_REQUIRED');}
   verifyBindingCapability(binding,body?.serviceKey);
   let token;try{token=await refreshToken(binding.refreshToken);}catch{throw Error('OUTLOOK_RECONNECT_REQUIRED');}
@@ -30,6 +32,9 @@ export default async function handler(req,res){
   const known=['OUTLOOK_RECONNECT_REQUIRED','OUTLOOK_CURSOR_RESET_REQUIRED','OUTLOOK_THROTTLED','OUTLOOK_FOLDER_INVALID','OUTLOOK_BROKER_UNAUTHORIZED','OUTLOOK_PROVIDER_UNAVAILABLE'];
   const error=known.includes(e.message)?e.message:'OUTLOOK_PROVIDER_UNAVAILABLE';
   const status=error==='OUTLOOK_BROKER_UNAUTHORIZED'?403:error==='OUTLOOK_CURSOR_RESET_REQUIRED'||error==='OUTLOOK_RECONNECT_REQUIRED'?409:error==='OUTLOOK_THROTTLED'?429:400;
+  if(error==='OUTLOOK_CURSOR_RESET_REQUIRED' && diagnosticFolder){
+   console.warn(JSON.stringify({component:'outlook-sync',event:'cursor-rejected',folder:diagnosticFolder,cause:cursorFailure||'UNSPECIFIED'}));
+  }
   return res.status(status).json({ok:false,error:error==='OUTLOOK_BROKER_UNAUTHORIZED'?'OUTLOOK_PROVIDER_UNAVAILABLE':error,...(error==='OUTLOOK_CURSOR_RESET_REQUIRED'?{cursorFailure:cursorFailure||'UNSPECIFIED'}:{})});
  }
 }
