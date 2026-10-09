@@ -1,0 +1,29 @@
+name: TSS HubSpot enquiry bridge tests
+on:
+  pull_request:
+    paths:
+      - 'lib/tssHubspotEnquirySync.mjs'
+      - 'lib/tssHubspotEnquiryHandler.mjs'
+      - 'api/crm.js'
+      - 'vercel.json'
+      - 'tests/tssHubspotEnquirySync.test.mjs'
+      - 'tests/tssHubspotRoute.test.mjs'
+      - '.github/workflows/tss-hubspot-enquiry-sync-tests.yml'
+  workflow_dispatch:
+jobs:
+  node-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run pure offline tests (no credentials or network)
+        run: node --test tests/tssHubspotEnquirySync.test.mjs tests/tssHubspotRoute.test.mjs
+      - name: Check ESM syntax
+        run: |
+          node --check lib/tssHubspotEnquirySync.mjs
+          node --check lib/tssHubspotEnquiryHandler.mjs
+          node --check api/crm.js
