@@ -145,10 +145,10 @@ async function dataCenterResearchView(){
  '<p class="muted">Company evidence completeness and human review. Not a verified developer ranking, sales qualification, buying-intent score or outreach approval. Original lead scores remain unchanged.</p>'+
  '<section class="panel"><p class="muted"><strong>'+esc(source)+'</strong> · Review date '+esc(today())+
  ' · Source: existing authenticated CRM Companies dataset. No external API requests, HubSpot writes or data changes.</p>'+
- '<p class="muted"><strong>Phase 3 identity-hold register is not joined.</strong> Holds shown below reflect only fields in this CRM snapshot. Do not treat this as a complete hold count or clear any company for HubSpot promotion.</p>'+
+ '<p class="muted" id="tssPhase3HoldNotice"><strong>Phase 3 identity-hold register is not joined.</strong> Holds shown below reflect only fields in this CRM snapshot. Do not treat this as a complete hold count or clear any company for HubSpot promotion.</p>'+
  '<div class="cards"><div class="panel metric"><span>Loaded companies</span><strong>'+model.total+'</strong></div>'+
- '<div class="panel metric"><span>Human evidence review queue</span><strong>'+model.reviewReady+'</strong></div>'+
- '<div class="panel metric"><span>Company-field holds (minimum)</span><strong>'+model.held+'</strong></div>'+
+ '<div class="panel metric"><span>Human evidence review queue</span><strong id="tssResearchHumanCount">'+model.reviewReady+'</strong></div>'+
+ '<div class="panel metric"><span>Company-field holds (minimum)</span><strong id="tssResearchHoldCount">'+model.held+'</strong></div>'+
  '<div class="panel metric"><span>Approved for automatic HubSpot promotion</span><strong>0</strong></div></div></section>'+
  '<section class="panel"><h3>Research review queue (first 40 results)</h3>'+
  '<div class="toolbar"><input type="search" id="tssResearchSearch" aria-label="Search research queue" placeholder="Search company name or TSS ID…">'+
@@ -187,6 +187,26 @@ async function dataCenterResearchView(){
     ' loaded. This is a research-review order only.';
  }
  input.addEventListener('input',draw);select.addEventListener('change',draw);draw();
+ // A private hold manifest is explicitly selected on the owner's device, never bundled publicly.
+ const active=()=>view==='Data Center Research'&&ticket===researchPreviewSequence&&
+   !!sessionToken&&sessionToken===initialSessionToken&&state===initialState;
+ try{
+  const {installPhase3HoldImport}=await import('/crm/data-center-phase3-import.mjs');
+  if(!active())return;
+  const mount=document.createElement('div');
+  list.before(mount);
+  installPhase3HoldImport({mount,companies:initialState.records.Companies,asOf:today(),
+   isCurrent:active,onApply:(updated)=>{
+    if(!active())return;
+    model=updated;
+    el('tssResearchHumanCount').textContent=String(model.reviewReady);
+    el('tssResearchHoldCount').textContent=String(model.held);
+    el('tssPhase3HoldNotice').textContent='Known Phase 3 exceptions joined locally. Remaining unreviewed or missing evidence stays in human review. This is not a complete identity inventory or permission to promote.';
+    draw();
+   }});
+ }catch(err){
+  if(active())el('tssPhase3HoldNotice').textContent='Private Phase 3 hold import unavailable. Existing research holds remain. No Company data was changed.';
+ }
 }
 function render(){el('nav').innerHTML='<button onclick="openCrmMenu()">☰ CRM Menu</button><span class="nav-current">'+esc(titles[view]||view)+'</span><span class="nav-spacer"></span>'+(view!=='Today'?'<button onclick="home()">Home</button>':'')+'<button onclick="refresh()">Refresh</button>';if(view==='Today')dashboard();else if(view==='Data Center Research')dataCenterResearchView();else if(view==='Management')management();else if(view==='Prospect Queue')prospectQueue();else if(view==='Conversion')conversion();else if(view==='Clients')clientDelivery();else if(view==='Intelligence')intelligence();else if(view==='Outreach')outreachView();else if(view==='Data Quality')dataQuality();else if(view==='Reports')reports();else if(view==='System Health')systemHealth();else if(view==='Assistant')assistant();else if(view==='Access')accessSettings();else records()}
 function card(entity,r){const inactive=inactiveRecord(entity,r);return '<button class="record" onclick="detail(\''+entity+'\',\''+esc(r.id)+'\')"><div class="row"><strong>'+esc(r.name)+'</strong><span class="badge '+(overdue(r,entity)||inactive?'warning':'')+'">'+esc(inactive?inactivityLabel(entity,r):(r.status||r.stage||r.lifecycle||''))+'</span></div><span class="muted">'+esc(company(r.companyId)||(entity==='Companies'?[r.lifecycle,r.classification,r.district,r.category].filter(Boolean).join(' · '):(r.district||r.category||'')))+'</span>'+(r.nextAction?'<div>'+esc(r.nextAction)+'</div>':'')+((r.dueDate||r.followUp)?'<small>'+esc(r.dueDate||r.followUp)+'</small>':'')+'</button>'}
