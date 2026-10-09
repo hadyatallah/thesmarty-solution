@@ -19,7 +19,8 @@ function makeService() {
     PropertiesService: { getScriptProperties: () => ({
       getProperty: key => values.get(key) ?? null,
       getProperties: () => Object.fromEntries(values),
-      setProperty: (key, value) => { values.set(key, value); }
+      setProperty: (key, value) => { values.set(key, value); },
+      deleteProperty: key => { values.delete(key); }
     }) },
     LockService: { getScriptLock: () => ({
       tryLock: () => { if (held) return false; held = true; return true; },
@@ -67,10 +68,12 @@ test('first claim persists and competing writers cannot acquire the same task', 
   assert.equal(summary.token,undefined);
   assert.equal(svc.dispatch({action:'settle',taskId,token:'wrong',outcome:'verified',secret}).code,
     'RESERVATION_TOKEN_MISMATCH');
-  assert.equal(svc.dispatch({action:'reserve',taskId:'TSK-WEB-2026-0032',secret}).ok,true);
+  assert.equal(svc.dispatch({action:'reserve',taskId:'TSK-WEB-2026-0032',secret}).code,
+    'GLOBAL_WRITER_HELD');
   assert.equal(svc.dispatch({action:'settle',taskId,token:first.token,
     outcome:'verified',hubspotTaskId:'123',secret}).state,'committed');
   assert.equal(svc.dispatch({action:'reserve',taskId,secret}).code,'ENQUIRY_ALREADY_COMMITTED');
+  assert.equal(svc.dispatch({action:'reserve',taskId:'TSK-WEB-2026-0032',secret}).ok,true);
 });
 
 test('uncertain writes remain durably held for manual review; no automatic expiry', () => {
@@ -178,4 +181,37 @@ test('capacity failure on settlement preserves unresolved durable reservation', 
   assert.equal(attempt.code,'RESERVATION_STORE_CAPACITY');
   assert.equal(svc.dispatch({action:'inspect',taskId,secret}).state,'reserved');
   assert.equal(svc.dispatch({action:'reserve',taskId,secret}).code,'RESERVATION_HELD');
+});
+
+test('an uncertain task holds the global writer and blocks unrelated new enquiries', () => {
+  const svc = makeService();
+  const first = svc.dispatch({action:'reserve',
+    taskId:'TSK-WEB-2026-0031',secret});
+  assert.equal(first.ok,true);
+  const second = svc.dispatch({action:'reserve',
+    taskId:'TSK-WEB-2026-0032',secret});
+  assert.equal(second.code,'GLOBAL_WRITER_HELD');
+  const pending = svc.dispatch({action:'settle',
+    taskId:'TSK-WEB-2026-0031',token:first.token,
+    outcome:'review_required',secret});
+  assert.equal(pending.state,'review_required');
+  assert.equal(svc.dispatch({action:'reserve',
+    taskId:'TSK-WEB-2026-0032',secret}).code,'GLOBAL_WRITER_HELD');
+  assert.equal(svc.values.has('TSS_G4_ACTIVE_WRITER'),true);
+});
+
+test('the global writer is released only after a verified persisted settlement', () => {
+  const svc=makeService(),firstId='TSK-WEB-2026-0031';
+  const claim=svc.dispatch({action:'reserve',taskId:firstId,secret});
+  assert.equal(svc.values.has('TSS_G4_ACTIVE_WRITER'),true);
+  const error=svc.dispatch({action:'settle',taskId:firstId,token:claim.token,
+    outcome:'verified',hubspotTaskId:'bad-id',secret});
+  assert.equal(error.code,'VERIFIED_TASK_ID_REQUIRED');
+  assert.equal(svc.values.has('TSS_G4_ACTIVE_WRITER'),true);
+  const done=svc.dispatch({action:'settle',taskId:firstId,token:claim.token,
+    outcome:'verified',hubspotTaskId:'81234',secret});
+  assert.equal(done.state,'committed');
+  assert.equal(svc.values.has('TSS_G4_ACTIVE_WRITER'),false);
+  assert.equal(svc.dispatch({action:'reserve',
+    taskId:'TSK-WEB-2026-0032',secret}).ok,true);
 });
