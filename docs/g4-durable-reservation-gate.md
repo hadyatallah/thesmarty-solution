@@ -101,3 +101,41 @@ or creation of a paid service is approved.
 deployment, concurrent provider QA, live-written record readback and explicit
 owner approval remain blocking. The deployed website, Apps Script, Outlook,
 HubSpot, Production Vercel and CRM Master Workbook are unchanged.
+
+## Read-only source-access and storage gate — 9 October 2026, late checkpoint
+
+The official operational private CRM Apps Script project is
+`1q78hS9M6rsafHrXL7iHk3nK0eumERvTfoXk4oA_TFUmARYlVKbb5b2BN`, owned
+by the connected `thesmartysolution@gmail.com` account. Authenticated Drive
+metadata identifies `TSS CRM - Private Workspace` with native MIME type
+`application/vnd.google-apps.script`, but its current project SOURCE is
+not readable via the available Google Drive connection. Drive media fetch
+returned **HTTP 403 Forbidden** and the connector offers neither Apps Script
+`projects.getContent` nor `projects.updateContent`. A historical repo copy
+or recovered source bundle is not current deployed/HEAD proof. Do NOT deploy
+this reservation module into the operational project or claim G4 live testing
+until a supported owner-authorized source-read/backup and complete-project
+update method exists. No manual owner coding, third-party paid browser or
+broad OAuth permissions are authorized.
+
+Google's published Apps Script limits include **9 KB per property value** and
+**500 KB per script-property store**. The candidate now performs a serialized,
+UTF-8-aware property inventory check before every ScriptProperties write,
+rejecting payloads above **8,192 bytes** and projected store usage above
+**350,000 bytes** (substantial reserve for existing settings). Store exhaustion
+returns `RESERVATION_STORE_CAPACITY` without overwriting prior states; a failed
+settlement leaves an existing reservation held. Commit requires a plausible
+numeric HubSpot Task ID, plus earlier server-side readback of exact persisted
+Company and Contact Task associations. These checks are defensive and tested
+only with offline mocks. Google quotas may change; Production quota headroom,
+contention and permission scopes require live owner-side acceptance.
+
+*Evidence:* Google official
+[Apps Script quotas](https://developers.google.com/apps-script/guides/services/quotas),
+[Properties Service](https://developers.google.com/apps-script/guides/properties),
+and [Lock Service](https://developers.google.com/apps-script/reference/lock/).
+
+**Latest status:** Draft PR remains unmerged. Do not wire adapter to Production,
+issue any reservation secret or route, enable the G4 cron write flag, modify
+customer records, or merge until authenticated current-source recovery and
+separate internal-only live acceptance have passed.
