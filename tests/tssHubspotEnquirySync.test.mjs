@@ -295,3 +295,36 @@ test('website preflight excludes completed internal QA without blocking batch', 
   assert.equal(read.candidates.length, 0);
   assert.equal(read.ignored.internal_qa, 1);
 });
+
+test('new task requires persisted Company and Contact readback before lease is committed', async () => {
+  const x = mockHub({
+    taskAssociationsOverride: {
+      companies: { results: [{ id: '1' }] }, contacts: { results: [] }
+    }
+  });
+  const outcomes = [];
+  const lease = { async acquire() { return {
+    async release(outcome) { outcomes.push(outcome); }
+  }; } };
+  await assert.rejects(
+    syncOne(entry, { hub: x.hub, write: true, writeLease: lease, ownerId: '1' }),
+    /CREATED_TASK_ASSOCIATIONS_UNVERIFIED/);
+  assert.equal(x.created.filter(z => z.type === 'tasks').length, 1);
+  assert.equal(outcomes.length, 1);
+  assert.equal(outcomes[0].status, 'review_required');
+});
+
+test('verified created task settles reservation only after provider readback', async () => {
+  const x = mockHub();
+  const outcomes = [];
+  const lease = { async acquire() { return {
+    async release(outcome) { outcomes.push(outcome); }
+  }; } };
+  const result = await syncOne(entry, {
+    hub: x.hub, write: true, writeLease: lease, ownerId: '1'
+  });
+  assert.equal(result.status, 'created');
+  assert.equal(outcomes.length, 1);
+  assert.equal(outcomes[0].status, 'verified');
+  assert.equal(outcomes[0].taskId, result.hubspotTaskId);
+});
