@@ -121,3 +121,22 @@ test('headers use canonical names, reject missing required columns, and leave so
   assert.deepEqual(values,clone);
   assert.throws(()=>sourceRowsToCompanies([['name'],['A']]),/SOURCE_MISSING_REQUIRED_FIELDS/);
 });
+
+test('external Phase 3 identity hold list blocks research readiness even without a conflict keyword in current Companies', () => {
+  const held = new Set(['TSS-CY-001']);
+  const reviewed = rankResearchReview([core, {...core,id:'TSS-CY-002',name:'Other company'}], {asOf, reviewHoldIds:held});
+  assert.equal(reviewed.total,2);
+  assert.equal(reviewed.held,1);
+  assert.equal(reviewed.companies.find(c=>c.id==='TSS-CY-001').gate,'IDENTITY_HOLD');
+  assert.equal(reviewed.companies.find(c=>c.id==='TSS-CY-002').gate,'HUMAN_EVIDENCE_REVIEW_REQUIRED');
+  assert.equal(reviewed.companies.find(c=>c.id==='TSS-CY-001').readyForAutoHubspotPromotion,false);
+});
+test('research readiness never claims checked source accuracy or legal identity', () => {
+  const scored = assessCompany(core,{asOf});
+  assert.equal(scored.sourceQuality,'NOT_VERIFIED');
+  assert.equal(scored.evidenceValidation,'NOT_PERFORMED');
+  assert.equal(scored.independentCorroboration,'NOT_ESTABLISHED');
+  assert.equal(scored.identityVerification,'NOT_VERIFIED');
+  assert.equal(scored.verifiedDeveloperRole,false);
+  assert.equal(scored.fitQualification,'NOT_ASSESSED');
+});
