@@ -9,6 +9,8 @@ on:
       - 'tests/tssHubspotEnquirySync.test.mjs'
       - 'tests/tssHubspotRoute.test.mjs'
       - 'tests/tssHubspotConnectionProbe.test.mjs'
+      - 'tests/tssHubspotCronAuth.test.mjs'
+      - 'vercel.json'
       - '.github/workflows/tss-hubspot-enquiry-sync-tests.yml'
   workflow_dispatch:
 jobs:
@@ -22,7 +24,7 @@ jobs:
         with:
           node-version: '22'
       - name: Run pure offline tests (no credentials or network)
-        run: node --test tests/tssHubspotEnquirySync.test.mjs tests/tssHubspotRoute.test.mjs tests/tssHubspotConnectionProbe.test.mjs
+        run: node --test tests/tssHubspotEnquirySync.test.mjs tests/tssHubspotRoute.test.mjs tests/tssHubspotConnectionProbe.test.mjs tests/tssHubspotCronAuth.test.mjs
       - name: Check ESM syntax
         run: |
           node --check lib/tssHubspotEnquirySync.mjs
