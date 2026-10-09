@@ -25,6 +25,29 @@ function tssG4ReservationSameHash_(a, b) {
   return diff === 0;
 }
 
+// Google limits ScriptProperties to 9 KB per value and 500 KB per store.
+// Reserve a large margin for existing operational CRM settings. This check
+// counts UTF-8 bytes while the ScriptLock is held, before any state change.
+function tssG4ReservationStoreWrite_(props, key, value) {
+  var valueText = String(value);
+  var byteLength = function(value) {
+    return Utilities.newBlob(String(value)).getBytes().length;
+  };
+  var nextValueBytes = byteLength(valueText);
+  if (nextValueBytes > 8192) return false;
+  var all = props.getProperties();
+  var estimatedTotal = 0;
+  for (var name in all) {
+    if (!Object.prototype.hasOwnProperty.call(all, name) || name === key) continue;
+    estimatedTotal += byteLength(name) + byteLength(all[name]);
+    if (estimatedTotal > 350000) return false;
+  }
+  estimatedTotal += byteLength(key) + nextValueBytes;
+  if (estimatedTotal > 350000) return false;
+  props.setProperty(key, valueText);
+  return true;
+}
+
 function tssG4ReservationDispatch_(request) {
   // A trusted authenticated Apps Script dispatcher must pass the ORIGINAL
   // server-only secret; there is deliberately no public web handler here.
@@ -67,7 +90,9 @@ function tssG4ReservationDispatch_(request) {
       var created = { taskId: key, state: 'reserved',
         tokenHash: tssG4ReservationSha256_(token),
         createdAt: new Date().toISOString(), hubspotTaskId: null };
-      props.setProperty(storeKey, JSON.stringify(created));
+      if (!tssG4ReservationStoreWrite_(props, storeKey, JSON.stringify(created))) {
+        return { ok: false, code: 'RESERVATION_STORE_CAPACITY' };
+      }
       return { ok: true, state: 'reserved', token: token, taskId: key };
     }
     if (!prior || prior.state !== 'reserved') {
@@ -83,11 +108,17 @@ function tssG4ReservationDispatch_(request) {
     }
     // Even an uncertain write NEVER releases the reservation for retry.
     // Only a separately approved manual recovery can resolve review_required.
+    if (request.outcome === 'verified' &&
+        !/^[0-9]{1,20}$/.test(String(request.hubspotTaskId || ''))) {
+      return { ok: false, code: 'VERIFIED_TASK_ID_REQUIRED' };
+    }
     prior.state = request.outcome === 'verified' ? 'committed' : 'review_required';
     prior.hubspotTaskId = typeof request.hubspotTaskId === 'string' ?
       request.hubspotTaskId.slice(0, 64) : null;
     prior.finishedAt = new Date().toISOString();
-    props.setProperty(storeKey, JSON.stringify(prior));
+    if (!tssG4ReservationStoreWrite_(props, storeKey, JSON.stringify(prior))) {
+      return { ok: false, code: 'RESERVATION_STORE_CAPACITY' };
+    }
     return { ok: true, state: prior.state, taskId: key };
   } finally {
     lock.releaseLock();
