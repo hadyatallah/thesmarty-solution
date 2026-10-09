@@ -61,3 +61,16 @@ test('Research Data Center keeps the authenticated CRM responsive shell intact',
  assert.ok(section.includes('<div id="tssResearchRows" class="list"></div>'));
  assert.ok(!section.includes('<table'));
 });
+test('unjoined private holds fail closed before any research ranking is shown',()=>{
+ assert.ok(section.includes('let tssResearchHoldsJoined=false;'));
+ const gate=section.indexOf('if(!tssResearchHoldsJoined){');
+ const ranking=section.indexOf("const term=input.value.toLowerCase().trim()");
+ assert.ok(gate>0&&ranking>gate,'The hold join gate must precede filtering and rendering');
+ assert.match(section,/if\(!tssResearchHoldsJoined\)\{\s*list\.replaceChildren\(\);/);
+ assert.match(section,/count\.textContent='Research ranking locked:/);
+ assert.match(section,/model=updated;\s*tssResearchHoldsJoined=true;/);
+ assert.ok(section.includes('Research ranking is locked until a valid private known-exception manifest is imported.'));
+ assert.ok(section.includes("isCurrent:active,onApply:(updated)=>"));
+ assert.ok(!section.includes('localStorage.setItem('),'Restricted hold overlays must never be saved in localStorage');
+ assert.ok(!section.includes('sessionStorage.setItem('),'Restricted hold overlays must never be saved in sessionStorage');
+});
