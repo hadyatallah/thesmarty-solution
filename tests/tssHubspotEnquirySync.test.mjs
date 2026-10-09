@@ -328,3 +328,57 @@ test('verified created task settles reservation only after provider readback', a
   assert.equal(outcomes[0].status, 'verified');
   assert.equal(outcomes[0].taskId, result.hubspotTaskId);
 });
+
+test('existing verified task supplies numeric HubSpot ID for durable settlement', async () => {
+  const x = mockHub({
+    existingTask: { id: '123456', properties: {
+      hs_task_body: 'Historical import\nTSS Task ID: TSK-WEB-2026-0031\nSource preserved'
+    } },
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: {
+      email: contact.email, tss_contact_id: contact.id
+    } }
+  });
+  const outcomes = [];
+  const lease = { async acquire() { return { async release(o) { outcomes.push(o); } }; } };
+  const result = await syncOne(entry, {
+    hub: x.hub, write: true, writeLease: lease, ownerId: '1'
+  });
+  assert.equal(result.status, 'already_synced');
+  assert.equal(result.hubspotTaskId, '123456');
+  assert.deepEqual(outcomes, [{
+    status: 'verified', operation: 'already_synced', taskId: '123456'
+  }]);
+  assert.equal(x.created.length, 0);
+});
+
+test('similar task ID substring is not accepted as an exact activity marker', async () => {
+  const x = mockHub({
+    existingTask: { id: '123456', properties: {
+      hs_task_body: 'TSS Task ID: TSK-WEB-2026-00310'
+    } }
+  });
+  await assert.rejects(syncOne(entry, {
+    hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1'
+  }), /Task subject collision/);
+  assert.equal(x.created.length, 0);
+});
+
+test('legacy task with invalid provider ID cannot be committed as synced', async () => {
+  const x = mockHub({
+    existingTask: { id: 'not-a-task-id', properties: {
+      hs_task_body: 'TSS Task ID: TSK-WEB-2026-0031'
+    } },
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: { email: contact.email,
+      tss_contact_id: contact.id } }
+  });
+  const outcomes = [];
+  const lease = { async acquire() { return { async release(o) { outcomes.push(o); } }; } };
+  await assert.rejects(syncOne(entry, {
+    hub: x.hub, write: true, writeLease: lease, ownerId: '1'
+  }), /Existing task provider ID requires manual review/);
+  assert.equal(outcomes.length, 1);
+  assert.equal(outcomes[0].status, 'review_required');
+  assert.equal(x.created.length, 0);
+});
