@@ -76,3 +76,13 @@ Before a LIVE private view is authorized:
 - Full native source evidence and identity holds: historical accepted gated material, not re-run in this package.
 - Production source/UI, company scores, HubSpot records, API scopes, website contact form and scheduled automation: UNCHANGED.
 - WhatsApp → HubSpot: NEXT workstream, NOT started.
+
+## Phase 3 known-open-exception overlay — isolated, NOT WIRED TO UI
+
+Read-only owner-native source audit (9 October 2026): five unresolved Identity Relationship ledger rows implicate 7 distinct canonical Companies; four documented ambiguous-directory pairs implicate 8; five Companies have CONFLICTING / REVIEW REQUIRED Evidence Observation entries. These are 20 distinct, known-open-exception Company IDs, all confirmed present among the 2,877 current Master Workbook IDs. This is NOT a complete count of all unresolved Company identities, unverified developer roles or possible duplicate cases. The 562-record legacy developer cohort remains separately unverified.
+
+A strict, read-only validator now exists in `crm/data-center-phase3-holds.mjs`. It accepts only a dated owner-selected `tss-phase3-known-open-holds-v1` JSON manifest, restrictive exception reasons and IDs that match the authenticated Companies collection. It rejects unknown/duplicate IDs, future or over-30-day-old manifests, malformed inputs and purported complete/cleared coverage. It cannot approve sales ranking, outreach or HubSpot lifecycle changes. The manifest with the 20 known IDs is maintained outside the repository because publishing restricted exception IDs in public static source is not authorized.
+
+**Important execution boundary:** the complete `crm/index.html` replacement request to attach the browser-local file selector was rejected by the execution tool's safety checks. No UI hook was written. The current authenticated view still shows its Phase 3 hold-register-not-joined warning and continues to display only Company-field holds as a minimum. The strict manifest validator is independently unit-tested but is not yet invoked by the deployed or preview client. Do NOT claim an end-to-end hold join or authenticated owner runtime acceptance.
+
+The private manifest is for review-only import once a supported, safe interface write path becomes available. Do not publish it as a static site asset or GitHub committed file. All Production, Google workbook, HubSpot, Gmail/Outlook, Vercel configuration and legacy triggers remain unchanged.
