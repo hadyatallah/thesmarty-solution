@@ -1,0 +1,37 @@
+name: TSS Data Center research readiness V2 tests
+on:
+  pull_request:
+    paths:
+      - 'lib/tssResearchQualification.mjs'
+      - 'crm/data-center-research-engine.mjs'
+      - 'crm/data-center-phase3-holds.mjs'
+      - 'crm/data-center-phase3-import.mjs'
+      - 'tests/tssResearchQualification.test.mjs'
+      - 'tests/tssDataCenterAuthenticatedView.test.mjs'
+      - 'tests/tssPhase3HoldImport.test.mjs'
+      - 'crm/index.html'
+      - 'crm/data-center-research-preview.html'
+      - 'docs/tss-data-center-qualification-v2.md'
+      - '.github/workflows/tss-research-readiness-v2-tests.yml'
+  workflow_dispatch:
+jobs:
+  scorer-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check engine syntax
+        run: |
+          node --check lib/tssResearchQualification.mjs
+          node --check crm/data-center-research-engine.mjs
+          node --check crm/data-center-phase3-holds.mjs
+          node --check crm/data-center-phase3-import.mjs
+      - name: Run research-only scorer and hold regressions
+        run: node --test tests/tssResearchQualification.test.mjs tests/tssDataCenterAuthenticatedView.test.mjs tests/tssPhase3HoldImport.test.mjs
+      - name: Ensure no external provider, messaging or runtime source imports
+        run: |
+          ! grep -E '(hubapi\.com|graph\.microsoft\.com|script\.google\.com|\.write\(|\.post\(|process\.env|createTask|sendEmail|fetch\()' crm/data-center-research-engine.mjs

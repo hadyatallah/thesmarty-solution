@@ -23,9 +23,9 @@ const STATE_CACHE_MAX_MS=7*24*60*60*1000;
 const COMMAND_API='https://api.thesmartysolution.com';
 const isInstalledApp=()=>window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
 const requestedView=new URLSearchParams(location.search).get('view');
-let state=null,view=['Today','Management','Prospect Queue','Companies','Contacts','Opportunities','Conversion','Clients','Tickets','Tasks','Intelligence','Outreach','Data Quality','Reports','System Health','Assistant','Access'].includes(requestedView)?requestedView:'Today',query='',filter='',page=0,board=false,busy=false,companyFilters={district:'',category:'',status:'',priority:'',researchLevel:'',lifecycle:'',communicationStatus:'',scoreBand:''},companySort='asc',aiContextSelection={entity:'',id:'',label:''},aiConversation=[],aiPendingPlan=null;
+let state=null,view=['Today','Management','Prospect Queue','Data Center Research','Companies','Contacts','Opportunities','Conversion','Clients','Tickets','Tasks','Intelligence','Outreach','Data Quality','Reports','System Health','Assistant','Access'].includes(requestedView)?requestedView:'Today',query='',filter='',page=0,board=false,busy=false,companyFilters={district:'',category:'',status:'',priority:'',researchLevel:'',lifecycle:'',communicationStatus:'',scoreBand:''},companySort='asc',aiContextSelection={entity:'',id:'',label:''},aiConversation=[],aiPendingPlan=null;
 const labels={name:'Name',companyId:'Company',contactEmail:'Contact email',nextAction:'Next action',followUp:'Follow-up date',dueDate:'Due date',researchLevel:'Research level',source1:'Research source',source2:'Additional source',projectValue:'Project value',tssFee:'Potential TSS fee',opportunityId:'Opportunity',ticketId:'Ticket',threadId:'Email thread',createdAt:'Created',updatedAt:'Updated',lifecycle:'Lifecycle',lastContact:'Last contact',communicationStatus:'Communication status',decisionMaker:'Decision maker',primaryContact:'Primary contact',lastInteraction:'Last interaction',linkedin:'LinkedIn',leadScore:'Lead score',scoreBand:'Score band',scoreReason:'Score reason',scoreUpdatedAt:'Score updated',qualificationStatus:'Qualification status',decisionMakerConfirmed:'Decision maker confirmed',budgetStatus:'Budget status',commercialPotential:'Commercial potential',tssFit:'TSS fit',decisionCriteria:'Decision criteria',targetCloseDate:'Target date',lossReason:'Loss reason',engagementStatus:'Engagement status',startDate:'Start date',deliveryScope:'Delivery scope',deliveryRisk:'Delivery risk',clientDecisions:'Client decisions needed',reviewDate:'Review date',commercialModel:'Commercial model',agreedFee:'Agreed TSS fee',clientHealth:'Client health',renewalDate:'Renewal date',expansionOpportunity:'Expansion opportunity',postSaleNextAction:'Post-sale next action'};
-const titles={Companies:'Companies',Contacts:'People',Opportunities:'Opportunities',Tickets:'Requests & Tickets',Tasks:'Follow-ups'};
+const titles={'Data Center Research':'Data Center Research (Preview)',Companies:'Companies',Contacts:'People',Opportunities:'Opportunities',Tickets:'Requests & Tickets',Tasks:'Follow-ups'};
 const CRM_GUIDE_SUMMARY='TSS CRM rules: Company = database/research record. Prospect = actively selected. Qualified Lead requires real commercial need or agreed next step; a positive reply alone is not qualification. Opportunity stages: Identified, Qualified, Discovery, Proposal, Negotiation, Won, Lost, On hold. Won requires post-sale handoff and does not automatically create an invoice or change lifecycle to Client. Do not contact blocks outreach. Proposal requires an opportunity. Revenue Tracker is operational CRM tracking only, not accounting/tax truth. Duplicate confirmation never auto-merges/deletes. Normal writes require confirmation. Sensitive actions require explicit confirmation: qualification, Won/Lost, Do not contact, payment/revenue status, outreach sending/approval, merge/delete. Never invent contact details, budget, fees, dates, project values, payment status or decision-makers.';
 const el=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let activeOperations=0,operationHideTimer=0;
@@ -117,9 +117,105 @@ function validateLoadedState(){
 }
 async function refresh(){try{state=await call('getState');stateObservation={source:'api',receivedAt:Date.now()};const integrity=validateLoadedState();if(integrity.length){dataIssueView(integrity.join(' | '));return;}cacheState();loadAiState();el('signOutButton').hidden=false;el('sync').textContent='Snapshot: '+TSSStatusDisplay.snapshotStatus(state,stateObservation).observedAt;render();updateAppBadge()}catch(e){if(/AUTH_REQUIRED|SESSION_CHANGED/.test(String(e.message)))return;stateObservation={...stateObservation,refreshFailed:true};const msg=String(e.message||e);if(sessionToken&&/Duplicate ID|data|validation|record/i.test(msg)){dataIssueView(msg);return;}if(sessionToken&&showCachedState())return;if(sessionToken&&!state){el('signOutButton').hidden=false;el('sync').textContent='Signed in · CRM data delayed';el('main').innerHTML='<div class="empty"><strong>Signed in successfully.</strong><br><span class="error">CRM data is taking longer than expected to load.</span><br><button onclick="refresh()">Retry loading data</button></div>';return;}if(!state)el('main').innerHTML='<div class="empty error">'+esc(msg)+'<br><button onclick="refresh()">Retry</button></div>';else notice(msg)}}
 function go(v){view=v;query='';filter='';page=0;companyFilters={district:'',category:'',status:'',priority:'',researchLevel:'',classification:'',lifecycle:'',communicationStatus:'',scoreBand:''};companySort='asc';render()}
-function openCrmMenu(){const groups=[['Work',['Today','Management','Assistant']],['Commercial',['Prospect Queue','Companies','Contacts','Opportunities','Conversion','Outreach']],['Operations',['Clients','Tickets','Tasks','Intelligence']],['Admin',['Data Quality','Reports','System Health','Access']]];showDialog('CRM Menu','<div class="menu-grid">'+groups.map(([g,items])=>'<section class="menu-group"><h3>'+esc(g)+'</h3>'+items.map(v=>'<button onclick="el(\'dialog\').close();go(\''+v+'\')">'+esc(titles[v]||v)+'</button>').join('')+'</section>').join('')+'</div>')}
+function openCrmMenu(){const groups=[['Work',['Today','Management','Assistant']],['Research',['Data Center Research']],['Commercial',['Prospect Queue','Companies','Contacts','Opportunities','Conversion','Outreach']],['Operations',['Clients','Tickets','Tasks','Intelligence']],['Admin',['Data Quality','Reports','System Health','Access']]];showDialog('CRM Menu','<div class="menu-grid">'+groups.map(([g,items])=>'<section class="menu-group"><h3>'+esc(g)+'</h3>'+items.map(v=>'<button onclick="el(\'dialog\').close();go(\''+v+'\')">'+esc(titles[v]||v)+'</button>').join('')+'</section>').join('')+'</div>')}
 function home(){go('Today')}
-function render(){el('nav').innerHTML='<button onclick="openCrmMenu()">☰ CRM Menu</button><span class="nav-current">'+esc(titles[view]||view)+'</span><span class="nav-spacer"></span>'+(view!=='Today'?'<button onclick="home()">Home</button>':'')+'<button onclick="refresh()">Refresh</button>';if(view==='Today')dashboard();else if(view==='Management')management();else if(view==='Prospect Queue')prospectQueue();else if(view==='Conversion')conversion();else if(view==='Clients')clientDelivery();else if(view==='Intelligence')intelligence();else if(view==='Outreach')outreachView();else if(view==='Data Quality')dataQuality();else if(view==='Reports')reports();else if(view==='System Health')systemHealth();else if(view==='Assistant')assistant();else if(view==='Access')accessSettings();else records()}
+// Read-only transition preview: reuse the *existing* authenticated CRM session and
+// loaded Companies collection. No new provider request, writes, scopes or public data API.
+let researchPreviewSequence=0;
+async function dataCenterResearchView(){
+ const ticket=++researchPreviewSequence;
+ const initialSessionToken=sessionToken,initialState=state;
+ if(!state||!sessionToken||!Array.isArray(state.records?.Companies)){
+  el('main').innerHTML='<div class="empty error">Sign in and load your protected CRM Companies dataset before opening Research Data Center.</div>';
+  return;
+ }
+ el('main').innerHTML='<section class="panel"><h2>Research Data Center · V2 preview</h2><p class="muted">Loading the read-only research completeness model…</p></section>';
+ let model;
+ try{
+  const {rankResearchReview}=await import('/crm/data-center-research-engine.mjs');
+  model=rankResearchReview(state.records.Companies,{asOf:today()});
+ }catch(err){
+  if(view==='Data Center Research'&&ticket===researchPreviewSequence)
+   el('main').innerHTML='<section class="panel"><h2>Research Data Center unavailable</h2><p class="error">The local read-only scoring module could not load. No data was changed.</p></section>';
+  return;
+ }
+ if(view!=='Data Center Research'||ticket!==researchPreviewSequence||!state||!sessionToken||sessionToken!==initialSessionToken||state!==initialState)return;
+ const source=stateObservation?.source==='cache'?'CACHED CRM SNAPSHOT — verify freshness before decisions':'CURRENT CRM SESSION SNAPSHOT';
+ el('main').innerHTML='<h2>Research Data Center <span class="badge">V2 PREVIEW</span></h2>'+
+ '<p class="muted">Company evidence completeness and human review. Not a verified developer ranking, sales qualification, buying-intent score or outreach approval. Original lead scores remain unchanged.</p>'+
+ '<section class="panel"><p class="muted"><strong>'+esc(source)+'</strong> · Review date '+esc(today())+
+ ' · Source: existing authenticated CRM Companies dataset. No external API requests, HubSpot writes or data changes.</p>'+
+ '<p class="muted" id="tssPhase3HoldNotice"><strong>Phase 3 identity-hold register is not joined.</strong> Research ranking is locked until a valid private known-exception manifest is imported. Counts below are provisional. No Company is cleared for HubSpot promotion.</p>'+
+ '<div class="cards"><div class="panel metric"><span>Loaded companies</span><strong>'+model.total+'</strong></div>'+
+ '<div class="panel metric"><span>Human evidence review queue</span><strong id="tssResearchHumanCount">Pending import</strong></div>'+
+ '<div class="panel metric"><span>Review holds (minimum)</span><strong id="tssResearchHoldCount">Pending import</strong></div>'+
+ '<div class="panel metric"><span>Approved for automatic HubSpot promotion</span><strong>0</strong></div></div></section>'+
+ '<section class="panel"><h3>Research review queue (first 40 results)</h3>'+
+ '<div class="toolbar"><input type="search" id="tssResearchSearch" aria-label="Search research queue" placeholder="Search company name or TSS ID…">'+
+ '<select id="tssResearchGate" aria-label="Research review gate"><option value="ALL">All</option><option value="HUMAN_EVIDENCE_REVIEW_REQUIRED">Human evidence review</option>'+
+ '<option value="IDENTITY_HOLD">Identity hold</option><option value="SOURCE_REVIEW">Source review</option><option value="FRESHNESS_REVIEW">Freshness review</option><option value="IDENTITY_REVIEW">Identity review</option><option value="INTERNAL_QA_EXCLUDED">Internal QA</option></select></div>'+
+ '<div id="tssResearchRows" class="list"></div><p id="tssResearchCount" class="muted"></p></section>'+
+ '<section class="panel"><h3>Review and authority gates</h3>'+
+ '<p><strong>Research completeness</strong> measures field coverage, URL presence and review-date recency only. URLs are not independently verified; categories do not prove company roles.</p>'+
+ '<p><strong>Strategic fit</strong>, developer status, commercial appetite, contact authority, engagement and legal identity require separate supported review.</p>'+
+ '<p><strong>HubSpot remains the operational CRM.</strong> This page neither changes lifecycle, tasks, leads, deal stages nor communications.</p></section>';
+ const input=el('tssResearchSearch'),select=el('tssResearchGate'),list=el('tssResearchRows'),count=el('tssResearchCount');
+ let tssResearchHoldsJoined=false;
+ function draw(){
+  if(!list||view!=='Data Center Research')return;
+  if(!tssResearchHoldsJoined){
+   list.replaceChildren();
+   count.textContent='Research ranking locked: import and validate the private Phase 3 known-exception manifest first. No automatic clearance or HubSpot promotion.';
+   return;
+  }
+  const term=input.value.toLowerCase().trim(),gate=select.value;
+  const items=model.companies.filter(x=>(gate==='ALL'||x.gate===gate)&&
+    (!term||[x.id,x.name,x.category,x.district].some(y=>y.toLowerCase().includes(term))));
+  list.replaceChildren();
+  for(const x of items.slice(0,40)){
+   const item=document.createElement('div');item.className='record';
+   const line=document.createElement('div');line.className='row';
+   const title=document.createElement('strong');title.textContent=x.name;line.append(title);
+   const score=document.createElement('span');score.className='badge';score.textContent=x.completeness+'/100 completeness';line.append(score);
+   item.append(line);
+   const info=document.createElement('div');info.className='muted';info.textContent=
+      x.id+' · '+x.category+' · '+x.district+' · '+x.sourceLinkCount+' link(s) · '+x.freshness+
+      ' · '+x.gate.replaceAll('_',' ');
+   item.append(info);
+   const details=document.createElement('details');const summary=document.createElement('summary');
+   summary.textContent='Explain completeness and review holds';details.append(summary);
+   const explanation=document.createElement('p');explanation.className='muted';
+   explanation.textContent=Object.entries(x.pointBreakdown).filter(([,n])=>n>0).map(([k,n])=>k+' +'+n).join(' · ')+
+     ' · Review reasons: '+(x.reasons.join(', ')||'No automatic clearance; human verification required');
+   details.append(explanation);item.append(details);list.append(item);
+  }
+  count.textContent='Showing '+Math.min(items.length,40)+' of '+items.length+' matched records; '+model.total+
+    ' loaded. This is a research-review order only.';
+ }
+ input.addEventListener('input',draw);select.addEventListener('change',draw);draw();
+ // A private hold manifest is explicitly selected on the owner's device, never bundled publicly.
+ const active=()=>view==='Data Center Research'&&ticket===researchPreviewSequence&&
+   !!sessionToken&&sessionToken===initialSessionToken&&state===initialState;
+ try{
+  const {installPhase3HoldImport}=await import('/crm/data-center-phase3-import.mjs');
+  if(!active())return;
+  const mount=document.createElement('div');
+  list.before(mount);
+  installPhase3HoldImport({mount,companies:initialState.records.Companies,asOf:today(),
+   isCurrent:active,onApply:(updated)=>{
+    if(!active())return;
+    model=updated;
+    tssResearchHoldsJoined=true;
+    el('tssResearchHumanCount').textContent=String(model.reviewReady);
+    el('tssResearchHoldCount').textContent=String(model.held);
+    el('tssPhase3HoldNotice').textContent='Known Phase 3 exceptions joined locally. Remaining unreviewed or missing evidence stays in human review. This is not a complete identity inventory or permission to promote.';
+    draw();
+   }});
+ }catch(err){
+  if(active())el('tssPhase3HoldNotice').textContent='Private Phase 3 hold import unavailable. Existing research holds remain. No Company data was changed.';
+ }
+}
+function render(){el('nav').innerHTML='<button onclick="openCrmMenu()">☰ CRM Menu</button><span class="nav-current">'+esc(titles[view]||view)+'</span><span class="nav-spacer"></span>'+(view!=='Today'?'<button onclick="home()">Home</button>':'')+'<button onclick="refresh()">Refresh</button>';if(view==='Today')dashboard();else if(view==='Data Center Research')dataCenterResearchView();else if(view==='Management')management();else if(view==='Prospect Queue')prospectQueue();else if(view==='Conversion')conversion();else if(view==='Clients')clientDelivery();else if(view==='Intelligence')intelligence();else if(view==='Outreach')outreachView();else if(view==='Data Quality')dataQuality();else if(view==='Reports')reports();else if(view==='System Health')systemHealth();else if(view==='Assistant')assistant();else if(view==='Access')accessSettings();else records()}
 function card(entity,r){const inactive=inactiveRecord(entity,r);return '<button class="record" onclick="detail(\''+entity+'\',\''+esc(r.id)+'\')"><div class="row"><strong>'+esc(r.name)+'</strong><span class="badge '+(overdue(r,entity)||inactive?'warning':'')+'">'+esc(inactive?inactivityLabel(entity,r):(r.status||r.stage||r.lifecycle||''))+'</span></div><span class="muted">'+esc(company(r.companyId)||(entity==='Companies'?[r.lifecycle,r.classification,r.district,r.category].filter(Boolean).join(' · '):(r.district||r.category||'')))+'</span>'+(r.nextAction?'<div>'+esc(r.nextAction)+'</div>':'')+((r.dueDate||r.followUp)?'<small>'+esc(r.dueDate||r.followUp)+'</small>':'')+'</button>'}
 function dashboard(){const r=state.records,actions=actionableRecords(),over=actions.filter(x=>overdue(x[1],x[0])),todayDue=actions.filter(x=>dueToday(x[1],x[0])),soon=actions.filter(x=>dueSoon(x[1],x[0])),inactive=[...r.Companies.map(x=>['Companies',x]),...r.Opportunities.map(x=>['Opportunities',x])].filter(x=>inactiveRecord(x[0],x[1])),attention=[...over,...todayDue,...soon,...inactive].filter((x,i,a)=>a.findIndex(y=>y[0]===x[0]&&y[1].id===x[1].id)===i).sort((a,b)=>String(TSSTaskMetrics.calendarDate(TSSTaskMetrics.recordDueValue(a[0],a[1]))||'9999').localeCompare(String(TSSTaskMetrics.calendarDate(TSSTaskMetrics.recordDueValue(b[0],b[1]))||'9999')));const stages=Object.fromEntries(['Company','Prospect','Qualified Lead','Opportunity','Client'].map(s=>[s,r.Companies.filter(x=>(x.lifecycle||'Company')===s).length]));el('main').innerHTML='<h2>Your working day</h2><p class="muted">What needs action now. '+r.Companies.length+' companies · '+stages.Prospect+' prospects · '+stages["Qualified Lead"]+' qualified leads.</p><div class="cards">'+[['Overdue records',over.length,'overdue'],['Records due today',todayDue.length,'due_today'],['Records: next 3 days',soon.length,'due_soon'],['Priority leads',r.Companies.filter(x=>['High priority','Priority'].includes(x.scoreBand)&&x.communicationStatus!=='Do not contact').length,'Intelligence']].map(([n,v,t])=>'<button class="metric" onclick="'+(t==='Intelligence'?'go':'showDueRecords')+'(\''+t+'\')"><span>'+n+'</span><strong>'+v+'</strong></button>').join('')+'</div>'+actionMetricNote()+taskMetricNote()+assistantWorkspaceHtml(true)+'<div class="grid section"><section class="panel"><h3>Needs attention <span class="badge '+(over.length||inactive.length?'warning':'')+'">'+attention.length+'</span></h3><div class="list">'+(attention.slice(0,8).map(x=>card(...x)).join('')||'<p class="muted">Nothing due or inactive.</p>')+'</div></section><section class="panel"><h3>Commercial lifecycle</h3>'+['Company','Prospect','Qualified Lead','Opportunity','Client'].map(s=>'<div class="row"><span>'+s+'</span><strong>'+stages[s]+'</strong></div>').join('')+'<div class="section"><h3>Recent activity</h3>'+ (r.Activity.slice(0,4).map(x=>'<p><strong>'+esc(x.action)+'</strong> '+esc(x.summary)+'<br><small class="muted">'+esc(new Date(x.createdAt).toLocaleString())+'</small></p>').join('')||'<p class="muted">Your activity will appear here.</p>')+'</div></section></div>';wireAssistantForm();}
 
