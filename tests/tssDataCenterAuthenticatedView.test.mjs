@@ -70,6 +70,10 @@ test('unjoined private holds fail closed before any research ranking is shown',(
  assert.match(section,/count\.textContent='Research ranking locked:/);
  assert.match(section,/model=updated;\s*tssResearchHoldsJoined=true;/);
  assert.ok(section.includes('Research ranking is locked until a valid private known-exception manifest is imported.'));
+ assert.ok(section.includes('<strong id="tssResearchHumanCount">Pending import</strong>'));
+ assert.ok(section.includes('<strong id="tssResearchHoldCount">Pending import</strong>'));
+ assert.ok(section.includes("el('tssResearchHumanCount').textContent=String(model.reviewReady)"));
+ assert.ok(section.includes("el('tssResearchHoldCount').textContent=String(model.held)"));
  assert.ok(section.includes("isCurrent:active,onApply:(updated)=>"));
  assert.ok(!section.includes('localStorage.setItem('),'Restricted hold overlays must never be saved in localStorage');
  assert.ok(!section.includes('sessionStorage.setItem('),'Restricted hold overlays must never be saved in sessionStorage');
