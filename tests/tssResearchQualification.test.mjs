@@ -140,3 +140,35 @@ test('research readiness never claims checked source accuracy or legal identity'
   assert.equal(scored.verifiedDeveloperRole,false);
   assert.equal(scored.fitQualification,'NOT_ASSESSED');
 });
+
+import {validatePhase3HoldManifest,PHASE3_HOLD_SCHEMA} from '../crm/data-center-phase3-holds.mjs';
+const phase3Fixture={schema:PHASE3_HOLD_SCHEMA,origin:'TSS_PHASE3_OWNER_PREVIEW',
+ coverage:'KNOWN_OPEN_EXCEPTIONS_ONLY',asOf:'2026-10-09',holds:[
+  {companyId:'TSS-CY-001',reasons:['CONFLICTING_EVIDENCE']},
+  {companyId:'TSS-CY-007',reasons:['IDENTITY_RELATIONSHIP','AMBIGUOUS_DIRECTORY_MATCH']}
+ ]};
+test('owner-local known exceptions are a restrictive, non-authoritative additional hold only',()=>{
+ const records=[{...core,id:'TSS-CY-001'}, {...core,id:'TSS-CY-007'}, {...core,id:'TSS-CY-300'}];
+ const before=JSON.stringify(records);
+ const m=validatePhase3HoldManifest(JSON.stringify(phase3Fixture),records,{asOf});
+ assert.equal(m.count,2);
+ assert.equal(m.authoritativeCoverageEstablished,false);
+ assert.equal(m.allowsCommercialQualification,false);
+ const result=rankResearchReview(records,{asOf,reviewHoldIds:m.holdIds});
+ assert.equal(result.held,2);
+ assert.equal(result.reviewReady,1);
+ assert.deepEqual(result.companies.filter(x=>x.gate==='IDENTITY_HOLD').map(x=>x.id).sort(),['TSS-CY-001','TSS-CY-007']);
+ assert.ok(result.companies.every(x=>!x.outreachAuthorized&&!x.readyForAutoHubspotPromotion));
+ assert.equal(JSON.stringify(records),before);
+});
+test('Phase 3 manifest fails closed on unknown IDs, duplication, malformed and stale data',()=>{
+ const records=[{...core,id:'TSS-CY-001'},{...core,id:'TSS-CY-007'}];
+ const check=x=>validatePhase3HoldManifest(x,records,{asOf});
+ assert.throws(()=>check({...phase3Fixture,holds:[{companyId:'TSS-CY-9999',reasons:['IDENTITY_RELATIONSHIP']}]}),/MANIFEST_ID_NOT_IN_COMPANIES/);
+ assert.throws(()=>check({...phase3Fixture,holds:[phase3Fixture.holds[0],phase3Fixture.holds[0]]}),/MANIFEST_HOLD_DUPLICATE/);
+ assert.throws(()=>check({...phase3Fixture,holds:[{companyId:'TSS-CY-001',reasons:['QUALIFIED'] }]}),/MANIFEST_HOLD_ROW_INVALID/);
+ assert.throws(()=>check({...phase3Fixture,asOf:'2026-08-01'}),/MANIFEST_DATE_OUT_OF_RANGE/);
+ assert.throws(()=>check({...phase3Fixture,asOf:'2026-11-01'}),/MANIFEST_DATE_OUT_OF_RANGE/);
+ assert.throws(()=>check({...phase3Fixture,coverage:'COMPLETE_AND_CLEARED'}),/MANIFEST_SCHEMA_INVALID/);
+ assert.throws(()=>check('not json'),/MANIFEST_JSON_INVALID/);
+});
