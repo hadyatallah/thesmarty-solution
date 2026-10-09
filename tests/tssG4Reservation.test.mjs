@@ -18,6 +18,7 @@ function makeService() {
   const context = createContext({
     PropertiesService: { getScriptProperties: () => ({
       getProperty: key => values.get(key) ?? null,
+      getProperties: () => Object.fromEntries(values),
       setProperty: (key, value) => { values.set(key, value); }
     }) },
     LockService: { getScriptLock: () => ({
@@ -27,6 +28,7 @@ function makeService() {
     Utilities: {
       DigestAlgorithm: { SHA_256: 'SHA_256' }, Charset: { UTF_8: 'UTF_8' },
       computeDigest: (_alg, s) => [...createHash('sha256').update(String(s)).digest()],
+      newBlob: value => ({ getBytes: () => [...Buffer.from(String(value), 'utf8')] }),
       getUuid: () => randomUUID()
     },
     Date, JSON, String, Array
@@ -142,4 +144,38 @@ test('adapter rejects insecure endpoints and untrusted redirects', async () => {
   await assert.rejects(adapter.acquire('TSK-WEB-2026-0031'),
     /RESERVATION_RESPONSE_REDIRECT_INVALID/);
   assert.equal(calls,1);
+});
+
+test('verified settlement requires a valid provider-generated HubSpot task ID', () => {
+  const svc = makeService();
+  const taskId = 'TSK-WEB-2026-0031';
+  const first = svc.dispatch({action:'reserve',taskId,secret});
+  const invalid = svc.dispatch({action:'settle',taskId,token:first.token,
+    outcome:'verified', hubspotTaskId:'not-an-id',secret});
+  assert.equal(invalid.code,'VERIFIED_TASK_ID_REQUIRED');
+  assert.equal(svc.dispatch({action:'inspect',taskId,secret}).state,'reserved');
+  const valid = svc.dispatch({action:'settle',taskId,token:first.token,
+    outcome:'verified',hubspotTaskId:'90042',secret});
+  assert.equal(valid.state,'committed');
+});
+
+test('capacity guard leaves the reservation store untouched on exhaustion', () => {
+  const svc = makeService();
+  // ScriptProperties total quota is 500KB; our own strict guard is 350KB.
+  svc.values.set('EXISTING_CRM_DATA', 'x'.repeat(350000));
+  const taskId='TSK-WEB-2026-0031';
+  const response=svc.dispatch({action:'reserve',taskId,secret});
+  assert.equal(response.code,'RESERVATION_STORE_CAPACITY');
+  assert.equal(svc.values.has('TSS_G4_RES_' + taskId),false);
+});
+
+test('capacity failure on settlement preserves unresolved durable reservation', () => {
+  const svc=makeService(),taskId='TSK-WEB-2026-0031';
+  const first=svc.dispatch({action:'reserve',taskId,secret});
+  svc.values.set('EXISTING_CRM_DATA', 'x'.repeat(350000));
+  const attempt=svc.dispatch({action:'settle',taskId,token:first.token,
+    outcome:'verified',hubspotTaskId:'1001',secret});
+  assert.equal(attempt.code,'RESERVATION_STORE_CAPACITY');
+  assert.equal(svc.dispatch({action:'inspect',taskId,secret}).state,'reserved');
+  assert.equal(svc.dispatch({action:'reserve',taskId,secret}).code,'RESERVATION_HELD');
 });
