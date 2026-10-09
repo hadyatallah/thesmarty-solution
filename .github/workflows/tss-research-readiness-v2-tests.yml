@@ -4,8 +4,11 @@ on:
     paths:
       - 'lib/tssResearchQualification.mjs'
       - 'crm/data-center-research-engine.mjs'
+      - 'crm/data-center-phase3-holds.mjs'
+      - 'crm/data-center-phase3-import.mjs'
       - 'tests/tssResearchQualification.test.mjs'
       - 'tests/tssDataCenterAuthenticatedView.test.mjs'
+      - 'tests/tssPhase3HoldImport.test.mjs'
       - 'crm/index.html'
       - 'crm/data-center-research-preview.html'
       - 'docs/tss-data-center-qualification-v2.md'
@@ -25,8 +28,10 @@ jobs:
         run: |
           node --check lib/tssResearchQualification.mjs
           node --check crm/data-center-research-engine.mjs
+          node --check crm/data-center-phase3-holds.mjs
+          node --check crm/data-center-phase3-import.mjs
       - name: Run research-only scorer and hold regressions
-        run: node --test tests/tssResearchQualification.test.mjs tests/tssDataCenterAuthenticatedView.test.mjs
+        run: node --test tests/tssResearchQualification.test.mjs tests/tssDataCenterAuthenticatedView.test.mjs tests/tssPhase3HoldImport.test.mjs
       - name: Ensure no external provider, messaging or runtime source imports
         run: |
           ! grep -E '(hubapi\.com|graph\.microsoft\.com|script\.google\.com|\.write\(|\.post\(|process\.env|createTask|sendEmail|fetch\()' crm/data-center-research-engine.mjs
