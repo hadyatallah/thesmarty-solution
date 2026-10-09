@@ -71,6 +71,9 @@ function tssG4ReservationDispatch_(request) {
     return { ok: false, code: 'INVALID_ACTION' };
   }
   var storeKey = 'TSS_G4_RES_' + key;
+  // Project-wide exclusive writer, not merely per Task: two distinct
+  // enquiries can otherwise race to create the same Company or Contact.
+  var globalKey = 'TSS_G4_ACTIVE_WRITER';
   var lock = LockService.getScriptLock();
   if (!lock.tryLock(5000)) {
     return { ok: false, code: 'RESERVATION_STORE_BUSY' };
@@ -86,10 +89,21 @@ function tssG4ReservationDispatch_(request) {
     if (action === 'reserve') {
       if (prior) return { ok: false, code: prior.state === 'committed' ?
         'ENQUIRY_ALREADY_COMMITTED' : 'RESERVATION_HELD', state: prior.state };
+      if (props.getProperty(globalKey)) {
+        return { ok: false, code: 'GLOBAL_WRITER_HELD' };
+      }
       var token = Utilities.getUuid();
       var created = { taskId: key, state: 'reserved',
         tokenHash: tssG4ReservationSha256_(token),
         createdAt: new Date().toISOString(), hubspotTaskId: null };
+      // Write global claim FIRST. If the second write fails, all further
+      // reservations fail closed until an explicit audited reconciliation.
+      var writerClaim = { taskId: key, tokenHash: created.tokenHash,
+        claimedAt: created.createdAt };
+      if (!tssG4ReservationStoreWrite_(props, globalKey,
+        JSON.stringify(writerClaim))) {
+        return { ok: false, code: 'RESERVATION_STORE_CAPACITY' };
+      }
       if (!tssG4ReservationStoreWrite_(props, storeKey, JSON.stringify(created))) {
         return { ok: false, code: 'RESERVATION_STORE_CAPACITY' };
       }
@@ -97,6 +111,12 @@ function tssG4ReservationDispatch_(request) {
     }
     if (!prior || prior.state !== 'reserved') {
       return { ok: false, code: 'RESERVATION_NOT_ACTIVE' };
+    }
+    var activeRaw = props.getProperty(globalKey);
+    var active = activeRaw ? JSON.parse(activeRaw) : null;
+    if (!active || active.taskId !== key ||
+        active.tokenHash !== prior.tokenHash) {
+      return { ok: false, code: 'GLOBAL_WRITER_MISMATCH' };
     }
     if (!request.token ||
         !tssG4ReservationSameHash_(
@@ -119,6 +139,16 @@ function tssG4ReservationDispatch_(request) {
     if (!tssG4ReservationStoreWrite_(props, storeKey, JSON.stringify(prior))) {
       return { ok: false, code: 'RESERVATION_STORE_CAPACITY' };
     }
+    if (prior.state === 'committed') {
+      // Release the shared writer only AFTER the settled task is durably
+      // recorded. If delete throws or fails, no other writer may proceed.
+      props.deleteProperty(globalKey);
+      if (props.getProperty(globalKey)) {
+        return { ok: false, code: 'GLOBAL_WRITER_HELD' };
+      }
+    }
+    // review_required deliberately keeps the global writer held until an
+    // approved, provider-reconciled administrative release procedure exists.
     return { ok: true, state: prior.state, taskId: key };
   } finally {
     lock.releaseLock();
