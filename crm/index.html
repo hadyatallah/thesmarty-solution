@@ -124,6 +124,7 @@ function home(){go('Today')}
 let researchPreviewSequence=0;
 async function dataCenterResearchView(){
  const ticket=++researchPreviewSequence;
+ const initialSessionToken=sessionToken,initialState=state;
  if(!state||!sessionToken||!Array.isArray(state.records?.Companies)){
   el('main').innerHTML='<div class="empty error">Sign in and load your protected CRM Companies dataset before opening Research Data Center.</div>';
   return;
@@ -138,15 +139,16 @@ async function dataCenterResearchView(){
    el('main').innerHTML='<section class="panel"><h2>Research Data Center unavailable</h2><p class="error">The local read-only scoring module could not load. No data was changed.</p></section>';
   return;
  }
- if(view!=='Data Center Research'||ticket!==researchPreviewSequence||!state||!sessionToken)return;
+ if(view!=='Data Center Research'||ticket!==researchPreviewSequence||!state||!sessionToken||sessionToken!==initialSessionToken||state!==initialState)return;
  const source=stateObservation?.source==='cache'?'CACHED CRM SNAPSHOT — verify freshness before decisions':'CURRENT CRM SESSION SNAPSHOT';
  el('main').innerHTML='<h2>Research Data Center <span class="badge">V2 PREVIEW</span></h2>'+
  '<p class="muted">Company evidence completeness and human review. Not a verified developer ranking, sales qualification, buying-intent score or outreach approval. Original lead scores remain unchanged.</p>'+
  '<section class="panel"><p class="muted"><strong>'+esc(source)+'</strong> · Review date '+esc(today())+
  ' · Source: existing authenticated CRM Companies dataset. No external API requests, HubSpot writes or data changes.</p>'+
+ '<p class="muted"><strong>Phase 3 identity-hold register is not joined.</strong> Holds shown below reflect only fields in this CRM snapshot. Do not treat this as a complete hold count or clear any company for HubSpot promotion.</p>'+
  '<div class="cards"><div class="panel metric"><span>Loaded companies</span><strong>'+model.total+'</strong></div>'+
  '<div class="panel metric"><span>Human evidence review queue</span><strong>'+model.reviewReady+'</strong></div>'+
- '<div class="panel metric"><span>Holds / source or date review</span><strong>'+model.held+'</strong></div>'+
+ '<div class="panel metric"><span>Company-field holds (minimum)</span><strong>'+model.held+'</strong></div>'+
  '<div class="panel metric"><span>Approved for automatic HubSpot promotion</span><strong>0</strong></div></div></section>'+
  '<section class="panel"><h3>Research review queue (first 40 results)</h3>'+
  '<div class="toolbar"><input type="search" id="tssResearchSearch" aria-label="Search research queue" placeholder="Search company name or TSS ID…">'+
