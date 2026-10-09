@@ -3,6 +3,7 @@ on:
   pull_request:
     paths:
       - 'lib/tssResearchQualification.mjs'
+      - 'crm/data-center-research-engine.mjs'
       - 'tests/tssResearchQualification.test.mjs'
       - 'crm/data-center-research-preview.html'
       - 'docs/tss-data-center-qualification-v2.md'
@@ -19,9 +20,11 @@ jobs:
         with:
           node-version: '22'
       - name: Check engine syntax
-        run: node --check lib/tssResearchQualification.mjs
+        run: |
+          node --check lib/tssResearchQualification.mjs
+          node --check crm/data-center-research-engine.mjs
       - name: Run research-only scorer and hold regressions
         run: node --test tests/tssResearchQualification.test.mjs
       - name: Ensure no external provider, messaging or runtime source imports
         run: |
-          ! grep -E '(hubapi\.com|graph\.microsoft\.com|script\.google\.com|\.write\(|\.post\(|process\.env|createTask|sendEmail|fetch\()' lib/tssResearchQualification.mjs
+          ! grep -E '(hubapi\.com|graph\.microsoft\.com|script\.google\.com|\.write\(|\.post\(|process\.env|createTask|sendEmail|fetch\()' crm/data-center-research-engine.mjs
