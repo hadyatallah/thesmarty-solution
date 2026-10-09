@@ -33,5 +33,11 @@
       "source": "/api/outlook/sync",
       "destination": "/api/outlook/status?captureAction=sync"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/tss-hubspot-enquiry-sync",
+      "schedule": "0 7 * * *"
+    }
   ]
 }
