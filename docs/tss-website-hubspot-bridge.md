@@ -8,7 +8,7 @@ STATUS: Bridge code exists on Production main, but HubSpot write synchronization
 - Apps Script remains the authoritative processor and writes Companies, Contacts, Tasks and Activity to TSS CRM - Master Workbook.
 - This isolated Vercel bridge reads Sheets through the official Google Sheets read-only API, using a service account with Viewer access to the workbook only.
 - Only open Tasks with IDs like TSK-WEB-2026-0031, Source: Website, an original enquiry ID and timestamp after an explicit cutoff are eligible.
-- Internal QA records (including COM-8ee64d5e and TSS-WEB-HS-QA), WhatsApp enquiries, completed tasks, older tasks and ambiguous matches are skipped or flagged for review.
+- Internal QA records (including COM-8ee64d5e and TSS-WEB-HS-QA), WhatsApp enquiries, completed tasks and older tasks remain excluded. **Otherwise eligible website enquiries with missing or ambiguous source Contacts block the entire batch** with review-needed status; they are never silently counted as ignored and never permit partial HubSpot writes.
 - HubSpot company matching uses the original tss_company_id; contact matching uses an exact email address.
 - The bridge never overwrites imported CRM properties. It creates an internal TODO task linked to the company and contact for each eligible new enquiry, with the original source timestamp and a due time of 17:00 Asia/Nicosia.
 - The bridge does not send customers email, enroll marketing contacts, modify deals or change deal stages.
@@ -48,5 +48,13 @@ NEVER paste Service Keys, service account JSON, tokens or credentials in ChatGPT
 - Subject + task marker provide serial replay checking but not atomic exactly-once behavior across simultaneous invocations. G4 hardening now prevents ALL create calls when the server has no exclusive write lease. Preview tests use an **in-memory test-only lease**, which is NOT a deployable cross-instance lock and does NOT prove exactly-once semantics. Implement and verify a durable cross-instance lease using existing owner-approved infrastructure before authorizing any `commit` path. Do not use paid products or extend credential permissions without approval.
 - The October 9 QA reference TSS-2026-0030 is deliberately excluded. Its original Master Workbook task has already been closed and remains QA evidence.
 - Consent to receive marketing must never be inferred from enquiry submissions or API-created contacts.
-- Name collisions and unrelated existing contact/company associations require manual review rather than silent merges. A contact marked `Personal - Android Import` or mapped to a different `tss_contact_id` must never be silently reused for a TSS commercial enquiry.
+- Name collisions and unrelated existing contact/company associations require manual review rather than silent merges. A contact marked `Personal - Android Import`, missing its exact source `tss_contact_id`, or mapped to a different `tss_contact_id` must never be silently reused for a TSS commercial enquiry.
 - Validate the latest HubSpot association API permissions and contact creation behavior using internal QA before claiming Production acceptance.
+
+## G4/G5 acceptance boundary — 9 October 2026
+
+- PR #64 is an isolated, unmerged hardening Preview. Passing offline tests and a READY Vercel Preview do not establish authenticated browser acceptance or real HubSpot task-write acceptance.
+- Provider-enforced exactly-once for website enquiry Tasks remains **unverified**. The current HubSpot read-only property inspection did not establish an existing provider-enforced unique source task ID. Subject matching is not an atomic uniqueness guarantee. The in-memory mock lease in tests is not a deployable shared lease. Use only an owner-approved durable lock or verified provider-enforced equivalent; do not add a paid storage service or grant new privileges without separate approval.
+- The latest code fails closed when an otherwise eligible website Task lacks a uniquely matched Master Workbook source Contact, and refuses to reuse existing HubSpot Contacts lacking an exact matching `tss_contact_id`.
+- **G5 structural limitation:** This bridge currently reads new website Tasks from the legacy Master Workbook after the existing Apps Script website backend writes them there. Even a G4-ready bridge would NOT by itself achieve G5's final legacy-commercial-tabs-read-only policy. G5 needs a separately accepted direct HubSpot intake or independently governed transit ledger before retiring legacy commercial writes.
+- Do not enable HubSpot write sync, merge, deploy to Production, change OAuth, touch Outlook/Gmail cursors or contact customers as part of this Preview.
