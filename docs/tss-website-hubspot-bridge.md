@@ -36,13 +36,14 @@ NEVER paste Service Keys, service account JSON, tokens or credentials in ChatGPT
 3. Perform an authenticated POST to /api/tss-hubspot-enquiry-sync with header Authorization: Bearer <TSS_SYNC_RUN_SECRET> and JSON body {"mode":"preview"}. It reads the workbook and HubSpot but performs no writes.
 4. Review the report and inspect source matches. The bridge considers at most ten new enquiries per call and stops at conflicts.
 5. Following further explicit approval for live writes, set TSS_HUBSPOT_SYNC_ENABLED=true and invoke POST JSON {"mode":"commit"}. Independently validate the exact HubSpot records and associations.
-6. Add scheduling only after acceptance; this PR adds NO cron job. Vercel Hobby allows once-daily crons; no upgrade is authorized.
+6. A Vercel Hobby cron now runs once per day at **07:00 UTC** (subject to Hobby's within-the-hour scheduling variance). While TSS_HUBSPOT_SYNC_ENABLED=false, its authenticated GET is **read-only** and verifies the Google Sheets service account, the HubSpot Service Key, QA record associations and three association labels. It logs a sanitized status, not customer contents or credentials.
+7. No unattended HubSpot writes are authorized until the owner separately approves switching TSS_HUBSPOT_SYNC_ENABLED=true after a successful read-only test and idempotency review. Set it to false to prevent writes at any time.
 7. Disable instantly by setting TSS_HUBSPOT_SYNC_ENABLED=false if acceptance fails. The website and original CRM remain fully usable.
 
 ## Known limitations and remaining gates
 
 - The owner has not provisioned the required server credentials, and real HubSpot API integration has not yet been accepted.
-- No automatic Production schedule or deployment is authorized by merely opening this PR.
+- A protected read-only Vercel Cron is scheduled to validate connectivity on the Hobby plan. It does not write records with the switch OFF; no higher frequency or paid services are enabled.
 - Subject + task marker provide serial replay checking but not atomic exactly-once behavior across simultaneous invocations. Invoke the endpoint serially only; add a durable lock before allowing concurrent runs.
 - The October 9 QA reference TSS-2026-0030 is deliberately excluded. Its original Master Workbook task has already been closed and remains QA evidence.
 - Consent to receive marketing must never be inferred from enquiry submissions or API-created contacts.
