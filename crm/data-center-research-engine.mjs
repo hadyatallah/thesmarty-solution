@@ -95,7 +95,8 @@ export function assessCompany(company,{asOf,identityHold=false}={}){
   return {
     schema:RESEARCH_SCHEMA,id,name,category:clean(company.category),district:clean(company.district),
     completeness,completenessBand:band(completeness),pointBreakdown:points,
-    sourceLinkCount:sources.length,sourceQuality:'NOT_VERIFIED',researchDate:checkDate,
+    sourceLinkCount:sources.length,sourceQuality:'NOT_VERIFIED',evidenceValidation:'NOT_PERFORMED',independentCorroboration:'NOT_ESTABLISHED',
+    identityVerification:'NOT_VERIFIED',researchDate:checkDate,
     freshness,ageDays:age,gate,reasons,
     legacyScore:clean(company.leadScore)||null,legacyBand:clean(company.scoreBand)||null,
     legacyScoreIsCommerciallyBlended:true,
@@ -106,7 +107,8 @@ export function assessCompany(company,{asOf,identityHold=false}={}){
 }
 export function rankResearchReview(companies,options){
   if(!Array.isArray(companies))throw Error('INVALID_COMPANY_COLLECTION');
-  const reviewed=companies.map(x=>assessCompany(x,options));
+  const heldIds=options?.reviewHoldIds instanceof Set ? options.reviewHoldIds : new Set(Array.isArray(options?.reviewHoldIds)?options.reviewHoldIds:[]);
+  const reviewed=companies.map(x=>assessCompany(x,{...options,identityHold:!!options?.identityHold||heldIds.has(clean(x?.id))}));
   const counts=new Map();
   for(const x of reviewed)counts.set(x.id,(counts.get(x.id)||0)+1);
   for(const x of reviewed)if(counts.get(x.id)>1){x.gate='IDENTITY_HOLD';x.reasons.push('DUPLICATE_CANONICAL_ID');}
@@ -116,7 +118,7 @@ export function rankResearchReview(companies,options){
   const byCompleteness=(a,b)=>b.completeness-a.completeness||a.id.localeCompare(b.id);
   rankable.sort(byCompleteness);excluded.sort(byCompleteness);
   return {schema:RESEARCH_SCHEMA,asOf:isoDay(options?.asOf),total:reviewed.length,
-    reviewReady:rankable.length,held:excluded.length,
+    requiresHumanEvidenceReview:rankable.length,reviewReady:rankable.length,held:excluded.length,
     companies:[...rankable,...excluded]};
 }
 export const RESEARCH_COMPLETENESS_WEIGHTS=CONTRIBUTIONS;
