@@ -46,13 +46,23 @@ A company always requires human evidence review. Reasons are explicit; unresolve
 4. **Buying intent / engagement / contact consent**: Only an authorized commercial observation in HubSpot; V2 leaves buying intent `UNKNOWN` and outreach authorization `false`.
 5. **Opportunity/mandate qualification**: Separate governed owner decision; no research field creates or modifies HubSpot deals.
 
+
+## Authenticated existing-CRM read-only view (same draft PR)
+
+- The existing `crm/index.html` now offers **Research → Data Center Research (Preview)** in its internal menu and accepts `?view=Data%20Center%20Research` when navigating directly.
+- The new view is **not a separate public data API**. It checks the pre-existing `sessionToken`, signed-in `state.records.Companies`, existing source-observation status, and imports the **same** `/crm/data-center-research-engine.mjs` module used by the synthetic preview and Node tests.
+- It displays the full loaded count, human evidence-review queue, holds, and the first 40 matching company records with completeness breakdowns. Search and gate filters operate entirely in browser memory. No existing Companies, Contacts, Outreach, Tasks, Tickets, Opportunities, score, formula, API gateway or authentication code was removed or modified.
+- Existing CRM session rules remain authoritative; cached CRM data is clearly labeled cached, not a fresh provider verification.
+- A static security regression checks that the new view has an authenticated state/session gate and does not invoke any save, HubSpot, CRM or external fetch; another test compiles the full existing inline CRM scripts to catch syntax regressions.
+- This is only in the **draft PR branch**, not Production. The preview deployment has not completed an owner-authenticated private QA session, including mobile testing, so no Production release is approved.
+
 ## Data access and security gate
 
 The pure engine can accept the historical Companies header row through `sourceRowsToCompanies`, extracting only the explicit research-side field allowlist. It drops legacy lifecycle/communication fields and does not read customer email bodies, Outlook, ticket records, contact lists, CRM tasks or payment details. The example preview contains only **fictional** company data and is not a production Data Center.
 
 Before a LIVE private view is authorized:
 - Verify current Apps Script source state and ensure existing auth is retained; do not open a public route exposing full Company rows.
-- Build an authenticated, least-privilege Google Sheets read adapter with field allowlist and owner-bound server authorization; never place a service account key in HTML or return raw internal notes to anonymous users.
+- Reuse the pre-existing authenticated CRM state for the first owner-only read-only review (now staged in draft PR). If a future dedicated Sheets API read adapter is needed, require an owner-bound server authorization, strict field allowlist and no anonymous access. Never put a service-account key in HTML.
 - Test exact 2,877 canonical IDs, all held identities from Phase 3 Preview, research freshness dates, source provenance and audit output. No silent merges or retroactive role certification.
 - Approve research readiness scoring weights/thresholds separately; avoid any automatic commercial ranking until source verification and fit criteria are specified.
 - Complete read-only private Data Center QA on desktop/tablet/mobile; then consider a separately approved Production UI change.
@@ -61,7 +71,7 @@ Before a LIVE private view is authorized:
 
 ## Release acceptance status
 
-- Pure module and offline tests: pending GitHub CI verdict for exact branch commit.
+- Canonical scoring module and 13 scoring regressions: GitHub CI PASS. Legacy CRM inline script-syntax/auth-gate tests added; latest branch CI and authenticated live QA remain separate gates.
 - Static preview: pending Vercel preview build and manual visual/interaction assessment.
 - Full native source evidence and identity holds: historical accepted gated material, not re-run in this package.
 - Production source/UI, company scores, HubSpot records, API scopes, website contact form and scheduled automation: UNCHANGED.
