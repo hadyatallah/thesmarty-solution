@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { classifyWebsiteTask, matchSourceContact, nicosiaDueTimestamp, records, syncOne } from '../lib/tssHubspotEnquirySync.mjs';
+import { classifyWebsiteTask, matchSourceContact, nicosiaDueTimestamp, records, syncOne, runSync } from '../lib/tssHubspotEnquirySync.mjs';
 
 const task = {
   id: 'TSK-WEB-2026-0031', name: 'Review Website enquiry TSS-2026-0031',
@@ -181,4 +181,21 @@ test('mismatched canonical contact IDs fail before any write', async () => {
   await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }),
     /Contact TSS identity mismatch/);
   assert.equal(x.created.length, 0);
+});
+
+test('enabled Production flag alone cannot bypass missing durable lease or reach providers', async () => {
+  const env = {
+    TSS_HUBSPOT_SYNC_ENABLED: 'true',
+    TSS_GOOGLE_SERVICE_ACCOUNT_JSON: 'test-only-placeholder',
+    TSS_MASTER_SPREADSHEET_ID: 'test-workbook',
+    TSS_HUBSPOT_SERVICE_KEY: 'test-only-placeholder',
+    TSS_HUBSPOT_SYNC_START_AT: '2026-10-09T00:00:00Z',
+    TSS_HUBSPOT_OWNER_ID: '100713372'
+  };
+  let providerCalls = 0;
+  await assert.rejects(runSync(env, { write: true }, async () => {
+    providerCalls++;
+    throw new Error('Unexpected provider access');
+  }), /DURABLE_WRITE_LEASE_REQUIRED/);
+  assert.equal(providerCalls, 0);
 });
