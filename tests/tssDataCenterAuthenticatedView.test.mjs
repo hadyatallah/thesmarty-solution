@@ -20,6 +20,11 @@ test('authenticated Research Data Center is not a public data endpoint',()=>{
  assert.ok(section.includes('sessionToken!==initialSessionToken||state!==initialState'));
  assert.ok(section.includes('Phase 3 identity-hold register is not joined.'));
  assert.ok(section.includes('Company-field holds (minimum)'));
+ assert.ok(section.includes("import('/crm/data-center-phase3-import.mjs')"));
+ assert.ok(section.includes('sessionToken===initialSessionToken&&state===initialState'));
+ assert.ok(section.includes('tssResearchHoldCount'));
+ assert.ok(section.includes('tssResearchHumanCount'));
+ assert.ok(section.includes('installPhase3HoldImport({mount,companies:initialState.records.Companies'));
  assert.ok(html.includes("'Data Center Research'"));
  assert.ok(html.includes("['Research',['Data Center Research']]"));
  assert.ok(html.includes("else if(view==='Data Center Research')dataCenterResearchView()"));
