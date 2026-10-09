@@ -145,7 +145,7 @@ async function dataCenterResearchView(){
  '<p class="muted">Company evidence completeness and human review. Not a verified developer ranking, sales qualification, buying-intent score or outreach approval. Original lead scores remain unchanged.</p>'+
  '<section class="panel"><p class="muted"><strong>'+esc(source)+'</strong> · Review date '+esc(today())+
  ' · Source: existing authenticated CRM Companies dataset. No external API requests, HubSpot writes or data changes.</p>'+
- '<p class="muted" id="tssPhase3HoldNotice"><strong>Phase 3 identity-hold register is not joined.</strong> Holds shown below reflect only fields in this CRM snapshot. Do not treat this as a complete hold count or clear any company for HubSpot promotion.</p>'+
+ '<p class="muted" id="tssPhase3HoldNotice"><strong>Phase 3 identity-hold register is not joined.</strong> Research ranking is locked until a valid private known-exception manifest is imported. Counts below are provisional. No Company is cleared for HubSpot promotion.</p>'+
  '<div class="cards"><div class="panel metric"><span>Loaded companies</span><strong>'+model.total+'</strong></div>'+
  '<div class="panel metric"><span>Human evidence review queue</span><strong id="tssResearchHumanCount">'+model.reviewReady+'</strong></div>'+
  '<div class="panel metric"><span>Review holds (minimum)</span><strong id="tssResearchHoldCount">'+model.held+'</strong></div>'+
@@ -160,8 +160,14 @@ async function dataCenterResearchView(){
  '<p><strong>Strategic fit</strong>, developer status, commercial appetite, contact authority, engagement and legal identity require separate supported review.</p>'+
  '<p><strong>HubSpot remains the operational CRM.</strong> This page neither changes lifecycle, tasks, leads, deal stages nor communications.</p></section>';
  const input=el('tssResearchSearch'),select=el('tssResearchGate'),list=el('tssResearchRows'),count=el('tssResearchCount');
+ let tssResearchHoldsJoined=false;
  function draw(){
   if(!list||view!=='Data Center Research')return;
+  if(!tssResearchHoldsJoined){
+   list.replaceChildren();
+   count.textContent='Research ranking locked: import and validate the private Phase 3 known-exception manifest first. No automatic clearance or HubSpot promotion.';
+   return;
+  }
   const term=input.value.toLowerCase().trim(),gate=select.value;
   const items=model.companies.filter(x=>(gate==='ALL'||x.gate===gate)&&
     (!term||[x.id,x.name,x.category,x.district].some(y=>y.toLowerCase().includes(term))));
@@ -199,6 +205,7 @@ async function dataCenterResearchView(){
    isCurrent:active,onApply:(updated)=>{
     if(!active())return;
     model=updated;
+    tssResearchHoldsJoined=true;
     el('tssResearchHumanCount').textContent=String(model.reviewReady);
     el('tssResearchHoldCount').textContent=String(model.held);
     el('tssPhase3HoldNotice').textContent='Known Phase 3 exceptions joined locally. Remaining unreviewed or missing evidence stays in human review. This is not a complete identity inventory or permission to promote.';
