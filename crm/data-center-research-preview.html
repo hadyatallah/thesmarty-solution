@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer">
+<title>TSS Data Center | Research Readiness Preview</title>
+<style>
+:root{--navy:#142f40;--teal:#087f80;--bg:#f3f6f7;--line:#dbe4e7;--muted:#536871}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,Arial,sans-serif;background:var(--bg);color:var(--navy)}
+header{background:var(--navy);color:white;padding:22px max(20px,calc((100% - 1150px)/2))}h1{margin:0;font-size:clamp(23px,3vw,32px)}
+header p{color:#d0e0e4;margin:5px 0 0}
+main{max-width:1150px;margin:0 auto;padding:24px 20px 55px}
+.notice{border-left:5px solid #0c7c7c;background:#e3f1ee;padding:15px 18px;border-radius:7px;line-height:1.6}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin:20px 0}
+.kpi,.panel{background:white;border:1px solid var(--line);border-radius:12px;padding:18px}
+.kpi strong{display:block;font-size:28px}.kpi span{font-size:13px;color:var(--muted)}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin:25px 0 16px}
+label{display:grid;gap:5px;font-weight:600;flex:1;min-width:175px;font-size:13px}
+input,select{border:1px solid #bacace;border-radius:7px;background:white;color:var(--navy);min-height:44px;padding:9px;font:inherit}
+button{min-height:44px;padding:9px 13px;background:white;border:1px solid #b2c7cc;border-radius:7px;color:var(--navy);font:inherit;cursor:pointer}
+button:hover,button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.table-wrap{overflow-x:auto;background:white;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:620px}
+th,td{padding:13px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#f7faf9;font-size:13px}tr:last-child td{border-bottom:0}
+.small{color:var(--muted);font-size:12px}.pill{padding:3px 8px;border-radius:12px;background:#e5efef;display:inline-block;font-size:12px;font-weight:600}
+.status{color:#6b5016;background:#fff3db}
+details{padding-top:5px}summary{cursor:pointer;font-weight:600;color:#075d60}
+footer{border-top:1px solid var(--line);color:var(--muted);margin-top:25px;padding-top:18px;font-size:13px}
+a{color:#075d60}
+@media(max-width:760px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.toolbar{display:grid}.kpi{padding:13px}}
+@media(max-width:430px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi strong{font-size:22px}}
+</style></head><body>
+<header><h1>TSS Company Data Center</h1><p>Research evidence · Completeness · Human qualification · Governed handoff</p></header>
+<main>
+<section class="notice" role="status"><strong>ISOLATED PREVIEW — FICTIONAL COMPANIES ONLY.</strong>
+This is a demonstration of the new research-only scoring model, using the same tested engine as the server.
+It does not access the Master Workbook, HubSpot or an external API; no records, scores, communications or workflow settings are changed.
+Numerical scores describe field completeness, <strong>not</strong> verified commercial suitability or willingness to engage.</section>
+<section class="kpis" aria-label="Research preview metrics">
+<div class="kpi"><strong id="total">—</strong><span>Sample records</span></div>
+<div class="kpi"><strong id="ready">—</strong><span>Ready for human evidence review</span></div>
+<div class="kpi"><strong id="held">—</strong><span>Held / research needed</span></div>
+<div class="kpi"><strong>0</strong><span>Automatically promoted to HubSpot</span></div>
+</section>
+<section class="panel">
+<h2 style="margin:0 0 7px;font-size:20px">Research review queue</h2>
+<p class="small">As-of date: 9 October 2026 · Preview model V2 · Existing production score and outreach controls are not modified.</p>
+<div class="toolbar">
+<label>Find sample company <input id="term" type="search" placeholder="Search company or district" aria-label="Search company"></label>
+<label>Research gate <select id="gate" aria-label="Filter gate"><option value="ALL">All</option><option value="HUMAN_EVIDENCE_REVIEW_REQUIRED">Evidence review needed</option><option value="IDENTITY_HOLD">Identity hold</option><option value="SOURCE_REVIEW">Source review</option><option value="FRESHNESS_REVIEW">Freshness review</option><option value="INTERNAL_QA_EXCLUDED">Internal QA</option></select></label>
+<label>Sort <select id="sort" aria-label="Sort review queue"><option value="readiness">Completeness (high to low)</option><option value="name">Company (A to Z)</option></select></label>
+</div>
+<div class="table-wrap"><table><thead><tr><th scope="col">Company</th><th scope="col">Research completeness</th><th scope="col">Evidence / freshness</th><th scope="col">Review status</th></tr></thead><tbody id="results"></tbody></table></div>
+<p id="count" class="small" aria-live="polite"></p>
+</section>
+<footer>Research completeness is a provisional, explainable measure. Source links are not independent verification; category does not prove a developer role. All results require human source review and commercial approval before any HubSpot lifecycle change or outreach. No external requests.</footer>
+</main>
+<script type="module">
+import {rankResearchReview, RESEARCH_SCHEMA} from './data-center-research-engine.mjs';
+const asOf='2026-10-09';
+const fixture=[
+  {id:'TSS-CY-90001',name:'Sample Alpha Development',category:'Developer',district:'Larnaca',
+    website:'https://example.com/',source1:'https://example.com/company',source2:'https://example.org/register',
+    services:'Housing development',portfolio:'Demonstration portfolio',fitAssessment:'Possible match; interest unverified',
+    verificationNotes:'Review pending; links provided',researchDate:'2026-09-23',leadScore:'95',scoreBand:'High priority'},
+  {id:'TSS-CY-90002',name:'Sample Beta Holdings',category:'Development',district:'Nicosia',
+    website:'https://example.org/',source1:'https://example.org/listing',source2:'https://example.com/record',
+    portfolio:'Fictional portfolio',fitAssessment:'Potential market fit',verificationNotes:'ambiguous identity, review required',
+    researchDate:'2026-09-15',leadScore:'90'},
+  {id:'TSS-CY-90003',name:'Sample Gamma Services',category:'SME',district:'Limassol',
+    website:'https://example.com',fitAssessment:'Requires source verification',researchDate:'2026-09-29',leadScore:'78'},
+  {id:'TSS-CY-90004',name:'Sample Delta Projects',category:'Developer',district:'Paphos',
+    website:'https://example.com/',source1:'https://example.com/company',source2:'https://example.org/company',
+    portfolio:'Illustrative portfolio',fitAssessment:'Potential supplier fit',verificationNotes:'Stale evidence',
+    researchDate:'2024-01-02',leadScore:'87'},
+  {id:'COM-8ee64d5e',name:'TSS Internal Email QA',category:'Internal',district:'Larnaca',
+    source1:'https://example.com',researchDate:'2026-10-01',leadScore:'100'}
+];
+const model=rankResearchReview(fixture,{asOf});
+const $=id=>document.getElementById(id);
+$('total').textContent=String(model.total);
+$('ready').textContent=String(model.reviewReady);
+$('held').textContent=String(model.held);
+if(model.schema!==RESEARCH_SCHEMA)throw Error('Scorer preview version mismatch');
+function td(tr){const cell=document.createElement('td');tr.append(cell);return cell;}
+function render(){
+ const term=$('term').value.toLowerCase().trim(),gate=$('gate').value,sort=$('sort').value;
+ const items=model.companies.filter(x=>(gate==='ALL'||x.gate===gate)&&
+  (!term||[x.name,x.id,x.district].some(z=>z.toLowerCase().includes(term))));
+ if(sort==='name')items.sort((a,b)=>a.name.localeCompare(b.name));
+ else items.sort((a,b)=>b.completeness-a.completeness||a.id.localeCompare(b.id));
+ const tbody=$('results');tbody.replaceChildren();
+ for(const x of items){
+  const tr=document.createElement('tr');
+  const col1=td(tr);const strong=document.createElement('strong');strong.textContent=x.name;col1.append(strong);
+  const sub=document.createElement('div');sub.className='small';sub.textContent=x.id+' · '+x.district;col1.append(sub);
+  const col2=td(tr);const p=document.createElement('strong');p.textContent=x.completeness+'/100';col2.append(p);
+  const sub2=document.createElement('div');sub2.className='small';sub2.textContent=x.completenessBand;col2.append(sub2);
+  const col3=td(tr);col3.textContent=x.sourceLinkCount+' link(s) recorded · '+x.freshness;
+  const col4=td(tr);const state=document.createElement('span');state.className='pill status';state.textContent=x.gate.replaceAll('_',' ');col4.append(state);
+  const more=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Score explanation';more.append(summary);
+  const rationale=document.createElement('div');rationale.className='small';
+  rationale.textContent=Object.entries(x.pointBreakdown).filter(([_,n])=>n>0).map(([k,n])=>k+' +'+n).join(' · ')+'; Flags: '+(x.reasons.join(', ')||'none');
+  more.append(rationale);col4.append(more);tbody.append(tr);
+ }
+ $('count').textContent=items.length+' of '+model.total+' fictional records shown';
+}
+for(const id of ['term','gate','sort'])$(id).addEventListener(id==='term'?'input':'change',render);
+render();
+</script></body></html>
