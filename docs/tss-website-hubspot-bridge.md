@@ -1,6 +1,6 @@
 # TSS website to HubSpot CRM bridge (staged, not enabled)
 
-STATUS: Prepared on a draft GitHub PR. This is NOT deployed or production accepted. The existing website, Apps Script, Master Workbook, Outlook and CRM continue unchanged.
+STATUS: Bridge code exists on Production main, but HubSpot write synchronization remains DISABLED and has no live-write acceptance. This G4 hardening candidate is PREVIEW ONLY, on a separate Draft PR. The existing website, Apps Script, Master Workbook, Outlook and CRM continue unchanged.
 
 ## Source and operating contract
 
@@ -12,7 +12,8 @@ STATUS: Prepared on a draft GitHub PR. This is NOT deployed or production accept
 - HubSpot company matching uses the original tss_company_id; contact matching uses an exact email address.
 - The bridge never overwrites imported CRM properties. It creates an internal TODO task linked to the company and contact for each eligible new enquiry, with the original source timestamp and a due time of 17:00 Asia/Nicosia.
 - The bridge does not send customers email, enroll marketing contacts, modify deals or change deal stages.
-- A deterministic task subject and exact TSS Task ID marker protect ordinary serial retries. Collisions and partial failures halt processing.
+- A deterministic task subject and exact TSS Task ID marker protect ordinary serial retries. Collisions and partial failures halt processing. Even valid exact task correlation is not a substitute for provider-ID parity or complete association readback.
+- G4 hardening adds a **fail-closed exclusive-write-lease requirement** before any HubSpot create call. The production handler deliberately supplies NO lease provider. Therefore enabling the existing write flag alone cannot create HubSpot records; an independently accepted durable cross-instance lease adapter is mandatory before live-write acceptance.
 
 ## Server-only environment configuration
 
@@ -44,8 +45,8 @@ NEVER paste Service Keys, service account JSON, tokens or credentials in ChatGPT
 
 - The owner has not provisioned the required server credentials, and real HubSpot API integration has not yet been accepted.
 - A protected read-only Vercel Cron is scheduled to validate connectivity on the Hobby plan. It does not write records with the switch OFF; no higher frequency or paid services are enabled.
-- Subject + task marker provide serial replay checking but not atomic exactly-once behavior across simultaneous invocations. Invoke the endpoint serially only; add a durable lock before allowing concurrent runs.
+- Subject + task marker provide serial replay checking but not atomic exactly-once behavior across simultaneous invocations. G4 hardening now prevents ALL create calls when the server has no exclusive write lease. Preview tests use an **in-memory test-only lease**, which is NOT a deployable cross-instance lock and does NOT prove exactly-once semantics. Implement and verify a durable cross-instance lease using existing owner-approved infrastructure before authorizing any `commit` path. Do not use paid products or extend credential permissions without approval.
 - The October 9 QA reference TSS-2026-0030 is deliberately excluded. Its original Master Workbook task has already been closed and remains QA evidence.
 - Consent to receive marketing must never be inferred from enquiry submissions or API-created contacts.
-- Name collisions and unrelated existing contact/company associations require manual review rather than silent merges.
+- Name collisions and unrelated existing contact/company associations require manual review rather than silent merges. A contact marked `Personal - Android Import` or mapped to a different `tss_contact_id` must never be silently reused for a TSS commercial enquiry.
 - Validate the latest HubSpot association API permissions and contact creation behavior using internal QA before claiming Production acceptance.
