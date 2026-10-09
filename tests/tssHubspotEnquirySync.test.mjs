@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { classifyWebsiteTask, matchSourceContact, nicosiaDueTimestamp, records, syncOne, runSync } from '../lib/tssHubspotEnquirySync.mjs';
+import { classifyWebsiteTask, matchSourceContact, nicosiaDueTimestamp, records, syncOne, runSync, collectWebsiteCandidates } from '../lib/tssHubspotEnquirySync.mjs';
 
 const task = {
   id: 'TSK-WEB-2026-0031', name: 'Review Website enquiry TSS-2026-0031',
@@ -138,7 +138,7 @@ test('existing task is idempotent; unverified subject collision must fail', asyn
 test('existing company and contact are reused without altering their properties', async () => {
   const x = mockHub({
     companyFound: { id: '101', properties: { tss_company_id: company.id } },
-    contactFound: { id: '102', properties: { email: contact.email } }
+    contactFound: { id: '102', properties: { email: contact.email, tss_contact_id: contact.id } }
   });
   await syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '100713372' });
   assert.deepEqual(x.created.map(c => c.type), ['tasks']);
@@ -146,7 +146,7 @@ test('existing company and contact are reused without altering their properties'
 });
 
 test('existing unassociated contact blocks rather than silently linking to a company', async () => {
-  const x = mockHub({ contactFound: { id: '102', properties: { email: contact.email } } });
+  const x = mockHub({ contactFound: { id: '102', properties: { email: contact.email, tss_contact_id: contact.id } } });
   await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }), /association requires manual review/);
   assert.equal(x.created.length, 0);
 });
@@ -246,4 +246,52 @@ test('existing task without exact Company and Contact links must not count as sy
   await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }),
     /Existing task associations require manual review/);
   assert.equal(x.created.length, 0);
+});
+
+test('website preflight flags eligible enquiry missing a matching source Contact', () => {
+  const read = collectWebsiteCandidates(
+    { tasks: [task], companies: [company], contacts: [] }, '2026-10-09T00:00:00Z');
+  assert.equal(read.candidates.length, 0);
+  assert.deepEqual(read.blocked, [{
+    reference: '2026-0031', status: 'blocked', error: 'contact_ambiguous_or_missing'
+  }]);
+  assert.equal(Object.keys(read.ignored).length, 0);
+});
+
+test('website preflight retains a good enquiry but blocks ambiguous identity', () => {
+  const second = { ...task, id: 'TSK-WEB-2026-0032', name: 'Review Website enquiry TSS-2026-0032',
+    notes: 'Website enquiry TSS-2026-0032 | Source: Website | Reply to prospect@example.com' };
+  const read = collectWebsiteCandidates(
+    { tasks: [task, second], companies: [company],
+      contacts: [{ ...contact, notes: 'TSS-2026-0031' }, { ...contact, id:'CON-0032', notes:'TSS-2026-0032' }] },
+    '2026-10-09T00:00:00Z');
+  assert.equal(read.blocked.length, 0);
+  assert.equal(read.candidates.length, 2);
+  const ambiguous = collectWebsiteCandidates(
+    { tasks: [task], companies: [company], contacts: [contact, { ...contact, id:'CON-DUPLICATE' }] },
+    '2026-10-09T00:00:00Z');
+  assert.equal(ambiguous.blocked.length, 1);
+  assert.equal(ambiguous.candidates.length, 0);
+});
+
+test('existing HubSpot contact missing canonical source ID fails without writes', async () => {
+  const x = mockHub({
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: { email: contact.email } }
+  });
+  await assert.rejects(
+    syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }),
+    /Contact TSS identity mismatch or missing/);
+  assert.equal(x.created.length, 0);
+});
+
+test('website preflight excludes completed internal QA without blocking batch', () => {
+  const qaTask = { ...task, id: 'TSK-WEB-2026-0030', companyId: 'COM-8ee64d5e',
+    status: 'Done', notes: 'Website enquiry TSS-2026-0030 | Source: Website | Reply to thesmartysolution@gmail.com' };
+  const qaCo = { id: 'COM-8ee64d5e', name: 'TSS Internal Email QA' };
+  const read = collectWebsiteCandidates(
+    { tasks: [qaTask], companies: [qaCo], contacts: [] }, '2026-10-09T00:00:00Z');
+  assert.equal(read.blocked.length, 0);
+  assert.equal(read.candidates.length, 0);
+  assert.equal(read.ignored.internal_qa, 1);
 });
