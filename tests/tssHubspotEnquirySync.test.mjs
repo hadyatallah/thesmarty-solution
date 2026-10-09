@@ -53,28 +53,58 @@ function mockLease() {
     active() { return held.size; }
   };
 }
-function mockHub({ existingTask = null, companyFound = null, contactFound = null } = {}) {
+function mockHub({ existingTask = null, companyFound = null, contactFound = null,
+  taskAssociationsOverride = null } = {}) {
   const created = [];
+  const findCreated = (type, prop, value) => created.find(c =>
+    c.type === type && c.props[prop] === value);
   const hub = {
     async search(type, field, value) {
       if (type === 'tasks') return existingTask ? [existingTask] :
         created.filter(c => c.type === 'tasks' && c.props.hs_task_subject === value)
           .map(c => ({ id: c.id, properties: { hs_task_body: c.props.hs_task_body } }));
-      if (type === 'companies' && field === 'tss_company_id') return companyFound ? [companyFound] : [];
-      if (type === 'contacts') return contactFound ? [contactFound] : [];
+      if (type === 'companies' && field === 'tss_company_id') {
+        const made = findCreated('companies', 'tss_company_id', value);
+        return companyFound ? [companyFound] : made ? [{ id: made.id, properties: made.props }] : [];
+      }
+      if (type === 'contacts') {
+        const made = findCreated('contacts', 'email', value);
+        return contactFound ? [contactFound] : made ? [{ id: made.id, properties: made.props }] : [];
+      }
       return [];
     },
-    async get() { return { associations: { companies: { results: companyFound ? [{ id: companyFound.id }] : [] } } }; },
+    async get(type, id) {
+      if (type === 'tasks') {
+        if (taskAssociationsOverride) return { associations: taskAssociationsOverride };
+        const taskRow = created.find(c => c.type === 'tasks' && c.id === String(id));
+        if (taskRow) return { associations: {
+          companies: { results: [{ id: taskRow.associations[0].to.id }] },
+          contacts: { results: [{ id: taskRow.associations[1].to.id }] }
+        } };
+        return { associations: {
+          companies: { results: companyFound ? [{ id: companyFound.id }] : [] },
+          contacts: { results: contactFound ? [{ id: contactFound.id }] : [] }
+        } };
+      }
+      if (type === 'contacts') {
+        const row = created.find(c => c.type === 'contacts' && c.id === String(id));
+        return { associations: { companies: { results:
+          row ? [{ id: row.associations[0].to.id }] :
+            companyFound ? [{ id: companyFound.id }] : [] } } };
+      }
+      return { associations: {} };
+    },
     async defaultType(from, to) {
       return { 'tasks/companies': 192, 'tasks/contacts': 204, 'contacts/companies': 1 }[from + '/' + to];
     },
     async create(type, props, associations) {
-      created.push({ type, props, associations, id: String(created.length) });
+      created.push({ type, props, associations, id: String(created.length + 1) });
       return { id: String(created.length) };
     }
   };
   return { hub, created };
 }
+
 test('dry run resolves but does not create or modify any CRM records', async () => {
   const { hub, created } = mockHub();
   const result = await syncOne(entry, { hub, write: false, ownerId: '100713372' });
@@ -94,7 +124,11 @@ test('new enquiry creates only company, contact and internal task with both asso
   assert.equal(written.associations.length, 2);
 });
 test('existing task is idempotent; unverified subject collision must fail', async () => {
-  const a = mockHub({ existingTask: { id: '123', properties: { hs_task_body: 'TSS Task ID: TSK-WEB-2026-0031' } } });
+  const a = mockHub({
+    existingTask: { id: '123', properties: { hs_task_body: 'TSS Task ID: TSK-WEB-2026-0031' } },
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: { email: contact.email, tss_contact_id: contact.id } }
+  });
   assert.equal((await syncOne(entry, { hub: a.hub, write: true, writeLease: mockLease(), ownerId: '1' })).status, 'already_synced');
   assert.equal(a.created.length, 0);
   const b = mockHub({ existingTask: { id: '123', properties: { hs_task_body: 'Other task' } } });
@@ -198,4 +232,18 @@ test('enabled Production flag alone cannot bypass missing durable lease or reach
     throw new Error('Unexpected provider access');
   }), /DURABLE_WRITE_LEASE_REQUIRED/);
   assert.equal(providerCalls, 0);
+});
+
+test('existing task without exact Company and Contact links must not count as synced', async () => {
+  const x = mockHub({
+    existingTask: { id: '123', properties: { hs_task_body: 'TSS Task ID: TSK-WEB-2026-0031' } },
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: { email: contact.email, tss_contact_id: contact.id } },
+    taskAssociationsOverride: {
+      companies: { results: [{ id: '101' }] }, contacts: { results: [] }
+    }
+  });
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }),
+    /Existing task associations require manual review/);
+  assert.equal(x.created.length, 0);
 });
