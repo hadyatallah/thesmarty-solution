@@ -382,3 +382,47 @@ test('legacy task with invalid provider ID cannot be committed as synced', async
   assert.equal(outcomes[0].status, 'review_required');
   assert.equal(x.created.length, 0);
 });
+
+test('post-cutoff website Task with missing Company cannot be silently ignored', () => {
+  const result = collectWebsiteCandidates(
+    { tasks: [task], companies: [], contacts: [contact] },
+    '2026-10-09T00:00:00Z');
+  assert.deepEqual(result.blocked, [{
+    reference: '2026-0031', status: 'blocked', error: 'missing_company'
+  }]);
+  assert.equal(result.candidates.length, 0);
+  assert.equal(result.ignored.missing_company, undefined);
+});
+
+test('malformed current website records require review, not a green no-candidate result', () => {
+  const variants = [
+    [{ ...task, createdAt: 'not-a-date' }, 'invalid_date'],
+    [{ ...task, dueDate: 'not-a-date' }, 'invalid_due_date'],
+    [{ ...task, notes: 'Source: Website | Reply to prospect@example.com' }, 'missing_reference']
+  ];
+  for (const [source, expected] of variants) {
+    const result = collectWebsiteCandidates(
+      { tasks: [source], companies: [company], contacts: [contact] },
+      '2026-10-09T00:00:00Z');
+    assert.equal(result.blocked.length, 1);
+    assert.equal(result.blocked[0].error, expected);
+    assert.equal(result.candidates.length, 0);
+    assert.equal(Object.keys(result.ignored).length, 0);
+  }
+});
+
+test('non-website, old, done and internal QA tasks remain harmless exclusions', () => {
+  const cases = [
+    { ...task, id: 'TSK-NONWEB-2026-0031' },
+    { ...task, createdAt: '2026-10-08T08:00:00Z' },
+    { ...task, status: 'Done' },
+    { ...task, companyId: 'COM-8ee64d5e' }
+  ];
+  const qa = { id: 'COM-8ee64d5e', name: 'TSS Internal Email QA' };
+  const result = collectWebsiteCandidates(
+    { tasks: cases, companies: [company, qa], contacts: [contact] },
+    '2026-10-09T00:00:00Z');
+  assert.equal(result.candidates.length, 0);
+  assert.equal(result.blocked.length, 0);
+  assert.equal(Object.keys(result.ignored).length >= 3, true);
+});
