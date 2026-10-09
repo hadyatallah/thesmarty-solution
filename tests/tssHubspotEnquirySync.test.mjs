@@ -68,8 +68,9 @@ function mockHub({ existingTask = null, companyFound = null, contactFound = null
         return companyFound ? [companyFound] : made ? [{ id: made.id, properties: made.props }] : [];
       }
       if (type === 'contacts') {
-        const made = findCreated('contacts', 'email', value);
-        return contactFound ? [contactFound] : made ? [{ id: made.id, properties: made.props }] : [];
+        const made = findCreated('contacts', field, value);
+        return contactFound && contactFound.properties?.[field] === value ?
+          [contactFound] : made ? [{ id: made.id, properties: made.props }] : [];
       }
       return [];
     },
@@ -425,4 +426,26 @@ test('non-website, old, done and internal QA tasks remain harmless exclusions', 
   assert.equal(result.candidates.length, 0);
   assert.equal(result.blocked.length, 0);
   assert.equal(Object.keys(result.ignored).length >= 3, true);
+});
+
+test('new commercial contacts receive exact canonical TSS identity and source marker', async () => {
+  const x = mockHub();
+  await syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId:'1' });
+  const made = x.created.find(c=>c.type==='contacts');
+  assert.equal(made.props.tss_contact_id,contact.id);
+  assert.equal(made.props.tss_source_system,'TSS CRM - Master Workbook');
+});
+
+test('a canonical TSS Contact already present under a different email is not duplicated', async () => {
+  const x = mockHub({
+    companyFound: { id:'101',properties:{tss_company_id:company.id} },
+    contactFound: { id:'102',properties:{
+      tss_contact_id:contact.id,email:'former@example.com',
+      tss_source_system:'TSS CRM - Master Workbook'
+    } }
+  });
+  await assert.rejects(
+    syncOne(entry,{hub:x.hub,write:true,writeLease:mockLease(),ownerId:'1'}),
+    /Canonical Contact ID already exists with a different email/);
+  assert.equal(x.created.length,0);
 });
