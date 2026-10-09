@@ -41,11 +41,25 @@ test('due time uses Asia/Nicosia summer and winter offsets', () => {
   assert.equal(nicosiaDueTimestamp('2026-10-13'), '2026-10-13T17:00:00+03:00');
   assert.equal(nicosiaDueTimestamp('2026-11-02'), '2026-11-02T17:00:00+02:00');
 });
+// Test-only, process-local lease. NOT a production lock implementation.
+function mockLease() {
+  const held = new Set();
+  return {
+    async acquire(key) {
+      if (held.has(key)) throw new Error('WRITE_LEASE_BUSY');
+      held.add(key);
+      return { async release() { held.delete(key); } };
+    },
+    active() { return held.size; }
+  };
+}
 function mockHub({ existingTask = null, companyFound = null, contactFound = null } = {}) {
   const created = [];
   const hub = {
     async search(type, field, value) {
-      if (type === 'tasks') return existingTask ? [existingTask] : [];
+      if (type === 'tasks') return existingTask ? [existingTask] :
+        created.filter(c => c.type === 'tasks' && c.props.hs_task_subject === value)
+          .map(c => ({ id: c.id, properties: { hs_task_body: c.props.hs_task_body } }));
       if (type === 'companies' && field === 'tss_company_id') return companyFound ? [companyFound] : [];
       if (type === 'contacts') return contactFound ? [contactFound] : [];
       return [];
@@ -55,7 +69,7 @@ function mockHub({ existingTask = null, companyFound = null, contactFound = null
       return { 'tasks/companies': 192, 'tasks/contacts': 204, 'contacts/companies': 1 }[from + '/' + to];
     },
     async create(type, props, associations) {
-      created.push({ type, props, associations });
+      created.push({ type, props, associations, id: String(created.length) });
       return { id: String(created.length) };
     }
   };
@@ -69,7 +83,7 @@ test('dry run resolves but does not create or modify any CRM records', async () 
 });
 test('new enquiry creates only company, contact and internal task with both associations', async () => {
   const { hub, created } = mockHub();
-  const result = await syncOne(entry, { hub, write: true, ownerId: '100713372' });
+  const result = await syncOne(entry, { hub, write: true, writeLease: mockLease(), ownerId: '100713372' });
   assert.equal(result.status, 'created');
   assert.deepEqual(created.map(c => c.type), ['companies', 'contacts', 'tasks']);
   const written = created[2];
@@ -81,10 +95,10 @@ test('new enquiry creates only company, contact and internal task with both asso
 });
 test('existing task is idempotent; unverified subject collision must fail', async () => {
   const a = mockHub({ existingTask: { id: '123', properties: { hs_task_body: 'TSS Task ID: TSK-WEB-2026-0031' } } });
-  assert.equal((await syncOne(entry, { hub: a.hub, write: true, ownerId: '1' })).status, 'already_synced');
+  assert.equal((await syncOne(entry, { hub: a.hub, write: true, writeLease: mockLease(), ownerId: '1' })).status, 'already_synced');
   assert.equal(a.created.length, 0);
   const b = mockHub({ existingTask: { id: '123', properties: { hs_task_body: 'Other task' } } });
-  await assert.rejects(syncOne(entry, { hub: b.hub, write: true, ownerId: '1' }), /collision/);
+  await assert.rejects(syncOne(entry, { hub: b.hub, write: true, writeLease: mockLease(), ownerId: '1' }), /collision/);
   assert.equal(b.created.length, 0);
 });
 test('existing company and contact are reused without altering their properties', async () => {
@@ -92,13 +106,79 @@ test('existing company and contact are reused without altering their properties'
     companyFound: { id: '101', properties: { tss_company_id: company.id } },
     contactFound: { id: '102', properties: { email: contact.email } }
   });
-  await syncOne(entry, { hub: x.hub, write: true, ownerId: '100713372' });
+  await syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '100713372' });
   assert.deepEqual(x.created.map(c => c.type), ['tasks']);
   assert.deepEqual(x.created[0].associations.map(a => a.to.id), ['101', '102']);
 });
 
 test('existing unassociated contact blocks rather than silently linking to a company', async () => {
   const x = mockHub({ contactFound: { id: '102', properties: { email: contact.email } } });
-  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, ownerId: '1' }), /association requires manual review/);
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }), /association requires manual review/);
+  assert.equal(x.created.length, 0);
+});
+
+test('G4 stays fail-closed when no server-owned exclusive write lease exists', async () => {
+  const x = mockHub();
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, ownerId: '1' }),
+    /DURABLE_WRITE_LEASE_REQUIRED/);
+  assert.equal(x.created.length, 0);
+});
+
+test('a busy lease refuses a second concurrent writer without provider writes', async () => {
+  const lock = mockLease();
+  const held = await lock.acquire(task.id);
+  const x = mockHub();
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: lock, ownerId: '1' }),
+    /WRITE_LEASE_BUSY/);
+  assert.equal(x.created.length, 0);
+  await held.release();
+  assert.equal((await syncOne(entry, { hub: x.hub, write: true, writeLease: lock, ownerId: '1' })).status, 'created');
+  assert.equal(x.created.filter(x => x.type === 'tasks').length, 1);
+  assert.equal(lock.active(), 0);
+});
+
+test('mock lease releases after provider failure and retry rechecks existing task', async () => {
+  const x = mockHub();
+  const lock = mockLease();
+  const create = x.hub.create;
+  let failAfterCreate = true;
+  x.hub.create = async (...args) => {
+    const result = await create(...args);
+    if (args[0] === 'tasks' && failAfterCreate) {
+      failAfterCreate = false;
+      throw new Error('PROVIDER_ACK_UNCERTAIN');
+    }
+    return result;
+  };
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: lock, ownerId: '1' }),
+    /PROVIDER_ACK_UNCERTAIN/);
+  assert.equal(lock.active(), 0);
+  // The first task already exists; a retry must not create a second.
+  const second = await syncOne(entry, { hub: x.hub, write: true, writeLease: lock, ownerId: '1' });
+  assert.equal(second.status, 'already_synced');
+  assert.equal(x.created.filter(c => c.type === 'tasks').length, 1);
+});
+
+test('personal Android contacts are never silently reused for commercial enquiries', async () => {
+  const x = mockHub({
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: {
+      email: contact.email, tss_source_system: 'Personal - Android Import'
+    } }
+  });
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }),
+    /Personal contact cannot be reused/);
+  assert.equal(x.created.length, 0);
+});
+
+test('mismatched canonical contact IDs fail before any write', async () => {
+  const x = mockHub({
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: {
+      email: contact.email, tss_contact_id: 'OTHER-TSS-CONTACT'
+    } }
+  });
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }),
+    /Contact TSS identity mismatch/);
   assert.equal(x.created.length, 0);
 });
