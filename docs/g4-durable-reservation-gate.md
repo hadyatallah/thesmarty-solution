@@ -139,3 +139,40 @@ and [Lock Service](https://developers.google.com/apps-script/reference/lock/).
 issue any reservation secret or route, enable the G4 cron write flag, modify
 customer records, or merge until authenticated current-source recovery and
 separate internal-only live acceptance have passed.
+
+## Global writer hardening — 9 October 2026
+
+Offline review found that reserving only the original Task ID is insufficient:
+two **different** website enquiries from the same previously unknown Company
+could each pass the no-existing-Company check and create duplicate HubSpot
+Company/Contact records before the first write becomes visible. The staged
+Apps Script candidate now reserves a **project-wide shared writer key** named
+`TSS_G4_ACTIVE_WRITER` within the same ScriptLock-protected transition
+before creating the per-task reservation. Thus only one eligible bridge
+writer across this **same Apps Script project** can enter the provider
+check/create transaction at any one time. Another task returns
+`GLOBAL_WRITER_HELD`. The writer key is removed **only after a verified
+settlement** has been saved under the task's immutable reservation key.
+An uncertain outcome retains the global writer, blocking ALL subsequent bridge
+writes until explicit provider reconciliation and owner-approved release.
+
+Two sequential store writes are not a cross-service database transaction.
+The shared writer key is saved first; if the second write fails, it remains
+held for review rather than allowing a competing write. This favors
+fail-closed operation and may stop the entire bridge after an unknown error.
+No automated unlock, timeout expiry or stale-writer recovery has been
+authorized, designed or deployed. Recovery needs a separate owner-reviewed
+and independently audited mechanism. This does not constrain HubSpot
+users, other Apps Script projects or unrelated writers that bypass this
+bridge. It is **not** a mathematical exactly-once guarantee.
+
+An additional code review closed the existing-Task settlement gap:
+on an exact verified historical Task marker and both saved associations,
+the bridge now returns the numeric HubSpot Task ID for verified reservation
+settlement. A substring of a similar Task ID cannot serve as that marker.
+
+**Latest validation:** Offline CI passed for same-task, different-task and
+uncertain-response competing claims. Live Apps Script current-source backup,
+trusted deployment, authorization, capacity validation and authenticated
+internal HubSpot QA are still required. No Production installation or
+write activation occurred.
