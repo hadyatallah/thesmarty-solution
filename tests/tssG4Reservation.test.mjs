@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { Script, createContext } from 'node:vm';
 import { createHash, randomUUID } from 'node:crypto';
 import { makeG4ReservationAdapter } from '../lib/tssG4ReservationAdapter.mjs';
+import { syncOne } from '../lib/tssHubspotEnquirySync.mjs';
 
 const serviceCode = readFileSync(new URL('../integrations/apps-script/TssG4Reservation.gs',
   import.meta.url), 'utf8');
@@ -214,4 +215,123 @@ test('the global writer is released only after a verified persisted settlement',
   assert.equal(svc.values.has('TSS_G4_ACTIVE_WRITER'),false);
   assert.equal(svc.dispatch({action:'reserve',
     taskId:'TSK-WEB-2026-0032',secret}).ok,true);
+});
+
+function integrationFixture({ brokenTaskReadback = false } = {}) {
+  const svc = makeService();
+  const fetcher = async (_url, opts) => ({
+    ok: true, status: 200, json: async () => svc.dispatch(JSON.parse(opts.body))
+  });
+  const writeLease = makeG4ReservationAdapter({
+    url: 'https://script.google.com/macros/s/TEST_STANDALONE_123/exec',
+    secret, fetcher
+  });
+  let serial = 1000;
+  const records = { companies: [], contacts: [], tasks: [] };
+  const hub = {
+    async search(type, field, value) {
+      return records[type].filter(record =>
+        record.properties?.[field] === value);
+    },
+    async get(type, id) {
+      const record = records[type].find(item => item.id === String(id));
+      if (!record) throw new Error('TEST_RECORD_NOT_FOUND');
+      const byType = name => ({
+        results: record.associations
+          .filter(item => item.toType === name)
+          .map(item => ({ id: item.to.id }))
+      });
+      return {
+        id: record.id,
+        properties: record.properties,
+        associations: {
+          companies: byType('companies'),
+          contacts: type === 'tasks' && brokenTaskReadback ?
+            { results: [] } : byType('contacts')
+        }
+      };
+    },
+    async defaultType(from, to) {
+      const values = {
+        'tasks/companies': 192,
+        'tasks/contacts': 204,
+        'contacts/companies': 1
+      };
+      return values[from + '/' + to];
+    },
+    async create(type, properties, associations = []) {
+      const id = String(++serial);
+      const links = associations.map(item => ({
+        ...item,
+        toType: {
+          192: 'companies',
+          204: 'contacts',
+          1: 'companies'
+        }[item.types?.[0]?.associationTypeId]
+      }));
+      records[type].push({ id, properties, associations: links });
+      return { id };
+    }
+  };
+  const company = { id: 'COM-NEW-TEST', name: 'Example Business',
+    email: 'prospect@example.com' };
+  const sourceContact = { id: 'CON-0031', name: 'Example Contact',
+    companyId: company.id, email: 'prospect@example.com' };
+  const entry = {
+    task: { id: 'TSK-WEB-2026-0031',
+      name: 'Review Website enquiry TSS-2026-0031',
+      dueDate: '2026-10-13', createdAt: '2026-10-09T06:05:00Z',
+      notes: 'Source: Website | TSS-2026-0031 | Reply to prospect@example.com' },
+    company, sourceContact
+  };
+  return { svc, hub, writeLease, entry, records };
+}
+
+test('offline end-to-end bridge: reserved write, verified associations, committed replay', async () => {
+  const x = integrationFixture();
+  const first = await syncOne(x.entry, {
+    hub: x.hub, write: true, writeLease: x.writeLease, ownerId: '100713372'
+  });
+  assert.equal(first.status, 'created');
+  assert.equal(x.records.companies.length, 1);
+  assert.equal(x.records.contacts.length, 1);
+  assert.equal(x.records.tasks.length, 1);
+  const audit = x.svc.dispatch({
+    action: 'inspect', taskId: x.entry.task.id, secret
+  });
+  assert.equal(audit.state, 'committed');
+  assert.equal(audit.hubspotTaskId, first.hubspotTaskId);
+  assert.equal(x.svc.values.has('TSS_G4_ACTIVE_WRITER'), false);
+  await assert.rejects(syncOne(x.entry, {
+    hub: x.hub, write: true, writeLease: x.writeLease, ownerId: '100713372'
+  }), /ENQUIRY_ALREADY_COMMITTED/);
+  assert.equal(x.records.tasks.length, 1);
+  const next = structuredClone(x.entry);
+  next.task.id = 'TSK-WEB-2026-0032';
+  next.task.name = 'Review Website enquiry TSS-2026-0032';
+  const second = await syncOne(next, {
+    hub: x.hub, write: true, writeLease: x.writeLease, ownerId: '100713372'
+  });
+  assert.equal(second.status, 'created');
+  assert.equal(x.records.companies.length, 1);
+  assert.equal(x.records.contacts.length, 1);
+  assert.equal(x.records.tasks.length, 2);
+});
+
+test('offline end-to-end bridge: uncertain task association readback blocks unrelated enquiry', async () => {
+  const x = integrationFixture({ brokenTaskReadback: true });
+  await assert.rejects(syncOne(x.entry, {
+    hub: x.hub, write: true, writeLease: x.writeLease, ownerId: '100713372'
+  }), /CREATED_TASK_ASSOCIATIONS_UNVERIFIED/);
+  assert.equal(x.records.tasks.length, 1);
+  assert.equal(x.svc.dispatch({
+    action: 'inspect', taskId: x.entry.task.id, secret
+  }).state, 'review_required');
+  assert.equal(x.svc.values.has('TSS_G4_ACTIVE_WRITER'), true);
+  const next = structuredClone(x.entry);
+  next.task.id = 'TSK-WEB-2026-0032';
+  await assert.rejects(syncOne(next, {
+    hub: x.hub, write: true, writeLease: x.writeLease, ownerId: '100713372'
+  }), /GLOBAL_WRITER_HELD/);
+  assert.equal(x.records.tasks.length, 1);
 });
