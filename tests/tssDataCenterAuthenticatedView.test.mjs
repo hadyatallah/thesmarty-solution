@@ -44,3 +44,20 @@ test('active legacy CRM business views and original default remain intact',()=>{
  assert.ok(html.includes("else if(view==='Outreach')outreachView()"));
  assert.ok(html.includes("else records()"));
 });
+
+test('Research Data Center keeps the authenticated CRM responsive shell intact',()=>{
+ assert.ok(html.includes('<meta name="viewport" content="width=device-width, initial-scale=1">'));
+ assert.ok(html.includes('button,a,input,select{min-height:44px}'));
+ assert.ok(html.includes('@media(max-width:850px)'));
+ assert.ok(html.includes('.cards{grid-template-columns:repeat(2,1fr)}'));
+ assert.ok(html.includes('main{padding:18px}'));
+ assert.ok(html.includes('.toolbar select{max-width:none;flex:1}'));
+ assert.ok(html.includes('@media(max-width:520px)'));
+ assert.ok(html.includes('nav{flex-wrap:wrap}'));
+ assert.ok(html.includes('.filter-panel{grid-template-columns:1fr}'));
+ assert.ok(section.includes('<div class="cards"><div class="panel metric"><span>Loaded companies</span>'));
+ assert.ok(section.includes('<div class="toolbar"><input type="search" id="tssResearchSearch"'));
+ assert.ok(section.includes('<select id="tssResearchGate" aria-label="Research review gate"'));
+ assert.ok(section.includes('<div id="tssResearchRows" class="list"></div>'));
+ assert.ok(!section.includes('<table'));
+});
