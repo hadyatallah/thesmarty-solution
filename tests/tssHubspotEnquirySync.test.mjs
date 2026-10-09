@@ -449,3 +449,34 @@ test('a canonical TSS Contact already present under a different email is not dup
     /Canonical Contact ID already exists with a different email/);
   assert.equal(x.created.length,0);
 });
+
+test('duplicate canonical company IDs block active website transfer', () => {
+  const result = collectWebsiteCandidates({
+    tasks:[task],
+    companies:[company,{...company,name:'Conflicting Company Name'}],
+    contacts:[contact]
+  },'2026-10-09T00:00:00Z');
+  assert.equal(result.candidates.length,0);
+  assert.equal(result.blocked[0].error,'duplicate_source_company_id');
+});
+
+test('duplicate canonical contact IDs block active website transfer', () => {
+  const result=collectWebsiteCandidates({
+    tasks:[task],
+    companies:[company],
+    contacts:[contact,{...contact,email:'different@example.com'}]
+  },'2026-10-09T00:00:00Z');
+  assert.equal(result.candidates.length,0);
+  assert.equal(result.blocked[0].error,'duplicate_source_contact_id');
+});
+
+test('duplicate original website Task IDs block active website transfer', () => {
+  const result=collectWebsiteCandidates({
+    tasks:[task,{...task,notes:task.notes+' duplicate source row'}],
+    companies:[company],
+    contacts:[contact]
+  },'2026-10-09T00:00:00Z');
+  assert.equal(result.candidates.length,0);
+  assert.equal(result.blocked.length,2);
+  assert.equal(result.blocked.every(x=>x.error==='duplicate_source_task_id'),true);
+});
