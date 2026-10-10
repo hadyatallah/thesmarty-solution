@@ -1,4 +1,7 @@
 import crypto from 'node:crypto';
+import {pdfMetadata,attachmentFields,rejectAttachmentAliases,ATTACHMENT_ERRORS} from '../../../command-center/email-attachment.js';
+import {proposalHash,requirePdfAuditSupport} from '../../../command-center/email-attachment-server.js';
+import {assertTssSignature} from '../../../command-center/email-signature.js';
 import {baseHeaders,cors,requireTrustedOrigin,cookies,open,refreshToken,graphMe,assertMailbox,seal,cookie,SESSION_COOKIE} from '../_lib.js';
 import {validateMessage,findRecipientContext,recentDuplicate,assertEmailControls} from '../../../command-center/email-send-policy.js';
 
@@ -24,6 +27,9 @@ export default async function handler(req,res){
   requireTrustedOrigin(req);
   stage='request';
   const body=typeof req.body==='string'?JSON.parse(req.body):req.body;
+  rejectAttachmentAliases(body);
+  if(Object.keys(body).some(k=>!['session','message','attachment'].includes(k)))throw Error('EMAIL_ATTACHMENT_INVALID');
+  const attachment=pdfMetadata(body.attachment);
   stage='crm-auth';
   stage='outlook-session';
   const raw=cookies(req)[SESSION_COOKIE];
@@ -34,6 +40,7 @@ export default async function handler(req,res){
   const mailbox=assertMailbox(me);
   stage='message-validation';
   const message=validateMessage(body?.message||{});
+  assertTssSignature(message.text);
   stage='crm-auth';
   const state=await crmState(body.session);
   stage='controls';
@@ -42,14 +49,15 @@ export default async function handler(req,res){
   const ctx=findRecipientContext(state,message.to);
   stage='duplicate-check';
   if(recentDuplicate(state,message,new Date()))throw Error('EMAIL_DUPLICATE_RECENT');
+  if(attachment){stage='attachment-audit';await requirePdfAuditSupport(BACKEND,body.session,message.to,ctx.company.id);}
   stage='proposal-build';
   const id=crypto.randomUUID();
-  const proposal={id,from:mailbox,to:message.to,subject:message.subject,text:message.text,companyId:ctx.company.id,createdAt:Date.now(),expiresAt:Date.now()+600000,state:'proposed'};
-  proposal.hash=crypto.createHash('sha256').update(JSON.stringify({id:proposal.id,from:proposal.from,to:proposal.to,subject:proposal.subject,text:proposal.text,companyId:proposal.companyId})).digest('hex');
+  const proposal={id,from:mailbox,to:message.to,subject:message.subject,text:message.text,companyId:ctx.company.id,createdAt:Date.now(),expiresAt:Date.now()+600000,state:'proposed',...(attachment?{attachment}:{})};
+  proposal.hash=proposalHash(proposal);
   res.setHeader('Set-Cookie',cookie(PROPOSAL_COOKIE,seal(proposal),{maxAge:600,path:'/api/outlook/send'}));
-  return res.status(200).json({ok:true,proposal:{id:proposal.id,hash:proposal.hash,from:proposal.from,to:proposal.to,subject:proposal.subject,text:proposal.text,companyId:proposal.companyId,expiresAt:new Date(proposal.expiresAt).toISOString()}});
+  return res.status(200).json({ok:true,proposal:{id:proposal.id,hash:proposal.hash,from:proposal.from,to:proposal.to,subject:proposal.subject,text:proposal.text,companyId:proposal.companyId,...attachmentFields(proposal),expiresAt:new Date(proposal.expiresAt).toISOString()}});
  }catch(e){
-  const known=['EMAIL_RECIPIENT_INVALID','EMAIL_SUBJECT_INVALID','EMAIL_BODY_INVALID','EMAIL_TRANSLATION_INCOMPLETE','EMAIL_RECIPIENT_AMBIGUOUS','EMAIL_RECIPIENT_NOT_IN_CRM','EMAIL_COMPANY_NOT_FOUND','EMAIL_RECIPIENT_SUPPRESSED','EMAIL_DUPLICATE_RECENT','AUTH_REQUIRED','OUTLOOK_RECONNECT_REQUIRED','CRM_STATE_UNAVAILABLE','EMAIL_DIRECT_SEND_DISABLED','EMAIL_APPROVAL_CONTROL_INVALID','EMAIL_MAILBOX_CONTROL_INVALID','EMAIL_OUTREACH_DISABLED'];
+  const known=[...ATTACHMENT_ERRORS,'EMAIL_SIGNATURE_INVALID','EMAIL_RECIPIENT_INVALID','EMAIL_SUBJECT_INVALID','EMAIL_BODY_INVALID','EMAIL_TRANSLATION_INCOMPLETE','EMAIL_RECIPIENT_AMBIGUOUS','EMAIL_RECIPIENT_NOT_IN_CRM','EMAIL_COMPANY_NOT_FOUND','EMAIL_RECIPIENT_SUPPRESSED','EMAIL_DUPLICATE_RECENT','AUTH_REQUIRED','OUTLOOK_RECONNECT_REQUIRED','CRM_STATE_UNAVAILABLE','EMAIL_DIRECT_SEND_DISABLED','EMAIL_APPROVAL_CONTROL_INVALID','EMAIL_MAILBOX_CONTROL_INVALID','EMAIL_OUTREACH_DISABLED'];
   const safe=known.includes(e.message)?e.message:'EMAIL_PROPOSAL_FAILED';
   console.warn(JSON.stringify({component:'outlook-proposal',code:safe,stage,errorType:safe==='EMAIL_PROPOSAL_FAILED'?String(e?.name||'Error'):undefined}));
   return res.status(safe==='AUTH_REQUIRED'?401:400).json({ok:false,error:safe});
