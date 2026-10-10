@@ -48,3 +48,6 @@ h1,h2,h3{margin:0 0 .55em;color:var(--ink);font-family:Manrope,Inter,sans-serif;
 .home-objectives .heading{margin-bottom:28px}
 .home-objectives .card{padding:24px}
 .home-objectives .selected-opportunities-teaser{margin-top:24px}
+
+/* Native HubSpot iframe replaces the legacy form only after verified render/route. */
+form[data-tss-form][hidden]{display:none!important}
