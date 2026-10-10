@@ -1,22 +1,21 @@
 /*
  * TSS native HubSpot Forms — PREVIEW-ONLY cutover adapter.
- * Intentionally disabled until HubSpot has published and verified both native forms.
- * The original enquiry forms remain usable when disabled or if HubSpot fails to render.
+ * The original enquiry forms remain usable if HubSpot fails to load or render.
  *
- * Use the embedScriptUrl and form IDs copied from HubSpot's UPDATED form editor.
+ * Form IDs and embedScriptUrl are copied from HubSpot's UPDATED form editor.
  * Do not use legacy-editor embed APIs for a form built in HubSpot's updated editor.
  */
 (function () {
   'use strict';
 
   const config = Object.freeze({
-    enabled: false,
+    enabled: true,
     portalId: '149509919',
     region: 'eu1',
-    embedScriptUrl: '', // Paste the exact official script URL from HubSpot's embed code.
+    embedScriptUrl: 'https://js-eu1.hsforms.net/forms/embed/149509919.js',
     forms: Object.freeze({
-      contact: '',       // Published native TSS General Enquiry Form ID.
-      kiti: ''           // Published native TSS Kiti Expression of Interest Form ID.
+      contact: 'd571803e-7777-4f28-94ea-b24df852245c',
+      kiti: '905f1307-a4f8-4dd1-a299-4caefd5aae01'
     })
   });
   const validId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -32,8 +31,6 @@
     }
   }
   function mount() {
-    // Do not load tracking or native-form JavaScript until a verified form
-    // config has been explicitly committed and accepted in Preview.
     if (!config.enabled) return;
     if (!isApprovedScript(config.embedScriptUrl)) return;
 
