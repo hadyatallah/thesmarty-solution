@@ -84,3 +84,61 @@ These are **suggested labels**, not existing IDs; actual IDs must be read from H
 **Execution limit:** no pipeline/property creation until entitlement, permissions and automation checks succeed and scoped configuration approval is recorded. If no dedicated commercial pipeline is possible without extra cost, stop Option 1 live activation and propose a no-cost alternative; do not use the default Support Pipeline or a nonunique search-before-create strategy.
 
 References: https://knowledge.hubspot.com/object-settings/set-up-and-customize-pipelines and https://knowledge.hubspot.com/import-and-export/import-objects and https://knowledge.hubspot.com/properties/set-validation-rules-for-properties.
+
+## G5-6 — Owner-approved native HubSpot Form intake (10 October 2026)
+
+**New owner direction:** Use a native HubSpot Form embedded on the TSS website for inbound commercial enquiries. The immediate objective is reliable Contact capture and form-submission history, with human commercial review. This does not authorize automatic Company or Ticket creation, lead qualification, marketing enrollment, customer email, or production cutover.
+
+### Verified portal state and blocker
+
+- HubSpot portal: 149509919, EU1 (app-eu1.hubspot.com).
+- The connected HubSpot native form inventory currently returns just one published "Meetings Link: the-smarty" form of type MEETING. That is not an enquiry form. Do not embed it.
+- A commercial native Form has NOT yet been created or published, and no usable form GUID or official embed snippet is available.
+- Connected HubSpot tools can list forms but do not provide form creation/editing/publishing. Use the existing authenticated HubSpot UI in ChatGPT Work, under Marketing > Forms. No manual owner coding, paid subscription upgrade or new OAuth client.
+- The blocked Company unique property (companies.tss_company_key) is not needed for a basic native Contact form submission, but remains a blocker for the existing G5 automated Company/Contact/Ticket backend. Keep that backend disabled.
+
+### Primary Contact form: TSS Website — Commercial Enquiry
+
+Preserve the intent of the existing contact.html form:
+
+| Existing website content | Native HubSpot Form requirement |
+| --- | --- |
+| Full name, business email, phone | Name and email required; phone optional. If HubSpot requires first/last name separately, preserve both accurately. |
+| Company, company website | Capture company name and website in Contact/submission context; do not automatically create or associate a Company from a name or domain without identity review. |
+| Country, desired timing | Retain required country and timing with matching choices. |
+| Service-interest route | Preserve Business Growth, Market Entry, Strategic Connections, Opportunity Development, Business Systems, Commercial Review, plus Kiti referral where applicable. |
+| Route-specific questions | Preserve growth goals/market/challenge, market-entry requirements/activity, strategic-connections objective, opportunity stage/objective, business-systems problem/users, and commercial review narrative. If conditional logic is unavailable under existing plan, STOP for approval rather than silently drop fields. |
+| Free-text message | Preserve EVERY submission as independently reviewable timeline/form-submission evidence, not only the overwritten Contact property value. |
+| Privacy | Required processing acknowledgment with link to TSS privacy notice. |
+| Marketing | Separate optional unchecked consent. Do not enroll Contacts automatically. |
+| Tracking/source | Record original source page, route and native HubSpot submission identifier; do not invent legacy TSS reference numbers. |
+
+**No automatic marketing, customer acknowledgment, Company/Ticket creation, qualification, sequencing or messages.** Check HubSpot Forms notification settings before creating or testing. An internal alert to info@thesmartysolution.com may be separately considered, but sender identity must remain the submitting Contact, not the website notification mailbox.
+
+### Kiti is a separate flow
+
+The current kiti-enquiry.html has role, proposed transaction structure, background and commercial objectives, timing, optional investment capacity and mandatory processing consent. Keep its current website/Apps Script form operational until a *separate* native HubSpot opportunity form reproduces those fields and is accepted. Preserve Kiti confidentiality and the human qualification gate.
+
+### Website integration and safety
+
+- Main current form lives in contact.html as form[data-tss-form="contact"], processed by script.js and the legacy website Apps Script backend.
+- Kiti uses form[data-tss-form="kiti"]. Other website/agent lead paths may also submit to legacy infrastructure. Changing the Contact page alone is NOT a complete legacy-writer cutover.
+- Do not invent a form ID or custom embed script. Retrieve the exact form embed code from the official new HubSpot Form after building it.
+- HubSpot documentation requires the external website domain be added to tracking settings to avoid spam classification; confirm both apex and www domain and the approved Preview origin as supported.
+- Embed the new form in PR #65 Vercel Preview only, maintaining site layout and mobile usability. Prevent BOTH legacy and HubSpot forms from submitting the same event; do not silently double-log.
+- Forms on external sites can produce Contact records directly; they do not prove safe Company identity matching or automatically create commercial Tickets on this account.
+- HubSpot tracking, privacy disclosure, form notifications, follow-up settings, spam protection and workflows require read-only inspection before live QA.
+- Native Forms may not reproduce current Apps Script customer confirmation email. Do not turn on new customer messages without separate approval.
+
+### Exact acceptance gate
+
+1. Through official HubSpot UI, create the commercial native Form as a draft, with required/contact fields and independent processing/marketing consent. Check entitlement and no new subscription.
+2. Verify property mappings, spam/privacy, workflow and notification behavior. Keep outgoing messages/automatic actions off.
+3. Get the real published form GUID and exact official embed snippet (publish the form without altering TSS site), verify portal and region.
+4. Stage the form on Vercel Preview and validate initial rendering without submitting a live HubSpot record. Preserve the existing production form.
+5. Obtain separate authorization before one internal-only synthetic HubSpot Form submission and independently read back resulting Contact and form submission history, including repeated enquiry behavior and notification checks.
+6. Obtain separate explicit Production cutover authorization only after Preview QA. Rollback uses the prior website deployment; prevent duplicate/unsure submission replay.
+
+**Status:** Native HubSpot Form option approved as website intake direction. Existing HubSpot Meetings Link is unsuitable. Commercial native Form not yet created; no form GUID, embed, Preview submission or Production change. The prior disabled /api/tss-commercial-intake route stays OFF for future optional automation; PR #64 stays unmerged, G4 deferred, existing Outlook/Gmail/legacy Kiti paths preserved.
+
+Official references: https://knowledge.hubspot.com/forms/set-up-and-style-your-form-on-an-external-site and https://knowledge.hubspot.com/forms/create-forms .
