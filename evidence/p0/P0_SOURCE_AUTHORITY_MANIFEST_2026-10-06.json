@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 2,
+  "decisionDate": "2026-10-06",
+  "scope": "OLD_DEV_QUARANTINE_AND_CURRENT_DEV2_PRECEDENCE",
+  "oldDev": {
+    "artifactName": "P0AcceptanceFixtures.gs",
+    "approvedAuthority": {
+      "sizeBytes": 43755,
+      "sha256": "0a8f4a3ec5645de8631a428679e1cef5450c240faa917922ab8e625a569a29d9",
+      "totalLines": 484,
+      "requiredMarkers": [
+        "function p0RunPersistentAcceptance32_(token)",
+        "function p0VerifyPersistentAcceptanceSessionCleanup()",
+        "P0_ACCEPTANCE_RESULT=",
+        "P0_ACCEPTANCE_SESSION_CLEANUP="
+      ]
+    },
+    "observedNinthFile": {
+      "classification": "P5",
+      "status": "HISTORICAL_QUARANTINED_DO_NOT_EXECUTE_DO_NOT_OVERWRITE",
+      "reason": "Old DEV editor observations conflicted and exact saved bytes were not stably captured."
+    },
+    "legacyRunner": {
+      "artifactName": "P0DevAcceptance.gs",
+      "status": "SEPARATE_OCT1_RUNNER_NOT_CURRENT_INSTALL_AUTHORITY"
+    },
+    "currentReleaseBaseline": false
+  },
+  "currentDevelopmentBaseline": {
+    "environment": "Commercial Network DEV2",
+    "oldDevUsed": false,
+    "p0Foundation": {
+      "status": "PASSED",
+      "persistentCasesPassed": 32,
+      "persistentCasesFailed": 0
+    },
+    "p05NativeSubset": {
+      "status": "PASSED_SUBSET",
+      "casesPassed": 16,
+      "casesFailed": 0,
+      "fullP05Status": "PENDING"
+    },
+    "p123BackendSubset": {
+      "status": "PASSED_SUBSET",
+      "casesPassed": 16,
+      "casesFailed": 0,
+      "productionAccepted": false
+    },
+    "sourceCheckpoint": "ACCEPTED_RESTRICTED_EVIDENCE_IN_TSS_DRIVE",
+    "currentReleaseBaseline": true
+  },
+  "companyDataCenter": {
+    "phase3Status": "CLOSED_FOR_APPROVED_BOUNDED_PREVIEW_SCOPE",
+    "acceptedOn": "2026-10-03",
+    "productionPromotion": false,
+    "unresolvedFactsPreserved": true
+  },
+  "releaseRule": {
+    "currentPathMayContinue": true,
+    "doNotExecuteOldDev": true,
+    "doNotOverwriteOldDev": true,
+    "doNotRestartAcceptedP0WithoutNewEvidence": true,
+    "nextGate": "FULL_P0_5_RELEASE_CANDIDATE_COMPATIBILITY",
+    "requirements": [
+      "Use the accepted DEV2 checkpoint as the Commercial Network backend baseline.",
+      "Keep old DEV quarantined as historical evidence.",
+      "Complete full P0.5 compatibility on a cleaned, identified release candidate.",
+      "Preserve existing frontend, Command Center, PWA/mobile, enquiry, assistant and mail-compatibility contracts.",
+      "Require backup, rollback, promotion and Production-safe smoke gates before any Production release."
+    ]
+  },
+  "privacy": {
+    "privateScriptWorkbookAndLibraryIdsOmittedFromPublicRepository": true
+  }
+}

@@ -11,6 +11,13 @@ on:
       - 'tests/command-center/**'
       - 'tests/browser-dashboard.py'
       - 'tests/browser-status-display.py'
+      - 'tests/kiti-pilot.test.mjs'
+      - 'tests/kiti-pilot-backend.test.mjs'
+      - 'tests/kiti-pilot-governance.test.mjs'
+      - 'tests/p0-source-authority.test.mjs'
+      - 'tests/dev2-current-readback.test.mjs'
+      - 'tests/p05-chat-compatibility.test.mjs'
+      - 'tests/browser-kiti-pilot.py'
       - '.github/workflows/dashboard-consistency.yml'
 permissions:
   contents: read
@@ -37,7 +44,7 @@ jobs:
           node --check crm/assistant.js
           node --check crm/status-display.js
           node --check command-center/crm.js
-          node --test tests/dashboard.test.mjs tests/urgent*.test.mjs tests/enquiry-transport.test.mjs tests/assistant-formatting.test.mjs tests/command-center/phase*.test.js tests/command-center/context.test.js tests/command-center/lookup-availability.test.js tests/command-center/ui.test.js tests/status-display.test.mjs | tee evidence/dashboard/node-tests.txt
+          node --test tests/dashboard.test.mjs tests/urgent*.test.mjs tests/enquiry-transport.test.mjs tests/assistant-formatting.test.mjs tests/command-center/phase*.test.js tests/command-center/context.test.js tests/command-center/lookup-availability.test.js tests/command-center/ui.test.js tests/status-display.test.mjs tests/kiti-pilot.test.mjs tests/kiti-pilot-backend.test.mjs tests/kiti-pilot-governance.test.mjs tests/p0-source-authority.test.mjs tests/dev2-current-readback.test.mjs tests/p05-chat-compatibility.test.mjs | tee evidence/dashboard/node-tests.txt
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -50,6 +57,8 @@ jobs:
         run: python tests/browser-dashboard.py
       - name: Test truthful status and canonical classification using synthetic state
         run: python tests/browser-status-display.py
+      - name: Test controlled Kiti Commercial Network pilot
+        run: python tests/browser-kiti-pilot.py
       - name: Preserve released cache, draft and website safety
         run: |
           set -euo pipefail
@@ -71,6 +80,7 @@ jobs:
             evidence/dashboard/
             evidence/status-display/
             evidence/enquiry/
+            evidence/kiti-pilot/
             evidence/chromium*.json
           retention-days: 14
           if-no-files-found: error

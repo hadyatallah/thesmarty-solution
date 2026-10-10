@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "decisionDate": "2026-10-06",
+  "environment": "Commercial Network DEV2",
+  "scope": "FULL_P0_5_RELEASE_CANDIDATE_COMPATIBILITY",
+  "acceptedEvidence": {
+    "p0Foundation": {
+      "status": "PASS",
+      "cases": "32/32",
+      "restartRequired": false
+    },
+    "p05NativeSubset": {
+      "status": "PASS_SUBSET",
+      "cases": "16/16"
+    },
+    "p123BackendSubset": {
+      "status": "PASS_SUBSET",
+      "cases": "16/16"
+    },
+    "currentDev2Readback": {
+      "status": "PASS",
+      "companies": "2876/2876 unique",
+      "orderedChecksum": "1659140c087a961a",
+      "sortedChecksum": "82d918e59db50ae8",
+      "activityCount": 97,
+      "agentLedgerCount": 36,
+      "sixCommercialNetworkEntityTabsEmpty": true
+    },
+    "currentChatPilotCI": {
+      "status": "PASS",
+      "githubActionsRun": 94,
+      "commit": "2e0af29998029955fa8d7e9078b62fb639b4f6c8",
+      "nodeTests": "423/423",
+      "browserCompatibility": "PASS",
+      "boundary": "Repository/browser compatibility only; not native deployed Apps Script acceptance."
+    }
+  },
+  "remainingGates": [
+    {
+      "id": "P05-A",
+      "name": "Exact cleaned release candidate",
+      "status": "PARTIAL_BLOCKED_BY_NATIVE_SOURCE_PACKAGE_ACCESS",
+      "chatExecutableNow": "PARTIAL",
+      "requirement": "Frontend/repository candidate is frozen and chat-accepted. Exact cleaned native Apps Script candidate requires chat-accessible accepted 22-file source package or supported native source read API."
+    },
+    {
+      "id": "P05-B",
+      "name": "Protected frontend / Command Center / PWA-mobile compatibility",
+      "status": "PASS_REPOSITORY_SCOPE",
+      "chatExecutableNow": true,
+      "requirement": "Run 94 passed CRM renderer, status, Kiti responsive/browser and released frontend compatibility checks. Native exact-candidate compatibility remains open."
+    },
+    {
+      "id": "P05-C",
+      "name": "Enquiry integration compatibility",
+      "status": "PASS_FRONTEND_SCOPE",
+      "chatExecutableNow": true,
+      "requirement": "Run 94 passed protected enquiry routing/retry/validation/responsive transport checks. Live Apps Script persistence/matching/notification acceptance remains open."
+    },
+    {
+      "id": "P05-D",
+      "name": "Assistant contracts",
+      "status": "PASS_REPOSITORY_SCOPE",
+      "chatExecutableNow": true,
+      "requirement": "Run 94 passed current assistant/context contracts in the 423/423 Node suite and browser routing checks. Native exact-candidate compatibility remains open."
+    },
+    {
+      "id": "P05-E",
+      "name": "Existing mail projection and email-sync compatibility",
+      "status": "PARTIAL",
+      "chatExecutableNow": false,
+      "requirement": "Native subset synthetic projection cases passed. Exact deployed/current mail compatibility still requires the governed Apps Script environment."
+    },
+    {
+      "id": "P05-F",
+      "name": "Deployed DEV transport and real authentication",
+      "status": "OPEN_BLOCKED_BY_AVAILABLE_CHAT_CONNECTORS",
+      "chatExecutableNow": false,
+      "requirement": "Requires supported Apps Script deployment/runtime authentication access. Do not replace with mocks."
+    },
+    {
+      "id": "P05-G",
+      "name": "Full protected legacy suite on exact release candidate",
+      "status": "PASS_REPOSITORY_SCOPE_ONLY",
+      "chatExecutableNow": "PARTIAL",
+      "requirement": "Run 94 passed 423/423 Node tests and all configured browser regression steps on the frozen repository candidate. Full protected native legacy suite awaits exact cleaned Apps Script candidate."
+    },
+    {
+      "id": "P05-H",
+      "name": "Production backup / rollback / promotion / smoke",
+      "status": "NOT_STARTED",
+      "chatExecutableNow": false,
+      "requirement": "Only after all pre-Production release gates pass and explicit Production approval is granted."
+    }
+  ],
+  "decision": {
+    "sourceOfTruthGate": "CLOSED",
+    "oldDev": "QUARANTINED_HISTORICAL_ONLY",
+    "nextExecutableWork": "EXACT_NATIVE_SOURCE_PACKAGE_ACCESS_IS_NOW_THE_PRIMARY_FULL_P0_5_BLOCKER; CONTINUE CHAT-EXECUTABLE EVIDENCE/FRONTEND WORK WITHOUT RECONSTRUCTING NATIVE SOURCE",
+    "productionPromotionAuthorized": false,
+    "externalOutreachAuthorized": false
+  }
+}

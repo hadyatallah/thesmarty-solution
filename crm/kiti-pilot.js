@@ -1,0 +1,415 @@
+import {
+  KITI_PUBLIC_FACTS,
+  kitiFixture,
+  deriveOperatingPhase,
+  aggregateMandatory,
+  candidateQueueGroup,
+  outreachGate,
+  packProjection,
+  interpretMessage,
+  validateDraftClaims
+} from './kiti-pilot-model.js';
+import {
+  createPackManifest,
+  createActivityEvent,
+  createAssistantProposal,
+  deriveCommercialAnalytics,
+  buildRolePack,
+  createSafeReplyDraft
+} from './kiti-pilot-governance.js';
+import {
+  DEV2_CN_BACKEND_CONTRACT,
+  createKitiDev2Client,
+  syntheticDev2RpcFixture
+} from './kiti-pilot-backend.js';
+
+const fixture = kitiFixture();
+const $ = id => document.getElementById(id);
+const esc = v => String(v ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function badge(text,kind=''){
+  return '<span class="badge '+kind+'">'+esc(text)+'</span>';
+}
+
+function renderHeader(){
+  const phase = deriveOperatingPhase(fixture.opportunity,fixture.mandate,fixture.matches);
+  $('phase').textContent=phase;
+  $('status').textContent=fixture.opportunity.status;
+  $('stage').textContent=fixture.opportunity.developmentStage;
+  const gate=outreachGate({mandate:fixture.mandate,match:fixture.matches[0],suppressed:false,recipientKnown:true});
+  $('authority').textContent=gate.allowed?'Outreach available':'Outreach blocked: '+gate.reason;
+  $('authority').className='notice '+(gate.allowed?'ok':'block');
+}
+
+function overview(){
+  const m=fixture.matches[0];
+  const html=`
+    <div class="cards">
+      <div class="panel metric"><span>Operating phase</span><strong>${esc(deriveOperatingPhase(fixture.opportunity,fixture.mandate,fixture.matches))}</strong></div>
+      <div class="panel metric"><span>Mandate</span><strong>${esc(fixture.mandate.status)}</strong><small>Research ${esc(fixture.mandate.authorityResearch)} · Outreach ${esc(fixture.mandate.authorityOutreach)}</small></div>
+      <div class="panel metric"><span>Matches</span><strong>${fixture.matches.length}</strong></div>
+      <div class="panel metric"><span>Next action</span><strong class="small-strong">Human qualification review</strong></div>
+    </div>
+    <div class="grid">
+      <section class="panel">
+        <h3>Opportunity at a glance</h3>
+        ${[
+          ['Location',KITI_PUBLIC_FACTS.location],
+          ['Type',KITI_PUBLIC_FACTS.opportunityType],
+          ['Site area',KITI_PUBLIC_FACTS.siteArea],
+          ['Concept stage',KITI_PUBLIC_FACTS.conceptStage],
+          ['Structures',KITI_PUBLIC_FACTS.structures.join(', ')],
+          ['Due diligence',KITI_PUBLIC_FACTS.caveat]
+        ].map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('')}
+      </section>
+      <section class="panel">
+        <h3>Current Match</h3>
+        <div class="rowline"><span>Company</span><strong>${esc(m.companyName)}</strong></div>
+        <div class="rowline"><span>Qualification</span><strong>${esc(m.qualificationState)}</strong></div>
+        <div class="rowline"><span>Engagement</span><strong>${esc(m.engagementState)}</strong></div>
+        <div class="rowline"><span>Mandatory result</span><strong>${esc(aggregateMandatory(m.criteria))}</strong></div>
+        <div class="rowline"><span>Queue</span><strong>${esc(candidateQueueGroup(m))}</strong></div>
+      </section>
+    </div>`;
+  $('workspace').innerHTML=html;
+}
+
+function readiness(){
+  const items=[
+    ['Opportunity accepted',true,'Accepted'],
+    ['Target criteria defined',fixture.mandate.criteriaReady,'Required before launch'],
+    ['Information package ready',fixture.opportunity.informationPackageReady,'Approved material only'],
+    ['Active Mandate',fixture.mandate.status==='Active','Authority-dependent'],
+    ['Research authority',fixture.mandate.authorityResearch==='Granted','Granted'],
+    ['Outreach authority',fixture.mandate.authorityOutreach==='Granted','External contact blocked until granted'],
+    ['Disclosure ceiling',fixture.mandate.maxDisclosureLevel==='D1','Current ceiling '+fixture.mandate.maxDisclosureLevel]
+  ];
+  $('workspace').innerHTML='<section class="panel"><h3>Readiness</h3><p class="muted">This view explains what is ready and what blocks progression. It does not create a second status system.</p>'+
+    items.map(([name,ready,note])=>`<div class="readiness"><span>${badge(ready?'Ready':'Blocked',ready?'ok':'block')} <strong>${esc(name)}</strong></span><span class="muted">${esc(note)}</span></div>`).join('')+
+    '</section>';
+}
+
+function mandate(){
+  const rows=[
+    ['Research',fixture.mandate.authorityResearch],
+    ['Outreach',fixture.mandate.authorityOutreach],
+    ['Disclosure',fixture.mandate.authorityDisclosure],
+    ['Introduction',fixture.mandate.authorityIntroduction],
+    ['Representation',fixture.mandate.authorityRepresentation],
+    ['Negotiation',fixture.mandate.authorityNegotiation],
+    ['Binding',fixture.mandate.authorityBinding]
+  ];
+  $('workspace').innerHTML='<section class="panel"><h3>Mandate and authority</h3><p class="muted">Research-only acceptance fixture. This does not represent live Kiti commercial authority.</p>'+
+  rows.map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('')+
+  `<div class="rowline"><span>Maximum disclosure</span><strong>${esc(fixture.mandate.maxDisclosureLevel)}</strong></div></section>`;
+}
+
+function criteria(){
+  const m=fixture.matches[0];
+  const rows=m.criteria.map(c=>`<tr><td>${esc(c.type)}</td><td>${esc(c.name)}</td><td>${esc(c.outcome)}</td><td>${esc((c.evidenceIds||[]).length?(c.evidenceIds||[]).join(', '):(c.outcome==='Unknown'?'Evidence required before relying on this criterion':'Governed snapshot evidence'))}</td></tr>`).join('');
+  $('workspace').innerHTML=`
+    <section class="panel">
+      <h3>Target criteria</h3>
+      <p class="muted">Criteria are Mandate-specific. Mandatory, Preferred and Informational remain separate, and no numerical Match Score is used.</p>
+      <div class="table-wrap"><table><thead><tr><th>Type</th><th>Criterion</th><th>Outcome</th><th>Evidence treatment</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <div class="notice block section-title"><strong>Appetite rule:</strong> developer capability and Kiti relevance do not establish current appetite. Current appetite remains Unknown in this fixture.</div>
+    </section>`;
+}
+
+function communications(){
+  $('workspace').innerHTML=`
+    <section class="panel">
+      <h3>Communications</h3>
+      <p class="muted">Synthetic communication timeline only. The pilot does not read or send live Kiti email.</p>
+      <div class="rowline"><span>Linked Match</span><strong>Gelfanco → Kiti</strong></div>
+      <div class="rowline"><span>Current engagement</span><strong>Not Contacted</strong></div>
+      <div class="rowline"><span>Outbound state</span><strong>BLOCKED · Outreach authority not granted</strong></div>
+      <div class="rowline"><span>Assistant behavior</span><strong>Interpret and propose only</strong></div>
+      <div class="notice block section-title">A positive reply may support an Interested proposal, but never automatically changes Qualification State.</div>
+    </section>`;
+}
+
+function documents(){
+  const docs=[
+    ['Approved public teaser','D1','Approved','Eligible at current ceiling'],
+    ['Developer information pack','D2','Pilot draft','Blocked at current D1 Mandate ceiling'],
+    ['Planning / technical package','D3','Controlled fixture','Blocked pending authority and conditions'],
+    ['NDA','D3 gate','Verification workflow','Does not itself raise Mandate authority']
+  ];
+  $('workspace').innerHTML=`
+    <section class="panel">
+      <h3>Documents and disclosure</h3>
+      <p class="muted">Document metadata only. Restricted source material is not embedded in this pilot page.</p>
+      <div class="table-wrap"><table><thead><tr><th>Document</th><th>Level</th><th>Status</th><th>Current treatment</th></tr></thead><tbody>
+      ${docs.map(d=>`<tr><td>${esc(d[0])}</td><td>${esc(d[1])}</td><td>${esc(d[2])}</td><td>${esc(d[3])}</td></tr>`).join('')}
+      </tbody></table></div>
+      <div class="notice block section-title">Protected Kiti categories remain outside the external projection: landowner identity, architect identity, people behind TSS, confidential studies and unapproved projections.</div>
+    </section>`;
+}
+
+function presentation(){
+  const publicRows=[
+    ['Title',KITI_PUBLIC_FACTS.title],
+    ['Location',KITI_PUBLIC_FACTS.location],
+    ['Site area',KITI_PUBLIC_FACTS.siteArea],
+    ['Concept stage',KITI_PUBLIC_FACTS.conceptStage],
+    ['Potential structures',KITI_PUBLIC_FACTS.structures.join(', ')],
+    ['Due diligence',KITI_PUBLIC_FACTS.caveat]
+  ];
+  const protectedRows=['Landowner identity','Architect identity','People behind TSS','Confidential studies','Unapproved projections'];
+  $('workspace').innerHTML=`
+    <div class="grid">
+      <section class="panel">
+        <h3>Approved D1 projection</h3>
+        ${publicRows.map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('')}
+      </section>
+      <section class="panel">
+        <h3>Internal-only / protected</h3>
+        <p class="muted">Labels are shown to prove exclusion. No restricted values are rendered.</p>
+        ${protectedRows.map(k=>`<div class="rowline"><span>${esc(k)}</span><strong>🔒 Not exposed</strong></div>`).join('')}
+      </section>
+    </div>`;
+}
+
+function activityEvents(){
+  return [
+    createActivityEvent({idempotencyKey:'KITI:LOAD',entityType:'Commercial Opportunity',recordId:fixture.opportunity.id,action:'Opportunity Fixture Loaded',timestamp:'2026-10-06T09:00:00Z',newState:'Accepted · Targeting'}),
+    createActivityEvent({idempotencyKey:'KITI:MANDATE',entityType:'Mandate',recordId:fixture.mandate.id,action:'Mandate Fixture Loaded',timestamp:'2026-10-06T09:01:00Z',newState:'Research Granted · Outreach Not Granted'}),
+    createActivityEvent({idempotencyKey:'KITI:CRITERIA',entityType:'Match',recordId:fixture.matches[0].id,action:'Criteria Evaluated',timestamp:'2026-10-06T09:02:00Z',newState:'Mandatory PASS · appetite Unknown'}),
+    createActivityEvent({idempotencyKey:'KITI:MATCH',entityType:'Match',recordId:fixture.matches[0].id,action:'Match Fixture Surfaced',timestamp:'2026-10-06T09:03:00Z',newState:'Under Qualification · Not Contacted'}),
+    createActivityEvent({idempotencyKey:'KITI:BLOCK',entityType:'Match',recordId:fixture.matches[0].id,action:'Governance Block',timestamp:'2026-10-06T09:04:00Z',newState:'BLOCKED · no external action',details:{reason:'Outreach authority not granted'}})
+  ];
+}
+
+function activity(){
+  const events=activityEvents();
+  $('workspace').innerHTML=`
+    <section class="panel">
+      <h3>Activity and audit fixture</h3>
+      <p class="muted">Synthetic events use deterministic idempotency keys and demonstrate reconstructable history. No live Activity rows are written.</p>
+      <div class="table-wrap"><table><thead><tr><th>Time</th><th>Event</th><th>Result</th><th>Event ID</th></tr></thead><tbody>
+      ${events.map(e=>`<tr><td>${esc(e.timestamp.slice(11,16))}</td><td>${esc(e.action)}</td><td>${esc(e.newState)}</td><td>${esc(e.eventId)}</td></tr>`).join('')}
+      </tbody></table></div>
+    </section>`;
+}
+
+function matches(){
+  const m=fixture.matches[0];
+  const criteria=m.criteria.map(c=>`<tr><td>${esc(c.type)}</td><td>${esc(c.name)}</td><td>${esc(c.outcome)}</td><td>${esc((c.evidenceIds||[]).join(', ')||'—')}</td></tr>`).join('');
+  $('workspace').innerHTML=`
+    <section class="panel">
+      <div class="row"><div><h3>${esc(m.companyName)}</h3><p class="muted">${esc(m.companyId)}</p></div>${badge(candidateQueueGroup(m))}</div>
+      <div class="grid compact">
+        <div><strong>Qualification</strong><p>${esc(m.qualificationState)}</p></div>
+        <div><strong>Engagement</strong><p>${esc(m.engagementState)}</p></div>
+        <div><strong>Mandatory</strong><p>${esc(aggregateMandatory(m.criteria))}</p></div>
+        <div><strong>Outreach</strong><p>${esc(outreachGate({mandate:fixture.mandate,match:m}).reason)}</p></div>
+      </div>
+      <div class="notice ok">
+        <strong>Governed Data Center readback</strong><br>
+        Profile disposition: ${esc(m.dataCenterDisposition)} · Activity: ${esc(m.developmentActivity)} · Operating status: ${esc(m.operatingStatus)}<br>
+        Snapshot profile version ${esc(m.evidenceSnapshotVersion)} · updated ${esc(m.evidenceSnapshotUpdatedAt)}
+      </div>
+      <h3>Criteria</h3>
+      <div class="table-wrap"><table><thead><tr><th>Type</th><th>Criterion</th><th>Outcome</th><th>Evidence refs</th></tr></thead><tbody>${criteria}</tbody></table></div>
+      <h3 class="section-title">Known gaps</h3>
+      <div class="list">${m.gaps.map(g=>`<div class="gap">${esc(g)}</div>`).join('')}</div>
+    </section>`;
+}
+
+function packs(){
+  const facts={
+    title:KITI_PUBLIC_FACTS.title,
+    location:KITI_PUBLIC_FACTS.location,
+    siteArea:KITI_PUBLIC_FACTS.siteArea,
+    conceptStage:KITI_PUBLIC_FACTS.conceptStage,
+    structures:KITI_PUBLIC_FACTS.structures.join(', '),
+    caveat:KITI_PUBLIC_FACTS.caveat,
+    landownerIdentity:'RESTRICTED TEST VALUE',
+    confidentialStudies:'RESTRICTED TEST DOCUMENT'
+  };
+  const rules={
+    title:{minLevel:'D1'},location:{minLevel:'D1'},siteArea:{minLevel:'D1'},conceptStage:{minLevel:'D1'},
+    structures:{minLevel:'D1'},caveat:{minLevel:'D1'},landownerIdentity:{restricted:true},confidentialStudies:{restricted:true}
+  };
+  const projection=packProjection({facts,requestedLevel:'D3',mandateCeiling:fixture.mandate.maxDisclosureLevel,recipientLevel:'D2',fieldRules:rules});
+  const rolePack=buildRolePack({
+    audienceRole:'Developer',
+    effectiveDisclosureLevel:projection.effectiveLevel,
+    includedFields:projection.included,
+    excludedFields:projection.excluded,
+    nextStep:'Express qualified interest through TSS.'
+  });
+  const professionalPack=buildRolePack({
+    audienceRole:'Professional Handoff',
+    effectiveDisclosureLevel:projection.effectiveLevel,
+    includedFields:projection.included,
+    excludedFields:projection.excluded,
+    professionalScope:'Review only the specifically assigned planning, legal or technical question.',
+    nextStep:'Provide professional review within the agreed scope.'
+  });
+  const investorPack=buildRolePack({
+    audienceRole:'Investor / Capital Provider',
+    effectiveDisclosureLevel:projection.effectiveLevel,
+    includedFields:projection.included,
+    excludedFields:projection.excluded
+  });
+  const manifest=createPackManifest({
+    requestId:'REQ-KITI-D1-DEVELOPER-001',
+    opportunityId:fixture.opportunity.id,
+    mandateId:fixture.mandate.id,
+    matchId:fixture.matches[0].id,
+    recipientCompanyId:fixture.matches[0].companyId,
+    audienceRole:'Developer',
+    requestedDisclosureLevel:'D3',
+    effectiveDisclosureLevel:projection.effectiveLevel,
+    templateVersion:'developer-pilot-v1',
+    opportunityVersion:'1',
+    mandateVersion:'1',
+    matchVersion:'1',
+    includedFields:projection.included,
+    excludedFields:projection.excluded,
+    documentRefs:[{id:'DOC-KITI-D1-TEASER',version:'1'}],
+    generatedAt:'2026-10-06T09:05:00Z'
+  });
+  $('workspace').innerHTML=`
+    <section class="panel">
+      <h3>Opportunity Pack pre-generation check</h3>
+      <div class="cards mini">
+        <div class="panel metric"><span>Requested</span><strong>D3</strong></div>
+        <div class="panel metric"><span>Mandate ceiling</span><strong>${esc(fixture.mandate.maxDisclosureLevel)}</strong></div>
+        <div class="panel metric"><span>Recipient level</span><strong>D2</strong></div>
+        <div class="panel metric"><span>Effective</span><strong>${esc(projection.effectiveLevel)}</strong></div>
+      </div>
+      <div class="rowline"><span>Pack manifest</span><strong>${esc(manifest.packId)}</strong></div>
+      <div class="rowline"><span>Content fingerprint</span><strong>${esc(manifest.contentFingerprint)}</strong></div>
+      <div class="rowline"><span>Approval state</span><strong>${esc(manifest.approvalStatus)}</strong></div>
+      <h3>Developer pack preview</h3>
+      <div class="list">${rolePack.sections.map(section=>`<div class="panel"><strong>${esc(section.heading)}</strong>${Object.entries(section.fields).map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(Array.isArray(v)?v.join(', '):v)}</strong></div>`).join('')}</div>`).join('')}</div>
+      <h3 class="section-title">Professional handoff preview</h3>
+      <div class="list">${professionalPack.sections.map(section=>`<div class="panel"><strong>${esc(section.heading)}</strong>${Object.entries(section.fields).map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(Array.isArray(v)?v.join(', '):v)}</strong></div>`).join('')}</div>`).join('')}</div>
+      <div class="notice block section-title"><strong>Investor pack:</strong> ${esc(investorPack.reason)}</div>
+      <h3>Included facts</h3>
+      <div class="list">${Object.entries(projection.included).map(([k,v])=>`<div class="rowline"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('')}</div>
+      <h3 class="section-title">Excluded</h3>
+      <div class="list">${projection.excluded.map(x=>`<div class="gap"><strong>${esc(x.key)}</strong> · ${esc(x.reason)}</div>`).join('')}</div>
+    </section>`;
+}
+
+function runtime(){
+  $('workspace').innerHTML=`
+    <section class="panel">
+      <h3>DEV2 runtime adapter</h3>
+      <p class="muted">Isolated contract check only. This view does not call the live CRM or execute writes.</p>
+      <div class="rowline"><span>Backend version</span><strong>${esc(DEV2_CN_BACKEND_CONTRACT.backendVersion)}</strong></div>
+      <div class="rowline"><span>Read contract</span><strong>${esc(DEV2_CN_BACKEND_CONTRACT.read)}</strong></div>
+      <div class="rowline"><span>Candidate contract</span><strong>${esc(DEV2_CN_BACKEND_CONTRACT.candidates)}</strong></div>
+      <div class="rowline"><span>Transition contract</span><strong>${esc(DEV2_CN_BACKEND_CONTRACT.prepareTransition)}</strong></div>
+      <div class="rowline"><span>Communication gate</span><strong>${esc(DEV2_CN_BACKEND_CONTRACT.communicationGate)}</strong></div>
+      <div class="actions"><button class="primary" id="runtimeCheckBtn">Run isolated adapter check</button></div>
+      <div id="runtimeResult"></div>
+    </section>`;
+  $('runtimeCheckBtn').onclick=async()=>{
+    const fixtureRpc=syntheticDev2RpcFixture();
+    const client=createKitiDev2Client(fixtureRpc.rpc);
+    $('runtimeCheckBtn').disabled=true;
+    try{
+      const state=await client.readState('SYNTHETIC-TOKEN');
+      const candidates=await client.readCandidates('SYNTHETIC-TOKEN','MAN-KITI-SYN',{companyId:'TSS-CY-001'});
+      const proposal=await client.prepareQualificationTransition('SYNTHETIC-TOKEN','MAT-SYN','Qualified With Gaps',{
+        expectedVersion:'1',
+        requestId:'REQ-RUNTIME-SYN-001',
+        reason:'Synthetic human-reviewed evidence'
+      });
+      const gate=await client.communicationGate('SYNTHETIC-TOKEN','MAT-SYN');
+      const names=fixtureRpc.calls.map(x=>x.name);
+      const forbidden=names.some(x=>['saveCommercialNetworkRecord','ccDecide','ccExecute'].includes(x));
+      $('runtimeResult').innerHTML=`
+        <div class="assistant-card">
+          <div class="rowline"><span>Read permission</span><strong>${state.permissions?.canRead?'PASS':'FAIL'}</strong></div>
+          <div class="rowline"><span>Candidate records</span><strong>${esc(candidates.candidates.length)}</strong></div>
+          <div class="rowline"><span>Mandatory result</span><strong>${esc(candidates.candidates[0]?.mandatoryCriteriaResult||'')}</strong></div>
+          <div class="rowline"><span>Appetite</span><strong>${esc(candidates.candidates[0]?.criteria.find(x=>x.name==='Current appetite')?.outcome||'Unknown')}</strong></div>
+          <div class="rowline"><span>Transition result</span><strong>${esc(proposal.status)} · human review only</strong></div>
+          <div class="rowline"><span>External communication</span><strong>${gate.allowed?'AVAILABLE':'BLOCKED'}</strong></div>
+          <div class="rowline"><span>Forbidden write/execute call</span><strong>${forbidden?'FAIL':'NONE'}</strong></div>
+          <p class="muted">Calls: ${esc(names.join(' → '))}</p>
+        </div>`;
+    }catch(error){
+      $('runtimeResult').innerHTML='<div class="notice block">Runtime adapter check failed: '+esc(error.message||error)+'</div>';
+    }finally{
+      $('runtimeCheckBtn').disabled=false;
+    }
+  };
+}
+
+function assistant(){
+  $('workspace').innerHTML=`
+    <section class="panel">
+      <h3>Communication interpretation fixture</h3>
+      <p class="muted">Nothing is written or sent. This is proposal-only behavior.</p>
+      <textarea id="messageInput">We are interested in the Kiti opportunity. Can you send the planning information and tell us whether the owner would consider a JV?</textarea>
+      <div class="actions"><button class="primary" id="interpretBtn">Interpret message</button></div>
+      <div id="assistantResult"></div>
+    </section>`;
+  $('interpretBtn').onclick=()=>{
+    const message=$('messageInput').value;
+    const result=interpretMessage(message);
+    const proposal=createAssistantProposal({
+      sourceMessageId:'MSG-KITI-SYN-001',
+      opportunityId:fixture.opportunity.id,
+      matchId:fixture.matches[0].id,
+      messageText:message,
+      createdAt:'2026-10-06T09:06:00Z'
+    });
+    const draft=createSafeReplyDraft({
+      opportunityTitle:KITI_PUBLIC_FACTS.title,
+      effectiveDisclosureLevel:fixture.mandate.maxDisclosureLevel,
+      messageText:message,
+      allowedFacts:{structures:KITI_PUBLIC_FACTS.structures.join(', ')}
+    });
+    $('assistantResult').innerHTML=`
+      <div class="assistant-card">
+        <h3>Detected</h3>
+        <div class="list">${result.detected.map(x=>`<div>${esc(x)}</div>`).join('')||'<div>Nothing material detected.</div>'}</div>
+        <div class="rowline"><span>Response category</span><strong>${esc(proposal.responseCategory)}</strong></div>
+        <div class="rowline"><span>Proposal ID</span><strong>${esc(proposal.proposalId)}</strong></div>
+        <h3 class="section-title">Proposed CRM changes</h3>
+        <div class="list">${proposal.proposedChanges.map(x=>`<div class="rowline"><span>${esc(x.field)}</span><strong>${esc(x.value)}</strong></div>`).join('')||'<div>No state proposal.</div>'}</div>
+        <p><strong>Qualification:</strong> NO CHANGE</p>
+        <p><strong>External action:</strong> NO · Human approval required</p>
+        <h3 class="section-title">Safe draft preview</h3>
+        <div class="assistant-message">${esc(draft.body)}</div>
+      </div>`;
+  };
+}
+
+function analytics(){
+  const analytics=deriveCommercialAnalytics({matches:fixture.matches,events:activityEvents()});
+  const qualification=['Identified','Research Required','Under Qualification','Qualified','Qualified With Gaps','Shortlisted','Outreach Approved'];
+  const engagement=['Not Contacted','Contacted','Awaiting Response','Interested','Introduced','Active Discussion','Negotiation','Closed'];
+  $('workspace').innerHTML='<section class="panel"><h3>Kiti commercial progression</h3><p class="muted">Derived from synthetic Match state and Activity events. No close probability, weighted pipeline or Match Score.</p>'+
+    '<h3>Qualification</h3>'+
+    qualification.map(s=>`<div class="rowline"><span>${esc(s)}</span><strong>${analytics.qualification[s]||0}</strong></div>`).join('')+
+    '<h3 class="section-title">Engagement</h3>'+
+    engagement.map(s=>`<div class="rowline"><span>${esc(s)}</span><strong>${analytics.engagement[s]||0}</strong></div>`).join('')+
+    `<div class="rowline"><span>Governance blocks</span><strong>${analytics.governanceBlocks}</strong></div>`+
+    `<div class="rowline"><span>Audited synthetic events</span><strong>${analytics.eventCount}</strong></div>`+
+    '<div class="section-title"></div><div class="notice block">Governance attention: Outreach authority is not granted.</div></section>';
+}
+
+const views={Overview:overview,Readiness:readiness,Mandate:mandate,Criteria:criteria,Matches:matches,Communications:communications,Documents:documents,Packs:packs,Presentation:presentation,Activity:activity,Runtime:runtime,Assistant:assistant,Analytics:analytics};
+
+function selectView(name){
+  document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name));
+  views[name]();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  renderHeader();
+  document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>selectView(b.dataset.view)));
+  selectView('Overview');
+  const draft='The fully approved planning project offers an 18% ROI on a 900 m² site.';
+  const failures=validateDraftClaims(draft,{siteArea:'Approx. 859 m²'});
+  $('validationExample').textContent=failures.length?failures.join(' · '):'No validation failures';
+});

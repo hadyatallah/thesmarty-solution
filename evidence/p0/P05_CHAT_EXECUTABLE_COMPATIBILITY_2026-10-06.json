@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "capturedDate": "2026-10-06",
+  "gate": "FULL_P0_5_RELEASE_CANDIDATE_COMPATIBILITY",
+  "chatExecutableCheckpoint": {
+    "branch": "commercial-network-kiti-pilot-chat",
+    "acceptedCommit": "2e0af29998029955fa8d7e9078b62fb639b4f6c8",
+    "githubActionsRun": 94,
+    "conclusion": "PASS",
+    "nodeTests": {
+      "passed": 423,
+      "failed": 0
+    },
+    "browserSteps": {
+      "crmRenderers": "PASS",
+      "truthfulStatus": "PASS",
+      "kitiCommercialNetworkPilot": "PASS",
+      "cacheRoutingEnquiryReleasedSiteSafety": "PASS",
+      "enquiryBrowserChecks": 26
+    },
+    "externalAction": false,
+    "productionChanged": false
+  },
+  "candidateSeparation": {
+    "frontendRepositoryCandidate": {
+      "state": "FROZEN_CHAT_ACCEPTED",
+      "exactCommit": "2e0af29998029955fa8d7e9078b62fb639b4f6c8"
+    },
+    "nativeAppsScriptCandidate": {
+      "state": "BLOCKED_BY_CURRENT_CHAT_SOURCE_PACKAGE_ACCESS",
+      "acceptedBackendBasis": "P123 DEV2 exact saved 22-file checkpoint",
+      "acceptedInstalledPayloadSha256": "0c53279adc0ec9606725eb2282b65b9ace88e88171c5b8192ad2c59f29b88993",
+      "rawSourcePackageAvailableThroughCurrentConnectors": false,
+      "reason": "Restricted acceptance reports describe source/ and source-checkpoint-manifest.json, but current Drive search/list access does not expose the raw 22-file source package as individual retrievable artifacts. Exact cleaned source candidate cannot be assembled or verified byte-for-byte from chat without that source package.",
+      "prohibitedWorkaround": "Do not reconstruct the 22-file native source from summaries or old DEV."
+    }
+  },
+  "gateResults": {
+    "P05-A": {
+      "status": "PARTIAL_BLOCKED",
+      "passed": "Frontend/repository candidate frozen and exact compatibility evidence captured.",
+      "open": "Exact cleaned native Apps Script release candidate cannot be assembled until the accepted 22-file source package is chat-accessible."
+    },
+    "P05-B": {
+      "status": "PASS_REPOSITORY_SCOPE",
+      "evidence": "CRM renderer, status, Kiti mobile/tablet/desktop and released frontend compatibility checks passed in run 94.",
+      "open": "Native deployed release-candidate compatibility remains part of full P0.5."
+    },
+    "P05-C": {
+      "status": "PASS_FRONTEND_SCOPE",
+      "evidence": "Enquiry routing, duplicate/uncertain-state, validation, responsive and protected transport checks passed. Browser checks 26/26.",
+      "open": "Live Apps Script persistence/matching/notification acceptance is separate."
+    },
+    "P05-D": {
+      "status": "PASS_REPOSITORY_SCOPE",
+      "evidence": "Current assistant/context contracts included in 423/423 passing Node suite and browser routing checks.",
+      "open": "Exact native release-candidate compatibility remains pending."
+    },
+    "P05-E": {
+      "status": "PARTIAL",
+      "evidence": "Previously accepted P0.5/P123 synthetic/native compatibility evidence retained.",
+      "open": "Existing deployed/current mail projections and email-sync compatibility still require governed native environment verification."
+    },
+    "P05-F": {
+      "status": "BLOCKED_BY_AVAILABLE_CHAT_CONNECTORS",
+      "open": "Deployed DEV transport and real authentication."
+    },
+    "P05-G": {
+      "status": "PASS_REPOSITORY_SCOPE_ONLY",
+      "evidence": "423/423 Node tests plus all configured browser regression steps passed on the frozen frontend candidate.",
+      "open": "Full protected legacy suite on the exact cleaned native Apps Script candidate remains pending."
+    },
+    "P05-H": {
+      "status": "NOT_STARTED_NOT_AUTHORIZED",
+      "open": "Production backup, rollback, promotion and smoke only after all pre-Production gates pass and explicit Production approval."
+    }
+  },
+  "nextAction": "OBTAIN_CHAT_ACCESSIBLE_RAW_22_FILE_DEV2_SOURCE_CHECKPOINT_OR_SUPPORTED_APPS_SCRIPT_READ_API_THEN_ASSEMBLE_CLEAN_NATIVE_RELEASE_CANDIDATE",
+  "privacy": {
+    "privateGoogleIdsOmitted": true
+  }
+}

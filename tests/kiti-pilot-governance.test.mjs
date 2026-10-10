@@ -1,0 +1,273 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  stableStringify,
+  deterministicHash,
+  createPackManifest,
+  packStaleness,
+  createActivityEvent,
+  dedupeActivityEvents,
+  classifyCommercialResponse,
+  createAssistantProposal,
+  deriveCommercialAnalytics,
+  runSyntheticPositiveJourney,
+  runSyntheticNegativeJourney,
+  buildRolePack,
+  createSafeReplyDraft
+} from '../crm/kiti-pilot-governance.js';
+
+test('stable stringify is key-order independent',()=>{
+  assert.equal(stableStringify({b:2,a:1}),stableStringify({a:1,b:2}));
+  assert.equal(deterministicHash({b:2,a:1}),deterministicHash({a:1,b:2}));
+});
+
+test('pack manifest is reproducible for same request and source snapshot',()=>{
+  const input={
+    requestId:'REQ-PACK-1',
+    opportunityId:'COP-KITI-PILOT',
+    mandateId:'MAN-KITI',
+    matchId:'MAT-KITI',
+    recipientCompanyId:'TSS-CY-001',
+    audienceRole:'Developer',
+    requestedDisclosureLevel:'D3',
+    effectiveDisclosureLevel:'D1',
+    templateVersion:'developer-v1',
+    opportunityVersion:'4',
+    mandateVersion:'2',
+    matchVersion:'7',
+    includedFields:{location:'Kiti',siteArea:'Approx. 859 m²'},
+    excludedFields:[{key:'landownerIdentity',reason:'Restricted'}],
+    documentRefs:[{id:'DOC-D1',version:'3'}],
+    generatedAt:'2026-10-06T09:00:00Z'
+  };
+  const a=createPackManifest(input),b=createPackManifest({...input,generatedAt:'2026-10-06T10:00:00Z'});
+  assert.equal(a.packId,b.packId);
+  assert.equal(a.contentFingerprint,b.contentFingerprint);
+  assert.equal(a.generatedAt,'2026-10-06T09:00:00Z');
+});
+
+test('different request id gives a distinct pack id without changing content fingerprint',()=>{
+  const base={
+    opportunityId:'COP-KITI-PILOT',mandateId:'MAN-KITI',audienceRole:'Developer',
+    requestedDisclosureLevel:'D1',effectiveDisclosureLevel:'D1',templateVersion:'v1',
+    opportunityVersion:'1',mandateVersion:'1',includedFields:{title:'Kiti'},
+    generatedAt:'2026-10-06T09:00:00Z'
+  };
+  const a=createPackManifest({...base,requestId:'REQ-A'});
+  const b=createPackManifest({...base,requestId:'REQ-B'});
+  assert.notEqual(a.packId,b.packId);
+  assert.equal(a.contentFingerprint,b.contentFingerprint);
+});
+
+test('pack staleness detects record or document version changes',()=>{
+  const m=createPackManifest({
+    requestId:'REQ-1',opportunityId:'COP',mandateId:'MAN',matchId:'MAT',audienceRole:'Developer',
+    requestedDisclosureLevel:'D2',effectiveDisclosureLevel:'D2',templateVersion:'v1',
+    opportunityVersion:'3',mandateVersion:'2',matchVersion:'5',
+    documentRefs:[{id:'DOC',version:'1'}],generatedAt:'2026-10-06T09:00:00Z'
+  });
+  assert.equal(packStaleness(m,{opportunityVersion:'3',mandateVersion:'2',matchVersion:'5',templateVersion:'v1',documentRefs:[{id:'DOC',version:'1'}]}).stale,false);
+  const stale=packStaleness(m,{opportunityVersion:'4',mandateVersion:'2',matchVersion:'5',templateVersion:'v1',documentRefs:[{id:'DOC',version:'2'}]});
+  assert.equal(stale.stale,true);
+  assert.ok(stale.reasons.includes('Opportunity version changed'));
+  assert.ok(stale.reasons.includes('Document set/version changed'));
+});
+
+test('activity event idempotency key yields a stable event id',()=>{
+  const input={idempotencyKey:'MSG-1:INTEREST',entityType:'Match',recordId:'MAT-1',action:'Engagement Change',timestamp:'2026-10-06T09:00:00Z',priorState:'Awaiting Response',newState:'Interested'};
+  const a=createActivityEvent(input),b=createActivityEvent({...input,timestamp:'2026-10-06T09:05:00Z'});
+  assert.equal(a.eventId,b.eventId);
+  assert.equal(a.newState,'Interested');
+});
+
+test('dedupe keeps one consequential event per idempotency key',()=>{
+  const a=createActivityEvent({idempotencyKey:'REQ-1',entityType:'Match',recordId:'MAT-1',action:'Governance Block',timestamp:'2026-10-06T09:00:00Z'});
+  const b={...a,timestamp:'2026-10-06T09:01:00Z'};
+  assert.equal(dedupeActivityEvents([a,b]).length,1);
+});
+
+test('response taxonomy keeps administrative reply out of commercial interest',()=>{
+  assert.equal(classifyCommercialResponse('Automatic reply: I am out of office until Monday.'),'Administrative');
+  assert.equal(classifyCommercialResponse('We are interested and would like to explore this.'),'Qualified interest signal');
+  assert.equal(classifyCommercialResponse('Please remove me from your list.'),'Suppression');
+  assert.equal(classifyCommercialResponse('Our offer would be EUR 500,000.'),'Commercial discussion');
+});
+
+test('assistant proposal never changes qualification and never executes externally',()=>{
+  const p=createAssistantProposal({
+    sourceMessageId:'MSG-1',
+    opportunityId:'COP-KITI',
+    matchId:'MAT-KITI',
+    messageText:'We are interested. Please send planning information.',
+    createdAt:'2026-10-06T09:00:00Z'
+  });
+  assert.equal(p.responseCategory,'Qualified interest signal');
+  assert.deepEqual(p.proposedChanges,[{field:'engagementState',value:'Interested'}]);
+  assert.equal(p.qualificationChange,null);
+  assert.equal(p.externalAction,false);
+  assert.equal(p.requiresHumanApproval,true);
+  assert.ok(p.requests.includes('Planning information'));
+});
+
+test('suppression proposal is routed as protected workflow',()=>{
+  const p=createAssistantProposal({
+    sourceMessageId:'MSG-2',opportunityId:'COP',matchId:'MAT',
+    messageText:'Do not contact me again.',createdAt:'2026-10-06T09:00:00Z'
+  });
+  assert.equal(p.responseCategory,'Suppression');
+  assert.equal(p.proposedChanges[0].protectedWorkflow,true);
+  assert.equal(p.externalAction,false);
+});
+
+test('analytics preserves qualification and engagement as separate dimensions',()=>{
+  const events=[
+    createActivityEvent({idempotencyKey:'B1',entityType:'Match',recordId:'MAT-1',action:'Governance Block',timestamp:'2026-10-06T09:00:00Z'}),
+    createActivityEvent({idempotencyKey:'R1',entityType:'Match',recordId:'MAT-1',action:'Response Classified',timestamp:'2026-10-06T09:01:00Z',details:{responseCategory:'Administrative'}}),
+    createActivityEvent({idempotencyKey:'R1',entityType:'Match',recordId:'MAT-1',action:'Response Classified',timestamp:'2026-10-06T09:02:00Z',details:{responseCategory:'Administrative'}})
+  ];
+  const a=deriveCommercialAnalytics({
+    matches:[
+      {qualificationState:'Qualified With Gaps',engagementState:'Interested'},
+      {qualificationState:'Under Qualification',engagementState:'Not Contacted'}
+    ],
+    events
+  });
+  assert.equal(a.qualification['Qualified With Gaps'],1);
+  assert.equal(a.qualification['Under Qualification'],1);
+  assert.equal(a.engagement.Interested,1);
+  assert.equal(a.engagement['Not Contacted'],1);
+  assert.equal(a.governanceBlocks,1);
+  assert.equal(a.responseCategories.Administrative,1);
+  assert.equal(a.eventCount,2);
+  assert.equal(a.weightedPipeline,null);
+  assert.equal(a.closeProbability,null);
+  assert.equal(a.matchScore,null);
+});
+
+
+test('positive Kiti acceptance journey progresses only after explicit synthetic approvals',()=>{
+  const r=runSyntheticPositiveJourney();
+  assert.equal(r.outcome,'PASS');
+  assert.equal(r.realExternalAction,false);
+  assert.equal(r.match.engagementState,'Closed');
+  assert.equal(r.disclosure.beforeNda,'D1');
+  assert.equal(r.disclosure.afterNda,'D3');
+  assert.equal(r.proposal.qualificationChange,null);
+  assert.ok(r.events.some(e=>e.action==='Governance Block'));
+  assert.ok(r.events.some(e=>e.action==='Professional Handoff'));
+  assert.ok(r.events.some(e=>e.action==='Outcome Recorded'));
+});
+
+test('negative Kiti journey blocks a suppressed otherwise-ready candidate',()=>{
+  const r=runSyntheticNegativeJourney();
+  assert.equal(r.outcome,'PASS');
+  assert.equal(r.gate.allowed,false);
+  assert.match(r.gate.reason,/suppressed|do not contact/i);
+  assert.equal(r.sendAttempted,false);
+  assert.equal(r.realExternalAction,false);
+  assert.equal(r.match.engagementState,'Not Contacted');
+  assert.equal(r.company.unchanged,true);
+  assert.equal(r.events[0].action,'Governance Block');
+});
+
+
+test('Developer pack uses only approved projection and preserves exclusions',()=>{
+  const pack=buildRolePack({
+    audienceRole:'Developer',
+    effectiveDisclosureLevel:'D1',
+    includedFields:{
+      title:'Kiti Residential Development Opportunity',
+      location:'Kiti, Larnaca District, Cyprus',
+      siteArea:'Approx. 859 m²',
+      conceptStage:'Preliminary concept completed',
+      structures:'Acquisition, Development Partnership, Joint Venture',
+      caveat:'Subject to planning, technical and commercial due diligence.'
+    },
+    excludedFields:[{key:'landownerIdentity',reason:'Restricted'}],
+    nextStep:'Express qualified interest through TSS.'
+  });
+  assert.equal(pack.audienceRole,'Developer');
+  assert.equal(pack.disclosureLevel,'D1');
+  assert.equal(pack.generatedFromApprovedProjection,true);
+  assert.equal(pack.externalReady,true);
+  assert.equal(pack.sections[0].fields.siteArea,'Approx. 859 m²');
+  assert.deepEqual(pack.excluded,[{key:'landownerIdentity',reason:'Restricted'}]);
+});
+
+test('Professional Handoff pack is factual and not external-ready',()=>{
+  const pack=buildRolePack({
+    audienceRole:'Professional Handoff',
+    effectiveDisclosureLevel:'D3',
+    includedFields:{title:'Kiti',location:'Kiti, Cyprus',planningSummary:'Controlled planning facts'},
+    excludedFields:[{key:'internalNotes',reason:'Internal'}],
+    professionalScope:'Review planning position only.'
+  });
+  assert.equal(pack.externalReady,false);
+  assert.equal(pack.sections[0].fields.scope,'Review planning position only.');
+  assert.ok(pack.sections.some(s=>s.heading==='Known exclusions'));
+});
+
+test('Investor pack remains deferred for external distribution',()=>{
+  const pack=buildRolePack({
+    audienceRole:'Investor / Capital Provider',
+    effectiveDisclosureLevel:'D1',
+    includedFields:{title:'Kiti'}
+  });
+  assert.equal(pack.deferred,true);
+  assert.equal(pack.externalReady,false);
+  assert.match(pack.reason,/deferred/i);
+});
+
+test('safe D1 reply refuses restricted owner identity and planning material',()=>{
+  const draft=createSafeReplyDraft({
+    recipientName:'Alex',
+    opportunityTitle:'Kiti Residential Development Opportunity',
+    effectiveDisclosureLevel:'D1',
+    messageText:'We are interested. Who owns the land and can you send the planning information?'
+  });
+  assert.equal(draft.responseCategory,'Qualified interest signal');
+  assert.equal(draft.restrictedIdentityDisclosed,false);
+  assert.equal(draft.externalAction,false);
+  assert.equal(draft.requiresHumanApproval,true);
+  assert.match(draft.body,/Principal identity is not included/i);
+  assert.match(draft.body,/controlled disclosure stage/i);
+  assert.doesNotMatch(draft.body,/RESTRICTED TEST VALUE/);
+});
+
+test('safe D3 reply may include only supplied planning summary and approved structures',()=>{
+  const draft=createSafeReplyDraft({
+    opportunityTitle:'Kiti Residential Development Opportunity',
+    effectiveDisclosureLevel:'D3',
+    messageText:'Can you send planning information and would a JV be considered?',
+    allowedFacts:{
+      planningSummary:'Approved planning summary fixture.',
+      structures:'Acquisition, Development Partnership, Joint Venture'
+    }
+  });
+  assert.match(draft.body,/Approved planning summary fixture/);
+  assert.match(draft.body,/Joint Venture/);
+  assert.equal(draft.externalAction,false);
+});
+
+
+test('explicit interest is preserved when primary response category is professional review',()=>{
+  const p=createAssistantProposal({
+    sourceMessageId:'MSG-PRO-1',opportunityId:'COP',matchId:'MAT',
+    messageText:'We are interested. Our lawyer would like a legal review before proceeding.',
+    createdAt:'2026-10-06T12:00:00Z'
+  });
+  assert.equal(p.responseCategory,'Professional / technical query');
+  assert.ok(p.proposedChanges.some(x=>x.field==='engagementState'&&x.value==='Interested'));
+  assert.equal(p.qualificationChange,null);
+});
+
+test('suppression overrides simultaneous positive wording',()=>{
+  const p=createAssistantProposal({
+    sourceMessageId:'MSG-SUP-2',opportunityId:'COP',matchId:'MAT',
+    messageText:'We were interested, but please do not contact us again.',
+    createdAt:'2026-10-06T12:01:00Z'
+  });
+  assert.equal(p.responseCategory,'Suppression');
+  assert.ok(p.proposedChanges.some(x=>x.field==='suppression'));
+  assert.equal(p.proposedChanges.some(x=>x.field==='engagementState'&&x.value==='Interested'),false);
+});
