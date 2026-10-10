@@ -18,6 +18,10 @@
       "destination": "/api/crm?tssHubspotSync=1"
     },
     {
+      "source": "/api/tss-commercial-intake",
+      "destination": "/api/crm?tssG5CommercialIntake=1"
+    },
+    {
       "source": "/api/outlook/ingestion/enable",
       "destination": "/api/outlook/status?captureAction=enable"
     },
