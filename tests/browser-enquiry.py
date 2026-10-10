@@ -204,14 +204,22 @@ with sync_playwright() as p:
         check('switching route excludes inactive fields from the payload',route_switch)
         def kiti():
             with session(browser,path='/kiti-enquiry.html?source=whatsapp') as (page,s):
-                selector='form[data-tss-form="kiti"]';fill(page,selector);submit(page,selector)
+                # Old Kiti URL now forwards visitors to ONE Kiti-preselected contact form.
+                page.wait_for_url('**/contact.html?enquiry=kiti')
+                assert page.locator('#interest').evaluate('(e)=>e.selectedOptions[0].dataset.route')=='kiti'
+                assert page.locator('form[data-tss-form="kiti"]').count()==0
+                selector='form[data-tss-form="contact"]'
+                fill(page,selector)
+                submit(page,selector)
                 expect(page.locator('[data-tss-form-status]')).to_have_attribute('data-state','success')
+                assert len(s['requests'])==1
                 payload=s['requests'][0]
-                assert payload['source_opportunity']==['Kiti Residential Development Opportunity']
-                assert payload['interest']==['Investor / Development Opportunity']
-                assert 'Privacy consent: Agreed' in payload['message'][0]
-                assert payload['phone']==['+357 99 000000'];assert not s['errors'],s['errors']
-        check('legacy separate Kiti form retains its existing contract',kiti)
+                assert 'Service route: Kiti Residential Development Opportunity' in payload['message'][0]
+                assert 'Kiti Residential Development Opportunity' in payload['message'][0]
+                assert payload['source']==[ORIGIN+'/contact.html?enquiry=kiti']
+                assert payload['phone']==['+357 99 000000']
+                assert not s['errors'],s['errors']
+        check('old Kiti URL redirects into one Kiti-preselected protected form',kiti)
         for width in [390,768,1280]:
             def layout(width=width):
                 with session(browser,'unconfirmed',width=width) as (page,s):
