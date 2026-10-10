@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { classifyWebsiteTask, matchSourceContact, nicosiaDueTimestamp, records, syncOne } from '../lib/tssHubspotEnquirySync.mjs';
+import { classifyWebsiteTask, matchSourceContact, nicosiaDueTimestamp, records, syncOne, runSync, collectWebsiteCandidates } from '../lib/tssHubspotEnquirySync.mjs';
 
 const task = {
   id: 'TSK-WEB-2026-0031', name: 'Review Website enquiry TSS-2026-0031',
@@ -41,26 +41,71 @@ test('due time uses Asia/Nicosia summer and winter offsets', () => {
   assert.equal(nicosiaDueTimestamp('2026-10-13'), '2026-10-13T17:00:00+03:00');
   assert.equal(nicosiaDueTimestamp('2026-11-02'), '2026-11-02T17:00:00+02:00');
 });
-function mockHub({ existingTask = null, companyFound = null, contactFound = null } = {}) {
+// Test-only, process-local lease. NOT a production lock implementation.
+function mockLease() {
+  const held = new Set();
+  return {
+    async acquire(key) {
+      if (held.has(key)) throw new Error('WRITE_LEASE_BUSY');
+      held.add(key);
+      return { async release() { held.delete(key); } };
+    },
+    active() { return held.size; }
+  };
+}
+function mockHub({ existingTask = null, companyFound = null, contactFound = null,
+  taskAssociationsOverride = null } = {}) {
   const created = [];
+  const findCreated = (type, prop, value) => created.find(c =>
+    c.type === type && c.props[prop] === value);
   const hub = {
     async search(type, field, value) {
-      if (type === 'tasks') return existingTask ? [existingTask] : [];
-      if (type === 'companies' && field === 'tss_company_id') return companyFound ? [companyFound] : [];
-      if (type === 'contacts') return contactFound ? [contactFound] : [];
+      if (type === 'tasks') return existingTask ? [existingTask] :
+        created.filter(c => c.type === 'tasks' && c.props.hs_task_subject === value)
+          .map(c => ({ id: c.id, properties: { hs_task_body: c.props.hs_task_body } }));
+      if (type === 'companies' && field === 'tss_company_id') {
+        const made = findCreated('companies', 'tss_company_id', value);
+        return companyFound ? [companyFound] : made ? [{ id: made.id, properties: made.props }] : [];
+      }
+      if (type === 'contacts') {
+        const made = findCreated('contacts', field, value);
+        return contactFound && contactFound.properties?.[field] === value ?
+          [contactFound] : made ? [{ id: made.id, properties: made.props }] : [];
+      }
       return [];
     },
-    async get() { return { associations: { companies: { results: companyFound ? [{ id: companyFound.id }] : [] } } }; },
+    async get(type, id) {
+      if (type === 'tasks') {
+        if (taskAssociationsOverride) return { associations: taskAssociationsOverride };
+        const taskRow = created.find(c => c.type === 'tasks' && c.id === String(id));
+        if (taskRow) return { associations: {
+          companies: { results: [{ id: taskRow.associations[0].to.id }] },
+          contacts: { results: [{ id: taskRow.associations[1].to.id }] }
+        } };
+        return { associations: {
+          companies: { results: companyFound ? [{ id: companyFound.id }] : [] },
+          contacts: { results: contactFound ? [{ id: contactFound.id }] : [] }
+        } };
+      }
+      if (type === 'contacts') {
+        const row = created.find(c => c.type === 'contacts' && c.id === String(id));
+        return { associations: { companies: { results:
+          row ? [{ id: row.associations[0].to.id }] :
+            companyFound ? [{ id: companyFound.id }] : [] } } };
+      }
+      return { associations: {} };
+    },
     async defaultType(from, to) {
       return { 'tasks/companies': 192, 'tasks/contacts': 204, 'contacts/companies': 1 }[from + '/' + to];
     },
     async create(type, props, associations) {
-      created.push({ type, props, associations });
+      created.push({ type, props, associations, id: String(created.length + 1) });
       return { id: String(created.length) };
     }
   };
   return { hub, created };
 }
+
 test('dry run resolves but does not create or modify any CRM records', async () => {
   const { hub, created } = mockHub();
   const result = await syncOne(entry, { hub, write: false, ownerId: '100713372' });
@@ -69,7 +114,7 @@ test('dry run resolves but does not create or modify any CRM records', async () 
 });
 test('new enquiry creates only company, contact and internal task with both associations', async () => {
   const { hub, created } = mockHub();
-  const result = await syncOne(entry, { hub, write: true, ownerId: '100713372' });
+  const result = await syncOne(entry, { hub, write: true, writeLease: mockLease(), ownerId: '100713372' });
   assert.equal(result.status, 'created');
   assert.deepEqual(created.map(c => c.type), ['companies', 'contacts', 'tasks']);
   const written = created[2];
@@ -80,25 +125,358 @@ test('new enquiry creates only company, contact and internal task with both asso
   assert.equal(written.associations.length, 2);
 });
 test('existing task is idempotent; unverified subject collision must fail', async () => {
-  const a = mockHub({ existingTask: { id: '123', properties: { hs_task_body: 'TSS Task ID: TSK-WEB-2026-0031' } } });
-  assert.equal((await syncOne(entry, { hub: a.hub, write: true, ownerId: '1' })).status, 'already_synced');
+  const a = mockHub({
+    existingTask: { id: '123', properties: { hs_task_body: 'TSS Task ID: TSK-WEB-2026-0031' } },
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: { email: contact.email, tss_contact_id: contact.id } }
+  });
+  assert.equal((await syncOne(entry, { hub: a.hub, write: true, writeLease: mockLease(), ownerId: '1' })).status, 'already_synced');
   assert.equal(a.created.length, 0);
   const b = mockHub({ existingTask: { id: '123', properties: { hs_task_body: 'Other task' } } });
-  await assert.rejects(syncOne(entry, { hub: b.hub, write: true, ownerId: '1' }), /collision/);
+  await assert.rejects(syncOne(entry, { hub: b.hub, write: true, writeLease: mockLease(), ownerId: '1' }), /collision/);
   assert.equal(b.created.length, 0);
 });
 test('existing company and contact are reused without altering their properties', async () => {
   const x = mockHub({
     companyFound: { id: '101', properties: { tss_company_id: company.id } },
-    contactFound: { id: '102', properties: { email: contact.email } }
+    contactFound: { id: '102', properties: { email: contact.email, tss_contact_id: contact.id } }
   });
-  await syncOne(entry, { hub: x.hub, write: true, ownerId: '100713372' });
+  await syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '100713372' });
   assert.deepEqual(x.created.map(c => c.type), ['tasks']);
   assert.deepEqual(x.created[0].associations.map(a => a.to.id), ['101', '102']);
 });
 
 test('existing unassociated contact blocks rather than silently linking to a company', async () => {
-  const x = mockHub({ contactFound: { id: '102', properties: { email: contact.email } } });
-  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, ownerId: '1' }), /association requires manual review/);
+  const x = mockHub({ contactFound: { id: '102', properties: { email: contact.email, tss_contact_id: contact.id } } });
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }), /association requires manual review/);
   assert.equal(x.created.length, 0);
+});
+
+test('G4 stays fail-closed when no server-owned exclusive write lease exists', async () => {
+  const x = mockHub();
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, ownerId: '1' }),
+    /DURABLE_WRITE_LEASE_REQUIRED/);
+  assert.equal(x.created.length, 0);
+});
+
+test('a busy lease refuses a second concurrent writer without provider writes', async () => {
+  const lock = mockLease();
+  const held = await lock.acquire(task.id);
+  const x = mockHub();
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: lock, ownerId: '1' }),
+    /WRITE_LEASE_BUSY/);
+  assert.equal(x.created.length, 0);
+  await held.release();
+  assert.equal((await syncOne(entry, { hub: x.hub, write: true, writeLease: lock, ownerId: '1' })).status, 'created');
+  assert.equal(x.created.filter(x => x.type === 'tasks').length, 1);
+  assert.equal(lock.active(), 0);
+});
+
+test('mock lease releases after provider failure and retry rechecks existing task', async () => {
+  const x = mockHub();
+  const lock = mockLease();
+  const create = x.hub.create;
+  let failAfterCreate = true;
+  x.hub.create = async (...args) => {
+    const result = await create(...args);
+    if (args[0] === 'tasks' && failAfterCreate) {
+      failAfterCreate = false;
+      throw new Error('PROVIDER_ACK_UNCERTAIN');
+    }
+    return result;
+  };
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: lock, ownerId: '1' }),
+    /PROVIDER_ACK_UNCERTAIN/);
+  assert.equal(lock.active(), 0);
+  // The first task already exists; a retry must not create a second.
+  const second = await syncOne(entry, { hub: x.hub, write: true, writeLease: lock, ownerId: '1' });
+  assert.equal(second.status, 'already_synced');
+  assert.equal(x.created.filter(c => c.type === 'tasks').length, 1);
+});
+
+test('personal Android contacts are never silently reused for commercial enquiries', async () => {
+  const x = mockHub({
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: {
+      email: contact.email, tss_source_system: 'Personal - Android Import'
+    } }
+  });
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }),
+    /Personal contact cannot be reused/);
+  assert.equal(x.created.length, 0);
+});
+
+test('mismatched canonical contact IDs fail before any write', async () => {
+  const x = mockHub({
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: {
+      email: contact.email, tss_contact_id: 'OTHER-TSS-CONTACT'
+    } }
+  });
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }),
+    /Contact TSS identity mismatch/);
+  assert.equal(x.created.length, 0);
+});
+
+test('enabled Production flag alone cannot bypass missing durable lease or reach providers', async () => {
+  const env = {
+    TSS_HUBSPOT_SYNC_ENABLED: 'true',
+    TSS_GOOGLE_SERVICE_ACCOUNT_JSON: 'test-only-placeholder',
+    TSS_MASTER_SPREADSHEET_ID: 'test-workbook',
+    TSS_HUBSPOT_SERVICE_KEY: 'test-only-placeholder',
+    TSS_HUBSPOT_SYNC_START_AT: '2026-10-09T00:00:00Z',
+    TSS_HUBSPOT_OWNER_ID: '100713372'
+  };
+  let providerCalls = 0;
+  await assert.rejects(runSync(env, { write: true }, async () => {
+    providerCalls++;
+    throw new Error('Unexpected provider access');
+  }), /DURABLE_WRITE_LEASE_REQUIRED/);
+  assert.equal(providerCalls, 0);
+});
+
+test('existing task without exact Company and Contact links must not count as synced', async () => {
+  const x = mockHub({
+    existingTask: { id: '123', properties: { hs_task_body: 'TSS Task ID: TSK-WEB-2026-0031' } },
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: { email: contact.email, tss_contact_id: contact.id } },
+    taskAssociationsOverride: {
+      companies: { results: [{ id: '101' }] }, contacts: { results: [] }
+    }
+  });
+  await assert.rejects(syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }),
+    /Existing task associations require manual review/);
+  assert.equal(x.created.length, 0);
+});
+
+test('website preflight flags eligible enquiry missing a matching source Contact', () => {
+  const read = collectWebsiteCandidates(
+    { tasks: [task], companies: [company], contacts: [] }, '2026-10-09T00:00:00Z');
+  assert.equal(read.candidates.length, 0);
+  assert.deepEqual(read.blocked, [{
+    reference: '2026-0031', status: 'blocked', error: 'contact_ambiguous_or_missing'
+  }]);
+  assert.equal(Object.keys(read.ignored).length, 0);
+});
+
+test('website preflight retains a good enquiry but blocks ambiguous identity', () => {
+  const second = { ...task, id: 'TSK-WEB-2026-0032', name: 'Review Website enquiry TSS-2026-0032',
+    notes: 'Website enquiry TSS-2026-0032 | Source: Website | Reply to prospect@example.com' };
+  const read = collectWebsiteCandidates(
+    { tasks: [task, second], companies: [company],
+      contacts: [{ ...contact, notes: 'TSS-2026-0031' }, { ...contact, id:'CON-0032', notes:'TSS-2026-0032' }] },
+    '2026-10-09T00:00:00Z');
+  assert.equal(read.blocked.length, 0);
+  assert.equal(read.candidates.length, 2);
+  const ambiguous = collectWebsiteCandidates(
+    { tasks: [task], companies: [company], contacts: [contact, { ...contact, id:'CON-DUPLICATE' }] },
+    '2026-10-09T00:00:00Z');
+  assert.equal(ambiguous.blocked.length, 1);
+  assert.equal(ambiguous.candidates.length, 0);
+});
+
+test('existing HubSpot contact missing canonical source ID fails without writes', async () => {
+  const x = mockHub({
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: { email: contact.email } }
+  });
+  await assert.rejects(
+    syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1' }),
+    /Contact TSS identity mismatch or missing/);
+  assert.equal(x.created.length, 0);
+});
+
+test('website preflight excludes completed internal QA without blocking batch', () => {
+  const qaTask = { ...task, id: 'TSK-WEB-2026-0030', companyId: 'COM-8ee64d5e',
+    status: 'Done', notes: 'Website enquiry TSS-2026-0030 | Source: Website | Reply to thesmartysolution@gmail.com' };
+  const qaCo = { id: 'COM-8ee64d5e', name: 'TSS Internal Email QA' };
+  const read = collectWebsiteCandidates(
+    { tasks: [qaTask], companies: [qaCo], contacts: [] }, '2026-10-09T00:00:00Z');
+  assert.equal(read.blocked.length, 0);
+  assert.equal(read.candidates.length, 0);
+  assert.equal(read.ignored.internal_qa, 1);
+});
+
+test('new task requires persisted Company and Contact readback before lease is committed', async () => {
+  const x = mockHub({
+    taskAssociationsOverride: {
+      companies: { results: [{ id: '1' }] }, contacts: { results: [] }
+    }
+  });
+  const outcomes = [];
+  const lease = { async acquire() { return {
+    async release(outcome) { outcomes.push(outcome); }
+  }; } };
+  await assert.rejects(
+    syncOne(entry, { hub: x.hub, write: true, writeLease: lease, ownerId: '1' }),
+    /CREATED_TASK_ASSOCIATIONS_UNVERIFIED/);
+  assert.equal(x.created.filter(z => z.type === 'tasks').length, 1);
+  assert.equal(outcomes.length, 1);
+  assert.equal(outcomes[0].status, 'review_required');
+});
+
+test('verified created task settles reservation only after provider readback', async () => {
+  const x = mockHub();
+  const outcomes = [];
+  const lease = { async acquire() { return {
+    async release(outcome) { outcomes.push(outcome); }
+  }; } };
+  const result = await syncOne(entry, {
+    hub: x.hub, write: true, writeLease: lease, ownerId: '1'
+  });
+  assert.equal(result.status, 'created');
+  assert.equal(outcomes.length, 1);
+  assert.equal(outcomes[0].status, 'verified');
+  assert.equal(outcomes[0].taskId, result.hubspotTaskId);
+});
+
+test('existing verified task supplies numeric HubSpot ID for durable settlement', async () => {
+  const x = mockHub({
+    existingTask: { id: '123456', properties: {
+      hs_task_body: 'Historical import\nTSS Task ID: TSK-WEB-2026-0031\nSource preserved'
+    } },
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: {
+      email: contact.email, tss_contact_id: contact.id
+    } }
+  });
+  const outcomes = [];
+  const lease = { async acquire() { return { async release(o) { outcomes.push(o); } }; } };
+  const result = await syncOne(entry, {
+    hub: x.hub, write: true, writeLease: lease, ownerId: '1'
+  });
+  assert.equal(result.status, 'already_synced');
+  assert.equal(result.hubspotTaskId, '123456');
+  assert.deepEqual(outcomes, [{
+    status: 'verified', operation: 'already_synced', taskId: '123456'
+  }]);
+  assert.equal(x.created.length, 0);
+});
+
+test('similar task ID substring is not accepted as an exact activity marker', async () => {
+  const x = mockHub({
+    existingTask: { id: '123456', properties: {
+      hs_task_body: 'TSS Task ID: TSK-WEB-2026-00310'
+    } }
+  });
+  await assert.rejects(syncOne(entry, {
+    hub: x.hub, write: true, writeLease: mockLease(), ownerId: '1'
+  }), /Task subject collision/);
+  assert.equal(x.created.length, 0);
+});
+
+test('legacy task with invalid provider ID cannot be committed as synced', async () => {
+  const x = mockHub({
+    existingTask: { id: 'not-a-task-id', properties: {
+      hs_task_body: 'TSS Task ID: TSK-WEB-2026-0031'
+    } },
+    companyFound: { id: '101', properties: { tss_company_id: company.id } },
+    contactFound: { id: '102', properties: { email: contact.email,
+      tss_contact_id: contact.id } }
+  });
+  const outcomes = [];
+  const lease = { async acquire() { return { async release(o) { outcomes.push(o); } }; } };
+  await assert.rejects(syncOne(entry, {
+    hub: x.hub, write: true, writeLease: lease, ownerId: '1'
+  }), /Existing task provider ID requires manual review/);
+  assert.equal(outcomes.length, 1);
+  assert.equal(outcomes[0].status, 'review_required');
+  assert.equal(x.created.length, 0);
+});
+
+test('post-cutoff website Task with missing Company cannot be silently ignored', () => {
+  const result = collectWebsiteCandidates(
+    { tasks: [task], companies: [], contacts: [contact] },
+    '2026-10-09T00:00:00Z');
+  assert.deepEqual(result.blocked, [{
+    reference: '2026-0031', status: 'blocked', error: 'missing_company'
+  }]);
+  assert.equal(result.candidates.length, 0);
+  assert.equal(result.ignored.missing_company, undefined);
+});
+
+test('malformed current website records require review, not a green no-candidate result', () => {
+  const variants = [
+    [{ ...task, createdAt: 'not-a-date' }, 'invalid_date'],
+    [{ ...task, dueDate: 'not-a-date' }, 'invalid_due_date'],
+    [{ ...task, notes: 'Source: Website | Reply to prospect@example.com' }, 'missing_reference']
+  ];
+  for (const [source, expected] of variants) {
+    const result = collectWebsiteCandidates(
+      { tasks: [source], companies: [company], contacts: [contact] },
+      '2026-10-09T00:00:00Z');
+    assert.equal(result.blocked.length, 1);
+    assert.equal(result.blocked[0].error, expected);
+    assert.equal(result.candidates.length, 0);
+    assert.equal(Object.keys(result.ignored).length, 0);
+  }
+});
+
+test('non-website, old, done and internal QA tasks remain harmless exclusions', () => {
+  const cases = [
+    { ...task, id: 'TSK-NONWEB-2026-0031' },
+    { ...task, createdAt: '2026-10-08T08:00:00Z' },
+    { ...task, status: 'Done' },
+    { ...task, companyId: 'COM-8ee64d5e' }
+  ];
+  const qa = { id: 'COM-8ee64d5e', name: 'TSS Internal Email QA' };
+  const result = collectWebsiteCandidates(
+    { tasks: cases, companies: [company, qa], contacts: [contact] },
+    '2026-10-09T00:00:00Z');
+  assert.equal(result.candidates.length, 0);
+  assert.equal(result.blocked.length, 0);
+  assert.equal(Object.keys(result.ignored).length >= 3, true);
+});
+
+test('new commercial contacts receive exact canonical TSS identity and source marker', async () => {
+  const x = mockHub();
+  await syncOne(entry, { hub: x.hub, write: true, writeLease: mockLease(), ownerId:'1' });
+  const made = x.created.find(c=>c.type==='contacts');
+  assert.equal(made.props.tss_contact_id,contact.id);
+  assert.equal(made.props.tss_source_system,'TSS CRM - Master Workbook');
+});
+
+test('a canonical TSS Contact already present under a different email is not duplicated', async () => {
+  const x = mockHub({
+    companyFound: { id:'101',properties:{tss_company_id:company.id} },
+    contactFound: { id:'102',properties:{
+      tss_contact_id:contact.id,email:'former@example.com',
+      tss_source_system:'TSS CRM - Master Workbook'
+    } }
+  });
+  await assert.rejects(
+    syncOne(entry,{hub:x.hub,write:true,writeLease:mockLease(),ownerId:'1'}),
+    /Canonical Contact ID already exists with a different email/);
+  assert.equal(x.created.length,0);
+});
+
+test('duplicate canonical company IDs block active website transfer', () => {
+  const result = collectWebsiteCandidates({
+    tasks:[task],
+    companies:[company,{...company,name:'Conflicting Company Name'}],
+    contacts:[contact]
+  },'2026-10-09T00:00:00Z');
+  assert.equal(result.candidates.length,0);
+  assert.equal(result.blocked[0].error,'duplicate_source_company_id');
+});
+
+test('duplicate canonical contact IDs block active website transfer', () => {
+  const result=collectWebsiteCandidates({
+    tasks:[task],
+    companies:[company],
+    contacts:[contact,{...contact,email:'different@example.com'}]
+  },'2026-10-09T00:00:00Z');
+  assert.equal(result.candidates.length,0);
+  assert.equal(result.blocked[0].error,'duplicate_source_contact_id');
+});
+
+test('duplicate original website Task IDs block active website transfer', () => {
+  const result=collectWebsiteCandidates({
+    tasks:[task,{...task,notes:task.notes+' duplicate source row'}],
+    companies:[company],
+    contacts:[contact]
+  },'2026-10-09T00:00:00Z');
+  assert.equal(result.candidates.length,0);
+  assert.equal(result.blocked.length,2);
+  assert.equal(result.blocked.every(x=>x.error==='duplicate_source_task_id'),true);
 });

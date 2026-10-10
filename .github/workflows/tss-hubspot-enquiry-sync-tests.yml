@@ -3,10 +3,13 @@ on:
   pull_request:
     paths:
       - 'lib/tssHubspotEnquirySync.mjs'
+      - 'lib/tssG4ReservationAdapter.mjs'
+      - 'integrations/apps-script/TssG4Reservation.gs'
       - 'lib/tssHubspotEnquiryHandler.mjs'
       - 'api/crm.js'
       - 'vercel.json'
       - 'tests/tssHubspotEnquirySync.test.mjs'
+      - 'tests/tssG4Reservation.test.mjs'
       - 'tests/tssHubspotRoute.test.mjs'
       - 'tests/tssHubspotConnectionProbe.test.mjs'
       - 'tests/tssHubspotCronAuth.test.mjs'
@@ -24,9 +27,10 @@ jobs:
         with:
           node-version: '22'
       - name: Run pure offline tests (no credentials or network)
-        run: node --test tests/tssHubspotEnquirySync.test.mjs tests/tssHubspotRoute.test.mjs tests/tssHubspotConnectionProbe.test.mjs tests/tssHubspotCronAuth.test.mjs
+        run: node --test tests/tssHubspotEnquirySync.test.mjs tests/tssHubspotRoute.test.mjs tests/tssHubspotConnectionProbe.test.mjs tests/tssHubspotCronAuth.test.mjs tests/tssG4Reservation.test.mjs
       - name: Check ESM syntax
         run: |
           node --check lib/tssHubspotEnquirySync.mjs
+          node --check lib/tssG4ReservationAdapter.mjs
           node --check lib/tssHubspotEnquiryHandler.mjs
           node --check api/crm.js

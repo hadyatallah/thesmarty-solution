@@ -1,0 +1,337 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { Script, createContext } from 'node:vm';
+import { createHash, randomUUID } from 'node:crypto';
+import { makeG4ReservationAdapter } from '../lib/tssG4ReservationAdapter.mjs';
+import { syncOne } from '../lib/tssHubspotEnquirySync.mjs';
+
+const serviceCode = readFileSync(new URL('../integrations/apps-script/TssG4Reservation.gs',
+  import.meta.url), 'utf8');
+const secret = 'test-only-secret-not-for-any-real-environment-1234567';
+const digest = s => createHash('sha256').update(String(s)).digest('hex');
+function makeService() {
+  const values = new Map([
+    ['TSS_G4_RESERVATIONS_ENABLED', 'true'],
+    ['TSS_G4_RESERVATION_SECRET_SHA256', digest(secret)]
+  ]);
+  let held = false;
+  const context = createContext({
+    PropertiesService: { getScriptProperties: () => ({
+      getProperty: key => values.get(key) ?? null,
+      getProperties: () => Object.fromEntries(values),
+      setProperty: (key, value) => { values.set(key, value); },
+      deleteProperty: key => { values.delete(key); }
+    }) },
+    LockService: { getScriptLock: () => ({
+      tryLock: () => { if (held) return false; held = true; return true; },
+      releaseLock: () => { held = false; }
+    }) },
+    Utilities: {
+      DigestAlgorithm: { SHA_256: 'SHA_256' }, Charset: { UTF_8: 'UTF_8' },
+      computeDigest: (_alg, s) => [...createHash('sha256').update(String(s)).digest()],
+      newBlob: value => ({ getBytes: () => [...Buffer.from(String(value), 'utf8')] }),
+      getUuid: () => randomUUID()
+    },
+    Date, JSON, String, Array
+  });
+  new Script(serviceCode, { filename: 'TssG4Reservation.gs' }).runInContext(context);
+  return { dispatch: request => context.tssG4ReservationDispatch_(request), values,
+    holdStore: () => { held = true; }, releaseStore: () => { held = false; } };
+}
+
+test('reservation module is syntax-valid and remains a dispatcher without doPost', () => {
+  assert.match(serviceCode, /function tssG4ReservationDispatch_/);
+  assert.doesNotMatch(serviceCode, /function\s+doPost\s*\(/);
+});
+
+test('disabled/unauthenticated reservations never write persistent state', () => {
+  const svc = makeService();
+  svc.values.set('TSS_G4_RESERVATIONS_ENABLED', 'false');
+  assert.equal(svc.dispatch({action:'reserve',taskId:'TSK-WEB-2026-0031',secret}).code,
+    'RESERVATION_SERVICE_DISABLED');
+  svc.values.set('TSS_G4_RESERVATIONS_ENABLED', 'true');
+  assert.equal(svc.dispatch({action:'reserve',taskId:'TSK-WEB-2026-0031',secret:'wrong'}).code,
+    'RESERVATION_UNAUTHORIZED');
+  assert.equal(svc.dispatch({action:'reserve',taskId:'OTHER-1',secret}).code,
+    'INVALID_TASK_ID');
+  assert.equal([...svc.values.keys()].filter(x=>x.startsWith('TSS_G4_RES_')).length, 0);
+});
+
+test('first claim persists and competing writers cannot acquire the same task', () => {
+  const svc=makeService(), taskId='TSK-WEB-2026-0031';
+  const first=svc.dispatch({action:'reserve',taskId,secret});
+  assert.equal(first.ok,true);
+  assert.equal(first.state,'reserved');
+  assert.equal(svc.dispatch({action:'reserve',taskId,secret}).code,'RESERVATION_HELD');
+  const summary=svc.dispatch({action:'inspect',taskId,secret});
+  assert.equal(summary.state,'reserved');
+  assert.equal(summary.token,undefined);
+  assert.equal(svc.dispatch({action:'settle',taskId,token:'wrong',outcome:'verified',secret}).code,
+    'RESERVATION_TOKEN_MISMATCH');
+  assert.equal(svc.dispatch({action:'reserve',taskId:'TSK-WEB-2026-0032',secret}).code,
+    'GLOBAL_WRITER_HELD');
+  assert.equal(svc.dispatch({action:'settle',taskId,token:first.token,
+    outcome:'verified',hubspotTaskId:'123',secret}).state,'committed');
+  assert.equal(svc.dispatch({action:'reserve',taskId,secret}).code,'ENQUIRY_ALREADY_COMMITTED');
+  assert.equal(svc.dispatch({action:'reserve',taskId:'TSK-WEB-2026-0032',secret}).ok,true);
+});
+
+test('uncertain writes remain durably held for manual review; no automatic expiry', () => {
+  const svc=makeService(), taskId='TSK-WEB-2026-0031';
+  const first=svc.dispatch({action:'reserve',taskId,secret});
+  assert.equal(svc.dispatch({action:'settle',taskId,token:first.token,
+    outcome:'review_required',secret}).state,'review_required');
+  assert.equal(svc.dispatch({action:'reserve',taskId,secret}).code,'RESERVATION_HELD');
+  assert.equal(svc.dispatch({action:'settle',taskId,token:first.token,
+    outcome:'verified',secret}).code,'RESERVATION_NOT_ACTIVE');
+});
+
+test('reservations fail closed if atomic store lock is unavailable', () => {
+  const svc=makeService();
+  svc.holdStore();
+  assert.equal(svc.dispatch({action:'reserve',taskId:'TSK-WEB-2026-0031',secret}).code,
+    'RESERVATION_STORE_BUSY');
+  svc.releaseStore();
+  assert.equal(svc.dispatch({action:'reserve',taskId:'TSK-WEB-2026-0031',secret}).ok,true);
+});
+
+test('server adapter reserves and settles via authenticated official Apps Script URL', async () => {
+  const svc=makeService(), operations=[];
+  const fetcher=async (url, opts) => {
+    operations.push({url,method:opts.method});
+    const payload=svc.dispatch(JSON.parse(opts.body));
+    return {ok:true,status:200,json:async()=>payload};
+  };
+  const adapter=makeG4ReservationAdapter({
+    url:'https://script.google.com/macros/s/TEST_STANDALONE_123/exec',
+    secret,fetcher
+  });
+  const lease=await adapter.acquire('TSK-WEB-2026-0031');
+  await assert.rejects(adapter.acquire('TSK-WEB-2026-0031'),/RESERVATION_HELD/);
+  await lease.release({status:'verified',taskId:'300'});
+  await assert.rejects(adapter.acquire('TSK-WEB-2026-0031'),/ENQUIRY_ALREADY_COMMITTED/);
+  assert.equal(operations.every(x=>x.method==='POST'),true);
+  assert.equal(svc.dispatch({action:'inspect',taskId:'TSK-WEB-2026-0031',secret}).state,
+    'committed');
+});
+
+test('adapter never retries an uncertain reservation settlement', async () => {
+  let total=0;
+  const fetcher=async (_url, opts)=>{
+    total++;
+    if (total===1) return {ok:true,status:200,json:async()=>({
+      ok:true,state:'reserved',token:'test-opaque-claim',taskId:'TSK-WEB-2026-0031'
+    })};
+    throw new Error('network lost after provider write');
+  };
+  const adapter=makeG4ReservationAdapter({
+    url:'https://script.google.com/macros/s/TEST_STANDALONE_123/exec',secret,fetcher
+  });
+  const lease=await adapter.acquire('TSK-WEB-2026-0031');
+  await assert.rejects(lease.release({status:'verified'}),/network lost/);
+  assert.equal(total,2);
+});
+
+test('adapter rejects insecure endpoints and untrusted redirects', async () => {
+  assert.throws(()=>makeG4ReservationAdapter({url:'https://evil.example/exec',secret}),
+    /RESERVATION_URL_INVALID/);
+  assert.throws(()=>makeG4ReservationAdapter({
+    url:'https://script.google.com/macros/s/TEST_STANDALONE_123/exec',secret:'short'
+  }),/RESERVATION_SECRET_MISSING/);
+  let calls=0;
+  const adapter=makeG4ReservationAdapter({
+    url:'https://script.google.com/macros/s/TEST_STANDALONE_123/exec',secret,
+    fetcher:async()=>{calls++;return {ok:false,status:302,headers:{
+      get:()=> 'https://evil.example/reservation'} }; }
+  });
+  await assert.rejects(adapter.acquire('TSK-WEB-2026-0031'),
+    /RESERVATION_RESPONSE_REDIRECT_INVALID/);
+  assert.equal(calls,1);
+});
+
+test('verified settlement requires a valid provider-generated HubSpot task ID', () => {
+  const svc = makeService();
+  const taskId = 'TSK-WEB-2026-0031';
+  const first = svc.dispatch({action:'reserve',taskId,secret});
+  const invalid = svc.dispatch({action:'settle',taskId,token:first.token,
+    outcome:'verified', hubspotTaskId:'not-an-id',secret});
+  assert.equal(invalid.code,'VERIFIED_TASK_ID_REQUIRED');
+  assert.equal(svc.dispatch({action:'inspect',taskId,secret}).state,'reserved');
+  const valid = svc.dispatch({action:'settle',taskId,token:first.token,
+    outcome:'verified',hubspotTaskId:'90042',secret});
+  assert.equal(valid.state,'committed');
+});
+
+test('capacity guard leaves the reservation store untouched on exhaustion', () => {
+  const svc = makeService();
+  // ScriptProperties total quota is 500KB; our own strict guard is 350KB.
+  svc.values.set('EXISTING_CRM_DATA', 'x'.repeat(350000));
+  const taskId='TSK-WEB-2026-0031';
+  const response=svc.dispatch({action:'reserve',taskId,secret});
+  assert.equal(response.code,'RESERVATION_STORE_CAPACITY');
+  assert.equal(svc.values.has('TSS_G4_RES_' + taskId),false);
+});
+
+test('capacity failure on settlement preserves unresolved durable reservation', () => {
+  const svc=makeService(),taskId='TSK-WEB-2026-0031';
+  const first=svc.dispatch({action:'reserve',taskId,secret});
+  svc.values.set('EXISTING_CRM_DATA', 'x'.repeat(350000));
+  const attempt=svc.dispatch({action:'settle',taskId,token:first.token,
+    outcome:'verified',hubspotTaskId:'1001',secret});
+  assert.equal(attempt.code,'RESERVATION_STORE_CAPACITY');
+  assert.equal(svc.dispatch({action:'inspect',taskId,secret}).state,'reserved');
+  assert.equal(svc.dispatch({action:'reserve',taskId,secret}).code,'RESERVATION_HELD');
+});
+
+test('an uncertain task holds the global writer and blocks unrelated new enquiries', () => {
+  const svc = makeService();
+  const first = svc.dispatch({action:'reserve',
+    taskId:'TSK-WEB-2026-0031',secret});
+  assert.equal(first.ok,true);
+  const second = svc.dispatch({action:'reserve',
+    taskId:'TSK-WEB-2026-0032',secret});
+  assert.equal(second.code,'GLOBAL_WRITER_HELD');
+  const pending = svc.dispatch({action:'settle',
+    taskId:'TSK-WEB-2026-0031',token:first.token,
+    outcome:'review_required',secret});
+  assert.equal(pending.state,'review_required');
+  assert.equal(svc.dispatch({action:'reserve',
+    taskId:'TSK-WEB-2026-0032',secret}).code,'GLOBAL_WRITER_HELD');
+  assert.equal(svc.values.has('TSS_G4_ACTIVE_WRITER'),true);
+});
+
+test('the global writer is released only after a verified persisted settlement', () => {
+  const svc=makeService(),firstId='TSK-WEB-2026-0031';
+  const claim=svc.dispatch({action:'reserve',taskId:firstId,secret});
+  assert.equal(svc.values.has('TSS_G4_ACTIVE_WRITER'),true);
+  const error=svc.dispatch({action:'settle',taskId:firstId,token:claim.token,
+    outcome:'verified',hubspotTaskId:'bad-id',secret});
+  assert.equal(error.code,'VERIFIED_TASK_ID_REQUIRED');
+  assert.equal(svc.values.has('TSS_G4_ACTIVE_WRITER'),true);
+  const done=svc.dispatch({action:'settle',taskId:firstId,token:claim.token,
+    outcome:'verified',hubspotTaskId:'81234',secret});
+  assert.equal(done.state,'committed');
+  assert.equal(svc.values.has('TSS_G4_ACTIVE_WRITER'),false);
+  assert.equal(svc.dispatch({action:'reserve',
+    taskId:'TSK-WEB-2026-0032',secret}).ok,true);
+});
+
+function integrationFixture({ brokenTaskReadback = false } = {}) {
+  const svc = makeService();
+  const fetcher = async (_url, opts) => ({
+    ok: true, status: 200, json: async () => svc.dispatch(JSON.parse(opts.body))
+  });
+  const writeLease = makeG4ReservationAdapter({
+    url: 'https://script.google.com/macros/s/TEST_STANDALONE_123/exec',
+    secret, fetcher
+  });
+  let serial = 1000;
+  const records = { companies: [], contacts: [], tasks: [] };
+  const hub = {
+    async search(type, field, value) {
+      return records[type].filter(record =>
+        record.properties?.[field] === value);
+    },
+    async get(type, id) {
+      const record = records[type].find(item => item.id === String(id));
+      if (!record) throw new Error('TEST_RECORD_NOT_FOUND');
+      const byType = name => ({
+        results: record.associations
+          .filter(item => item.toType === name)
+          .map(item => ({ id: item.to.id }))
+      });
+      return {
+        id: record.id,
+        properties: record.properties,
+        associations: {
+          companies: byType('companies'),
+          contacts: type === 'tasks' && brokenTaskReadback ?
+            { results: [] } : byType('contacts')
+        }
+      };
+    },
+    async defaultType(from, to) {
+      const values = {
+        'tasks/companies': 192,
+        'tasks/contacts': 204,
+        'contacts/companies': 1
+      };
+      return values[from + '/' + to];
+    },
+    async create(type, properties, associations = []) {
+      const id = String(++serial);
+      const links = associations.map(item => ({
+        ...item,
+        toType: {
+          192: 'companies',
+          204: 'contacts',
+          1: 'companies'
+        }[item.types?.[0]?.associationTypeId]
+      }));
+      records[type].push({ id, properties, associations: links });
+      return { id };
+    }
+  };
+  const company = { id: 'COM-NEW-TEST', name: 'Example Business',
+    email: 'prospect@example.com' };
+  const sourceContact = { id: 'CON-0031', name: 'Example Contact',
+    companyId: company.id, email: 'prospect@example.com' };
+  const entry = {
+    task: { id: 'TSK-WEB-2026-0031',
+      name: 'Review Website enquiry TSS-2026-0031',
+      dueDate: '2026-10-13', createdAt: '2026-10-09T06:05:00Z',
+      notes: 'Source: Website | TSS-2026-0031 | Reply to prospect@example.com' },
+    company, sourceContact
+  };
+  return { svc, hub, writeLease, entry, records };
+}
+
+test('offline end-to-end bridge: reserved write, verified associations, committed replay', async () => {
+  const x = integrationFixture();
+  const first = await syncOne(x.entry, {
+    hub: x.hub, write: true, writeLease: x.writeLease, ownerId: '100713372'
+  });
+  assert.equal(first.status, 'created');
+  assert.equal(x.records.companies.length, 1);
+  assert.equal(x.records.contacts.length, 1);
+  assert.equal(x.records.tasks.length, 1);
+  const audit = x.svc.dispatch({
+    action: 'inspect', taskId: x.entry.task.id, secret
+  });
+  assert.equal(audit.state, 'committed');
+  assert.equal(audit.hubspotTaskId, first.hubspotTaskId);
+  assert.equal(x.svc.values.has('TSS_G4_ACTIVE_WRITER'), false);
+  await assert.rejects(syncOne(x.entry, {
+    hub: x.hub, write: true, writeLease: x.writeLease, ownerId: '100713372'
+  }), /ENQUIRY_ALREADY_COMMITTED/);
+  assert.equal(x.records.tasks.length, 1);
+  const next = structuredClone(x.entry);
+  next.task.id = 'TSK-WEB-2026-0032';
+  next.task.name = 'Review Website enquiry TSS-2026-0032';
+  const second = await syncOne(next, {
+    hub: x.hub, write: true, writeLease: x.writeLease, ownerId: '100713372'
+  });
+  assert.equal(second.status, 'created');
+  assert.equal(x.records.companies.length, 1);
+  assert.equal(x.records.contacts.length, 1);
+  assert.equal(x.records.tasks.length, 2);
+});
+
+test('offline end-to-end bridge: uncertain task association readback blocks unrelated enquiry', async () => {
+  const x = integrationFixture({ brokenTaskReadback: true });
+  await assert.rejects(syncOne(x.entry, {
+    hub: x.hub, write: true, writeLease: x.writeLease, ownerId: '100713372'
+  }), /CREATED_TASK_ASSOCIATIONS_UNVERIFIED/);
+  assert.equal(x.records.tasks.length, 1);
+  assert.equal(x.svc.dispatch({
+    action: 'inspect', taskId: x.entry.task.id, secret
+  }).state, 'review_required');
+  assert.equal(x.svc.values.has('TSS_G4_ACTIVE_WRITER'), true);
+  const next = structuredClone(x.entry);
+  next.task.id = 'TSK-WEB-2026-0032';
+  await assert.rejects(syncOne(next, {
+    hub: x.hub, write: true, writeLease: x.writeLease, ownerId: '100713372'
+  }), /GLOBAL_WRITER_HELD/);
+  assert.equal(x.records.tasks.length, 1);
+});
