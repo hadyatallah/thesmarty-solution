@@ -18,6 +18,19 @@
     })
   });
   const validId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const KITi_ROUTE_VALUE = 'Kiti Residential Development Opportunity';
+  const KITi_ROUTE_FIELD = 'tss_enquiry_route';
+
+  // A URL selection in the hidden legacy form does not reach a HubSpot iframe.
+  // Kiti keeps its legacy form unless the native form exposes and confirms
+  // the same route value through HubSpot's documented global Forms V4 API.
+  function requiresKitiRoute() {
+    try {
+      return new URLSearchParams(window.location.search).get('enquiry') === 'kiti';
+    } catch (_) {
+      return false;
+    }
+  }
   function isApprovedScript(url) {
     try {
       const parsed = new URL(url);
@@ -47,20 +60,49 @@
       frame.setAttribute('data-portal-id', config.portalId);
       frame.setAttribute('data-form-id', formId);
       slot.appendChild(frame);
-      prepared.push({ slot, legacy, frame });
+      prepared.push({ slot, legacy, frame, formId, routeVerified: !requiresKitiRoute() });
     }
     if (!prepared.length) return;
 
+    function revealWhenVerified(pair) {
+      if (pair.slot.dataset.tssHubspotMounted === 'true') return;
+      if (!pair.routeVerified || !pair.frame.querySelector('iframe')) return;
+      pair.slot.hidden = false;
+      pair.legacy.hidden = true;
+      pair.slot.dataset.tssHubspotMounted = 'true';
+    }
+
+    // Register BEFORE loading the HubSpot embed so the ready event is not lost.
+    if (requiresKitiRoute()) {
+      window.addEventListener('hs-form-event:on-ready', async (event) => {
+        const formId = String(event?.detail?.formId || '').toLowerCase();
+        const pair = prepared.find(item => item.formId.toLowerCase() === formId);
+        if (!pair || pair.routeVerified) return;
+        try {
+          const provider = window.HubSpotFormsV4;
+          if (!provider || typeof provider.getFormFromEvent !== 'function') return;
+          const form = provider.getFormFromEvent(event);
+          if (!form || typeof form.getFormFieldValues !== 'function' ||
+              typeof form.setFieldValue !== 'function' ||
+              typeof form.getFieldValue !== 'function') return;
+          const fields = await form.getFormFieldValues();
+          const routeField = Array.isArray(fields) && fields.find(field =>
+            typeof field.name === 'string' &&
+            field.name === '0-1/' + KITi_ROUTE_FIELD);
+          if (!routeField) return; // Missing from native form: preserve legacy Kiti form.
+          await form.setFieldValue(routeField.name, KITi_ROUTE_VALUE);
+          const value = await form.getFieldValue(routeField.name);
+          if (value !== KITi_ROUTE_VALUE) return;
+          pair.routeVerified = true;
+          revealWhenVerified(pair);
+        } catch (_) {
+          // HubSpot editor/configuration or provider error: keep legacy form.
+        }
+      });
+    }
+
     const observer = new MutationObserver(() => {
-      for (const pair of prepared) {
-        if (pair.slot.dataset.tssHubspotMounted === 'true') continue;
-        // Never hide the existing form until the native iframe exists.
-        const iframe = pair.frame.querySelector('iframe');
-        if (!iframe) continue;
-        pair.slot.hidden = false;
-        pair.legacy.hidden = true;
-        pair.slot.dataset.tssHubspotMounted = 'true';
-      }
+      for (const pair of prepared) revealWhenVerified(pair);
       if (prepared.every(pair => pair.slot.dataset.tssHubspotMounted === 'true')) {
         observer.disconnect();
       }
