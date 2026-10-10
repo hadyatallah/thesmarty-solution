@@ -4,7 +4,7 @@ Status: development candidate only. Production cutover is not authorized.
 
 ## What changed
 
-- Added `/api/tss-commercial-intake` as a disabled-by-default Vercel route.
+- Added `/api/tss-commercial-intake` as a disabled-by-default Vercel route, rewritten through the existing `/api/crm` function to avoid increasing Vercel serverless function count.
 - Added `lib/tssG5CommercialIntake.mjs` for direct website enquiry normalization, HubSpot contract verification, dry-run mode and guarded write mode.
 - Added offline tests for invalid submissions, duplicate anchors, retries/uncertain provider outcomes and readback failure.
 
@@ -14,6 +14,7 @@ Status: development candidate only. Production cutover is not authorized.
 - The current Apps Script path records the enquiry into the legacy CRM and may send confirmation email.
 - The existing G4 bridge reads website Tasks from the Master Workbook and can dry-run/check HubSpot, but it still depends on Apps Script-created CRM records.
 - The G5 candidate bypasses legacy CRM writes, but it is not wired into the browser form and is not enabled.
+- The route is isolated by query dispatch inside `/api/crm`; existing CRM and G4 bridge behavior remain unchanged.
 
 ## HubSpot safety contract
 
