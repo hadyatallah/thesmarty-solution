@@ -1,0 +1,22 @@
+name: TSS Phase B native receipts isolated tests
+on:
+  pull_request:
+    paths:
+      - 'lib/tssPhaseBNativeSubmissionReceipts.mjs'
+      - 'tests/tssPhaseBNativeSubmissionReceipts.test.mjs'
+      - '.github/workflows/tss-phase-b-native-receipts-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  isolated-receipt-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Pure offline receipt tests (no credentials or network)
+        run: node --test tests/tssPhaseBNativeSubmissionReceipts.test.mjs
+      - name: Syntax check
+        run: node --check lib/tssPhaseBNativeSubmissionReceipts.mjs
