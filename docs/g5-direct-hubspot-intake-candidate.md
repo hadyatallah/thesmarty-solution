@@ -1,70 +1,46 @@
-# G5 Direct HubSpot Intake Candidate
+# G5 Direct HubSpot Intake Candidate — Option 1: Ticket as Enquiry Review Item
 
-Status: development candidate only. Production cutover is not authorized.
+**Status:** owner-approved **design direction**, staged Draft PR #65 only. Production cutover, HubSpot configuration changes and live CRM writes are NOT authorized by this code change.
 
-## What changed
+## Owner decision (10 October 2026)
 
-- Added `/api/tss-commercial-intake` as a disabled-by-default Vercel route, rewritten through the existing `/api/crm` function to avoid increasing Vercel serverless function count.
-- Added `lib/tssG5CommercialIntake.mjs` for direct website enquiry normalization, HubSpot contract verification, dry-run mode, guarded write mode, association creation and independent readback.
-- Added offline tests for invalid submissions, duplicate anchors, retries/uncertain provider outcomes, partial writes, association failure, readback failure and replay behavior.
+Use exactly one uniquely keyed HubSpot **Ticket** as the durable website-enquiry receipt **and** the human-review work item. Do **not** automatically create a separate HubSpot Task. Tasks may be created later by an authorized person for actual follow-up.
 
-## Current website paths
+The original Task custom unique-property contract was blocked in HubSpot portal settings. Do not retry creating `tasks.tss_enquiry_key` or downgrade to search-before-create. The Ticket design remains conditional on a supported account-level Ticket unique property and dedicated commercial Ticket pipeline.
 
-- Public contact forms still submit to the existing Apps Script endpoint in `script.js`.
-- The current Apps Script path records the enquiry into the legacy CRM and may send confirmation email.
-- The existing G4 bridge reads website Tasks from the Master Workbook and can dry-run/check HubSpot, but it still depends on Apps Script-created CRM records.
-- The G5 candidate bypasses legacy CRM writes, but it is not wired into the browser form and is not enabled.
-- The route is isolated by query dispatch inside `/api/crm`; existing CRM and G4 bridge behavior remain unchanged.
+## Staged implementation
 
-## HubSpot safety contract
+- `/api/tss-commercial-intake` is routed through `/api/crm` to respect the current Vercel serverless function count.
+- Input normalization, restricted source validation, deterministic Company/Contact/Enquiry keys, server-side authorization and disabled-by-default mode remain in place.
+- The G5 candidate performs no Google Sheets commercial writes or customer communications.
+- **Property contract:** `companies.tss_company_key`, `contacts.tss_contact_key`, `tickets.tss_enquiry_key` must exist as single-line text properties with HubSpot-enforced unique values. All three remain uncreated/unverified in the live account.
+- **Pipeline contract:** `TSS_G5_TICKET_PIPELINE_ID` and `TSS_G5_TICKET_NEW_STAGE_ID` must identify an independently verified, open stage in a dedicated Ticket pipeline. The default Support Pipeline (`0`) is explicitly prohibited. No dedicated commercial Ticket pipeline has been verified or created.
+- The route checks both property and pipeline contracts before making any provider write.
+- With writes enabled after separate approval, the Ticket is created first with its deterministic unique key and immutable request fingerprint. A duplicate/uncertain create response can be reconciled only through exact-key readback, including pipeline and payload fingerprint; uncertain unmatched outcomes remain held.
+- **No Ticket upsert on replay:** a preexisting Ticket's reviewer-edited stage, subject and content cannot be reset by replaying the form.
+- Company and Contact are upserted using their own provider-enforced unique properties, then Contact → Company, Ticket → Company and Ticket → Contact associations are made and independently read back.
+- Missing IDs, ambiguous readback, mismatched fingerprints, incorrect pipeline, failed associations or uncertain provider responses fail closed for human review.
+- No automatic lead qualification, marketing enrollment or customer message is permitted. Ticket status is governed by human review.
 
-The direct path is accepted only if HubSpot has unique-value properties available and verified:
+## Current verified HubSpot account baseline
 
-| Object | Required unique property | Purpose |
-|---|---|---|
-| Company | `tss_company_key` | Company duplicate anchor |
-| Contact | `tss_contact_key` | Contact duplicate anchor |
-| Task | `tss_enquiry_key` | Enquiry receipt and replay anchor |
+Portal/account: `149509919`, connected user `info@thesmartysolution.com`.
 
-The route verifies those properties before any write. If the contract is missing, it returns `NOT_CONFIGURED_OR_DISABLED`.
+Read/write object availability: Company, Contact, Ticket, Task.
 
-HubSpot's published validation rules say unique-value properties are configured during property creation, are limited to ten unique-value properties per object, and are not supported for every object family. The current official documentation does not list `TASK` as unsupported, but this portal's exact task-property create UI/API behavior still needs owner-approved verification before any live property change.
+Ticket pipelines discovered: only the default **Support Pipeline**, id `0`, stages New (`1`), Waiting on contact (`2`), Waiting on us (`3`), Closed (`4`).
 
-Existing `tss_company_id` and `tss_contact_id` cannot safely serve this G5 requirement because they are the legacy CRM import identity fields and the read-only connector did not expose evidence that they are enforced unique-value properties. `tss_source_system` is categorization metadata, not an identity key.
+Ticket properties `subject`, `content`, `hs_pipeline`, `hs_pipeline_stage` and `tss_source_system` are readable. `tss_enquiry_key` is not found. The account reports `accountType=STANDARD`; this is NOT sufficient evidence of a Free/Starter/Pro subscription tier, custom pipeline allowance, property-definition permissions, or available unique-key capacity.
 
-## Limits
+Per HubSpot's published help, custom Ticket pipelines generally require Starter or higher under the relevant pricing model. No subscription upgrade, new pipeline or property creation is authorized or performed by this development PR.
 
-- This candidate does not create HubSpot properties. That is a portal configuration change and needs separate approval.
-- It does not send customer messages.
-- It does not automatically qualify or promote an enquiry. The HubSpot Task body says commercial review only.
-- The write path now creates Contact -> Company, Task -> Company and Task -> Contact default associations after unique-property upserts, then independently reads back the records and both Task associations before reporting success.
-- Live HubSpot write acceptance was not performed because the restriction forbids live HubSpot writes.
+## Next acceptance gates
 
-## Read-only portal check on 2026-10-10
+1. Verify current HubSpot plan, available custom pipeline entitlement, property-definition permissions, and absence of existing workflow/notification rules that would send messages on Ticket creation or stage changes.
+2. If a dedicated Ticket pipeline and three native unique-property definitions can be configured without new cost, present the exact pipeline stages and three property definitions for the appropriate **configuration approval**. Do not reuse or rename the default Support Pipeline.
+3. Independently verify all live properties' `hasUniqueValue=true`, exact names/types and Ticket pipeline stage IDs.
+4. Run complete offline CI, Preview disabled/dry-run tests, replay/concurrency/unknown-result tests.
+5. Before any provider record or association write, request **separate explicit internal-only QA approval** identifying exact synthetic records, rollback/reconciliation and zero outbound communications.
+6. Browser form cutover remains a separate PR and Production release gate after authenticated end-to-end acceptance.
 
-- Connected HubSpot user: `info@thesmartysolution.com`, owner/user ID `100713372`.
-- Read/write availability is present for `COMPANY`, `CONTACT` and `TASK`.
-- Existing TSS properties found include `tss_company_id`, `tss_contact_id` and `tss_source_system`.
-- Required G5 unique properties `tss_company_key`, `tss_contact_key` and `tss_enquiry_key` were not found by read-only property search.
-- Exact property lookups returned `propertiesNotFound` for all three required G5 key properties. Existing `tss_company_id`, `tss_contact_id`, `tss_source_system`, `domain`, `name`, `email`, `hs_task_subject`, `hs_task_body` and `hubspot_owner_id` were readable where expected.
-- Therefore the G5 direct route must remain disabled. It is not safe to accept live direct intake until the unique-property contract is configured and verified.
-
-## Proposed HubSpot property changes for owner approval
-
-Do not create these until separately approved.
-
-| Object | Internal name | Label | Field type | Rule |
-|---|---|---|---|---|
-| Company | `tss_company_key` | TSS G5 Company Key | Single-line text | Require unique values |
-| Contact | `tss_contact_key` | TSS G5 Contact Key | Single-line text | Require unique values |
-| Task | `tss_enquiry_key` | TSS G5 Enquiry Key | Single-line text | Require unique values |
-
-If HubSpot rejects unique-value enforcement for `TASK`, the smallest safe alternative is not search-before-create. It is a separate server-owned reservation ledger in existing approved infrastructure, with an atomic insert/reservation step before the HubSpot task write and a held-for-review state for uncertain HubSpot outcomes. That alternative is not activated in this PR.
-
-## Acceptance still required
-
-- Verify the three HubSpot properties exist and have unique-value enforcement in the live portal.
-- Approve and create missing unique properties, or approve the atomic reservation-ledger alternative if `TASK` uniqueness is unavailable.
-- Run Vercel Preview with `TSS_G5_HUBSPOT_DIRECT_ENABLED=false` first.
-- Run one approved internal-only live write only after the property contract and association behavior are verified.
-- Only after accepted, update the browser form endpoint in a separate cutover PR.
+**Do not merge PR #65, activate G5 direct intake, change Production, change legacy Apps Script, reset Gmail/Outlook cursors, send messages, create HubSpot records or purchase software.** Preserve G3/Outlook/PR63 acceptance and G4 deferred workstream.
