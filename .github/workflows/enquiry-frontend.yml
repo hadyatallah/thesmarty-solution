@@ -6,6 +6,9 @@ on:
       - 'script.js'
       - 'anti-spam.js'
       - 'contact.html'
+      - 'hubspot-native-forms.js'
+      - 'tests/hubspot-native-forms.test.mjs'
+      - 'docs/g5-native-hubspot-forms.md'
       - 'kiti-enquiry.html'
       - 'tests/enquiry-transport.test.mjs'
       - 'tests/browser-enquiry.py'
@@ -30,8 +33,9 @@ jobs:
       - name: Validate JavaScript and isolated transport plus existing CRM safety tests
         run: |
           node --check script.js
+          node --check hubspot-native-forms.js
           node --check anti-spam.js
-          node --test tests/enquiry-transport.test.mjs tests/urgent*.test.mjs
+          node --test tests/enquiry-transport.test.mjs tests/hubspot-native-forms.test.mjs tests/urgent*.test.mjs
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
