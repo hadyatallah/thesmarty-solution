@@ -1,4 +1,4 @@
-"""One-time, read-only Production form field audit. NEVER submits any forms.
+"""Final read-only Production recheck after CSS single-form visibility fix. NEVER submits any forms.
 
 This script is isolated from the production bundle, and exists only to observe
 the loaded public HubSpot iframe via its documented read-only Forms V4 methods.
