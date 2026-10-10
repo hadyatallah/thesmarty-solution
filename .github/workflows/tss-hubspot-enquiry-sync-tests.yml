@@ -12,6 +12,8 @@ on:
       - 'tests/tssHubspotCronAuth.test.mjs'
       - 'lib/tssG5CommercialIntake.mjs'
       - 'tests/tssG5CommercialIntake.test.mjs'
+      - 'tests/enquiry-flow.test.mjs'
+      - 'tests/enquiry-transport.test.mjs'
       - 'docs/g5-direct-hubspot-intake-candidate.md'
       - 'vercel.json'
       - '.github/workflows/tss-hubspot-enquiry-sync-tests.yml'
@@ -27,7 +29,7 @@ jobs:
         with:
           node-version: '22'
       - name: Run pure offline tests (no credentials or network)
-        run: node --test tests/tssHubspotEnquirySync.test.mjs tests/tssHubspotRoute.test.mjs tests/tssHubspotConnectionProbe.test.mjs tests/tssHubspotCronAuth.test.mjs tests/tssG5CommercialIntake.test.mjs
+        run: node --test tests/tssHubspotEnquirySync.test.mjs tests/tssHubspotRoute.test.mjs tests/tssHubspotConnectionProbe.test.mjs tests/tssHubspotCronAuth.test.mjs tests/tssG5CommercialIntake.test.mjs tests/enquiry-flow.test.mjs tests/enquiry-transport.test.mjs
       - name: Check ESM syntax
         run: |
           node --check lib/tssHubspotEnquirySync.mjs
