@@ -1,6 +1,6 @@
 /*
- * TSS native HubSpot Forms — PREVIEW-ONLY cutover adapter.
- * The original enquiry forms remain usable if HubSpot fails to load or render.
+ * TSS native HubSpot Forms adapter.
+ * The original enquiry form remains usable if HubSpot fails to load or render.
  *
  * Form IDs and embedScriptUrl are copied from HubSpot's UPDATED form editor.
  * Do not use legacy-editor embed APIs for a form built in HubSpot's updated editor.
@@ -14,8 +14,7 @@
     region: 'eu1',
     embedScriptUrl: 'https://js-eu1.hsforms.net/forms/embed/149509919.js',
     forms: Object.freeze({
-      contact: 'd571803e-7777-4f28-94ea-b24df852245c',
-      kiti: '905f1307-a4f8-4dd1-a299-4caefd5aae01'
+      contact: 'd571803e-7777-4f28-94ea-b24df852245c'
     })
   });
   const validId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
