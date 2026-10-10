@@ -11,7 +11,6 @@ on:
       - 'tests/tssHubspotConnectionProbe.test.mjs'
       - 'tests/tssHubspotCronAuth.test.mjs'
       - 'lib/tssG5CommercialIntake.mjs'
-      - 'api/tss-commercial-intake.js'
       - 'tests/tssG5CommercialIntake.test.mjs'
       - 'docs/g5-direct-hubspot-intake-candidate.md'
       - 'vercel.json'
@@ -35,4 +34,3 @@ jobs:
           node --check lib/tssHubspotEnquiryHandler.mjs
           node --check lib/tssG5CommercialIntake.mjs
           node --check api/crm.js
-          node --check api/tss-commercial-intake.js
