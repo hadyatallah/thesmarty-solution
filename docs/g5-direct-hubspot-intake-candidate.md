@@ -44,3 +44,43 @@ Per HubSpot's published help, custom Ticket pipelines generally require Starter 
 6. Browser form cutover remains a separate PR and Production release gate after authenticated end-to-end acceptance.
 
 **Do not merge PR #65, activate G5 direct intake, change Production, change legacy Apps Script, reset Gmail/Outlook cursors, send messages, create HubSpot records or purchase software.** Preserve G3/Outlook/PR63 acceptance and G4 deferred workstream.
+
+
+## G5-2 Read-only Account Entitlement Check — 10 October 2026
+
+**Verified via the owner-connected HubSpot account:** account \`149509919\`, \`info@thesmartysolution.com\`, company/contact/ticket record read/write available. HubSpot account metadata reports \`accountType=STANDARD\`, but does not disclose a Free, Starter, Professional or Enterprise subscription tier or the available remaining pipeline count.
+
+- Ticket pipeline list: one **Support Pipeline**, id \`0\`; stages \`1\` New, \`2\` Waiting on contact, \`3\` Waiting on us, \`4\` Closed.
+- Existing Ticket records: \`4\` out of \`4\` live Ticket search results are on Support Pipeline, including \`2\` in New and \`2\` Closed. These records must be preserved; do not alter or reuse the Support Pipeline.
+- Property lookup: \`tickets.tss_enquiry_key\` is missing; ticket \`subject\`, \`content\`, \`hs_pipeline\`, \`hs_pipeline_stage\`, and \`tss_source_system\` are present.
+- Published HubSpot documentation allows up to ten unique-value properties per supported object and expressly includes **Tickets** as objects eligible to use a unique custom property for imports. These documentation facts are not evidence that \`tss_enquiry_key\` is provisioned or that the connected account has property-setting permissions.
+- HubSpot documentation for *Set up and manage object pipelines* identifies a streamlined/simplified pipeline-limit model with Free: **0** custom pipelines; Starter: **15**; Professional: **100**; Enterprise: **350**. Account-specific entitlement must be checked in the **official billing/plan screen or Data Management > Data Model > Limits > Pipelines**. Do not infer the tier from \`STANDARD\` or create/upgrade a plan.
+- The connected HubSpot CRM tool cannot create property definitions, create pipelines, read billing entitlements, or enumerate workflows. **Support-ticket automation or notification suppression has NOT been verified.**
+
+### Conditional configuration proposal — NOT YET AUTHORIZED
+
+After confirming a dedicated Ticket pipeline is available **without new fees or plan upgrades**, and after ruling out unwanted automations/outbound customer communication, prepare the precise HubSpot configuration for approval:
+
+| Object | Unique single-line text internal name | Proposed label |
+| --- | --- | --- |
+| Company | \`tss_company_key\` | TSS G5 Company Key |
+| Contact | \`tss_contact_key\` | TSS G5 Contact Key |
+| Ticket | \`tss_enquiry_key\` | TSS G5 Enquiry Key |
+
+All three must have enforced \`hasUniqueValue=true\` at creation and be independently read back with the intended internal names and field types. The prior conditional approval named **Task**, not Ticket. Do **not** silently reuse it as authorization for creating a Ticket property.
+
+Proposed dedicated Ticket pipeline: **TSS Commercial Enquiries**.
+
+| Stage label | Intent | Open/closed |
+| --- | --- | --- |
+| New Enquiry | Received; awaiting human review | OPEN |
+| Under Review | Human validation in progress | OPEN |
+| Awaiting Information | Awaiting additional details | OPEN |
+| Qualified for Follow-up | Human approved commercial follow-up | CLOSED |
+| Closed - Not Proceeding | Rejected, withdrawn or not suitable | CLOSED |
+
+These are **suggested labels**, not existing IDs; actual IDs must be read from HubSpot after any separately approved creation. No automatic customer emails, qualification workflow, task creation, support SLA, marketing enrollment, or assignment notifications should be enabled by this configuration.
+
+**Execution limit:** no pipeline/property creation until entitlement, permissions and automation checks succeed and scoped configuration approval is recorded. If no dedicated commercial pipeline is possible without extra cost, stop Option 1 live activation and propose a no-cost alternative; do not use the default Support Pipeline or a nonunique search-before-create strategy.
+
+References: https://knowledge.hubspot.com/object-settings/set-up-and-customize-pipelines and https://knowledge.hubspot.com/import-and-export/import-objects and https://knowledge.hubspot.com/properties/set-validation-rules-for-properties.
