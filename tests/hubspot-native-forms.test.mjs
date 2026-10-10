@@ -129,3 +129,8 @@ test('adapter does not submit or create provider records itself', () => {
   assert.match(loader, /getFormFieldValues/);
   assert.match(loader, /getFieldValue/);
 });
+
+test('legacy form hidden attribute wins over author form display grid', () => {
+  const stylesheet = read('style.css');
+  assert.match(stylesheet, /form\[data-tss-form\]\[hidden\]\s*\{\s*display\s*:\s*none\s*!important\s*\}/);
+});

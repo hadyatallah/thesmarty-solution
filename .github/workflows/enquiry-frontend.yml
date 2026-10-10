@@ -6,6 +6,7 @@ on:
       - 'script.js'
       - 'anti-spam.js'
       - 'contact.html'
+      - 'style.css'
       - 'hubspot-native-forms.js'
       - 'tests/hubspot-native-forms.test.mjs'
       - 'docs/g5-native-hubspot-forms.md'
