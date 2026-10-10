@@ -19,6 +19,13 @@ test('bridge route refuses unauthenticated callers and does not dispatch existin
   assert.equal(res.body.status, 'unauthorized');
 });
 
+test('G5 direct intake route is isolated and refuses unauthenticated callers', async () => {
+  const res = response();
+  await handler({ method: 'POST', query: { tssG5CommercialIntake: '1' }, headers: {}, body: {} }, res);
+  assert.equal(res.code, 401);
+  assert.equal(res.body.code, 'UNAUTHORIZED');
+});
+
 test('existing CRM preflight OPTIONS continues using its original handler', async () => {
   const res = response();
   await handler({ method: 'OPTIONS', query: {}, headers: { origin: 'https://www.thesmartysolution.com' } }, res);

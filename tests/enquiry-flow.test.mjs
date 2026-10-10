@@ -25,6 +25,8 @@ function fixture(result, overrides = {}, contactChoice = null) {
     addEventListener(type, callback) { if (type === 'submit') submit = callback; },
     reportValidity: () => true,
     querySelector: selector => selector === '#interest' ? { selectedOptions: [{ textContent: contactChoice }] } : selector.startsWith('button') ? button : status,
+    querySelectorAll: () => [],
+    setAttribute(name, value) { this[name] = value; },
     reset() { this.resets++; },
     dispatchEvent: event => events.push(event.type)
   };
@@ -36,6 +38,7 @@ function fixture(result, overrides = {}, contactChoice = null) {
     window: { location: { href: 'https://www.thesmartysolution.com/opportunity-kiti.html#enquire' } },
     document: { querySelector: () => null, querySelectorAll: () => [form] },
     setTimeout: () => {},
+    clearTimeout: () => {},
     fetch: async (url, options) => { requests.push({ url, options }); if (result instanceof Error) throw result; return result; }
   });
   vm.runInContext(`const TSS_FORM_ENDPOINT = ${JSON.stringify(endpoint)};\n${formCode}`, context);
@@ -106,11 +109,12 @@ test('spam, duplicate, rate limit, offline and HTTP failures never show success'
     await f.send();
     assert.equal(f.status.dataset.state, 'error');
     assert.equal(f.form.resets, 0);
-    assert.equal(f.events.length, 0);
+    assert.deepEqual(f.events, code === 'DUPLICATE' ? ['tss:submission-processing'] : []);
   }
   const http = fixture({ ok: false, status: 500 });
   await http.send();
-  assert.equal(http.status.dataset.state, 'error');
+  assert.equal(http.status.dataset.state, 'processing');
+  assert.deepEqual(http.events, ['tss:submission-processing']);
   const offline = fixture(new Error('offline'));
   offline.context.navigator.onLine = false;
   await offline.send();
