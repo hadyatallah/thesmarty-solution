@@ -4,7 +4,7 @@
  * The original enquiry forms remain usable when disabled or if HubSpot fails to render.
  *
  * Use the embedScriptUrl and form IDs copied from HubSpot's UPDATED form editor.
- * Do not use a legacy hbspt.forms.create() embed for a new-editor form.
+ * Do not use legacy-editor embed APIs for a form built in HubSpot's updated editor.
  */
 (function () {
   'use strict';
