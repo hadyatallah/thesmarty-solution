@@ -1,0 +1,22 @@
+name: G5 one-off Production form read-only audit
+on:
+  pull_request:
+    paths:
+      - "tests/g5-production-form-readonly.py"
+      - ".github/workflows/g5-production-form-readonly.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-form-readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install playwright==1.63.0
+      - run: python -m playwright install --with-deps chromium
+      - name: Inspect live native form field and fallback without submitting
+        run: python tests/g5-production-form-readonly.py
