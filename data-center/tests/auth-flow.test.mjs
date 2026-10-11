@@ -21,6 +21,7 @@ class Node {
  }
  append(...children){this.children.push(...children);}
  replaceChildren(...children){this.children=children;}
+ get firstChild(){return this.children[0];}
  addEventListener(name,handler){this.handlers[name]=handler;}
  setAttribute(){}
  removeAttribute(){}
