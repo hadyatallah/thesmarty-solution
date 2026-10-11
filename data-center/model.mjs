@@ -21,6 +21,18 @@ export function filterCompanies(companies,{query='',district='',category=''}={})
  });
  return filtered.sort((a,b)=>normalized(a.name).localeCompare(normalized(b.name)));
 }
+export function isSyntheticFixture(row){
+ // Historical preview fixtures remain in archived Sheets for audit,
+ // but are not operational developer research.
+ if(!row||typeof row!=='object')return false;
+ const ids=['RC-PREV-0001','DP-PREV-0001','DPR-PREV-0001','EV-PREV-0001','SRC-TEST'];
+ const keys=['candidateId','projectId','roleId','evidenceId','sourceId','relationshipId'];
+ if(keys.some(key=>ids.includes(text(row[key]))))return true;
+ return ['sourceRef','discoverySourceRef','website','baseUrl'].some(key=>normalized(row[key]).startsWith('synthetic://'));
+}
+export function businessOnly(records){
+ return records.filter(record=>!isSyntheticFixture(record));
+}
 export function recordById(records,field,value){return records.filter(r=>text(r[field])===text(value));}
 export function isReviewNeeded(e) {
  return /conflict|review required|review due|stale|needs review|probable duplicate/i.test(
