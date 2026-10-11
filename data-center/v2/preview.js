@@ -18,9 +18,18 @@ const context=Object.freeze({
   companyId:'QA-COMPANY-001',candidateId:'',
   attributePath:'developerRoles',displayValue:'Synthetic seed only',
   sourceRef:'synthetic://tss-idc/write-gate/seed',observedAt:'2026-10-11'
+ }),Object.freeze({
+  // Previously accepted isolated V2 QA record, copied as a STATIC fixture.
+  // This is NOT a fresh Google Sheets read or authority for new writes.
+  evidenceId:'EV-QA-V2-20261011-001',requestId:'QA-IDC-V2-REQ-20261011-001',
+  companyId:'QA-COMPANY-001',candidateId:'',
+  attributePath:'v2QaWriteGate',displayValue:'Synthetic QA acceptance observation',
+  sourceRef:'synthetic://tss-idc/v2/gate-20261011-001',observedAt:'2026-10-11'
  })]),
  existingAudits:Object.freeze([Object.freeze({
   auditId:'AUD-QA-SEED-001',requestId:'QA-IDC-SEED-001'
+ }),Object.freeze({
+  auditId:'AUD-QA-V2-20261011-001',requestId:'QA-IDC-V2-REQ-20261011-001'
  })])
 });
 const defaults=Object.freeze({
@@ -95,7 +104,7 @@ form.addEventListener('input',clearOutput);
 form.addEventListener('change',clearOutput);
 el('reset').addEventListener('click',()=>{writeFields(defaults);clearOutput();});
 el('duplicate').addEventListener('click',()=>{
- writeFields({...defaults,requestId:'QA-IDC-SEED-001'});
+ writeFields({...defaults,requestId:'QA-IDC-V2-REQ-20261011-001'});
  clearOutput();form.requestSubmit();
 });
 el('conflict').addEventListener('click',()=>{
