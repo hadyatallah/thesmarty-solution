@@ -57,10 +57,10 @@ test('browser shell never embeds real Company rows, tokens or writable old CRM A
  assert.match(cfg,/googleClientId:\s*""/); // remains blocked pending official OAuth setup
  assert.doesNotMatch(cfg,/private_key|client_secret|BEGIN PRIVATE KEY|access_token\s*:/);
  const css=read('data-center/app.css');
- assert.match(css,/\\[hidden\\]\\{display:none!important\\}/);
- assert.match(app,/root\\.replaceChildren\\(\\);root\\.hidden=true/);
- assert.match(app,/oauth2\\?\\.revoke/);
- assert.match(app,/records=next;loaded=\\{master:true,research:true\\}/);
- assert.doesNotMatch(app,/records\\.companies=rowsToObjects/);
+ assert.ok(css.includes('[hidden]{display:none!important}'));
+ assert.ok(app.includes('root.replaceChildren();root.hidden=true'));
+ assert.ok(app.includes('oauth2?.revoke'));
+ assert.ok(app.includes('records=next;loaded={master:true,research:true}'));
+ assert.ok(!app.includes('records.companies=rowsToObjects'));
 
 });
