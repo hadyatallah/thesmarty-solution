@@ -1,0 +1,58 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#091e32">
+<title>TSS V2 | Real Research Review — No Writes</title>
+<link rel="stylesheet" href="./preview.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="../config.js" defer></script>
+<script type="module" src="./real-read.js"></script>
+</head><body>
+<header class="top"><a class="brand" href="/data-center/">TSS <span>INTELLIGENT DATA CENTER</span></a><span class="phase">V2 · PRIVATE REVIEW · NO WRITES</span></header>
+<main>
+ <div class="heading"><div class="eyebrow">CANONICAL IDENTITY · SOURCE-BACKED FACTS</div>
+ <h1>Company research review</h1>
+ <p>Owner-only, read-only reconciliation against the existing Google Sheets. Prepare an evidence proposal without modifying the Master Workbook, preserved research archive or HubSpot.</p></div>
+ <div class="warning"><strong>V2 PREVIEW — NOT ACCEPTED FOR PRODUCTION</strong>
+  No Company creation, merge, deletion, status update or automatic HubSpot promotion. Owner must approve new observations with source lineage. This page does not have Google Sheets write permission.</div>
+ <section class="panel" aria-label="Owner session">
+  <div class="step">01 / PRIVATE GOOGLE SOURCE ACCESS</div><h2>Load research securely</h2>
+  <p id="identity" aria-live="polite">Not connected. Private Company records are not loaded.</p>
+  <div class="actions"><button id="connect" class="primary" type="button">Connect TSS Google (read only)</button>
+   <button id="refresh" class="secondary" type="button" disabled>Refresh research</button>
+   <button id="lock" class="secondary" type="button">Lock research</button></div>
+  <div id="sourceStatus" class="help-note" role="status" aria-live="polite">Google OAuth must permit the exact Preview hostname. No research data is embedded in the public page.</div>
+ </section>
+ <div id="workspace" class="split" style="margin-top:18px" hidden>
+  <section class="panel">
+   <div class="step">02 / EXACT COMPANY MATCH</div><h2>Find a canonical Company</h2>
+   <label>Search canonical Company ID or name<input type="search" id="search" autocomplete="off" placeholder="Search loaded Companies"></label>
+   <div id="matches" aria-live="polite"></div>
+   <div id="dossier" class="help-note">Choose a Company to inspect its recorded evidence.</div>
+   <h3>Existing source observations</h3><div id="facts"></div>
+  </section>
+  <section class="panel">
+   <div class="step">03 / SOURCE-BACKED PROPOSAL</div><h2>Prepare fact for human review</h2>
+   <p id="selected" class="hint">Select a canonical Company first.</p>
+   <form id="proposal" novalidate>
+    <div class="cols">
+     <label>Fact type<input name="factType" maxlength="120" value="Development Activity" required></label>
+     <label>Attribute path<input name="attributePath" maxlength="120" value="developmentActivity" required></label>
+     <label>Reported fact<input name="displayValue" maxlength="1000" placeholder="Evidence-supported report" required></label>
+     <label>Observed date<input type="date" name="observedAt" required></label>
+     <label>Verification<select name="verificationStatus"><option>UNVERIFIED</option><option>SOURCE SUPPORTED</option><option>DIRECTLY CONFIRMED</option><option>CONFLICTING / REVIEW REQUIRED</option></select></label>
+     <label>Freshness<select name="freshnessStatus"><option>Current</option><option>Review Due</option><option>Stale</option></select></label>
+     <label>Information class<select name="informationClass"><option>Reusable TSS Intelligence</option><option>TSS Restricted Intelligence</option><option>Mandate Confidential</option><option>Highly Restricted</option></select></label>
+    </div>
+    <label>Exact source URL<input type="url" name="sourceRef" placeholder="https://..." maxlength="500" required></label>
+    <label>Reviewer notes<textarea name="reviewNotes" maxlength="1500" rows="3" placeholder="What precisely does the source establish?"></textarea></label>
+    <div class="actions"><button id="check" class="primary" type="submit" disabled>Evaluate evidence proposal</button></div>
+   </form>
+   <div class="step">04 / APPROVAL GATE</div><h2>Validation and review disposition</h2>
+   <div id="decision" class="status neutral" aria-live="polite">Not evaluated</div>
+   <div id="issues" class="review-list" aria-live="polite">No proposal prepared.</div>
+   <pre id="draft" class="output" tabindex="0">A review proposal will appear here after validation. No Google Sheet is changed.</pre>
+  </section>
+ </div>
+ <footer><a href="./preview.html">Synthetic local V2 QA Demo</a> · <a href="./qa-connect.html">Isolated QA write-gate acceptance</a> · No Production research modifications.</footer>
+</main></body></html>
