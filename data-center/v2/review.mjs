@@ -59,6 +59,7 @@ export function preflightQaProposal(input={},context={}){
   ['attributePath',attributePath,120],['valueJson',valueJson,3000],
   ['displayValue',displayValue,500],['sourceId',sourceId,85],
   ['sourceRef',sourceRef,500],['observedAt',observedAt,10],
+  ['verificationStatus',verificationStatus,85],['freshnessStatus',freshnessStatus,40],
   ['actor',actor,100],['auditDate',auditDate,10]
  ])required(k,v,max);
  for(const [field,value,prefix] of [
