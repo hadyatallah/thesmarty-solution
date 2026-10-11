@@ -87,7 +87,7 @@ function createHarness({email=owner,verified=true,initialSheetsFailure=false}={}
   }
   throw Error('Unexpected fetch '+link);
  };
- const context={__model:model,__request:request,document:doc,window,navigator:{},location:{protocol:'https:'},
+ const context={__model:model,__request:request,document:doc,window,navigator:{clipboard:{writeText:async value=>{state.copied=String(value);}}},location:{protocol:'https:'},
   URL,URLSearchParams,fetch,console};
  vm.runInNewContext(script,context,{timeout:2000});
  return {state,context,elements,buttons,
@@ -220,4 +220,43 @@ test('Company directory search and exact dossier render without mixing other ide
  assert.match(renderedText(),/TSS-CY-001/);
  assert.match(renderedText(),/Verify identity/);
  assert.equal(h.sheetReads.length,2,'Company dossier must join in-memory research only');
+});
+
+
+test('existing Company dossier prepares and copies an in-memory research brief only after a click',async()=>{
+ const h=createHarness();h.begin();await h.respond();
+ const before=h.state.calls.length;
+ h.buttons.find(b=>b.dataset.view==='companies').handlers.click();
+ const walk=n=>[n,...n.children.flatMap(child=>child instanceof Node?walk(child):[])];
+ const nodes=()=>walk(h.elements.get('#content'));
+ nodes().find(n=>n.tag==='button'&&n.textContent==='Synthetic Developer').handlers.click();
+ const requestSection=nodes().find(n=>n.className==='request-section');
+ assert.ok(requestSection,'Research handoff must be in the existing Company dossier');
+ const fields=walk(requestSection).filter(n=>n.className==='request-field');
+ assert.equal(fields.length,8);
+ const controls=fields.map(x=>x.children[1]);
+ controls[0].value='developmentActivity';
+ controls[1].value='Synthetic current published activity';
+ controls[2].value='https://example.invalid/research-update';
+ controls[3].value='2026-10-11';
+ controls[4].value='UNVERIFIED';
+ controls[5].value='Review Due';
+ controls[6].value='Reusable TSS Intelligence';
+ controls[7].value='Synthetic owner source notes';
+ const actions=walk(requestSection).filter(n=>n.tag==='button');
+ const prepare=actions.find(n=>n.textContent==='Prepare request for ChatGPT');
+ const copy=actions.find(n=>n.textContent==='Copy request');
+ assert.ok(prepare&&copy);
+ assert.equal(copy.disabled,true);
+ prepare.handlers.click();
+ const preview=walk(requestSection).find(n=>n.className==='request-preview');
+ assert.ok(preview.value.includes('TSS-CY-001'));
+ assert.match(preview.value,/NOT YET APPROVED FOR A WRITE/);
+ assert.equal(copy.disabled,false);
+ await copy.handlers.click();
+ assert.equal(h.state.copied,preview.value);
+ assert.equal(h.state.calls.length,before,'No provider request may result from preparing or copying a research brief');
+ controls[1].value='Changed after preparation';
+ controls[1].handlers.input();
+ assert.equal(copy.disabled,true,'Edits invalidate the previously prepared clipboard brief');
 });
