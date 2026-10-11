@@ -59,7 +59,7 @@ test('browser shell never embeds real Company rows, tokens or writable old CRM A
  const css=read('data-center/app.css');
  assert.ok(css.includes('[hidden]{display:none!important}'));
  assert.ok(app.includes('root.replaceChildren();root.hidden=true'));
- assert.ok(app.includes('oauth2?.revoke'));
+ assert.ok(!app.includes('oauth2?.revoke'), 'Lock App must not revoke the consent grant');
  assert.ok(app.includes('records=next;loaded={master:true,research:true}'));
  assert.ok(!app.includes('records.companies=rowsToObjects'));
 
@@ -117,4 +117,18 @@ test('live Sheet reads extend with future canonical rows and evidence, without a
   assert.ok(code.includes("'"+name+"'!A:"),'Missing open-ended range for '+name);
  }
  assert.ok(!code.includes("Companies!A1:L3004"));
+});
+
+test('returning owner can reopen without forced Google consent, preserving security boundary',()=>{
+ const app=read('data-center/app.js');
+ const page=read('data-center/index.html');
+ assert.ok(app.includes("login_hint:cfg.allowedEmail"));
+ assert.ok(app.includes("client.requestAccessToken({prompt:'',login_hint:cfg.allowedEmail});"));
+ assert.doesNotMatch(app, /requestAccessToken\(\{prompt:'consent'/);
+ assert.ok(app.includes("if(token){signedOut();return;}"),'Lock action only clears local session');
+ assert.ok(app.includes("records={companies:[],candidates:[],sources:[],evidence:[],relationships:[],projects:[],roles:[],profiles:[]};"));
+ assert.ok(app.includes("root.replaceChildren();root.hidden=true"));
+ assert.ok(app.includes("email_verified") && app.includes("cfg.allowedEmail"));
+ assert.doesNotMatch(app, /localStorage|sessionStorage|refresh_token|client_secret/);
+ assert.match(page,/id="auth" type="button">Open Data Center<\/button>/);
 });

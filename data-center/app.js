@@ -37,7 +37,7 @@ function table(headers,items,renderRow){
  if(!items.length){const row=el('tr'),td=el('td');td.colSpan=headers.length;add(td,empty('No matching rows in the loaded data.'));row.append(td);body.append(row)}t.append(body);wrap.append(t);return wrap;
 }
 function setNotice(message){banner.hidden=!message;banner.textContent=message||'';}
-function setBusy(v){busy=v;refreshButton.disabled=!token||busy;authButton.disabled=busy;authButton.textContent=busy?'Loading…':token?'Disconnect':'Connect Google';}
+function setBusy(v){busy=v;refreshButton.disabled=!token||busy;authButton.disabled=busy;authButton.textContent=busy?'Loading…':token?'Lock App':'Open Data Center';}
 function setView(v){
  view=paths[v]?v:'dashboard';document.querySelectorAll('.nav button').forEach(b=>{const active=b.dataset.view===view;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
  locationLabel.textContent=paths[view][0];titleNode.textContent=paths[view][0];introNode.textContent=paths[view][1];
@@ -49,17 +49,19 @@ function signedOut(){
  token='';owner='';loaded={master:false,research:false};
  records={companies:[],candidates:[],sources:[],evidence:[],relationships:[],projects:[],roles:[],profiles:[]};
  identity.textContent='Not connected';loginCard.hidden=false;root.replaceChildren();root.hidden=true;setBusy(false);document.querySelector('.privacy').textContent='Private data locked';
- loginMessage.textContent=hasClient?'Connect the owner Google account to load private Company records and research evidence. Tokens remain in memory only.':'App interface installed. Google OAuth registration and owner-only read access require provider acceptance before live Company data can load. Continue using the existing private Admin workspace.';
+ loginMessage.textContent=hasClient?'Tap Open Data Center to use the TSS Google account. Previously granted access should not require a new consent step. A short-lived access token is used for this session only.':'App interface installed. Google OAuth registration and owner-only read access require provider acceptance before live Company data can load. Continue using the existing private Admin workspace.';
  setNotice(hasClient?'':'Provider configuration is pending. The app does not expose Google Sheets or a sample of private Companies to unauthenticated visitors.');
 }
 function auth(){
- if(token){const oldToken=token;signedOut();window.google?.accounts?.oauth2?.revoke?.(oldToken,()=>{});return;}
+ if(token){signedOut();return;}
  if(!hasClient){setNotice('Google OAuth client ID is not configured. No private data can be accessed here. Use the existing private Admin workspace until authorized Google setup is completed.');return;}
  if(!window.google?.accounts?.oauth2){setNotice('Google sign-in has not loaded. Check the browser connection and retry.');return;}
  const client=window.google.accounts.oauth2.initTokenClient({
   client_id:cfg.googleClientId,
   scope:'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/spreadsheets.readonly',
   include_granted_scopes:false,
+  // Hint the known owner account, but Google and Sheets still enforce authorization.
+  login_hint:cfg.allowedEmail,
   callback:async response=>{
    if(response.error||!response.access_token){setNotice('Google sign-in was not completed.');return;}
    const issued=response.access_token;
@@ -77,7 +79,9 @@ function auth(){
   },
   error_callback:()=>setNotice('Google sign-in window could not be completed.')
  });
- client.requestAccessToken({prompt:'consent'});
+ // Never re-prompt consent after a previously approved grant unless Google requires it.
+ // Keep the token in memory only; no refresh token or access token is persisted.
+ client.requestAccessToken({prompt:'',login_hint:cfg.allowedEmail});
 }
 authButton.addEventListener('click',auth);
 refreshButton.addEventListener('click',()=>{if(token)loadAll()});
