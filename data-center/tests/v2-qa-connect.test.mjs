@@ -91,7 +91,7 @@ test('Google owner token scope is requested only on Connect button, separate fro
  assert.equal(h.googleConfig,null);
  h.click('connect');
  assert.match(h.googleConfig.scope,/userinfo\.email/);
- assert.match(h.googleConfig.scope,/auth\\/spreadsheets$/);
+ assert.ok(h.googleConfig.scope.endsWith('/auth/spreadsheets'));
  assert.doesNotMatch(h.googleConfig.scope,/spreadsheets\.readonly/);
  assert.equal(h.googleConfig.login_hint,'thesmartysolution@gmail.com');
  assert.equal(h.tokenOptions.prompt,'');
