@@ -102,3 +102,35 @@ A separate **post-write read-only** canonical check confirmed **2,878 nonempty u
 - Separate current QA workbook readback is still mandatory at execution time for each distinct future request; the frozen Preview fixture cannot substitute. Google Sheets unique IDs/atomic replay under concurrent independent writers are not guaranteed; current preflight can race. **Do not claim production idempotency acceptance from this one success.**
 - No live research write mechanism, login scope expansion, immutable versions/compare-and-swap, conflict-resolution approval or real information-class access partitions have passed. Production remains read-only.
 - V1 desktop/tablet acceptance remains OPEN due to the explicit early-V2 sequencing exception. V2 stays **IN DEVELOPMENT**, not COMPLETE.
+
+
+## Final engineering checkpoint — governed V2 reviewer and bounded QA gateway (11 October 2026)
+
+**Stage decision: V2 ENGINEERING BUILT / PROVIDER AND PRODUCTION ACCEPTANCE HELD.** No V2 Production release is authorized; do not merge the PR, enable browser editing or declare V2 complete merely because tests pass.
+
+### Implemented independently on Draft PR #87
+
+1. **Synthetic V2 proposal and local review**: `preview.html` + `preview.js` + `review.mjs` + regression tests. Android owner screenshots accepted the working layout, local QA preflight PASS, duplicate blocked, and conflict review required. Later duplicate-example adjustment removes a redundant legacy-prefix warning; automated tests PASS. No actual QA writes from this static demo.
+2. **Governed real research review**: `real-read.html`, `real-read.js`, `real-review.mjs` plus tests. Has a separate owner Google GIS read-only token, exact `email_verified` owner identity check, canonical Master Companies `A:L` and preserved Evidence `A:U`/Profiles `A:O` reads, exact Company ID/dossier selection, cross-evidence conflicts, source HTTP(S) and observation date checks, information-class warnings and reviewed-proposal JSON held only in memory. Token and all fetched records are cleared by Lock. **There is NO real-data write or HubSpot integration.** This newly built owner browser workflow has passed simulated regression tests, **not** an actual Google OAuth/Preview-owner sign-in.
+3. **Owner-only synthetic QA gateway**: `qa-gateway.mjs` + `qa-connect.html` + `qa-connect.js` and tests. QA workbook ID and the only two eligible sheet IDs are pinned in code. The Google scope for this **separate QA test page** is `spreadsheets`, never installed or requested by V1. Verified owner identity precedes any provider QA read. The workflow demands fresh QA tab metadata and both header ranges, exact one-time confirmation phrase, a full preflight for ID collisions, and one two-tab appendCells request. Every outcome is re-read using stable request ID; uncertain responses MUST NOT be retried. The gateway becomes spent even after a failure. It cannot target Master Companies or archived research.
+4. **Serverless/CRM boundary unchanged**: no new backend, Apps Script, SQL/database, service account secret, browser storage token, paid automation, outreach, HubSpot write or direct Company edit. V1 `data-center/config.js` retains `readOnly:true` and `spreadsheets.readonly`. The original production admin and website routes remain unchanged.
+
+### Security decision still required
+
+Google `https://www.googleapis.com/auth/spreadsheets` is an account-wide Sheets write scope; source code pinning a QA workbook does **not** reduce what a compromised bearer token could potentially access. **Do not treat the current QA-only browser login implementation as accepted for Production.** The recommended Production approach, pending acceptance, keeps the browser read-only and uses a separately controlled/audited owner-authorized Google Drive/Sheets connector through ChatGPT management or an equivalent existing approved provider process for each accepted append. This avoids broadening V1's Google browser token. No new CRM/backend is needed.
+
+Independent writers can still race between fresh reads and appendCells. Sheets does not enforce immutable unique IDs on its own. The production policy must state a **single authorized writer**, fresh preflight of current evidence and audit, readback of all relevant IDs, one write attempt, stable request ID, and human reconciliation on ambiguous responses. **Do not claim guaranteed parallel-writer idempotency** or delete/supersede old observations automatically.
+
+Before a real write contract can be authorized, decide where restricted **operational** V2 Evidence/Audit rows live without modifying the immutable Phase 3 archive or duplicating canonical Company identities. The Master Workbook includes existing historical CRM tabs and an older reader permission, so adding restricted evidence there without reviewing file-wide ACLs is not automatically safe. An owner-only evidence ledger holding just Company ID foreign keys (not a second Companies table) is a candidate, **not approved**. The existing QA workbook is explicitly NOT CANONICAL and must never be used for real research.
+
+### Remaining V2 acceptance gates
+
+- **Google Auth Platform**: Browser authentication on ephemeral Vercel Preview origin is NOT accepted. The current known Web OAuth client may authorize Production origin only. Do not bypass origin validation, expand testers casually or claim interactive Google consent has passed. Official Google Cloud configuration and an approved stable Preview origin or isolated provider QA are required to test this particular browser route.
+- **Owner-facing QA gate**: simulation and direct *independent connector* synthetic Evidence+Audit readback PASS; the newly built owner browser QA sign-in/submit/readback is NOT physically tested. Treat its write scope as risk until accepted.
+- **Owner live research reviewer**: device UI + exact Google OAuth source load, 7-view regression compatibility, expiration/reentry, confidentiality partitions, source classification and mobile/desktop/tablet checks need live acceptance. Simulated source/mock tests are not live browser evidence.
+- **Operational target/permissions**: select approved owner-only evidence/audit storage under Google Sheets, no second canonical Company database, field-level evidence lineage, human review, immutable IDs and rollback/reconciliation runbook. No live research write has passed.
+- **V1**: separately remains PARTIAL due to outstanding desktop and tablet acceptance (owner allowed an early V2 sequencing exception).
+
+### Verified development evidence
+
+GitHub Actions dedicated IDC safety suite included all V1 and V2 synthetic tests, including QA gateway no-retry/uncertain-result scenarios and real reviewer wrong-account/source-error/Lock checks. Final exact run, commit and Preview deployment must be read back after the last change. The prior **real connected Google Sheets** synthetic QA append PASS has already been recorded separately and must NOT be conflated with the new untested UI. Original Company count remained 2,878 unique IDs and historical evidence 702 IDs after that isolated write.
