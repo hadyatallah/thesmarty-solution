@@ -3,25 +3,31 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 const source=fs.readFileSync(new URL('../script.js',import.meta.url),'utf8');
-const code=source.slice(source.indexOf('function tssFormParams_'),source.indexOf('// Phase 7 adaptive'));
-const endpoint=source.match(/const TSS_FORM_ENDPOINT = '([^']+)'/)[1];
-const json=payload=>({ok:true,type:'cors',json:async()=>payload});
+const code=source.slice(source.indexOf('function tssSplitName_'),source.indexOf('// Phase 7 adaptive'));
+const portal=source.match(/const TSS_HUBSPOT_PORTAL_ID = '([^']+)'/)[1];
+const form=source.match(/const TSS_HUBSPOT_FORM_ID = '([^']+)'/)[1];
+const endpoint=`https://api.hsforms.com/submissions/v3/integration/submit/${portal}/${form}`;
+const json=payload=>({ok:true,status:200,type:'cors',json:async()=>payload});
 function harness(implementation,online=true,abort=true){
  const calls=[],timers=new Map();let next=0;
- const context=vm.createContext({URLSearchParams,Set,Promise,Error,
+ const context=vm.createContext({URLSearchParams,Set,Promise,Error,JSON,document:{title:'Fixture'},
   AbortController:abort?AbortController:undefined,navigator:{onLine:online},window:{},
   setTimeout:(fn,ms)=>{timers.set(++next,{fn,ms});return next;},clearTimeout:id=>timers.delete(id),
   fetch:async(url,opts)=>{calls.push({url,opts});return implementation(url,opts,context);}
  });
  vm.runInContext(`const TSS_FORM_ENDPOINT=${JSON.stringify(endpoint)};\n${code}\nglobalThis.api={submitTssEnquiry_,tssLockForm_,tssFormLocked_};`,context);
- return {context,calls,timers,api:context.api,send:()=>context.api.submitTssEnquiry_(new URLSearchParams({name:'Synthetic',email:'test@example.invalid',source:'https://fixture.test/contact.html?source=whatsapp',form_nonce:'fixture-nonce'})),timeout:()=>[...timers.values()][0].fn()};
+ return {context,calls,timers,api:context.api,send:()=>context.api.submitTssEnquiry_(new URLSearchParams({name:'Synthetic Visitor',email:'test@example.invalid',source:'https://fixture.test/contact.html?source=whatsapp',interest:'General Business Enquiry',message:'Synthetic context',privacy_ack:'Agreed',form_nonce:'fixture-nonce'})),timeout:()=>[...timers.values()][0].fn()};
 }
-for(const confirmationSent of [true,false])test('confirmed receipt preserves confirmation flag '+confirmationSent,async()=>{
- const h=harness(()=>json({ok:true,recorded:true,enquiryId:'TEST-1',confirmationSent})),r=await h.send();
- assert.equal(r.state,'confirmed');assert.equal(r.payload.confirmationSent,confirmationSent);assert.equal(h.timers.size,0);
+test('confirmed HubSpot receipt posts JSON to the published native form endpoint',async()=>{
+ const h=harness(()=>json({inlineMessage:'Thanks'})),r=await h.send();
+ assert.equal(r.state,'confirmed');assert.equal(r.payload.inlineMessage,'Thanks');assert.equal(h.timers.size,0);
  assert.equal(h.calls.length,1);assert.equal(h.calls[0].url,endpoint);assert.equal(h.calls[0].opts.method,'POST');
- assert.equal(h.calls[0].opts.body.get('source'),'https://fixture.test/contact.html?source=whatsapp');
- assert.equal(h.calls[0].opts.body.get('form_nonce'),'fixture-nonce');assert.equal(h.calls[0].opts.mode,undefined);
+ assert.equal(h.calls[0].opts.headers['Content-Type'],'application/json');
+ const body=JSON.parse(h.calls[0].opts.body);
+ assert.equal(body.context.pageUri,'https://fixture.test/contact.html?source=whatsapp');
+ assert.deepEqual(body.fields.find(x=>x.name==='email'),{name:'email',value:'test@example.invalid'});
+ assert.deepEqual(body.fields.find(x=>x.name==='tss_enquiry_route'),{name:'tss_enquiry_route',value:'General Business Enquiry'});
+ assert.equal(h.calls[0].opts.mode,undefined);
 });
 for(const payload of [null,{},[],{ok:true},{ok:true,recorded:false,enquiryId:'TEST'},
  {ok:true,recorded:true,enquiryId:''},{ok:true,recorded:true,enquiryId:'   '},{ok:true,recorded:true,enquiryId:55},
