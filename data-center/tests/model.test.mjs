@@ -54,7 +54,7 @@ test('browser shell never embeds real Company rows, tokens or writable old CRM A
  assert.match(app,/email_verified/);
  assert.match(app,/encodeURIComponent\(sheetId\)/);
  assert.doesNotMatch(app,/localStorage|sessionStorage|openai\.com\/v1|script\.google\.com|\/api\/crm/);
- assert.match(cfg,/googleClientId:\\s*"[0-9]+-[a-z0-9-]+\\.apps\\.googleusercontent\\.com"/); // public owner-issued client identifier
+ assert.match(cfg,/googleClientId:\s*"[0-9]+-[a-z0-9-]+\.apps\.googleusercontent\.com"/); // public owner-issued client identifier
  assert.doesNotMatch(cfg,/private_key|client_secret|BEGIN PRIVATE KEY|access_token\s*:/);
  const css=read('data-center/app.css');
  assert.ok(css.includes('[hidden]{display:none!important}'));
