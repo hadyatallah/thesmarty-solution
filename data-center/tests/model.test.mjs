@@ -107,5 +107,5 @@ test('historical synthetic preview fixtures stay archived but do not count as li
  assert.deepEqual(businessOnly([...ids,...safe]),safe);
  assert.equal(overview({companies:[],candidates:businessOnly([ids[0],safe[0]])}).candidates,1);
  const app=read('data-center/app.js');
- assert.match(app,/businessOnly\\(rowsToObjects\\(research\\[i\\]\\?\\.values\\|\\|\\[\\]\\)\\)/);
+ assert.ok(app.includes('businessOnly(rowsToObjects(research[i]?.values||[]))'));
 });
