@@ -64,3 +64,30 @@ test('browser shell never embeds real Company rows, tokens or writable old CRM A
  assert.ok(!app.includes('records.companies=rowsToObjects'));
 
 });
+
+test('Android install manifest is branded, scope-limited, and has appropriate PNG icons',()=>{
+ const manifest=JSON.parse(read('data-center/manifest.webmanifest'));
+ assert.equal(manifest.start_url,'/data-center/');
+ assert.equal(manifest.scope,'/data-center/');
+ assert.equal(manifest.display,'standalone');
+ assert.equal(manifest.theme_color,'#091e32');
+ for(const size of [192,512]){
+  const icon=manifest.icons.find(i=>i.src==='/data-center/icon-'+size+'.png');
+  assert.ok(icon,'Missing Android icon '+size);
+  assert.equal(icon.sizes,size+'x'+size);
+  assert.equal(icon.type,'image/png');
+ }
+ const page=read('data-center/index.html');
+ assert.match(page,/rel="manifest" href="\/data-center\/manifest\.webmanifest"/);
+ assert.match(page,/rel="apple-touch-icon"/);
+});
+test('Service worker caches only public shell assets, never private Google API responses',()=>{
+ const sw=read('data-center/sw.js'),app=read('data-center/app.js');
+ assert.match(sw,/u\.origin!==self\.location\.origin/);
+ assert.match(sw,/ALLOWED\.has\(u\.pathname\)/);
+ assert.match(sw,/req\.method!=='GET'/);
+ assert.doesNotMatch(sw,/sheets\.googleapis\.com|oauth2\/v3\/userinfo|localStorage|sessionStorage/);
+ assert.doesNotMatch(sw,/masterSpreadsheetId|researchSpreadsheetId|companyId/);
+ assert.match(app,/navigator\.serviceWorker\.register\('\/data-center\/sw\.js'/);
+ assert.match(app,/Private data locked/);
+});
