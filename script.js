@@ -1,6 +1,6 @@
 const TSS_HUBSPOT_PORTAL_ID = '149509919';
 const TSS_HUBSPOT_FORM_ID = 'd571803e-7777-4f28-94ea-b24df852245c';
-const TSS_FORM_ENDPOINT = 'https://api.hsforms.com/submissions/v3/integration/submit/' + TSS_HUBSPOT_PORTAL_ID + '/' + TSS_HUBSPOT_FORM_ID;
+const TSS_FORM_ENDPOINT = 'https://api-eu1.hsforms.com/submissions/v3/integration/submit/' + TSS_HUBSPOT_PORTAL_ID + '/' + TSS_HUBSPOT_FORM_ID;
 
 const menuButton = document.querySelector('.menu');
 const menu = document.querySelector('.navlinks');
