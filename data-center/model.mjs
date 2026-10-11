@@ -5,7 +5,7 @@ export function rowsToObjects(values) {
  if (!Array.isArray(values) || values.length===0) return [];
  const headers=(values[0]||[]).map(v=>String(v||'').trim());
  return values.slice(1).filter(r=>Array.isArray(r)&&r.some(v=>String(v??'').trim())).map(row=>
-  Object.fromEntries(headers.filter(Boolean).map((header,i)=>[header,String(row[i]??'').trim()])));
+  Object.fromEntries(headers.map((header,i)=>[header,String(row[i]??'').trim()]).filter(([header])=>Boolean(header))));
 }
 export function text(value){return String(value??'').trim();}
 export function normalized(value){return text(value).toLocaleLowerCase('en').normalize('NFKC');}
