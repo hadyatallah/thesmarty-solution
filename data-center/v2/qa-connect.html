@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#091e32">
+<title>TSS V2 | Owner-only Isolated QA Gate</title>
+<link rel="stylesheet" href="./preview.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="../config.js" defer></script>
+<script type="module" src="./qa-connect.js"></script>
+</head>
+<body>
+<header class="top"><a class="brand" href="/data-center/">TSS <span>INTELLIGENT DATA CENTER</span></a><span class="phase">V2 · QA GATE · NOT PRODUCTION</span></header>
+<main>
+ <div class="heading"><div class="eyebrow">OWNER-AUTHORIZED · ISOLATED TEST WORKBOOK</div>
+ <h1>Governed Google Sheets QA acceptance</h1>
+ <p>Optional authenticated end-to-end test. Uses only the existing owner-private <strong>NOT CANONICAL</strong> Google Sheets QA workbook. It does not use or update V1 research or HubSpot.</p></div>
+ <div class="warning"><strong>STOP: THIS TEST CAN APPEND TWO REAL SYNTHETIC QA ROWS</strong>
+  Use only with the TSS owner Google account. This is a separate QA-only write session requesting Google Sheets access; V1 retains its existing read-only scope. The test is disabled until a new user click explicitly authorizes it. Never run on Production company/evidence workbooks.</div>
+ <div class="split">
+ <section class="panel">
+  <div class="step">01 / GOOGLE IDENTITY</div><h2>Owner-only session</h2>
+  <p class="hint">Google OAuth JavaScript origin must be registered for this exact Preview hostname. If Google blocks Preview authentication, do not bypass it or change V1 Production OAuth settings.</p>
+  <p id="owner" aria-live="polite">Not connected. No workbook accessed.</p>
+  <div class="actions"><button class="primary" type="button" id="connect">Connect TSS Google for QA</button>
+   <button class="secondary" type="button" id="lock">Lock QA session</button></div>
+  <h3>Fresh QA source read</h3>
+  <div class="actions"><button class="secondary" type="button" id="read" disabled>Read QA Evidence + Audit</button></div>
+  <div id="snapshot" class="help-note" aria-live="polite">No provider snapshot loaded.</div>
+ </section>
+ <section class="panel">
+  <div class="step">02 / PROPOSE AND REVIEW</div><h2>One synthetic observation</h2>
+  <p class="hint">Only the fixed, non-canonical QA Company/source is permitted. This sample uses one deterministic ID; once accepted, it must never be replayed.</p>
+  <form id="proposal" novalidate>
+   <div class="cols">
+    <label>Request ID<input name="requestId" readonly value="QA-IDC-V2-REQ-BROWSER-0001"></label>
+    <label>Evidence ID<input name="evidenceId" readonly value="EV-QA-V2-BROWSER-0001"></label>
+    <label>Audit ID<input name="auditId" readonly value="AUD-QA-V2-BROWSER-0001"></label>
+    <label>QA Company ID<input name="companyId" readonly value="QA-COMPANY-001"></label>
+    <label>Fact type<input name="factType" value="QA Process Acceptance" readonly></label>
+    <label>Attribute path<input name="attributePath" value="browserQaAcceptance" readonly></label>
+    <label>Reported value<input name="displayValue" value="Synthetic UI QA write only" readonly></label>
+    <label>Source ID<input name="sourceId" value="QA-SRC-001" readonly></label>
+    <label>Source reference<input name="sourceRef" value="synthetic://tss-idc/v2/browser-gate-0001" readonly></label>
+    <label>Observation date<input name="observedAt" type="date" value="2026-10-11" readonly></label>
+   </div>
+   <div class="actions"><button class="secondary" type="button" id="preflight" disabled>Preflight against latest QA rows</button></div>
+   <div id="result" class="help-note" role="status" aria-live="polite">No QA preflight performed.</div>
+   <p class="hint">Preflight is only informational and does not lock Google Sheets against concurrent editors. The actual operation always re-reads both tabs immediately before attempting a write.</p>
+   <h3>Explicit owner QA write permission</h3>
+   <label><input type="checkbox" id="consent"> I authorize exactly one isolated synthetic QA Evidence/Audit append (not a canonical or archival research write).</label>
+   <label>Type the exact confirmation phrase<input id="phrase" placeholder="WRITE SYNTHETIC QA ONLY" autocomplete="off" spellcheck="false"></label>
+   <button class="primary" id="submit" type="button" disabled>Append exactly one synthetic QA Evidence + Audit record</button>
+   <p class="hint">Never click again after a timeout or uncertain response. Review QA rows by immutable request ID first.</p>
+  </form>
+ </section>
+ </div>
+ <section class="panel" style="margin-top:18px">
+  <div class="step">03 / RECONCILE</div><h2>Recorded provider outcome</h2>
+  <pre id="outcome" tabindex="0" class="output">No QA write attempted.</pre>
+  <div class="actions"><button type="button" class="secondary" id="reconcile" disabled>Re-read QA records (no write)</button></div>
+ </section>
+ <footer><a href="./preview.html">Return to zero-write V2 research Preview</a> · No backend, Google Apps Script, new CRM or customer outreach. Do not use this page with real business data.</footer>
+</main></body></html>
