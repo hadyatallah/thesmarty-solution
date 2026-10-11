@@ -96,7 +96,7 @@ test('source/date/value validity and conflicts preserve historic evidence',()=>{
   displayValue:'Different historical fact',sourceRef:'https://example.invalid/old',
   observedAt:'2026-09-30',evidenceId:'EV-P3-SAFE-001'};
  s.archivedEvidence.push(old);
- error(()=>ready({},s),/conflict\/restricted fact/);
+ error(()=>ready({},s),/Conflict\/restricted fact/);
  const plan=ready({conflictAcknowledged:'YES'},s);
  assert.equal(plan.realProposalDisposition,'REQUIRES_HUMAN_REVIEW');
  assert.equal(old.displayValue,'Different historical fact');
