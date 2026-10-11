@@ -134,3 +134,29 @@ Before a real write contract can be authorized, decide where restricted **operat
 ### Verified development evidence
 
 GitHub Actions dedicated IDC safety suite included all V1 and V2 synthetic tests, including QA gateway no-retry/uncertain-result scenarios and real reviewer wrong-account/source-error/Lock checks. Final exact run, commit and Preview deployment must be read back after the last change. The prior **real connected Google Sheets** synthetic QA append PASS has already been recorded separately and must NOT be conflated with the new untested UI. Original Company count remained 2,878 unique IDs and historical evidence 702 IDs after that isolated write.
+
+
+## Owner-approved operational storage boundary (11 October 2026)
+
+**Authority:** Owner expressly approved the creation of an owner-only Google Sheets Evidence and Audit ledger for V2. The workbook was created with the connected TSS Google owner identity, not a service account. Its exact private URL and ID are recorded **only in the private authoritative TSS operational register and Google Drive**, not in public website source or this public repository. It must NOT be confused with the earlier isolated synthetic QA workbook or the preserved Phase 3 archive.
+
+**Independently verified owner-only permission:** Google Drive `shared=false`, `thesmartysolution@gmail.com` the only ACL principal (owner); the separate personal Google connection returned `403 PERMISSION_DENIED` for this new ledger. Keep these restrictions and recheck before any approved write.
+
+**Initial workbook tabs (no real research rows):**
+
+| Tab | Schema or purpose |
+|---|---|
+| Operating Rules | Owner/private-only access, append-only evidence intent, canonical ID foreign keys, single-writer and no-retry procedures, V2 release HOLD |
+| Evidence Observation | Archive-compatible `evidenceId` through `version` (21 fields), plus `requestId`, `decisionId`, `auditId` |
+| Audit Ledger | Immutable `auditId`, `requestId`, event timestamp, actor, action, entity, record/Company/decision ID, prior/new version, outcome, provenance and independent reconciliation |
+| Review Decisions | `decisionId`, `requestId`, canonical `companyId`, proposed fact/path/source/date, reviewer, human disposition, rationale, linked Evidence/Audit IDs and information class |
+
+The ledger has **no Companies tab**. All Company identity matching uses existing canonical `Companies.id` from the Master Workbook, not a copied list. The preserved Phase 3 research archive is unchanged. Evidence, Audit and Decisions tables started at exactly one header row each; no source observations, approvals or audit events were imported. The spreadsheet timezone is `Asia/Nicosia`.
+
+Strict cell dropdown validation readbacks verified Evidence verification statuses, freshness states, information classes, Audit outcomes, Review Decisions dispositions and information classes. These reduce accidental classification errors but **do not** implement a database transaction, uniqueness guarantee or human authorization.
+
+**Scope guard:** Storage-target creation and ACL verification PASS. This does not authorize any live Evidence/Audit/Decision append. PR #87 remains DRAFT and V2 release HELD until a single owner-authorized writer process, fresh canonical/evidence ID preflight, immutable request reconciliation, human decision, privacy partition, independent provider readback and explicit Production acceptance have passed. Do not introduce broad write-capable browser OAuth scopes into V1. Use only existing approved Google provider tooling for isolated future write QA pending a least-privileged final contract.
+
+**Source integrity after creation:** Master Companies remain 2,878 unique IDs; preserved Phase 3 Evidence Observation remains 702 unique IDs (bounded connected Google Sheets readback). Neither original source workbook was edited as part of establishing the V2 storage ledger.
+
+For exact file identifiers and authoritative approval evidence see the private Google Doc **TSS Current System Map and Open Work Register**, section “OWNER-APPROVED V2 OPERATIONAL EVIDENCE AND AUDIT LEDGER CREATION”.
