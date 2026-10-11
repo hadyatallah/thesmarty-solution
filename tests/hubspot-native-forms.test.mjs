@@ -14,7 +14,7 @@ const KITI_VALUE = 'Kiti Residential Development Opportunity';
 test('direct native HubSpot Forms endpoint is the single contact transport', () => {
   assert.match(script, /const TSS_HUBSPOT_PORTAL_ID = '149509919'/);
   assert.match(script, new RegExp(`const TSS_HUBSPOT_FORM_ID = '${FORM_ID}'`));
-  assert.match(script, /https:\/\/api\.hsforms\.com\/submissions\/v3\/integration\/submit\//);
+  assert.match(script, /https:\/\/api-eu1\.hsforms\.com\/submissions\/v3\/integration\/submit\//);
   assert.doesNotMatch(script, /script\.google\.com\/macros\/s\//);
   assert.doesNotMatch(contact, /script\.google\.com\/macros\/s\//);
 });
