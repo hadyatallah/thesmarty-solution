@@ -1,46 +1,61 @@
-# TSS Intelligent Data Center — private app v1 release gate (11 October 2026)
+# TSS Intelligent Data Center | Production operating handover
 
-## Current state
-A responsive **read-only** application shell and authentic Google Sheets API client are staged in Draft PR #81 at `/data-center/index.html`. The existing public website's `/admin` redirection **must remain pointed to the private Google Docs launchpad** until this release gate passes. The original `/crm/` must remain retired.
+**Checkpoint: 11 October 2026.** This file supersedes the original pre-release PR #81 hold note. For authoritative acceptance decisions and provider blockers, consult the [TSS Current System Map and Open Work Register](https://docs.google.com/document/d/1bsqCWq_DzuPFgolE-j1LVcQog0rdgHPzvQFq5FybZnw/edit).
 
-## Approved boundary
-- Canonical Companies: Master Workbook `1mZ7vd2UoGXlyxzwZ8Man593UhlLGt2uS1kIS3ZAWPsU`.
-- Research Candidate, Source, Evidence Observation, Identity Relationship, Developer Project, Developer Project Company Role and Company Intelligence Profile: **preserved historical evidence copy** `10XZutSMt75LWv1DaMXGPg0uLlvqriCVNbwwH4xhx6J4`. No writes.
-- Commercial CRM: HubSpot portal `149509919`. This app has no commercial API integration, and no write/send/promote actions.
-- Owner account: `thesmartysolution@gmail.com`.
-- No service account credential, API key, refresh token, backend proxy, custom login, Apps Script, additional database, subscribed agent or paid AI API.
+## Approved Production architecture
 
-## Browser authentication
-Uses Google's supported `google.accounts.oauth2.initTokenClient` token model to request **`spreadsheets.readonly` + `userinfo.email`** on a direct owner-initiated sign-in. Verifies `email_verified` and exact allowed Google account from Google's `/oauth2/v3/userinfo` **before** reading either Sheet. Tokens and fetched data stay in page memory only; sign-out clears them. Data never ships to Vercel from the browser and is protected by the Google Sheet's existing owner-only ACL. Source code is publicly viewable; it contains spreadsheet IDs, not credentials or actual Company records. The app shell is not itself an authenticated security wall.
+- **Website:** public business presence and one native HubSpot Contact form.
+- **Intelligent Data Center:** read-only, owner-authenticated research application at `/data-center/`; website `/admin` and `/admin/` route to it.
+- **Google Sheets:** existing canonical Master Companies plus a preserved historical Phase 3 research-evidence copy, with Company IDs unchanged.
+- **HubSpot:** the only commercial CRM; **no** direct HubSpot writes, lead promotions, emails or automated outreach from the Data Center.
+- **ChatGPT and existing Outlook/Zoom/WhatsApp channels:** separate management and communications workflows.
 
-`data-center/config.js` now contains the public OAuth Web client ID supplied by the TSS owner on 11 October 2026. This is not a secret. Google consent configuration, exact Preview-origin allowlisting and authenticated owner testing still require independent verification before release.
+The former Google Sheets/Apps Script custom CRM, `/crm/`, `/analytics/`, legacy CRM API and abandoned custom mailbox capture are retired. Do not reactivate them, build a replacement CRM, or import all research Companies into HubSpot.
 
-## Google provider configuration required before live acceptance
-1. In the TSS owner-controlled Google Cloud project `tss-crm-508908`, Google Sheets API is already enabled, according to the owner-shared console screenshots.
-2. Configure an appropriate OAuth consent application. A consumer Gmail owner generally requires **External / Testing** with exact `thesmartysolution@gmail.com` approved as a test user, unless Google's current policies and an already approved configuration say otherwise. Do not bypass unverified-app or access controls.
-3. Register an OAuth Web application client with **Authorized JavaScript origins** including the exact approved Preview origin for validation and later `https://www.thesmartysolution.com`. Do not register wildcard domains. Configure only required scopes. A browser client ID is public; do not commit a client secret.
-4. Public client ID from the owner is configured in `data-center/config.js`. Confirm the Web client has authorized the exact latest protected Preview origin (which changes with each commit) and the Production `https://www.thesmartysolution.com` origin. Test the TSS owner sign-in and verify that unauthorized accounts cannot read the private Sheets.
-5. Verify authorized owner Google can read canonical Companies and all seven research support tabs, and that the Companies directory, district/category search, dossier joins, project link roles, source evidence and review queue render correctly against real private Sheets **without writing anything**.
-6. Verify mobile, desktop, keyboard tab order, no data before sign-in, safe sign-out, no browser storage, expired token handling, CSP behavior and accidental public data disclosure. Recheck Google ACLs remain owner-only.
-7. Pass isolated CI and Preview smoke testing at an exact commit. Merge only when Production access is approved, then deploy, verify read-only functionality and update /admin using a **separate controlled routing PR**, leaving a rollback to the owner-private Google document.
+## Deployed releases (independently read back)
 
-## Unaccepted features / limitations
-- Interactive Company search needs browser OAuth setup and acceptance. A successful static Preview, GitHub CI, or the available ChatGPT Google Drive plugin **does not** prove OAuth integration works in the live website.
-- No background research, continuous sync, cross-company promotion, data editing, business email sends, or HubSpot writes.
-- Research evidence is from an immutable preserved snapshot; current factual verification needs separate source review. A legacy status of `Current` is relative to its stored observation date, not necessarily today's verification.
-- The user may perform research and scoped editing through the **separate connected ChatGPT/Google Drive workflow**; this private app does not inherit those connector permissions.
+| Change | GitHub | Production evidence |
+| --- | --- | --- |
+| Secure read-only Data Center | [PR #81](https://github.com/hadyatallah/thesmarty-solution/pull/81), merge `b29842d` | Vercel READY |
+| Final `/admin` website route | [PR #82](https://github.com/hadyatallah/thesmarty-solution/pull/82), merge `f10cf5f` | Vercel READY, route readback |
+| Simpler Android owner Google sign-in/Lock App | [PR #83](https://github.com/hadyatallah/thesmarty-solution/pull/83), merge `0045941` | Production `dpl_G5rqEqpH7WMA6Phg8uLxGYTh1MxZ` READY |
 
-## Regression commands
-`node --check data-center/app.js`
+Verified 11 October from official connected providers: `/admin`, `/data-center/`, homepage and Contact return HTTP 200; public shell and PWA manifest/service worker are served. `/crm/`, `/analytics/`, `/api/crm` and `/api/outlook/status` return HTTP 404. The served Data Center login shell reveals no private records before authentication. A previous owner-supplied Production Android Chrome screenshot showed successful owner Google authentication and dashboard totals. That screenshot is a separate acceptance checkpoint, not a newly repeated browser session.
 
-`node --check data-center/model.mjs`
+## Data boundary and reconciliation
 
-`node --test data-center/tests/model.test.mjs`
+The current public, non-secret `data-center/config.js` references:
+- Canonical Master Workbook: `1mZ7vd2UoGXlyxzwZ8Man593UhlLGt2uS1kIS3ZAWPsU`, `Companies!A:L`.
+- Preserved research archive: `10XZutSMt75LWv1DaMXGPg0uLlvqriCVNbwwH4xhx6J4`, seven research tabs read by the app.
+- Exact allowed Google identity: `thesmartysolution@gmail.com`.
+- HubSpot account: `149509919` (external handover only).
 
-Dedicated workflow: `.github/workflows/tss-idc-app-safety.yml`.
+The app requests Google `userinfo.email` and `spreadsheets.readonly`; it verifies Google's `email_verified` and exact allowed address **before** either Sheets read. Google Drive permissions remain the underlying security boundary. OAuth client ID and spreadsheet IDs in public source are identifiers, **not** API credentials. Tokens and fetched data stay in memory only, do not go into Vercel server storage or browser persistent storage, and are removed by **Lock App**. The service worker caches only an allowlisted public shell, never token-bearing or Sheets responses.
 
-## Data boundary for Production
-**Do not merge or replace /admin until Google OAuth consent, exact current Preview origin and approved owner-provider sign-in with real read-only Sheets data are successfully tested.** Preserve all source workbooks, app site, native HubSpot Contact, privacy pages and the prior accepted CRM retirement.
+Independent read-only Sheet checks on 11 October returned **2,878 unique Company IDs**, **15 stored research candidates**, **702 stored evidence observations**, **5 projects**, **21 research sources**, **5 identity relationships**, **5 project-role records**, and **566 Company Intelligence Profiles**. The known synthetic fixture filter results in 14 candidates, 701 evidence observations and 4 projects in the app. Company and research ID checks found no duplicates in the checked leading columns. Historical evidence is not current primary-source verification.
 
-## Android repeat sign-in experience (11 October 2026)
-The TSS owner confirmed the Android PWA previously opened with several Google authorization steps every time. The issue was in the app's own flow: `requestAccessToken({prompt:'consent'})` forced fresh consent; and routine Disconnect called `google.accounts.oauth2.revoke()`, removing the standing OAuth grant. Corrective isolated PR uses Google's supported `requestAccessToken({prompt:'',login_hint:cfg.allowedEmail})`, which should reuse an existing consent grant and preselect the TSS email when possible. The visible action is now **Open Data Center**, and the former Disconnect becomes **Lock App**, which clears in-memory tokens, loaded records and rendered DOM data **without revoking Google account-level consent**. It remains one tap after a new PWA launch; this browser-only token model cannot silently persist authorization across fully closed launches without a different, explicitly authorized backend session architecture. Google can still demand sign-in/consent in exceptional conditions. Do not store access tokens or refresh tokens in localStorage, sessionStorage, service workers, files or cookies. User may revoke app consent from Google Account permissions separately if desired. Re-run synthetic CI and owner-account re-entry acceptance on Production after the change.
+Research archive ACL: TSS Gmail owner only. Master Workbook ACL: TSS Gmail owner, an authorized personal administrator writer, and an existing service-account reader. Review the last dependency before removing any historical service-account permission. No unreviewed role inheritance, automatic merges, Company creation or data edits.
+
+## Current app capabilities
+
+Dashboard and district breakdown, Company ID/name/category/district/email/phone/website search and dossier, developer/project and linked evidence display, Research Candidates, Evidence & Sources, Review Queue, and a non-writing HubSpot handover guide. The app is intentionally **read-only**. Adding new source facts, evidence disputes, or reconciliations requires a separate authorized research workflow, not silent client-side writes.
+
+Open access: visit `https://www.thesmartysolution.com/admin`, tap **Open Data Center**, choose the TSS Gmail account and approve a Google prompt if Google requires one. Tap **Lock App** to clear page-held data. As of PR #83, a normal lock does not revoke the standing Google grant. Reopening after fully closing the PWA still requires a user-initiated Google token popup. Google can require reauthentication at its discretion. Do not solve this by persisting OAuth tokens in localStorage, cookies or a service worker.
+
+## Open acceptance gates
+
+- **Interactive security and devices, PARTIAL:** a full second-account refusal test and observed Android phone/tablet PWA install/re-entry check after PR #83 remain open. Static source review, Google ACL readback and the earlier owner screenshot do not replace those tests.
+- **Main Contact native HubSpot form, PARTIAL:** current embedded form is **TSS Website Contact Enquiry**, ID `d6b2a98a-ef6b-4a18-9c99-cf39ea2925e5`; HubSpot records one submission as of 11 October. Historical provider forms may remain as records, but the website must embed just this form. The `kiti-enquiry.html` page redirects to Contact and is not a separate live form. The exact Kiti dropdown option, consent behavior and complete submission payload/association still require verified native form/admin or permitted internal QA readback.
+- **HubSpot commercial enquiry routing, BLOCKED:** commercial pipeline `4209185979` exists, but four current tickets are all in Support Pipeline `0`; no ticket in TSS Commercial Enquiries has been accepted from the native form. Company key `tss_company_key` remains missing; do not retry its creation without new evidence. Support case `#49212582236` remains provider-owned. Contact `tss_contact_key` and Ticket `tss_enquiry_key` exist, but their uniqueness contract cannot be re-accepted from the current connector's property metadata. Do not claim full intake/idempotency acceptance.
+- **Legacy cleanup, PARTIAL:** tested obsolete routes return 404 and PR #79 records provider trigger/deployment retirement. Current Apps Script trigger inventory and every dormant permission/dependency were not independently rechecked in the latest run. Never revoke live Google, Outlook, website or social dependencies on a guess.
+- **Research writing and commercial promotions:** intentionally **not implemented**. They are not blockers for this read-only application and must not be reintroduced under a stabilization ticket.
+
+## Regression tests
+
+```bash
+node --check data-center/app.js
+node --check data-center/model.mjs
+node --test data-center/tests/model.test.mjs
+```
+
+Run the existing isolated workflow `.github/workflows/tss-idc-app-safety.yml` and website regression tests before merging application changes. Production acceptance needs a verified exact commit, Vercel READY release, tested public routes, and authorized interactive security/functional checks. Keep owner-only Google permissions and the previous private Google operating guide as rollback references. No paid APIs or alternative browser agents.
