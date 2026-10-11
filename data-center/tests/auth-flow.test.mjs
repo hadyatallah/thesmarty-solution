@@ -21,6 +21,7 @@ class Node {
  }
  append(...children){this.children.push(...children);}
  replaceChildren(...children){this.children=children;}
+ get firstChild(){return this.children[0];}
  addEventListener(name,handler){this.handlers[name]=handler;}
  setAttribute(){}
  removeAttribute(){}
@@ -178,4 +179,41 @@ test('incomplete research response on refresh also locks session (no stale fallb
  await h.context.loadAll();
  assert.equal(h.locked,true);
  assert.match(h.notice,/Incomplete research evidence response/);
+});
+
+test('all seven Data Center views render with synthetic authorized research data',async()=>{
+ const h=createHarness();
+ h.begin();await h.respond();
+ const headings=['Dashboard','Companies','Developers & Projects','Research Queue',
+  'Evidence & Sources','Review Queue','HubSpot Handover'];
+ for(let i=0;i<h.buttons.length;i++){
+  h.buttons[i].handlers.click();
+  assert.equal(h.elements.get('#location').textContent,headings[i]);
+  assert.equal(h.locked,false);
+  assert.ok(h.elements.get('#content').children.length>0,'Empty view '+headings[i]);
+ }
+ assert.equal(h.sheetReads.length,2,'Navigation must not secretly re-fetch or write');
+});
+
+test('Company directory search and exact dossier render without mixing other identities',async()=>{
+ const h=createHarness();
+ h.begin();await h.respond();
+ h.buttons.find(b=>b.dataset.view==='companies').handlers.click();
+ const walk=n=>[n,...n.children.flatMap(child=>child instanceof Node?walk(child):[])];
+ const nodes=()=>walk(h.elements.get('#content'));
+ const search=nodes().find(n=>n.tag==='input'&&n.placeholder?.startsWith('Search companies'));
+ assert.ok(search,'Expected Company search input');
+ search.value='does-not-exist';
+ search.handlers.input();
+ const renderedText=()=>nodes().map(n=>n.textContent).join(' ');
+ assert.match(renderedText(),/No matching rows/);
+ search.value='developer larnaca';
+ search.handlers.input();
+ assert.match(renderedText(),/Synthetic Developer/);
+ const companyButton=nodes().find(n=>n.tag==='button'&&n.textContent==='Synthetic Developer');
+ assert.ok(companyButton,'Expected exact Company dossier action');
+ companyButton.handlers.click();
+ assert.match(renderedText(),/TSS-CY-001/);
+ assert.match(renderedText(),/Verify identity/);
+ assert.equal(h.sheetReads.length,2,'Company dossier must join in-memory research only');
 });
