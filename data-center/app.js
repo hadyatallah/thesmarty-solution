@@ -1,4 +1,4 @@
-import {rowsToObjects,filterCompanies,companyDossier,isReviewNeeded,overview,safeExternalUrl,text,normalized} from './model.mjs';
+import {rowsToObjects,filterCompanies,companyDossier,isReviewNeeded,overview,safeExternalUrl,text,normalized,businessOnly} from './model.mjs';
 const cfg=window.TSS_IDC_CONFIG||{};
 const root=document.querySelector('#content');
 const banner=document.querySelector('#notice');
@@ -104,7 +104,7 @@ async function loadAll(){
   const names=['candidates','sources','evidence','relationships','projects','roles','profiles'];
   if(research.length!==names.length)throw Error('Incomplete research evidence response; nothing was loaded.');
   const next={companies:companyRows,candidates:[],sources:[],evidence:[],relationships:[],projects:[],roles:[],profiles:[]};
-  names.forEach((name,i)=>{next[name]=rowsToObjects(research[i]?.values||[])});
+  names.forEach((name,i)=>{next[name]=businessOnly(rowsToObjects(research[i]?.values||[]))});
   if(!next.evidence.length)throw Error('Research evidence was empty; nothing was loaded.');
   records=next;loaded={master:true,research:true};
   setNotice('Source read complete. Records are private, read-only and current as of this refresh; source-level observation dates still control research freshness.');
