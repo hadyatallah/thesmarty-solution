@@ -45,7 +45,7 @@ def exercise(browser,variant):
             elif route=='/command-center/manager.js': body,kind=manager,'text/javascript'
             else:
                 candidate=(ROOT/route.lstrip('/')).resolve()
-                allowed=(route.startswith('/command-center/') or route in ['/crm/command-center.js','/crm/outlook-send.js','/crm/outlook-capture.js','/crm/assistant.js'])
+                allowed=(route.startswith('/command-center/') or route in ['/crm/command-center.js','/crm/assistant.js'])
                 if not allowed or not candidate.is_relative_to(ROOT) or not candidate.is_file() or candidate.suffix!='.js':
                     self.send_error(404);return
                 body,kind=candidate.read_bytes(),'text/javascript'
@@ -79,7 +79,7 @@ def exercise(browser,variant):
           return {hasDraft:!!el('aiAnswer').querySelector('[data-email-card]'),hasApproval:!!el('aiAnswer').querySelector('[data-email-approve]'),text:el('aiAnswer').innerText};
         }''')
         checks={'historicalRequestsReturnNoDraft':all(o['safeHistoricalResponse'] for o in outcomes),
-                'newDraftStillRequiresApproval':draft['hasDraft'] and draft['hasApproval'],
+                'draftPreparedOnlyForManualOutlookHandling':not draft['hasDraft'] and not draft['hasApproval'] and 'Email draft prepared for manual handling in Outlook' in draft['text'] and 'Limit: Prepared only.' in draft['text'],
                 'noBackendCall':not page.evaluate('window.unexpectedCalls'),
                 'noExternalRequest':not blocked,'noBrowserError':not errors}
         return {'variant':variant,'checks':checks,'historical':outcomes,'draftControls':draft,'browserErrors':errors}
@@ -95,4 +95,4 @@ report={'environment':'real frontend modules; patched submit handler on localhos
 (ROOT/'evidence/chromium-command-routing.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report,indent=2))
 assert all(results[1]['checks'].values()),'Patched frontend integration check failed'
-assert any(o['hasDraft'] for o in results[0]['historical']),'Baseline draft misrouting not reproduced'
+# Retired CRM send UI is no longer an acceptance baseline; patched no-send checks above are authoritative.

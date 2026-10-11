@@ -10,8 +10,8 @@ test('native HubSpot provider is the sole public website enquiry transport',()=>
   assert.doesNotMatch(html,/data-tss-form|src="script\.js/);
   assert.doesNotMatch(shared,/TSS_FORM_ENDPOINT|submitTssEnquiry_|script\.google\.com|tssFormParams_/);
 });
-test('old CRM gateway remains isolated and Contact cannot invoke it',()=>{
-  assert.equal(existsSync(new URL('../api/crm.js',import.meta.url)),true);
+test('old CRM gateway is retired and Contact cannot invoke it',()=>{
+  assert.equal(existsSync(new URL('../api/crm.js',import.meta.url)),false);
   const html=read('contact.html');
   assert.doesNotMatch(html,/\/api\/crm|script\.google\.com|submissions\/v3\/integration\/submit/);
 });

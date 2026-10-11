@@ -74,10 +74,10 @@ test('LOOKUP preserves existing non-AI attention and data-quality commands',asyn
   const html=await h.submit(query);assert.ok(html);assert.ok(!h.calls.includes('askAssistant'));
  }
 });
-test('LOOKUP managed email keeps its exact approval path, not a company search',async()=>{
+test('LOOKUP managed email becomes a manual Outlook draft, not a company search or CRM send',async()=>{
  const h=harness(snapshot(),async method=>method==='askAssistant'?{answer:'τη συνεργασία'}:{});
  const html=await h.submit('Send an email to Elite Cyprus Relocation about collaboration');
- assert.match(html,/Approve and send/);assert.match(html,/Draft only/);
+ assert.match(html,/manual handling in Outlook/);assert.doesNotMatch(html,/Approve and send/);
  assert.ok(!h.calls.some(x=>/send|execute|saveRecord/i.test(x)));
 });
 test('STATUS configuration alone is not labelled connected or available',()=>{

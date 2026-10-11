@@ -21,7 +21,7 @@ test('public site no longer advertises old custom CRM and analytics entry points
   assert.doesNotMatch(script, /<a href="\/crm\/" rel="nofollow">Admin login<\/a>/);
   assert.doesNotMatch(script, /<a href="\/analytics\/" rel="nofollow">Analytics<\/a>/);
   const home=source('index.html');
-  assert.doesNotMatch(home, /href="\\/crm\\/"|href="\\/analytics\\/"/);
+  assert.doesNotMatch(home, /href="\/crm\/"|href="\/analytics\/"/);
 });
 
 test('native HubSpot Contact page remains isolated from the legacy Apps Script path', () => {
@@ -31,11 +31,14 @@ test('native HubSpot Contact page remains isolated from the legacy Apps Script p
   assert.doesNotMatch(contact, /src="script\.js|data-tss-form/);
 });
 
-test('Outlook-dependent backend routes remain intact, pending independent retirement', () => {
-  assert.equal(existsSync(new URL('../api/outlook/status.js', import.meta.url)), true);
-  assert.equal(existsSync(new URL('../api/outlook/_lib.js', import.meta.url)), true);
-  assert.equal(existsSync(new URL('../api/crm.js', import.meta.url)), true);
+test('legacy CRM gateway and CRM-session Outlook capture routes are retired', () => {
+  assert.equal(existsSync(new URL('../api/crm.js', import.meta.url)), false);
+  assert.equal(existsSync(new URL('../api/outlook/status.js', import.meta.url)), false);
+  assert.equal(existsSync(new URL('../api/outlook/_lib.js', import.meta.url)), false);
+  assert.equal(existsSync(new URL('../server/outlook/status.js', import.meta.url)), false);
+  assert.equal(existsSync(new URL('../lib/tssHubspotEnquiryHandler.mjs', import.meta.url)), false);
+  assert.equal(existsSync(new URL('../lib/tssHubspotEnquirySync.mjs', import.meta.url)), false);
   const config = JSON.parse(source('vercel.json'));
-  assert.ok(config.rewrites.some(x => x.source === '/api/outlook/sync'));
+  assert.equal(config.rewrites?.length || 0, 0);
   assert.equal(config.crons?.length || 0, 0);
 });
