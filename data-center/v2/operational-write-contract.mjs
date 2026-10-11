@@ -79,7 +79,7 @@ function assertApprovedInput(input){
  if(input.candidateId)throw Error('Operational proposal must use one canonical Company ID only');
  if(input.supersedesEvidenceId)throw Error('Supersession disabled pending dedicated acceptance');
  if(s(input.ownerDecision)!=='APPROVED'||s(input.ownerConfirmation)!==APPROVAL_CONFIRMATION)
-  throw Error('Explicit reviewed owner APPPROVED decision and confirmation required');
+  throw Error('Explicit reviewed owner APPROVED decision and confirmation required');
  if(s(input.reviewer)!=='TSS Google owner'||s(input.capturedBy)!=='TSS Google owner')
   throw Error('Approved single owner must be both reviewer and recorder');
  if(!s(input.rationale)||s(input.rationale).length>1500)
