@@ -109,3 +109,12 @@ test('historical synthetic preview fixtures stay archived but do not count as li
  const app=read('data-center/app.js');
  assert.ok(app.includes('businessOnly(rowsToObjects(research[i]?.values||[]))'));
 });
+
+test('live Sheet reads extend with future canonical rows and evidence, without arbitrary row caps',()=>{
+ const code=read('data-center/app.js');
+ assert.ok(code.includes("['Companies!A:L']"));
+ for(const name of ['Research Candidate','Research Source','Evidence Observation','Developer Project','Company Intelligence Profile']){
+  assert.ok(code.includes("'"+name+"'!A:"),'Missing open-ended range for '+name);
+ }
+ assert.ok(!code.includes("Companies!A1:L3004"));
+});
