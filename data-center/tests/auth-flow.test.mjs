@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import * as model from '../model.mjs';
+import * as request from '../research-request.mjs';
 
 // This is a synthetic browser/Google adapter. It tests the actual app.js
 // auth and refresh callbacks without touching Google, HubSpot or Production.
@@ -10,6 +11,9 @@ const original=readFileSync(new URL('../app.js',import.meta.url),'utf8');
 const script=original.replace(
  /^import \{([^}]+)\} from '\.\/model\.mjs';/m,
  'const {$1}=__model;'
+).replace(
+ /^import \{([^}]+)\} from '\.\/research-request\.mjs';/m,
+ 'const {$1}=__request;'
 );
 assert.notEqual(script,original,'App module loader must have been replaced');
 
@@ -83,7 +87,7 @@ function createHarness({email=owner,verified=true,initialSheetsFailure=false}={}
   }
   throw Error('Unexpected fetch '+link);
  };
- const context={__model:model,document:doc,window,navigator:{},location:{protocol:'https:'},
+ const context={__model:model,__request:request,document:doc,window,navigator:{},location:{protocol:'https:'},
   URL,URLSearchParams,fetch,console};
  vm.runInNewContext(script,context,{timeout:2000});
  return {state,context,elements,buttons,
