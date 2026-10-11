@@ -11,7 +11,7 @@ BASE='39f24dcfdab351821e3a59de3d70f1350137ab1d'
 SCRIPT=(ROOT/'script.js').read_text()
 PORTAL=re.search(r"const TSS_HUBSPOT_PORTAL_ID = '([^']+)'",SCRIPT)[1]
 FORM_ID=re.search(r"const TSS_HUBSPOT_FORM_ID = '([^']+)'",SCRIPT)[1]
-ENDPOINT=f'https://api.hsforms.com/submissions/v3/integration/submit/{PORTAL}/{FORM_ID}'
+ENDPOINT=f'https://api-eu1.hsforms.com/submissions/v3/integration/submit/{PORTAL}/{FORM_ID}'
 BASE_FILES={name:subprocess.check_output(['git','show',f'{BASE}:{name}'],cwd=ROOT) for name in ['script.js','anti-spam.js']}
 REPORT=[]
 ARTIFACTS=ROOT/'evidence/enquiry';ARTIFACTS.mkdir(parents=True,exist_ok=True)
