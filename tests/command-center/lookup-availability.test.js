@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
@@ -108,10 +109,9 @@ test('STATUS non-AI backend calls do not change AI health',async()=>{
  const h=harness(snapshot(),async()=>({version:'synthetic'}));await h.c.assistantCall('ccState');
  assert.equal(h.c.assistantAiStatus().text,'AI configured');
 });
-test('RELEASE entry scripts and nested manager import use their exact content versions',()=>{
- const read=p=>readFileSync(new URL('../../'+p,import.meta.url));
- const version=p=>{const b=read(p);return createHash('sha1').update('blob '+b.length+'\0').update(b).digest('hex').slice(0,12);};
- const index=read('crm/index.html').toString(),cc=read('crm/command-center.js').toString();
- for(const p of ['crm/assistant.js','crm/command-center.js'])assert.ok(index.includes('/'+p+'?v='+version(p)),p);
- assert.ok(cc.includes('../command-center/manager.js?v='+version('command-center/manager.js')));
+test('RETIRED CRM shell is absent while inactive command-center source remains archived',()=>{
+ const exists=p=>existsSync(new URL('../../'+p,import.meta.url));
+ assert.equal(exists('crm/index.html'),false);
+ assert.equal(exists('analytics/index.html'),false);
+ assert.equal(exists('command-center/manager.js'),true);
 });

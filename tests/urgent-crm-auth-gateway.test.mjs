@@ -26,10 +26,10 @@ function harness(fetcher,{method='POST',origin='https://www.thesmartysolution.co
   return {run:()=>makeHandler(fetcher)(req,res),state};
 }
 
-test('frontend uses same-origin CRM gateway and no direct Apps Script login transport',()=>{
-  const html=fs.readFileSync(path.join(root,'crm/index.html'),'utf8');
-  assert.match(html,/const CRM_API='\/api\/crm'/);
-  assert.doesNotMatch(html,/const CRM_API='https:\/\/script\.google\.com/);
+test('abandoned CRM browser UI is retired; Outlook-dependent gateway remains isolated',()=>{
+  assert.equal(fs.existsSync(path.join(root,'crm/index.html')),false);
+  assert.equal(fs.existsSync(path.join(root,'api/crm.js')),true);
+  assert.equal(fs.existsSync(path.join(root,'api/outlook/status.js')),true);
 });
 
 test('beginGoogleLogin follows Apps Script receipt redirect server-side',async()=>{
