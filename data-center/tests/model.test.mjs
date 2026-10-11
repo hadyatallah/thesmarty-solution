@@ -15,6 +15,9 @@ test('canonical company search supports district, category and case-folded looku
  assert.equal(filterCompanies(rows,{query:'synthetic',district:'Larnaca',category:'developer'}).length,1);
  assert.equal(filterCompanies(rows,{query:'unknown'}).length,0);
  assert.equal(filterCompanies(rows,{district:'Paphos'})[0].id,'TSS-CY-002');
+ assert.equal(filterCompanies(rows,{query:'developer larnaca'}).length,1);
+ assert.equal(filterCompanies(rows,{query:'Paphos contractor'}).length,1);
+ assert.equal(filterCompanies(rows,{query:'Paphos developer'}).length,0);
 });
 test('dossiers join only exact canonical Company IDs and explicit project roles',()=>{
  const c={id:'TSS-CY-001',name:'Synthetic Developer'};
@@ -53,4 +56,11 @@ test('browser shell never embeds real Company rows, tokens or writable old CRM A
  assert.doesNotMatch(app,/localStorage|sessionStorage|openai\.com\/v1|script\.google\.com|\/api\/crm/);
  assert.match(cfg,/googleClientId:\s*""/); // remains blocked pending official OAuth setup
  assert.doesNotMatch(cfg,/private_key|client_secret|BEGIN PRIVATE KEY|access_token\s*:/);
+ const css=read('data-center/app.css');
+ assert.match(css,/\\[hidden\\]\\{display:none!important\\}/);
+ assert.match(app,/root\\.replaceChildren\\(\\);root\\.hidden=true/);
+ assert.match(app,/oauth2\\?\\.revoke/);
+ assert.match(app,/records=next;loaded=\\{master:true,research:true\\}/);
+ assert.doesNotMatch(app,/records\\.companies=rowsToObjects/);
+
 });
