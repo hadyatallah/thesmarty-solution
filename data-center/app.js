@@ -48,7 +48,7 @@ const hasClient=typeof cfg.googleClientId==='string'&&/^[0-9]+-[a-z0-9-]+\.apps\
 function signedOut(){
  token='';owner='';loaded={master:false,research:false};
  records={companies:[],candidates:[],sources:[],evidence:[],relationships:[],projects:[],roles:[],profiles:[]};
- identity.textContent='Not connected';loginCard.hidden=false;root.replaceChildren();root.hidden=true;setBusy(false);
+ identity.textContent='Not connected';loginCard.hidden=false;root.replaceChildren();root.hidden=true;setBusy(false);document.querySelector('.privacy').textContent='Private data locked';
  loginMessage.textContent=hasClient?'Connect the owner Google account to load private Company records and research evidence. Tokens remain in memory only.':'App interface installed. Google OAuth registration and owner-only read access require provider acceptance before live Company data can load. Continue using the existing private Admin workspace.';
  setNotice(hasClient?'':'Provider configuration is pending. The app does not expose Google Sheets or a sample of private Companies to unauthenticated visitors.');
 }
@@ -71,7 +71,7 @@ function auth(){
     if(!user.email_verified||normalized(user.email)!==normalized(cfg.allowedEmail)){
       throw Error('This account is not authorized for TSS research. Sign in as '+cfg.allowedEmail+'.');
     }
-    token=issued;owner=user.email;identity.textContent=owner;await loadAll();
+    token=issued;owner=user.email;identity.textContent=owner;document.querySelector('.privacy').textContent='Owner-only data';await loadAll();
    }catch(err){signedOut();setNotice(err.message||'Google sign-in failed.');}
    finally{setBusy(false);}
   },
@@ -246,3 +246,10 @@ function handoverView(){
 }
 signedOut();
 setView('dashboard');
+// The service worker is limited to public static shell assets.
+// OAuth tokens and private Sheets responses are never placed in caches.
+if('serviceWorker' in navigator && location.protocol==='https:'){
+ window.addEventListener('load',()=>navigator.serviceWorker.register('/data-center/sw.js',{scope:'/data-center/'}).catch(()=>{
+  // Browser installation enhancement is optional; authenticated app stays online.
+ }));
+}
