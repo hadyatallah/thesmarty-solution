@@ -1,6 +1,6 @@
 /*
  * TSS native HubSpot Forms adapter.
- * The original enquiry form remains usable if HubSpot fails to load or render.
+ * Public enquiries are handled by HubSpot's native embed only.
  *
  * Form IDs and embedScriptUrl are copied from HubSpot's UPDATED form editor.
  * Do not use legacy-editor embed APIs for a form built in HubSpot's updated editor.
@@ -14,7 +14,7 @@
     region: 'eu1',
     embedScriptUrl: 'https://js-eu1.hsforms.net/forms/embed/149509919.js',
     forms: Object.freeze({
-      contact: 'd571803e-7777-4f28-94ea-b24df852245c'
+      contact: 'd6b2a98a-ef6b-4a18-9c99-cf39ea2925e5'
     })
   });
   const validId = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -33,29 +33,25 @@
     if (!config.enabled) return;
     if (!isApprovedScript(config.embedScriptUrl)) return;
 
-    const slots = Array.from(document.querySelectorAll('[data-tss-hubspot-form]'));
+    const slots = Array.from(document.querySelectorAll('.tss-hubspot-form[data-hs-form-id]'));
     if (!slots.length) return;
     const prepared = [];
     for (const slot of slots) {
-      const route = slot.getAttribute('data-tss-hubspot-form');
-      const formId = config.forms[route];
-      const legacy = document.querySelector('form[data-tss-form="' + route + '"]');
-      if (!legacy || !validId.test(formId || '')) continue;
+      const formId = slot.getAttribute('data-hs-form-id') || config.forms.contact;
+      if (!validId.test(formId || '')) continue;
       const frame = document.createElement('div');
       frame.className = 'hs-form-frame';
       frame.setAttribute('data-region', config.region);
       frame.setAttribute('data-portal-id', config.portalId);
       frame.setAttribute('data-form-id', formId);
       slot.appendChild(frame);
-      prepared.push({ slot, legacy, frame, formId });
+      prepared.push({ slot, frame, formId });
     }
     if (!prepared.length) return;
 
     function revealWhenVerified(pair) {
       if (pair.slot.dataset.tssHubspotMounted === 'true') return;
       if (!pair.frame.querySelector('iframe')) return;
-      pair.slot.hidden = false;
-      pair.legacy.hidden = true;
       pair.slot.dataset.tssHubspotMounted = 'true';
     }
 
@@ -74,8 +70,6 @@
     script.onerror = () => {
       observer.disconnect();
       for (const pair of prepared) {
-        pair.slot.hidden = true;
-        pair.legacy.hidden = false;
         pair.slot.dataset.tssHubspotMounted = 'false';
       }
     };
