@@ -180,3 +180,17 @@ The contract accepts only:
 **Provider-write and concurrency limitations:** The JavaScript module returns a plan; it is not a Google write integration and cannot itself verify a real OAuth account or reserve a provider-level transaction. Native Sheets does not enforce unique IDs, so single-writer exclusion is an operating condition rather than a tested globally atomic lock. The existing provider-connected Google Sheets actions may carry out an individually authorized future append, but end-to-end live acceptance remains HELD until a specific reviewed real research fact, actual owner approval, independent fresh preflight, single attempt, and audit readback can be verified.
 
 Do not write anonymous/synthetic QA fixtures into the owner-only **operational** ledger simply to make it appear active. The previously approved separate `NOT CANONICAL` QA workbook holds synthetic write evidence. V1 desktop/tablet acceptance and V2 live mobile/desktop/browser checks remain OPEN.
+
+
+## Three-tab isolated QA provider checkpoint — no append executed
+
+**11 October 2026, after operational write-contract regression PASS:** Extended the existing owner-private, explicitly `NOT CANONICAL` QA workbook with three *additional* schema-matched test tabs: `V2 Evidence QA` (24 columns), `V2 Audit QA` (16 columns) and `V2 Decisions QA` (15 columns). Their headers match the approved operational ledger. Independently verified all three tabs had headers only and no research entries. The pre-existing QA Evidence/Audit tabs and prior synthetic rows were left untouched.
+
+A proposed *single* three-tab synthetic QA append through the connected Google Sheets provider tool was **blocked by a tool safety restriction**; no successful provider write acknowledgement was returned. **No retry was attempted.** Immediate independent readbacks of all three QA tables showed exactly one header row and **zero** data records, including zero matches for the proposed stable QA request ID. Accordingly:
+
+- PASS: three-tab schema scaffold exists in isolated QA and is independently readable.
+- PASS: zero operational data modifications; source/owner-private access boundaries unchanged.
+- PASS: in-memory three-tab preflight and readback logic via dedicated GitHub tests.
+- **BLOCKED: an actual provider-backed three-tab QA append and reconciliation has NOT been accepted.** The earlier separate two-tab synthetic QA append acceptance is not equivalent to this unexecuted three-tab transaction.
+
+Do not circumvent the provider safety restriction, retry an uncertain write, reframe a blocked attempt as PASS, or release live research writes until an explicitly supported owner-authorized path passes end-to-end acceptance.
