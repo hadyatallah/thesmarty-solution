@@ -6,7 +6,7 @@ const source=fs.readFileSync(new URL('../script.js',import.meta.url),'utf8');
 const code=source.slice(source.indexOf('function tssSplitName_'),source.indexOf('// Phase 7 adaptive'));
 const portal=source.match(/const TSS_HUBSPOT_PORTAL_ID = '([^']+)'/)[1];
 const form=source.match(/const TSS_HUBSPOT_FORM_ID = '([^']+)'/)[1];
-const endpoint=`https://api.hsforms.com/submissions/v3/integration/submit/${portal}/${form}`;
+const endpoint=`https://api-eu1.hsforms.com/submissions/v3/integration/submit/${portal}/${form}`;
 const json=payload=>({ok:true,status:200,type:'cors',json:async()=>payload});
 function harness(implementation,online=true,abort=true){
  const calls=[],timers=new Map();let next=0;
