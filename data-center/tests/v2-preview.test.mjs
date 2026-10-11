@@ -73,7 +73,12 @@ test('duplicate demonstration blocks creation and locks prepare control',()=>{
  const h=createBrowser();h.click('duplicate');
  assert.match(h.status(),/BLOCKED/);
  assert.equal(h.elements.prepare.disabled,true);
- assert.match(h.elements.details.children.map(x=>x.textContent).join(' '),/No evidence/);
+ assert.equal(h.inputs.requestId.value,'QA-IDC-V2-REQ-20261011-001');
+ const messages=h.elements.details.children.flatMap(x=>[
+  x.textContent,...x.children.flatMap(y=>[y.textContent,...y.children.map(z=>z.textContent)])
+ ]).join(' ');
+ assert.match(messages,/requestId: existing QA Evidence or Audit request; never retry/);
+ assert.doesNotMatch(messages,/must be a V2 QA ID/);
  assert.equal(h.output(),'No proposal prepared.');
 });
 
