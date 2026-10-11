@@ -79,7 +79,7 @@ def exercise(browser,variant):
           return {hasDraft:!!el('aiAnswer').querySelector('[data-email-card]'),hasApproval:!!el('aiAnswer').querySelector('[data-email-approve]'),text:el('aiAnswer').innerText};
         }''')
         checks={'historicalRequestsReturnNoDraft':all(o['safeHistoricalResponse'] for o in outcomes),
-                'newDraftStillRequiresApproval':draft['hasDraft'] and draft['hasApproval'],
+                'draftPreparedOnlyForManualOutlookHandling':not draft['hasDraft'] and not draft['hasApproval'] and 'Email draft prepared for manual handling in Outlook' in draft['text'] and 'Limit: Prepared only.' in draft['text'],
                 'noBackendCall':not page.evaluate('window.unexpectedCalls'),
                 'noExternalRequest':not blocked,'noBrowserError':not errors}
         return {'variant':variant,'checks':checks,'historical':outcomes,'draftControls':draft,'browserErrors':errors}
