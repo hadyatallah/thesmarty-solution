@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {rowsToObjects,filterCompanies,companyDossier,isReviewNeeded,overview,safeExternalUrl} from '../model.mjs';
+import {rowsToObjects,filterCompanies,companyDossier,isReviewNeeded,overview,safeExternalUrl,businessOnly,isSyntheticFixture} from '../model.mjs';
 const read=p=>readFileSync(new URL('../../'+p,import.meta.url),'utf8');
 test('source row parser preserves headers and positions, skipping empty rows',()=>{
  assert.deepEqual(rowsToObjects([['id','','district'],['TSS-01','skip','Larnaca'],['','','']]),
@@ -90,4 +90,22 @@ test('Service worker caches only public shell assets, never private Google API r
  assert.doesNotMatch(sw,/masterSpreadsheetId|researchSpreadsheetId|companyId/);
  assert.match(app,/navigator\.serviceWorker\.register\('\/data-center\/sw\.js'/);
  assert.match(app,/Private data locked/);
+});
+
+test('historical synthetic preview fixtures stay archived but do not count as live research',()=>{
+ const ids=[
+  {candidateId:'RC-PREV-0001',discoveredName:'Demo Candidate Ltd'},
+  {projectId:'DP-PREV-0001',projectName:'Demo Court (Synthetic)'},
+  {evidenceId:'EV-PREV-0001',sourceRef:'synthetic://phase3/evidence-fixture/001'},
+  {roleId:'DPR-PREV-0001',projectId:'DP-PREV-0001'},
+  {sourceId:'SRC-TEST'}
+ ];
+ for(const record of ids)assert.equal(isSyntheticFixture(record),true);
+ const safe=[{candidateId:'RC-P3-CPY-001',discoveredName:'Cypeir Properties Limited'},
+ {projectId:'DP-P3-001',projectName:'Gelfanco 8 Court'},
+ {evidenceId:'EV-P3-0001',sourceRef:'https://gelfanco.com/projects.html'}];
+ assert.deepEqual(businessOnly([...ids,...safe]),safe);
+ assert.equal(overview({companies:[],candidates:businessOnly([ids[0],safe[0]])}).candidates,1);
+ const app=read('data-center/app.js');
+ assert.match(app,/businessOnly\\(rowsToObjects\\(research\\[i\\]\\?\\.values\\|\\|\\[\\]\\)\\)/);
 });
