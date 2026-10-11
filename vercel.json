@@ -13,12 +13,12 @@
     },
     {
       "source": "/admin",
-      "destination": "https://docs.google.com/document/d/1CqVTdI6I402HFvJtTT0y3QfhL7T09Ku1bjex9Ac6CGI/edit",
+      "destination": "/data-center/",
       "permanent": false
     },
     {
       "source": "/admin/",
-      "destination": "https://docs.google.com/document/d/1CqVTdI6I402HFvJtTT0y3QfhL7T09Ku1bjex9Ac6CGI/edit",
+      "destination": "/data-center/",
       "permanent": false
     }
   ]
