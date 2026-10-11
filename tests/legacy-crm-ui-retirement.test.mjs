@@ -20,6 +20,8 @@ test('public site no longer advertises old custom CRM and analytics entry points
   const script = source('script.js');
   assert.doesNotMatch(script, /<a href="\/crm\/" rel="nofollow">Admin login<\/a>/);
   assert.doesNotMatch(script, /<a href="\/analytics\/" rel="nofollow">Analytics<\/a>/);
+  const home=source('index.html');
+  assert.doesNotMatch(home, /href="\\/crm\\/"|href="\\/analytics\\/"/);
 });
 
 test('native HubSpot Contact page remains isolated from the legacy Apps Script path', () => {
