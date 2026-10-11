@@ -160,3 +160,23 @@ Strict cell dropdown validation readbacks verified Evidence verification statuse
 **Source integrity after creation:** Master Companies remain 2,878 unique IDs; preserved Phase 3 Evidence Observation remains 702 unique IDs (bounded connected Google Sheets readback). Neither original source workbook was edited as part of establishing the V2 storage ledger.
 
 For exact file identifiers and authoritative approval evidence see the private Google Doc **TSS Current System Map and Open Work Register**, section “OWNER-APPROVED V2 OPERATIONAL EVIDENCE AND AUDIT LEDGER CREATION”.
+ 
+
+## Operational three-tab owner write contract — acceptance checkpoint
+
+**11 October 2026:** `operational-write-contract.mjs` and `../tests/v2-operational-write.test.mjs` added to the **Draft, unmerged** V2 development PR. The module is pure JavaScript with **no network calls or live workbook ID** and is intentionally not imported into V1 or the public Preview browser.
+
+A future individually authorized ChatGPT-managed Google Sheets write must provide a **fresh provider-sourced snapshot** of all three operational tabs, plus current canonical Company IDs, historical archived evidence, verified owner identity, owner-only file ACL and a single-writer reservation. The adapter does **not** autonomously acquire these proofs: supplying unverified booleans or stale snapshots is prohibited.
+
+The contract accepts only:
+- A specific source-backed fact proposal attached to an exact unique canonical Company ID (never a new CRM Company).
+- Explicit owner decision `APPROVED`, reviewed rationale, stable request/evidence/audit/decision IDs, source URL/date and approved information classification.
+- No synthetic/QA IDs, duplicate fact observation, supersession, or unreviewed conflicting/restricted research.
+- One controlled three-tab **append-only** plan: `Evidence Observation`, `Audit Ledger`, `Review Decisions`, all sharing the same request ID with cross-linked IDs. No direct Company edit or HubSpot write.
+- A single provider batch request constructed only **after** fresh ID scans and complete approval. Verify the returned state using independent provider reads of all three tables. On ambiguity, stop and reconcile by immutable request ID; never auto-retry.
+
+**Test result:** GitHub IDC security/regression workflow run `38167952021` completed SUCCESS at commit `2b55f417e5d3a3c7f65aa4a394ebbfba249c55d2`. The additional tests use synthetic objects and simulate prepared evidence/audit/decision rows, owner-approval checks, ACL/snapshot failures, duplicate IDs across tabs, conflicting facts, restricted classification and exact readback. **No operational Evidence/Audit/Decision row was added and no Production source was altered.**
+
+**Provider-write and concurrency limitations:** The JavaScript module returns a plan; it is not a Google write integration and cannot itself verify a real OAuth account or reserve a provider-level transaction. Native Sheets does not enforce unique IDs, so single-writer exclusion is an operating condition rather than a tested globally atomic lock. The existing provider-connected Google Sheets actions may carry out an individually authorized future append, but end-to-end live acceptance remains HELD until a specific reviewed real research fact, actual owner approval, independent fresh preflight, single attempt, and audit readback can be verified.
+
+Do not write anonymous/synthetic QA fixtures into the owner-only **operational** ledger simply to make it appear active. The previously approved separate `NOT CANONICAL` QA workbook holds synthetic write evidence. V1 desktop/tablet acceptance and V2 live mobile/desktop/browser checks remain OPEN.
