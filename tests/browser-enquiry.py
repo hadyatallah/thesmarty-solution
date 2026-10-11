@@ -9,7 +9,9 @@ from playwright.sync_api import sync_playwright, expect
 ROOT=Path(__file__).resolve().parents[1]
 BASE='39f24dcfdab351821e3a59de3d70f1350137ab1d'
 SCRIPT=(ROOT/'script.js').read_text()
-ENDPOINT=re.search(r"const TSS_FORM_ENDPOINT = '([^']+)'",SCRIPT)[1]
+PORTAL=re.search(r"const TSS_HUBSPOT_PORTAL_ID = '([^']+)'",SCRIPT)[1]
+FORM_ID=re.search(r"const TSS_HUBSPOT_FORM_ID = '([^']+)'",SCRIPT)[1]
+ENDPOINT=f'https://api.hsforms.com/submissions/v3/integration/submit/{PORTAL}/{FORM_ID}'
 BASE_FILES={name:subprocess.check_output(['git','show',f'{BASE}:{name}'],cwd=ROOT) for name in ['script.js','anti-spam.js']}
 REPORT=[]
 ARTIFACTS=ROOT/'evidence/enquiry';ARTIFACTS.mkdir(parents=True,exist_ok=True)
@@ -35,7 +37,13 @@ def session(browser,mode='confirmed',variant='patched',path='/contact.html?enqui
         request=route.request;url=request.url;parsed=urlsplit(url)
         if url==ENDPOINT:
             assert request.method=='POST'
-            state['requests'].append(parse_qs(request.post_data or '',keep_blank_values=True))
+            if request.headers.get('content-type','').startswith('application/json'):
+                body=json.loads(request.post_data or '{}')
+                fields={item.get('name'):item.get('value') for item in body.get('fields',[])}
+                fields['source']=body.get('context',{}).get('pageUri','')
+                state['requests'].append(fields)
+            else:
+                state['requests'].append(parse_qs(request.post_data or '',keep_blank_values=True))
             m=state['mode']
             if m=='hold':state['held'].append(route);return
             headers={'access-control-allow-origin':'*','content-type':'application/json'}
@@ -45,7 +53,7 @@ def session(browser,mode='confirmed',variant='patched',path='/contact.html?enqui
             if m=='unconfirmed':body={'ok':True}
             elif m=='invalid':body={'ok':False,'code':'INVALID_EMAIL'}
             elif m=='duplicate':body={'ok':False,'code':'DUPLICATE'}
-            else:body={'ok':True,'recorded':True,'enquiryId':f'SYNTHETIC-{len(state["requests"])}','confirmationSent':m=='email-confirmed'}
+            else:body={'inlineMessage':'Thanks','submittedAt':1234567890}
             route.fulfill(status=200,body=json.dumps(body),headers=headers);return
         if parsed.path=='/api/tss-agent':
             state['agent']+=1
@@ -93,6 +101,10 @@ def submit(page,selector='form[data-tss-form="contact"]',times=1):
 def nonce(page,selector='form[data-tss-form="contact"]'):
     return page.locator(selector+' input[name="form_nonce"]').input_value()
 
+def field(payload,name):
+    value=payload.get(name)
+    return value[0] if isinstance(value,list) else value
+
 def check(label,fn):
     fn();REPORT.append({'test':label,'result':'passed'});print('PASS '+label,flush=True)
 
@@ -119,10 +131,10 @@ with sync_playwright() as p:
                     fill(page);before=nonce(page);submit(page)
                     expect(page.locator('[data-tss-form-status]')).to_have_attribute('data-state','success')
                     assert len(s['requests'])==1
-                    payload=s['requests'][0];assert payload['source']==[ORIGIN+path]
-                    assert payload['form_nonce']==[before];assert payload['website']==['']
-                    assert payload['message'][0].startswith('Service route: ')
-                    assert 'Synthetic' in payload['message'][0]
+                    payload=s['requests'][0];assert field(payload,'source')==ORIGIN+path
+                    assert 'form_nonce' not in payload and 'website' not in payload
+                    assert field(payload,'tss_route_details').startswith('Service route: ')
+                    assert 'Synthetic' in field(payload,'tss_route_details')
                     assert page.locator('#name').input_value()==''
                     assert nonce(page)!=before
                     assert 'email has been sent' not in page.locator('[data-tss-form-status]').inner_text()
@@ -189,10 +201,10 @@ with sync_playwright() as p:
         def second_enquiry():
             with session(browser) as (page,s):
                 fill(page);submit(page);expect(page.locator('[data-tss-form-status]')).to_have_attribute('data-state','success')
-                first=s['requests'][0]['form_nonce'];page.clock.fast_forward(61000)
+                page.clock.fast_forward(61000)
                 fill(page);page.locator('#message').fill('A separate legitimate synthetic enquiry, not a retry.');submit(page)
                 expect(page.locator('[data-tss-form-status]')).to_contain_text('SYNTHETIC-2')
-                assert len(s['requests'])==2 and s['requests'][1]['form_nonce']!=first
+                assert len(s['requests'])==2
         check('distinct enquiry after confirmed receipt and cooldown still works',second_enquiry)
         def route_switch():
             with session(browser) as (page,s):
@@ -200,7 +212,7 @@ with sync_playwright() as p:
                 page.locator('#interest').select_option(label="I'm not sure which applies");fill(page);submit(page)
                 expect(page.locator('[data-tss-form-status]')).to_have_attribute('data-state','success')
                 assert 'growth_challenge' not in s['requests'][0]
-                assert 'Old route only' not in s['requests'][0]['message'][0]
+                assert 'Old route only' not in field(s['requests'][0],'tss_route_details')
         check('switching route excludes inactive fields from the payload',route_switch)
         def kiti():
             with session(browser,path='/kiti-enquiry.html?source=whatsapp') as (page,s):
@@ -214,10 +226,10 @@ with sync_playwright() as p:
                 expect(page.locator('[data-tss-form-status]')).to_have_attribute('data-state','success')
                 assert len(s['requests'])==1
                 payload=s['requests'][0]
-                assert 'Service route: Kiti Residential Development Opportunity' in payload['message'][0]
-                assert 'Kiti Residential Development Opportunity' in payload['message'][0]
-                assert payload['source']==[ORIGIN+'/contact.html?enquiry=kiti']
-                assert payload['phone']==['+357 99 000000']
+                assert 'Service route: Kiti Residential Development Opportunity' in field(payload,'tss_route_details')
+                assert 'Kiti Residential Development Opportunity' in field(payload,'tss_route_details')
+                assert field(payload,'source')==ORIGIN+'/contact.html?enquiry=kiti'
+                assert field(payload,'phone')=='+357 99 000000'
                 assert not s['errors'],s['errors']
         check('old Kiti URL redirects into one Kiti-preselected protected form',kiti)
         for width in [390,768,1280]:
@@ -240,7 +252,7 @@ with sync_playwright() as p:
                 page.locator('.tss-lead-link').click();selector='form[data-tss-form="assistant"]'
                 fill(page,selector);before=nonce(page,selector);submit(page,selector,2);page.wait_for_timeout(100)
                 assert len(s['requests'])==1 and s['agent']==2
-                assert 'Qualified lead' not in s['requests'][0]['message'][0]
+                assert 'Qualified lead' not in field(s['requests'][0],'tss_route_details')
                 page.clock.fast_forward(45001)
                 expect(page.locator(selector)).to_have_attribute('data-tss-submission-state','processing')
                 assert nonce(page,selector)==before
