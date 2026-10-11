@@ -1,4 +1,6 @@
-const TSS_FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxwAe2Jdq390XmsRmSpFb6DWTxM19VVMjf7bSLg9QNUxiBMufOifmjR8appeD354CKy/exec';
+const TSS_HUBSPOT_PORTAL_ID = '149509919';
+const TSS_HUBSPOT_FORM_ID = 'd571803e-7777-4f28-94ea-b24df852245c';
+const TSS_FORM_ENDPOINT = 'https://api.hsforms.com/submissions/v3/integration/submit/' + TSS_HUBSPOT_PORTAL_ID + '/' + TSS_HUBSPOT_FORM_ID;
 
 const menuButton = document.querySelector('.menu');
 const menu = document.querySelector('.navlinks');
@@ -132,12 +134,44 @@ document.addEventListener('click', (event) => {
   list.appendChild(item);
 })();
 
-function tssFormParams_(data) {
-  const params = new URLSearchParams();
-  for (const [key, value] of data.entries()) {
-    if (typeof value === 'string') params.append(key, value);
-  }
-  return params;
+function tssSplitName_(value) {
+  const parts = String(value || '').trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return { first: '', last: '' };
+  if (parts.length === 1) return { first: parts[0], last: '' };
+  return { first: parts.slice(0, -1).join(' '), last: parts[parts.length - 1] };
+}
+
+function tssHubspotFields_(data) {
+  const name = tssSplitName_(data.get('name'));
+  const route = String(data.get('interest') || 'General Business Enquiry').trim();
+  const marketing = data.get('marketing_consent') === 'Yes' ? 'true' : 'false';
+  const privacy = data.get('privacy_ack') || data.get('privacy_consent') ? 'true' : 'false';
+  const fields = [
+    ['firstname', name.first],
+    ['lastname', name.last],
+    ['email', data.get('email')],
+    ['phone', data.get('phone')],
+    ['company', data.get('company')],
+    ['tss_enquiry_route', route],
+    ['tss_business_objective', route],
+    ['tss_desired_timing', data.get('timing')],
+    ['tss_route_details', data.get('message')],
+    ['tss_privacy_acknowledgement', privacy],
+    ['tss_marketing_consent', marketing]
+  ];
+  return fields
+    .map(([fieldName, value]) => ({ name: fieldName, value: String(value || '').trim() }))
+    .filter((field) => field.value);
+}
+
+function tssHubspotPayload_(data) {
+  return {
+    fields: tssHubspotFields_(data),
+    context: {
+      pageUri: String(data.get('source') || window.location.href),
+      pageName: document.title || 'Contact Us | The Smarty Solution'
+    }
+  };
 }
 
 class TssSubmissionError extends Error {
@@ -168,7 +202,8 @@ async function submitTssEnquiry_(data) {
     try {
       response = await fetch(TSS_FORM_ENDPOINT, {
         method: 'POST',
-        body: tssFormParams_(data),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(tssHubspotPayload_(data)),
         redirect: 'follow',
         ...(controller ? { signal: controller.signal } : {})
       });
@@ -182,9 +217,17 @@ async function submitTssEnquiry_(data) {
     if (payload && payload.ok === false && payload.recorded !== true && rejectedCodes.has(payload.code)) {
       throw new TssSubmissionError(payload.code, 'Submission rejected', payload);
     }
-    if (!payload || payload.ok !== true) return unconfirmed();
-    const hasReference = typeof payload.enquiryId === 'string' && payload.enquiryId.trim().length > 0;
-    return { state: payload.recorded === true && hasReference ? 'confirmed' : 'processing', payload };
+    if (payload && payload.status === 'error') {
+      const category = String(payload.category || payload.errorType || 'INVALID_REQUEST');
+      throw new TssSubmissionError(category, 'Submission rejected', payload);
+    }
+    const hasHubSpotReceipt = response.status === 200 && payload && (
+      typeof payload.inlineMessage === 'string' ||
+      typeof payload.redirectUri === 'string' ||
+      typeof payload.submittedAt === 'number'
+    );
+    const hasLegacyReceipt = payload && payload.ok === true && payload.recorded === true && typeof payload.enquiryId === 'string' && payload.enquiryId.trim();
+    return { state: hasHubSpotReceipt || hasLegacyReceipt ? 'confirmed' : 'processing', payload };
   };
   const timeout = new Promise((resolve) => {
     timer = setTimeout(() => {
@@ -404,7 +447,7 @@ function tssCreateNonce_() {
           const reference = payload.enquiryId ? ` Reference: ${payload.enquiryId}.` : '';
           const emailMessage = payload.confirmationSent === true
             ? ' A confirmation email has been sent to the address you provided.'
-            : ' Your enquiry was recorded, but the confirmation email could not be verified.';
+            : ' We will review it and respond through the contact details provided.';
           if (form.dataset.tssForm === 'contact') {
             window.tssTrackEvent_('enquiry_received', {
               page_path: window.location.pathname,
