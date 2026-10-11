@@ -10,6 +10,16 @@
       "source": "/cyprus-investment-opportunities.html",
       "destination": "/opportunities.html",
       "permanent": true
+    },
+    {
+      "source": "/admin",
+      "destination": "https://docs.google.com/document/d/1CqVTdI6I402HFvJtTT0y3QfhL7T09Ku1bjex9Ac6CGI/edit",
+      "permanent": false
+    },
+    {
+      "source": "/admin/",
+      "destination": "https://docs.google.com/document/d/1CqVTdI6I402HFvJtTT0y3QfhL7T09Ku1bjex9Ac6CGI/edit",
+      "permanent": false
     }
   ]
 }
