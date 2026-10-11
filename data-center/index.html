@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>TSS Intelligent Data Center | Private Research</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/data-center/app.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="/data-center/config.js" defer></script>
+<script type="module" src="/data-center/app.js"></script>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar" aria-label="Data Center navigation">
+ <a class="wordmark" href="/" aria-label="The Smarty Solution home">
+  <span class="emblem" aria-hidden="true">TSS</span>
+  <span><strong>THE SMARTY SOLUTION</strong><small>INTELLIGENT DATA CENTER</small></span>
+ </a>
+ <div class="side-label">PRIVATE WORKSPACE</div>
+ <nav class="nav" aria-label="Views">
+  <button data-view="dashboard" class="active" aria-current="page"><span class="glyph">▦</span> Dashboard</button>
+  <button data-view="companies"><span class="glyph">▤</span> Companies</button>
+  <button data-view="projects"><span class="glyph">◇</span> Developers &amp; Projects</button>
+  <button data-view="candidates"><span class="glyph">⌕</span> Research Queue</button>
+  <button data-view="evidence"><span class="glyph">≡</span> Evidence &amp; Sources</button>
+  <button data-view="review"><span class="glyph">!</span> Review Queue</button>
+  <button data-view="handover"><span class="glyph">↗</span> HubSpot Handover</button>
+ </nav>
+ <div class="side-bottom"><p>Connect · Develop · Invest.</p><a href="/">← Public website</a><a href="https://docs.google.com/document/d/1CqVTdI6I402HFvJtTT0y3QfhL7T09Ku1bjex9Ac6CGI/edit" target="_blank" rel="noopener noreferrer">Research operating guide ↗</a></div>
+</aside>
+<div class="workspace">
+<header class="topbar">
+ <div class="bread"><span>Workspace</span><span aria-hidden="true">/</span><strong id="location">Dashboard</strong></div>
+ <div class="top-actions"><span class="privacy"><span class="dot"></span> Owner-only data</span><span id="identity" class="identity">Not connected</span><button class="button secondary" id="refresh" type="button" disabled>Refresh</button><button class="button primary" id="auth" type="button">Connect Google</button></div>
+</header>
+<main class="main" id="main">
+ <section class="hero"><div class="eyebrow">TSS / RESEARCH INTELLIGENCE</div><h1 id="viewTitle">Intelligent Data Center</h1><p id="viewIntro">Search canonical companies, evaluate developer projects, and review source-backed research without creating a second CRM.</p></section>
+ <div id="notice" role="status" aria-live="polite" class="notice" hidden></div>
+ <section class="login-card" id="loginCard" aria-labelledby="loginTitle">
+  <div class="lock">◎</div><div><h2 id="loginTitle">Private research access</h2><p id="loginMessage">Sign in with the TSS Google account to read the protected Master Workbook and research evidence. No company data is stored on this website.</p><p class="fine">Access account: thesmartysolution@gmail.com · Read only · Google-managed permission</p></div>
+ </section>
+ <section id="content" aria-live="polite" hidden></section>
+</main>
+<footer class="site-foot">TSS Intelligent Data Center · Source-backed research · No automatic promotions, merges or outreach. <a href="/privacy.html">Privacy</a></footer>
+</div>
+</div>
+</body>
+</html>
