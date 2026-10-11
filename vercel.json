@@ -14,10 +14,6 @@
   ],
   "rewrites": [
     {
-      "source": "/api/tss-hubspot-enquiry-sync",
-      "destination": "/api/crm?tssHubspotSync=1"
-    },
-    {
       "source": "/api/outlook/ingestion/enable",
       "destination": "/api/outlook/status?captureAction=enable"
     },
@@ -32,12 +28,6 @@
     {
       "source": "/api/outlook/sync",
       "destination": "/api/outlook/status?captureAction=sync"
-    }
-  ],
-  "crons": [
-    {
-      "path": "/api/tss-hubspot-enquiry-sync",
-      "schedule": "0 7 * * *"
     }
   ]
 }
