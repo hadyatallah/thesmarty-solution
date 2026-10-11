@@ -112,7 +112,13 @@ async function loadAll(){
   if(!next.evidence.length)throw Error('Research evidence was empty; nothing was loaded.');
   records=next;loaded={master:true,research:true};
   setNotice('Source read complete. Records are private, read-only and current as of this refresh; source-level observation dates still control research freshness.');
- }catch(err){setNotice(err.message||'Private data is unavailable.');}
+ }catch(err){
+  // A failed refresh must not leave a previously loaded, potentially stale
+  // private snapshot on screen. Fail closed and require a fresh owner sign-in.
+  const reason=err.message||'Private data is unavailable.';
+  signedOut();
+  setNotice(reason+' Session locked. Open Data Center to retry.');
+ }
  finally{
   if(loaded.master){loginCard.hidden=true;root.hidden=false;}
   setBusy(false);render();
