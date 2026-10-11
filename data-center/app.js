@@ -48,12 +48,12 @@ const hasClient=typeof cfg.googleClientId==='string'&&/^[0-9]+-[a-z0-9-]+\.apps\
 function signedOut(){
  token='';owner='';loaded={master:false,research:false};
  records={companies:[],candidates:[],sources:[],evidence:[],relationships:[],projects:[],roles:[],profiles:[]};
- identity.textContent='Not connected';loginCard.hidden=false;root.hidden=true;setBusy(false);
+ identity.textContent='Not connected';loginCard.hidden=false;root.replaceChildren();root.hidden=true;setBusy(false);
  loginMessage.textContent=hasClient?'Connect the owner Google account to load private Company records and research evidence. Tokens remain in memory only.':'App interface installed. Google OAuth registration and owner-only read access require provider acceptance before live Company data can load. Continue using the existing private Admin workspace.';
  setNotice(hasClient?'':'Provider configuration is pending. The app does not expose Google Sheets or a sample of private Companies to unauthenticated visitors.');
 }
 function auth(){
- if(token){signedOut();return;}
+ if(token){const oldToken=token;signedOut();window.google?.accounts?.oauth2?.revoke?.(oldToken,()=>{});return;}
  if(!hasClient){setNotice('Google OAuth client ID is not configured. No private data can be accessed here. Use the existing private Admin workspace until authorized Google setup is completed.');return;}
  if(!window.google?.accounts?.oauth2){setNotice('Google sign-in has not loaded. Check the browser connection and retry.');return;}
  const client=window.google.accounts.oauth2.initTokenClient({
@@ -94,15 +94,19 @@ async function loadAll(){
  if(!token)return;setBusy(true);setNotice('Loading private research data from Google Sheets…');
  try{
   const main=await batchGet(cfg.masterSpreadsheetId,['Companies!A1:L3004']);
-  records.companies=rowsToObjects(main[0]?.values||[]);loaded.master=true;
+  const companyRows=rowsToObjects(main[0]?.values||[]);
+  if(!companyRows.length)throw Error('Canonical Companies sheet is empty or unavailable.');
   const research=await batchGet(cfg.researchSpreadsheetId,[
    "'Research Candidate'!A1:Z800","'Research Source'!A1:O300","'Evidence Observation'!A1:U1200",
    "'Identity Relationship'!A1:N800","'Developer Project'!A1:P600",
    "'Developer Project Company Role'!A1:M600","'Company Intelligence Profile'!A1:P800"
   ]);
   const names=['candidates','sources','evidence','relationships','projects','roles','profiles'];
-  names.forEach((name,i)=>{records[name]=rowsToObjects(research[i]?.values||[])});
-  loaded.research=true;
+  if(research.length!==names.length)throw Error('Incomplete research evidence response; nothing was loaded.');
+  const next={companies:companyRows,candidates:[],sources:[],evidence:[],relationships:[],projects:[],roles:[],profiles:[]};
+  names.forEach((name,i)=>{next[name]=rowsToObjects(research[i]?.values||[])});
+  if(!next.evidence.length)throw Error('Research evidence was empty; nothing was loaded.');
+  records=next;loaded={master:true,research:true};
   setNotice('Source read complete. Records are private, read-only and current as of this refresh; source-level observation dates still control research freshness.');
  }catch(err){setNotice(err.message||'Private data is unavailable.');}
  finally{
