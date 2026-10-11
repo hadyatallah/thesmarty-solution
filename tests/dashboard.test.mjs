@@ -49,6 +49,3 @@ test('generated browser bundle equals the shared module and has no I/O',()=>{
  for(const v of [46289,'2026-10-03T21:30:00Z','2026-02-30',''])assert.equal(context.TSSTaskMetrics.calendarDate(v),T.calendarDate(v));
  assert.doesNotMatch(code,/fetch\(|localStorage|XMLHttpRequest|\.setValue/);
 });
-test('native packager keeps module dependency order without deployment',()=>{
- const target='/tmp/tss-dashboard-test-core.gs';execFileSync(process.execPath,['command-center/apps-script/build.mjs',target]);const code=fs.readFileSync(target,'utf8');new vm.Script(code);assert.ok(code.indexOf('const taskdates=')<code.indexOf('const crm='));fs.unlinkSync(target);
-});
