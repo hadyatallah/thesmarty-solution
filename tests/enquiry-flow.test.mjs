@@ -6,7 +6,7 @@ import { readFileSync } from 'node:fs';
 const source = readFileSync(new URL('../script.js', import.meta.url), 'utf8');
 const portal = source.match(/const TSS_HUBSPOT_PORTAL_ID = '([^']+)'/)[1];
 const formId = source.match(/const TSS_HUBSPOT_FORM_ID = '([^']+)'/)[1];
-const endpoint = `https://api.hsforms.com/submissions/v3/integration/submit/${portal}/${formId}`;
+const endpoint = `https://api-eu1.hsforms.com/submissions/v3/integration/submit/${portal}/${formId}`;
 const formCode = source.slice(source.indexOf('function tssSplitName_'), source.indexOf('// Render the assistant'));
 
 function fixture(result, overrides = {}, contactChoice = null) {
