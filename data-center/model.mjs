@@ -10,13 +10,14 @@ export function rowsToObjects(values) {
 export function text(value){return String(value??'').trim();}
 export function normalized(value){return text(value).toLocaleLowerCase('en').normalize('NFKC');}
 export function filterCompanies(companies,{query='',district='',category=''}={}) {
- const q=normalized(query), d=normalized(district), c=normalized(category);
+ const terms=normalized(query).split(/\s+/).filter(Boolean), d=normalized(district), c=normalized(category);
  const filtered=companies.filter(company=>{
   if(d && normalized(company.district)!==d)return false;
   if(c && !normalized(company.category).includes(c))return false;
-  if(!q)return true;
-  return [company.id,company.name,company.category,company.district,company.email,
-          company.phone,company.website,company.researchLevel].some(s=>normalized(s).includes(q));
+  if(!terms.length)return true;
+  const searchable=[company.id,company.name,company.category,company.district,company.email,
+          company.phone,company.website,company.researchLevel].map(normalized);
+  return terms.every(term=>searchable.some(value=>value.includes(term)));
  });
  return filtered.sort((a,b)=>normalized(a.name).localeCompare(normalized(b.name)));
 }
