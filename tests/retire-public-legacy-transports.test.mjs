@@ -21,9 +21,13 @@ test('new contact intake remains native HubSpot, without old shared JS', () => {
  assert.match(html,/js-eu1\.hsforms\.net\/forms\/embed\/149509919\.js/);
  assert.doesNotMatch(html,/src="script\.js|script\.google\.com|data-tss-form/);
 });
-test('no obsolete CRM cron; Outlook pending backend retirement remains isolated', () => {
+test('no obsolete CRM cron, gateway, Outlook capture route, or rewrite remains', () => {
  const config=JSON.parse(read('vercel.json'));
  assert.equal(config.crons?.length||0,0);
- assert.equal(existsSync(new URL('../api/crm.js',import.meta.url)),true);
- assert.equal(existsSync(new URL('../api/outlook/_lib.js',import.meta.url)),true);
+ assert.equal(config.rewrites?.length||0,0);
+ assert.equal(existsSync(new URL('../api/crm.js',import.meta.url)),false);
+ assert.equal(existsSync(new URL('../api/outlook/_lib.js',import.meta.url)),false);
+ assert.equal(existsSync(new URL('../api/outlook/status.js',import.meta.url)),false);
+ assert.equal(existsSync(new URL('../lib/tssHubspotEnquiryHandler.mjs',import.meta.url)),false);
+ assert.equal(existsSync(new URL('../lib/tssHubspotEnquirySync.mjs',import.meta.url)),false);
 });

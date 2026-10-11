@@ -1,6 +1,6 @@
 # TSS original CRM backend retirement — provider cutover gate (2026-10-11)
 
-Status: **staged only, NOT Production approved**.
+Status: **branch cleanup completed, provider shutdown partly verified, Production merge still held pending CI/Preview and Apps Script admin confirmation**.
 
 ## Completed legacy retirement and accepted replacement
 - Native HubSpot Contact form (`d6b2a98a-ef6b-4a18-9c99-cf39ea2925e5`) is deployed on the public site and a previous synthetic, spam-released submission has a matching regular HubSpot FORM receipt and Contact conversion; no new synthetic submissions allowed under the exhausted QA allowance.
@@ -8,26 +8,30 @@ Status: **staged only, NOT Production approved**.
 - The official connected Microsoft 365 Outlook mailbox `info@thesmartysolution.com` independently supports read-only Inbox and Sent Items access without the original CRM; this does **not** prove automated Outlook-to-HubSpot capture/CRM historical sync parity.
 - Original Master Google Sheets and Data Center evidence/backups remain read-only, preserved and independent of the custom CRM.
 
-## Backend dependencies found
-1. `api/crm.js` provides old same-origin authentication/data gateway into a hard-coded Apps Script deployment.
-2. `api/outlook/status.js` dispatches CRM-session-authenticated Outlook capture and legacy status/sync/enable/disable endpoints.
-3. `api/outlook/_lib.js` and `server/outlook/{status,enable,disable,sync,_backend,_core}.js` still implement old CRM `checkSession` and `outlookBindIngestion`, `outlookInstallSchedule`, `outlookDisconnectIngestion` flows; ensure no active work depends on them before removal.
-4. `lib/tssHubspotEnquiryHandler.mjs` and `lib/tssHubspotEnquirySync.mjs` implement abandoned Google Sheet-to-HubSpot scheduled bridge. No Vercel cron appears in current `vercel.json`, but the server modules remain in GitHub.
-5. `vercel.json` currently contains four old Outlook capture rewrites to `/api/outlook/status`; these must be resolved as part of eventual backend cutover.
-6. Vercel has historical Production environment variable **names** including `TSS_OUTLOOK_*`, `TSS_HUBSPOT_*`, `TSS_GOOGLE_SERVICE_ACCOUNT_JSON`, `CRON_SECRET`, `TSS_SYNC_RUN_SECRET`, and `OPENAI_API_KEY`. Their values were not revealed. Other social publishing variables also exist and must be preserved until their independent uses are known.
-7. Active Google Apps Script projects, versions, deployments, schedules/triggers, and connected HubSpot-Microsoft Outlook inbox auto-logging status have **not** been independently read through official provider administration in this chat.
+## Backend dependency resolution
+1. Removed `api/crm.js`, the old same-origin authentication/data gateway into the hard-coded Apps Script deployment.
+2. Removed `api/outlook/status.js`, `api/outlook/_lib.js`, and all `/api/outlook/*` OAuth/status/send routes that depended on CRM-session authentication.
+3. Removed `server/outlook/{status,enable,disable,sync,_backend,_core}.js`, including `outlookBindIngestion`, `outlookInstallSchedule`, and `outlookDisconnectIngestion` callers.
+4. Removed `lib/tssHubspotEnquiryHandler.mjs`, `lib/tssHubspotEnquirySync.mjs`, and the `tss-hubspot-enquiry-sync-tests.yml` workflow for the abandoned Google Sheet-to-HubSpot scheduled bridge.
+5. Removed the old Outlook capture rewrites from `vercel.json`; `vercel.json` now has no rewrites and no cron schedules.
+6. Removed stale CRM shell callers for Outlook capture/send controls (`crm/outlook-capture.js`, `crm/outlook-send.js`) and converted archived command-center email output to manual Outlook draft guidance.
+7. Added `tests/legacy-backend-retirement.test.mjs` and updated existing retirement tests so CI asserts the removed files, rewrites, crons, and active source references stay absent.
 
-## This candidate branch
-- The two Vercel Function entry points `api/crm.js` and `api/outlook/status.js` have been removed **only in this branch**, to explicitly stage the final decommission.
-- A proposed change to old Outlook rewrites in `vercel.json` was not applied because a tool safety check blocked it. Do not attempt to work around the restriction. The config is left unchanged; this branch must **NOT merge** as-is.
-- Historical supporting modules and provider credentials remain in place until the final controlled provider cutover.
+## Provider verification on 2026-10-11
+- Microsoft 365 shared mailbox `info@thesmartysolution.com`: Inbox read succeeded. Recent messages include HubSpot native form notifications and HubSpot Support correspondence.
+- Microsoft 365 Sent Items read succeeded. Recent sent messages include HubSpot Support replies and the earlier internal HubSpot CRM email integration QA message.
+- Outlook historical correspondence is preserved in Microsoft 365 independent of the retired CRM backend.
+- HubSpot native website form contact remains present: Contact `qa+native-forms-20261010@thesmartysolution.com`, HubSpot ID `887970143443`, last modified `2026-10-11T05:43:44.714Z`.
+- HubSpot/Microsoft native email capability evidence exists in Sent Items: `info@thesmartysolution.com is now connected to HubSpot!` and the prior `TSS HubSpot CRM Email Integration Test | QA-20261009-B` message. This supports native HubSpot email use, while automatic logging policy should remain a HubSpot admin setting, not a custom backend.
+- Master Workbook read succeeded: `TSS CRM - Master Workbook`, timezone `Asia/Nicosia`, 21 tabs including `Companies` with 3004 rows and `Email Activity` with 3000 rows.
+- Verified Master backup and Data Center research backup metadata reads succeeded; Data Center backup includes the preserved Phase 3 research tabs through `Company Intelligence Profile`.
+- Vercel project `thesmarty-solution-agent` under team `tss21` still contains historical environment variable names for retired systems. Values were not decrypted or revealed.
 
-## Mandatory merge prerequisites
-- Official owner-authenticated Google Apps Script administration: inventory each active deployment and all installable/time-driven triggers; retain any unrelated research or public website services. Disable only verified obsolete CRM-related triggers when data preservation/recovery is confirmed.
-- Official HubSpot and Microsoft 365 administration: establish whether business correspondence is captured in HubSpot natively, whether automatic inbox/sent synchronization is necessary, and whether a supported native replacement is active and tested. Do not treat a direct mail read as proof of background CRM logging.
-- Verify the original CRM's historical Email Activity/Tasks in Google Sheets remain preserved and that no customer communications or other approved workflows still call `/api/crm` or `/api/outlook/status`.
-- Resolve Vercel routing and associated environment variables through an approved authorized path; never print or commit secrets.
-- Replace old backend tests with actual retirement safety tests, keep the native HubSpot website/Outlook mailbox/Google Sheet data regression tests, and pass CI and protected Preview before merge.
-- Release only in narrowly scoped Production changes with rollback evidence; independently verify 404/410 for retired endpoints and functioning native website/Outlook/HubSpot. No further provider QA form submissions under the exhausted allowance.
+## Still held before Production merge
+- Official Apps Script administration was not available through the connected tools in this execution. Active Apps Script deployments/triggers still need owner-authenticated UI verification before claiming all obsolete CRM triggers are disabled.
+- Vercel environment variables still present by name and eligible for later removal once this branch is deployed and no rollback requires them: `CRON_SECRET`, `TSS_SYNC_RUN_SECRET`, `TSS_HUBSPOT_*`, `TSS_GOOGLE_SERVICE_ACCOUNT_JSON`, `TSS_OUTLOOK_*`, and `OPENAI_API_KEY`. Social publishing variables were deliberately retained.
+- Local retirement regression subset passed: `node --test tests/assistant-formatting.test.mjs tests/enquiry-flow.test.mjs tests/enquiry-transport.test.mjs tests/hubspot-native-forms.test.mjs tests/legacy-backend-retirement.test.mjs tests/legacy-crm-ui-retirement.test.mjs tests/native-hubspot-clean-cutover.test.mjs tests/retire-public-legacy-transports.test.mjs tests/status-display.test.mjs tests/tssDataCenterAuthenticatedView.test.mjs tests/command-center/lookup-availability.test.js tests/command-center/ui.test.js`.
+- Full local suite still has pre-existing command-center transport tests requiring archived `crm/index.html`/origin assumptions and dashboard build tests blocked by sandbox `EPERM` spawning the primary runtime Node. These are not evidence that the retired backend is still required.
+- Before merge: push this branch cleanup, wait for GitHub CI/Vercel Preview on the new commit, verify retired endpoint 404/410 behavior in Preview, then merge only if checks pass.
 
 Owner preference: **Do not rebuild the abandoned custom CRM, Apps Script integration network, or paid website AI assistant.** Use ChatGPT + native connected HubSpot, Outlook, Google Sheets. No new subscription, paid tool, API service, or live marketing send.
