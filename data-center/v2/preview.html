@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#091e32">
+<title>TSS V2 | Isolated Research Proposal Preview</title>
+<link rel="stylesheet" href="./preview.css">
+<script type="module" src="./preview.js"></script>
+</head>
+<body>
+<header class="top"><a href="/data-center/" class="brand">TSS <span>INTELLIGENT DATA CENTER</span></a><span class="phase">V2 · PREVIEW ONLY</span></header>
+<main>
+ <div class="heading"><div class="eyebrow">GOVERNED RESEARCH · QA SANDBOX</div>
+ <h1>Research proposal & review</h1>
+ <p>Draft a synthetic evidence observation. Validate provenance, identity, duplicates and conflicts before generating an <strong>in-memory</strong> Evidence/Audit proposal.</p>
+ </div>
+ <div class="warning" role="note"><strong>NOT PRODUCTION · NO REAL COMPANY DATA</strong>
+  This page uses fixed synthetic fixtures and never signs in to Google, reads live Sheets, sends data, or saves a proposal. A local “QA_READY” result is not approval to write. V1 is still read-only and its desktop/tablet acceptance remains open.
+ </div>
+ <div class="split">
+  <section class="panel" aria-label="Draft proposal">
+   <div class="panel-heading"><div><div class="step">01 / DRAFT</div><h2>Synthetic research observation</h2></div><button type="button" id="reset" class="secondary">Reset sample</button></div>
+   <p class="hint">Use the fixed QA identities only. Never enter customer information or real source data.</p>
+   <form id="proposal" novalidate>
+    <div class="cols">
+     <label>QA identity
+      <select id="identity" name="identity"><option value="QA-COMPANY-001">QA-COMPANY-001 (Company)</option><option value="QA-CANDIDATE-001">QA-CANDIDATE-001 (Candidate)</option></select>
+     </label>
+     <label>Fact type<input name="factType" required maxlength="120" value="Development Activity"></label>
+     <label>Attribute path<input name="attributePath" required maxlength="120" value="newDemoObservation"></label>
+     <label>Reported value<input name="displayValue" required maxlength="500" value="Synthetic status only"></label>
+     <label>Value JSON<input name="valueJson" required maxlength="3000" value="&quot;Synthetic status only&quot;"></label>
+     <label>Observation date<input name="observedAt" type="date" required value="2026-10-11"></label>
+     <label>Verification
+      <select name="verificationStatus">
+       <option>UNVERIFIED</option><option>SOURCE SUPPORTED</option><option>DIRECTLY CONFIRMED</option>
+       <option>CONFLICTING / REVIEW REQUIRED</option>
+      </select>
+     </label>
+     <label>Freshness<select name="freshnessStatus"><option>Current</option><option selected>Review Due</option><option>Stale</option></select></label>
+     <label>Source ID<input name="sourceId" value="QA-SRC-001" required maxlength="85"></label>
+     <label>Source reference<input name="sourceRef" value="synthetic://tss-idc/v2/demo-source-002" required maxlength="500"></label>
+     <label>Request ID<input name="requestId" value="QA-IDC-V2-REQ-0002" required maxlength="85"></label>
+     <label>Evidence ID<input name="evidenceId" value="EV-QA-V2-0002" required maxlength="85"></label>
+     <label>Audit ID<input name="auditId" value="AUD-QA-V2-0002" required maxlength="85"></label>
+     <label>Conflict group (optional)<input name="conflictGroupId" maxlength="85" placeholder="QA-CFG-..."></label>
+     <label>QA actor<input name="actor" value="Internal QA" required readonly></label>
+     <label>Audit date<input name="auditDate" type="date" value="2026-10-11" required></label>
+    </div>
+    <label>Research review notes<textarea name="reviewNotes" rows="3" maxlength="1000" placeholder="Why should this be reviewed?">Synthetic proposal for non-production validation only.</textarea></label>
+    <div class="actions"><button type="submit" class="primary" id="validate">Run preflight checks</button><button type="button" id="conflict" class="secondary">Show conflict scenario</button><button type="button" id="duplicate" class="secondary">Show duplicate scenario</button></div>
+   </form>
+  </section>
+  <div class="right">
+   <section class="panel" aria-labelledby="review-title">
+    <div class="step">02 / REVIEW</div><h2 id="review-title">Validation & safeguards</h2>
+    <p class="hint">Uses a frozen synthetic sample, NOT a fresh QA workbook snapshot. No result here authorizes an append.</p>
+    <div id="status" class="status neutral" role="status" aria-live="polite">Not checked</div>
+    <div id="details" aria-live="polite" class="review-list"><p>Run the checks to see duplicate protection, classification and source warnings.</p></div>
+    <h3>Existing synthetic evidence</h3>
+    <div class="prior"><strong>EV-QA-SEED-001</strong><span>Company QA-COMPANY-001 · developerRoles</span><span>“Synthetic seed only” · Source: synthetic://tss-idc/write-gate/seed</span></div>
+   </section>
+   <section class="panel" aria-labelledby="stage-title">
+    <div class="step">03 / PREPARE</div><h2 id="stage-title">Evidence + audit preview</h2>
+    <p class="hint">Rows are created in memory only. Existing Google Sheets are not read or changed.</p>
+    <button type="button" id="prepare" class="primary" disabled>Prepare QA rows locally</button>
+    <pre id="prepared" class="output" tabindex="0">No proposal prepared.</pre>
+    <button type="button" id="clear" class="secondary">Clear local draft and preview</button>
+   </section>
+  </div>
+ </div>
+ <footer>This Preview intentionally has no Google token, API integration, HubSpot integration or write permission. <a href="/data-center/">Return to V1</a></footer>
+</main>
+</body></html>
