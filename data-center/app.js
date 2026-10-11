@@ -49,7 +49,7 @@ function signedOut(){
  token='';owner='';loaded={master:false,research:false};
  records={companies:[],candidates:[],sources:[],evidence:[],relationships:[],projects:[],roles:[],profiles:[]};
  identity.textContent='Not connected';loginCard.hidden=false;root.replaceChildren();root.hidden=true;setBusy(false);document.querySelector('.privacy').textContent='Private data locked';
- loginMessage.textContent=hasClient?'Connect the owner Google account to load private Company records and research evidence. Tokens remain in memory only.':'App interface installed. Google OAuth registration and owner-only read access require provider acceptance before live Company data can load. Continue using the existing private Admin workspace.';
+ loginMessage.textContent=hasClient?'Tap Open Data Center to use the TSS Google account. Previously granted access should not require a new consent step. A short-lived access token is used for this session only.':'App interface installed. Google OAuth registration and owner-only read access require provider acceptance before live Company data can load. Continue using the existing private Admin workspace.';
  setNotice(hasClient?'':'Provider configuration is pending. The app does not expose Google Sheets or a sample of private Companies to unauthenticated visitors.');
 }
 function auth(){
