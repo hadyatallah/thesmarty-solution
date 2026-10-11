@@ -93,13 +93,13 @@ async function batchGet(sheetId,ranges) {
 async function loadAll(){
  if(!token)return;setBusy(true);setNotice('Loading private research data from Google Sheets…');
  try{
-  const main=await batchGet(cfg.masterSpreadsheetId,['Companies!A1:L3004']);
+  const main=await batchGet(cfg.masterSpreadsheetId,['Companies!A:L']);
   const companyRows=rowsToObjects(main[0]?.values||[]);
   if(!companyRows.length)throw Error('Canonical Companies sheet is empty or unavailable.');
   const research=await batchGet(cfg.researchSpreadsheetId,[
-   "'Research Candidate'!A1:Z800","'Research Source'!A1:O300","'Evidence Observation'!A1:U1200",
-   "'Identity Relationship'!A1:N800","'Developer Project'!A1:P600",
-   "'Developer Project Company Role'!A1:M600","'Company Intelligence Profile'!A1:P800"
+   "'Research Candidate'!A:Z","'Research Source'!A:O","'Evidence Observation'!A:U",
+   "'Identity Relationship'!A:N","'Developer Project'!A:P",
+   "'Developer Project Company Role'!A:M","'Company Intelligence Profile'!A:P"
   ]);
   const names=['candidates','sources','evidence','relationships','projects','roles','profiles'];
   if(research.length!==names.length)throw Error('Incomplete research evidence response; nothing was loaded.');
