@@ -1,0 +1,24 @@
+name: TSS Intelligent Data Center app safety
+on:
+  pull_request:
+    paths:
+      - 'data-center/**'
+      - '.github/workflows/tss-idc-app-safety.yml'
+  workflow_dispatch:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate read-only app syntax
+        run: |
+          node --check data-center/app.js
+          node --check data-center/model.mjs
+          node --check data-center/config.js
+      - name: Validate security, joins and search with synthetic fixtures
+        run: node --test data-center/tests/model.test.mjs
