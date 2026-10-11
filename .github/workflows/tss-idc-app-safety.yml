@@ -21,4 +21,4 @@ jobs:
           node --check data-center/model.mjs
           node --check data-center/config.js
       - name: Validate security, joins and search with synthetic fixtures
-        run: node --test data-center/tests/model.test.mjs
+        run: node --test data-center/tests/*.test.mjs
