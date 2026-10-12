@@ -223,40 +223,45 @@ test('Company directory search and exact dossier render without mixing other ide
 });
 
 
-test('existing Company dossier prepares and copies an in-memory research brief only after a click',async()=>{
+test('one-box Company request copies into ChatGPT without another sign-in or Sheets write',async()=>{
  const h=createHarness();h.begin();await h.respond();
  const before=h.state.calls.length;
  h.buttons.find(b=>b.dataset.view==='companies').handlers.click();
  const walk=n=>[n,...n.children.flatMap(child=>child instanceof Node?walk(child):[])];
  const nodes=()=>walk(h.elements.get('#content'));
  nodes().find(n=>n.tag==='button'&&n.textContent==='Synthetic Developer').handlers.click();
- const requestSection=nodes().find(n=>n.className==='request-section');
- assert.ok(requestSection,'Research handoff must be in the existing Company dossier');
- const fields=walk(requestSection).filter(n=>n.className==='request-field');
- assert.equal(fields.length,8);
- const controls=fields.map(x=>x.children[1]);
- controls[0].value='developmentActivity';
- controls[1].value='Synthetic current published activity';
- controls[2].value='https://example.invalid/research-update';
- controls[3].value='2026-10-11';
- controls[4].value='UNVERIFIED';
- controls[5].value='Review Due';
- controls[6].value='Reusable TSS Intelligence';
- controls[7].value='Synthetic owner source notes';
- const actions=walk(requestSection).filter(n=>n.tag==='button');
- const prepare=actions.find(n=>n.textContent==='Prepare request for ChatGPT');
- const copy=actions.find(n=>n.textContent==='Copy request');
- assert.ok(prepare&&copy);
- assert.equal(copy.disabled,true);
- prepare.handlers.click();
- const preview=walk(requestSection).find(n=>n.className==='request-preview');
- assert.ok(preview.value.includes('TSS-CY-001'));
- assert.match(preview.value,/NOT YET APPROVED FOR A WRITE/);
- assert.equal(copy.disabled,false);
+ const section=nodes().find(n=>n.className==='request-section');
+ assert.ok(section,'One-box handoff must appear inside the existing Company dossier');
+ const all=walk(section);
+ const inputs=all.filter(n=>n.className==='quick-request');
+ assert.equal(inputs.length,1,'Only a single optional question field is shown');
+ assert.equal(all.filter(n=>n.className==='request-field').length,0);
+ const copy=all.find(n=>n.tag==='button'&&n.textContent==='Copy for ChatGPT');
+ assert.ok(copy,'One direct Copy button required');
+ inputs[0].value='Find current projects for this developer';
  await copy.handlers.click();
+ const preview=all.find(n=>n.className==='request-preview');
+ assert.match(preview.value,/TSS-CY-001/);
+ assert.match(preview.value,/Find current projects/);
+ assert.match(preview.value,/ask for my approval/i);
  assert.equal(h.state.copied,preview.value);
- assert.equal(h.state.calls.length,before,'No provider request may result from preparing or copying a research brief');
- controls[1].value='Changed after preparation';
- controls[1].handlers.input();
- assert.equal(copy.disabled,true,'Edits invalidate the previously prepared clipboard brief');
+ assert.equal(h.state.calls.length,before,'Copy is not an external API request');
+ inputs[0].value='Updated question';
+ inputs[0].handlers.input();
+ assert.equal(preview.value,'','Changing question clears previous generated text');
+ await copy.handlers.click();
+ assert.match(h.state.copied,/Updated question/);
+ assert.equal(h.state.calls.length,before,'No additional Google or HubSpot requests');
+});
+
+test('one-box blank request still copies a useful Company review to ChatGPT',async()=>{
+ const h=createHarness();h.begin();await h.respond();
+ h.buttons.find(b=>b.dataset.view==='companies').handlers.click();
+ const walk=n=>[n,...n.children.flatMap(child=>child instanceof Node?walk(child):[])];
+ const nodes=()=>walk(h.elements.get('#content'));
+ nodes().find(n=>n.tag==='button'&&n.textContent==='Synthetic Developer').handlers.click();
+ const section=nodes().find(n=>n.className==='request-section');
+ const copy=walk(section).find(n=>n.tag==='button'&&n.textContent==='Copy for ChatGPT');
+ await copy.handlers.click();
+ assert.match(h.state.copied,/review this Company and suggest the next useful research checks/);
 });
