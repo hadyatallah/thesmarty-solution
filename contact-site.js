@@ -14,6 +14,24 @@
       button.setAttribute('aria-expanded', 'false');
     });
   }
+  // Display the enquiry context. HubSpot owns the form submission and fields.
+  const params = new URLSearchParams(window.location.search);
+  const route = (params.get('enquiry') || '').trim().toLowerCase();
+  const routeLabel = {
+    'kiti': 'Kiti Residential Development',
+    'business-growth': 'Business Growth',
+    'market-entry': 'Market Entry & Representation',
+    'strategic-connections': 'Strategic Connections',
+    'opportunity-development': 'Opportunity Development',
+    'business-systems': 'Business Systems'
+  }[route];
+  const context = document.getElementById('tssEnquiryContext');
+  if (context && routeLabel) {
+    context.hidden = false;
+    context.textContent = route === 'kiti'
+      ? 'Your enquiry concerns the TSS-owned Kiti Residential Development project. Please select Kiti in the form enquiry type, if offered, or start your message with “Kiti Residential Development”.'
+      : 'Enquiry topic: ' + routeLabel + '. Please confirm this topic in the form if requested.';
+  }
   document.querySelectorAll('[data-year]').forEach(el => {
     el.textContent = String(new Date().getFullYear());
   });
