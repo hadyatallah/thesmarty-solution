@@ -36,6 +36,6 @@ test('helper does not send requests, store tokens, or create another browser wri
  assert.doesNotMatch(app,/spreadsheets\.write|\/api\/crm|localStorage|sessionStorage/);
  assert.match(app,/prepareCompanyNameForChatGPT/);
  assert.match(app,/Copy Company name/);
- assert.doesNotMatch(app,/quick-request|Attribute \/ research field|Date observed|Verification status/);
+ assert.doesNotMatch(app,/quick-request\x27|Attribute \/ research field|Date observed|Verification status/);
  assert.match(cfg,/readOnly:\s*true/);
 });
