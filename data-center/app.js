@@ -1,4 +1,5 @@
 import {rowsToObjects,filterCompanies,companyDossier,isReviewNeeded,overview,safeExternalUrl,text,normalized,businessOnly} from './model.mjs';
+import {prepareResearchHandoff} from './research-request.mjs';
 const cfg=window.TSS_IDC_CONFIG||{};
 const root=document.querySelector('#content');
 const banner=document.querySelector('#notice');
@@ -194,8 +195,85 @@ function showDossier(id,target){
  if(d.profile){add(panel,el('h3','','Research gaps'),paragraph(d.profile.researchGaps||'No reviewed research gaps recorded.'),el('div','help-note','Profile state: '+(d.profile.canonicalIdentityState||'Unknown')+'; development activity: '+(d.profile.developmentActivity||'Unknown')));}
  add(panel,el('h3','','Linked projects'),table(['Project','Published status','Role'],d.projects.map(p=>({p,role:d.roles.find(r=>r.projectId===p.projectId)})),({p,role})=>[
  p.projectName||p.projectId,p.observedStatus||'Unknown',role?.projectRole||'Unknown'
- ]));target.append(panel);target.scrollIntoView({behavior:'smooth',block:'nearest'});
+ ]));panel.append(researchRequestForm(c,d.evidence));target.append(panel);target.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
+
+/* V2 — prepare a request for ChatGPT in the already-signed-in read-only app.
+ * No API write, automatic submission, storage or new OAuth consent.
+ */
+function researchRequestForm(company,evidence){
+ const section=el('section','request-section');
+ add(section,el('h3','','Prepare a research request'),
+  paragraph('Check the source and prepare an update for ChatGPT. Nothing is saved or sent automatically.'));
+ const fields=el('div','request-fields');
+ function entry(label,control){
+  const wrap=el('label','request-field');wrap.append(el('span','',label),control);fields.append(wrap);
+  return control;
+ }
+ const path=entry('Attribute / research field',el('input'));
+ path.placeholder='e.g. developmentActivity';path.maxLength=120;
+ const value=entry('Reported fact',el('textarea'));
+ value.rows=2;value.maxLength=500;value.placeholder='What does the source report?';
+ const source=entry('Source URL',el('input'));
+ source.type='url';source.placeholder='https://...';source.maxLength=500;
+ const observed=entry('Date observed',el('input'));
+ observed.type='date';observed.value=new Date().toISOString().slice(0,10);
+ const verification=entry('Verification status',el('select'));
+ for(const name of ['UNVERIFIED','SOURCE SUPPORTED','DIRECTLY CONFIRMED','CONFLICTING / REVIEW REQUIRED']){
+  const opt=el('option','',name);opt.value=name;verification.append(opt);
+ }
+ const freshness=entry('Freshness',el('select'));
+ for(const name of ['Current','Review Due','Stale']){const opt=el('option','',name);opt.value=name;freshness.append(opt)}
+ const classification=entry('Information class',el('select'));
+ for(const name of ['Reusable TSS Intelligence','TSS Restricted Intelligence','Mandate Confidential','Highly Restricted']){
+  const opt=el('option','',name);opt.value=name;classification.append(opt);
+ }
+ const notes=entry('Research notes',el('textarea'));
+ notes.rows=2;notes.maxLength=1000;notes.placeholder='Clarify what the source establishes.';
+ section.append(fields);
+ const status=el('div','help-note','Select a field and provide a dated source before preparing a request.');
+ status.setAttribute('role','status');status.setAttribute('aria-live','polite');section.append(status);
+ const preview=el('textarea','request-preview');
+ preview.rows=12;preview.readOnly=true;preview.hidden=true;
+ preview.setAttribute('aria-label','Research request to copy into ChatGPT');
+ const prepare=btn('Prepare request for ChatGPT',()=>{
+  const result=prepareResearchHandoff(company,evidence,{
+   attributePath:path.value,displayValue:value.value,sourceRef:source.value,
+   observedAt:observed.value,verificationStatus:verification.value,
+   freshnessStatus:freshness.value,informationClass:classification.value,
+   reviewNotes:notes.value
+  },{today:new Date().toISOString().slice(0,10)});
+  status.textContent=(result.status==='READY_TO_COPY'?'Ready to copy. No data has been changed.':
+   result.status==='REVIEW_REQUIRED'?'Review required before any update. Request can be copied for review.':
+   'Request blocked; correct the fields first.')+
+   (result.errors.length?' '+result.errors.join(' · '):'')+
+   (result.warnings.length?' '+result.warnings.join(' · '):'');
+  preview.value=result.handoffText;preview.hidden=!result.handoffText;
+  copy.disabled=!result.handoffText;
+ });
+ const copy=btn('Copy request',async()=>{
+  if(!preview.value||preview.hidden)return;
+  if(!navigator.clipboard?.writeText){
+   status.textContent='Clipboard unavailable. Select and copy the prepared text manually.';return;
+  }
+  try{await navigator.clipboard.writeText(preview.value);
+   status.textContent='Request copied. Paste it into ChatGPT for review; no Google Sheet change has been made.';
+  }catch{
+   status.textContent='Clipboard permission denied. Select and copy the prepared text manually.';
+  }
+ });
+ copy.disabled=true;
+ const actions=el('div','button-line');add(actions,prepare,copy);
+ section.append(actions,preview);
+ for(const field of [path,value,source,observed,verification,freshness,classification,notes]){
+  for(const event of ['input','change'])field.addEventListener(event,()=>{
+   preview.value='';preview.hidden=true;copy.disabled=true;
+   status.textContent='Request changed. Prepare again before copying.';
+  });
+ }
+ return section;
+}
+
 function projectsView(){
  const s=heading('Developer & project records','Projects are linked to canonical Companies only when a separate evidence-backed role exists.');
  const tools=el('div','toolbar'),q=el('input');q.placeholder='Search project name, locality or status';q.setAttribute('aria-label','Search developer projects');tools.append(q);s.append(tools);

@@ -59,3 +59,23 @@ node --test data-center/tests/model.test.mjs
 ```
 
 Run the existing isolated workflow `.github/workflows/tss-idc-app-safety.yml` and website regression tests before merging application changes. Production acceptance needs a verified exact commit, Vercel READY release, tested public routes, and authorized interactive security/functional checks. Keep owner-only Google permissions and the previous private Google operating guide as rollback references. No paid APIs or alternative browser agents.
+
+
+## V2 simplified research handoff — owner decision 11 October 2026
+
+The owner directed removal of the overengineered V2 custom Google Sheets browser-writing architecture. **PR #87 was closed WITHOUT MERGE**; its custom write gateway, extra OAuth scopes, separate QA browser routes and new CRM-like infrastructure are NOT part of the application. Do not revive them.
+
+The accepted, simple V2 requirement is implemented in [PR #88](https://github.com/hadyatallah/thesmarty-solution/pull/88), as a small extension to the existing authenticated **Company dossier**. It is an **in-memory research request**, not a second sign-in or an editable data store:
+
+- Existing V1 Google sign-in, `spreadsheets.readonly`, ACL, Companies and evidence reads, Lock App and all seven navigation views are preserved.
+- Under an existing Company, the owner enters fact, source HTTP(S) URL, observed date, verification, freshness and information class; the app checks known duplicates and differing recorded facts.
+- A deliberate **Prepare request for ChatGPT** click builds copyable text. A separate Copy click uses the clipboard when available; the text remains visible for manual copying if clipboard access is denied.
+- The text clearly asks ChatGPT to verify the latest canonical Company and source, explain conflict/freshness and *request separate approval* before any Google Sheets write. The app never sends data to ChatGPT automatically and cannot submit to Google Sheets, HubSpot, emails or other APIs.
+- Mandate Confidential and Highly Restricted content are blocked from the clipboard handoff; restricted intelligence receives an explicit privacy warning.
+- No additional Google OAuth origin, API key, service account, custom browser agent, Apps Script, CRM, paid subscription or write-capable website scope is introduced.
+
+**Actual research updates:** ChatGPT with the existing authorized Google Sheets connection can prepare and, **only after the owner approves the specific change**, record an append-only observation and audit in the already owner-private operational ledger. The canonical Companies list and historical evidence archive are not overwritten. No auto-promotion to HubSpot. Work directly through existing connected provider tools; if a provider write is restricted, report it rather than building a substitute service.
+
+**Keep gates proportional:** The release requires the existing GitHub security suite, exact-commit Vercel Preview/Production checks and a concise owner phone sanity check. The previous V1 desktop/tablet checks stay separately tracked; do not invent a new multi-stage certification program or keep reintroducing abandoned integration gates. If Vercel's daily free deployment quota is exhausted, defer release until it resets; do not upgrade a plan or bypass provider controls.
+
+Use `node --test data-center/tests/*.test.mjs` for the complete existing app and minimal handoff regression suite. A successful CI run is evidence of source behavior, not proof of a live browser deployment.

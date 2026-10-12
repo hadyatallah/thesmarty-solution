@@ -1,9 +1,9 @@
 /* Only the public application shell may be cached. Absolutely no Google
  * API responses, Company records, OAuth responses, or token-bearing requests. */
-const CACHE_NAME = 'tss-idc-public-shell-v1';
+const CACHE_NAME = 'tss-idc-public-shell-v2';
 const SHELL_PATHS = [
  '/data-center/','/data-center/index.html','/data-center/app.css',
- '/data-center/app.js','/data-center/model.mjs','/data-center/config.js',
+ '/data-center/app.js','/data-center/model.mjs','/data-center/research-request.mjs','/data-center/config.js',
  '/data-center/manifest.webmanifest','/data-center/icon-192.png',
  '/data-center/icon-512.png'
 ];
