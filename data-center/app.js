@@ -1,5 +1,5 @@
 import {rowsToObjects,filterCompanies,companyDossier,isReviewNeeded,overview,safeExternalUrl,text,normalized,businessOnly} from './model.mjs';
-import {prepareSimpleCompanyRequest} from './research-request.mjs';
+import {prepareCompanyNameForChatGPT} from './research-request.mjs';
 const cfg=window.TSS_IDC_CONFIG||{};
 const root=document.querySelector('#content');
 const banner=document.querySelector('#notice');
@@ -203,44 +203,35 @@ function showDossier(id,target){
  */
 function researchRequestForm(company){
  const section=el('section','request-section');
- add(section,el('h3','','Ask ChatGPT about this Company'),
-  paragraph('The Company is selected automatically. Type a question or simply copy a request for ChatGPT to review.'));
- const note=el('textarea','quick-request');
- note.rows=3;note.maxLength=1200;
- note.placeholder='Optional: e.g. Find recent projects, check the website, or update missing information';
- note.setAttribute('aria-label','What would you like ChatGPT to check? (optional)');
- section.append(note);
- const status=el('div','quick-request-status','Nothing will be changed or sent automatically.');
+ add(section,el('h3','','Research this Company with ChatGPT'),
+  paragraph('Selected Company: '+(company.name||'Unknown')+'. Copy its name into ChatGPT. ChatGPT will look up the other information.'));
+ const status=el('div','quick-request-status','Only the Company name is copied. No research data is changed.');
  status.setAttribute('role','status');status.setAttribute('aria-live','polite');
- const preview=el('textarea','request-preview');
- preview.readOnly=true;preview.hidden=true;preview.rows=10;
- preview.setAttribute('aria-label','Prepared request to copy into ChatGPT');
- const copy=btn('Copy for ChatGPT',async()=>{
-  const result=prepareSimpleCompanyRequest(company,note.value);
+ const fallback=el('textarea','request-preview');
+ fallback.rows=2;fallback.readOnly=true;fallback.hidden=true;
+ fallback.setAttribute('aria-label','Company name to copy manually');
+ const copy=btn('Copy Company name',async()=>{
+  const result=prepareCompanyNameForChatGPT(company);
   if(result.status!=='READY_TO_COPY'){
-   status.textContent=result.errors.join(' · ');preview.hidden=true;return;
+   status.textContent=result.errors.join(' · ');fallback.hidden=true;return;
   }
-  preview.value=result.handoffText;
+  fallback.value=result.companyName;
   if(navigator.clipboard?.writeText){
    try{
-    await navigator.clipboard.writeText(result.handoffText);
-    preview.hidden=true;
-    status.textContent='Copied. Open ChatGPT and paste your request. No research records were changed.';
+    await navigator.clipboard.writeText(result.companyName);
+    fallback.hidden=true;
+    status.textContent='Company name copied. Paste it in your TSS ChatGPT conversation for research.';
     return;
-   }catch{ /* Show the text for manual copying instead. */ }
+   }catch{ /* Fall back to a selectable Company name. */ }
   }
-  preview.hidden=false;
-  status.textContent='Automatic copy is unavailable. Select and copy the request below, then paste it into ChatGPT.';
-  if(typeof preview.focus==='function')preview.focus();
-  if(typeof preview.select==='function')preview.select();
+  fallback.hidden=false;
+  status.textContent='Select and copy the Company name below, then paste it into ChatGPT.';
+  if(typeof fallback.focus==='function')fallback.focus();
+  if(typeof fallback.select==='function')fallback.select();
  });
  const actions=el('div','button-line');
  add(actions,copy,aLink('https://chatgpt.com/','Open ChatGPT ↗'));
- section.append(actions,status,preview);
- note.addEventListener('input',()=>{
-  preview.value='';preview.hidden=true;
-  status.textContent='Your question is ready. Tap Copy for ChatGPT.';
- });
+ section.append(actions,status,fallback);
  return section;
 }
 

@@ -223,7 +223,7 @@ test('Company directory search and exact dossier render without mixing other ide
 });
 
 
-test('one-box Company request copies into ChatGPT without another sign-in or Sheets write',async()=>{
+test('Company action copies only its name, with zero user-entered research fields',async()=>{
  const h=createHarness();h.begin();await h.respond();
  const before=h.state.calls.length;
  h.buttons.find(b=>b.dataset.view==='companies').handlers.click();
@@ -231,37 +231,30 @@ test('one-box Company request copies into ChatGPT without another sign-in or She
  const nodes=()=>walk(h.elements.get('#content'));
  nodes().find(n=>n.tag==='button'&&n.textContent==='Synthetic Developer').handlers.click();
  const section=nodes().find(n=>n.className==='request-section');
- assert.ok(section,'One-box handoff must appear inside the existing Company dossier');
+ assert.ok(section);
  const all=walk(section);
- const inputs=all.filter(n=>n.className==='quick-request');
- assert.equal(inputs.length,1,'Only a single optional question field is shown');
+ assert.equal(all.filter(n=>n.tag==='input'&&n.className==='quick-request').length,0);
+ assert.equal(all.filter(n=>n.tag==='textarea'&&n.className==='quick-request').length,0);
  assert.equal(all.filter(n=>n.className==='request-field').length,0);
- const copy=all.find(n=>n.tag==='button'&&n.textContent==='Copy for ChatGPT');
- assert.ok(copy,'One direct Copy button required');
- inputs[0].value='Find current projects for this developer';
+ const copy=all.find(n=>n.tag==='button'&&n.textContent==='Copy Company name');
+ assert.ok(copy);
  await copy.handlers.click();
- const preview=all.find(n=>n.className==='request-preview');
- assert.match(preview.value,/TSS-CY-001/);
- assert.match(preview.value,/Find current projects/);
- assert.match(preview.value,/ask for my approval/i);
- assert.equal(h.state.copied,preview.value);
- assert.equal(h.state.calls.length,before,'Copy is not an external API request');
- inputs[0].value='Updated question';
- inputs[0].handlers.input();
- assert.equal(preview.value,'','Changing question clears previous generated text');
- await copy.handlers.click();
- assert.match(h.state.copied,/Updated question/);
- assert.equal(h.state.calls.length,before,'No additional Google or HubSpot requests');
+ assert.equal(h.state.copied,'Synthetic Developer');
+ assert.equal(h.state.calls.length,before,'Copy must not call Google, HubSpot or any browser API');
+ const fallback=all.find(n=>n.className==='request-preview');
+ assert.equal(fallback.value,'Synthetic Developer');
+ assert.equal(fallback.hidden,true,'Clipboard success needs no extra form');
 });
 
-test('one-box blank request still copies a useful Company review to ChatGPT',async()=>{
+test('new Company still receives only its exact name and no stored Company fields',async()=>{
  const h=createHarness();h.begin();await h.respond();
  h.buttons.find(b=>b.dataset.view==='companies').handlers.click();
  const walk=n=>[n,...n.children.flatMap(child=>child instanceof Node?walk(child):[])];
  const nodes=()=>walk(h.elements.get('#content'));
  nodes().find(n=>n.tag==='button'&&n.textContent==='Synthetic Developer').handlers.click();
  const section=nodes().find(n=>n.className==='request-section');
- const copy=walk(section).find(n=>n.tag==='button'&&n.textContent==='Copy for ChatGPT');
+ const copy=walk(section).find(n=>n.tag==='button'&&n.textContent==='Copy Company name');
  await copy.handlers.click();
- assert.match(h.state.copied,/review this Company and suggest the next useful research checks/);
+ assert.ok(!h.state.copied.includes('TSS-CY-001'),'Only the Company name goes to clipboard');
+ assert.ok(!h.state.copied.includes('Larnaca'));
 });
