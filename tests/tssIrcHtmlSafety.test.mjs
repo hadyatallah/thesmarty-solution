@@ -88,7 +88,7 @@ test('owner-only login keeps private records inaccessible before authentication'
  assert.equal(h.requests.sheetsRead,0);
  assert.match(h.get('content').innerHTML,/private access/i);
  await h.login();
- assert.equal(h.requests.sheetsRead,1);
+ assert.equal(h.requests.sheetsRead,1,JSON.stringify({requests:h.requests,notice:h.get("notice").textContent,identity:h.get("identity").textContent}));
  assert.equal(h.get('identity').textContent,'thesmartysolution@gmail.com');
  assert.equal(h.get('refresh').disabled,false);
 });
@@ -103,7 +103,7 @@ test('wrong signed-in Google user causes denial without a private read',async()=
 
 test('verified first party buyer request stores record but does not send or share',async()=>{
  const h=createHarness();await h.login();await h.goto('buyers');
- assert.equal(typeof h.get('addBuyer').onclick,'function');
+ assert.equal(typeof h.get('addBuyer').onclick,'function',JSON.stringify({notice:h.get("notice").textContent,requests:h.requests}));
  h.get('addBuyer').onclick();
  await h.submit(buyerForm());
  assert.equal(h.requests.writes.length,1);
