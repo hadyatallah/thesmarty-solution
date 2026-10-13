@@ -3,11 +3,14 @@ on:
   pull_request:
     paths:
       - "buyer-interest/**"
+      - "strategic-connections.html"
+      - "sitemap.xml"
       - "research-center/**"
       - "tests/tssIrcBuyerEmailLanding.test.mjs"
+      - "tests/tssIrcBuyerDiscovery.test.mjs"
       - ".github/workflows/tss-irc-buyer-email-landing.yml"
   push:
-    branches: ["feature/irc-buyer-mailto-landing-20261013"]
+    branches: ["feature/irc-buyer-mailto-landing-20261013", "feature/irc-buyer-discovery-20261013"]
 permissions:
   contents: read
 jobs:
@@ -22,7 +25,7 @@ jobs:
           node-version: "24"
       - name: Verify private data never goes to a public browser form
         run: |
-          node --test tests/tssIrcBuyerEmailLanding.test.mjs
+          node --test tests/tssIrcBuyerEmailLanding.test.mjs tests/tssIrcBuyerDiscovery.test.mjs
           node --test tests/tssIrcHtmlSafety.test.mjs
           node --input-type=commonjs -e '
             const fs=require("node:fs"),vm=require("node:vm");
