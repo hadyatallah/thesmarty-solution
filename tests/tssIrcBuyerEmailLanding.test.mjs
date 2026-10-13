@@ -42,7 +42,7 @@ test('new buyer page reuses the actual shared site colors, fonts, header, footer
  assert.match(html,/<base href="\/">/);
  assert.match(html,/<meta name="theme-color" content="#07182b">/);
  assert.match(html,/<header class="header">/);
- assert.match(html,/<nav aria-label="Primary"><ul class="navlinks">/);
+ assert.match(html,/<nav aria-label="Primary"><ul class="navlinks" id="navlinks">/);
  assert.match(html,/<footer class="footer">/);
  assert.match(html,/<img src="logo-mark-light\.png" alt="The Smarty Solution">/);
  assert.match(html,/family=Manrope/);
