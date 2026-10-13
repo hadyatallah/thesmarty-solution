@@ -74,7 +74,7 @@ function createHarness({email='thesmartysolution@gmail.com',buyerRows=[],suppres
  const initTokenClient=({callback})=>({requestAccessToken:()=>callback({access_token:'SYNTHETIC_QA_TOKEN'})});
  const g={accounts:{oauth2:{initTokenClient}}};
  const doc={getElementById:get,querySelectorAll:selector=>selector==='.nav button'?navs:[]};
- const sandbox={window:{google:g},google:g,document:doc,FormData:FakeFormData,fetch:fakeFetch,URL,crypto:{randomUUID},console,setTimeout,clearTimeout,confirm:()=>true};
+ const sandbox={window:{google:g},google:g,document:doc,FormData:FakeFormData,fetch:fakeFetch,URL,URLSearchParams,crypto:{randomUUID},console,setTimeout,clearTimeout,confirm:()=>true};
  new Script(script).runInContext(createContext(sandbox));
  return {get,navs,requests,data,async login(){get('auth').onclick();await tick();await tick();},async goto(v){navs.find(n=>n.dataset.v===v)?.onclick?.();await tick();},async submit(fields){get('form').fields=fields;const handler=get('form').onsubmit;assert.equal(typeof handler,'function');await handler({preventDefault(){},currentTarget:get('form')});await tick();}};
 }
