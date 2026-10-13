@@ -140,6 +140,13 @@ test('requests to untrusted sheets or HubSpot cannot occur before successful ide
 function response(){
  return {statusCode:200,headers:{},body:'',status(c){this.statusCode=c;return this;},setHeader(k,v){this.headers[k]=v;return this;},end(x){this.body=x;return this;}};
 }
+test('configured scheduler with no persisted run is shown as unverified, not active',async()=>{
+ const h=createHarness();await h.login();await h.goto('scheduler');
+ assert.match(h.get('content').innerHTML,/Not yet verified/);
+ assert.match(h.get('content').innerHTML,/no confirmed run yet/i);
+ assert.match(h.get('content').innerHTML,/Off/);
+});
+
 test('daily cron rejects unauthorised callers before touching sources',async()=>{
  const r=response();
  await cronHandler({method:'GET',headers:{}},r);
