@@ -21,5 +21,11 @@
       "destination": "/data-center/",
       "permanent": false
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/tss-irc-daily",
+      "schedule": "0 7 * * *"
+    }
   ]
 }
