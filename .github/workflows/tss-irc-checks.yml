@@ -1,0 +1,36 @@
+name: TSS International Research Center checks
+on:
+  push:
+    branches: ["feature/irc-v1-safe-cron-20261013"]
+  pull_request:
+    paths:
+      - "research-center/**"
+      - "api/tss-irc-daily.js"
+      - "lib/tssIrcEligibility.mjs"
+      - "tests/tssIrcEligibility.test.mjs"
+      - "vercel.json"
+      - ".github/workflows/tss-irc-checks.yml"
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+      - name: Check syntax and unit tests
+        run: |
+          node --check api/tss-irc-daily.js
+          node --check lib/tssIrcEligibility.mjs
+          node --test tests/tssIrcEligibility.test.mjs
+          node --input-type=commonjs -e '
+            const fs=require("node:fs"),vm=require("node:vm");
+            const html=fs.readFileSync("research-center/index.html","utf8");
+            const match=html.match(/<script>([\s\S]*?)<\/script>/);
+            if(!match)throw Error("Research Center inline script missing");
+            new vm.Script(match[1]);
+          '
