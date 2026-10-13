@@ -1,0 +1,33 @@
+name: TSS buyer-interest landing safety
+on:
+  pull_request:
+    paths:
+      - "buyer-interest/**"
+      - "research-center/**"
+      - "tests/tssIrcBuyerEmailLanding.test.mjs"
+      - ".github/workflows/tss-irc-buyer-email-landing.yml"
+  push:
+    branches: ["feature/irc-buyer-mailto-landing-20261013"]
+permissions:
+  contents: read
+jobs:
+  static-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+      - name: Verify private data never goes to a public browser form
+        run: |
+          node --test tests/tssIrcBuyerEmailLanding.test.mjs
+          node --test tests/tssIrcHtmlSafety.test.mjs
+          node --input-type=commonjs -e '
+            const fs=require("node:fs"),vm=require("node:vm");
+            const html=fs.readFileSync("research-center/index.html","utf8");
+            const found=html.match(/<script>([\s\S]+?)<\/script>/);
+            if(!found)throw Error("Private app script not found");
+            new vm.Script(found[1]);
+          '
