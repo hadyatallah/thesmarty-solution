@@ -12,6 +12,8 @@ const SHEET_RANGES={
 };
 const GOOGLE="https://sheets.googleapis.com/v4/spreadsheets/";
 const utc=()=>new Date().toISOString(),day=()=>utc().slice(0,10);
+// No contact details, service-account material or OAuth tokens are ever logged.
+const log=(event,details={})=>console.info(JSON.stringify({component:"tss-irc-daily",event,...details}));
 const text=(v)=>String(v??"");
 const okSecret=(actual,expected)=>{
  if(!expected||!actual)return false;
@@ -103,13 +105,17 @@ export default async function handler(req,res){
  if(req.method!=="GET")return json(res,405,{ok:false,error:"method_not_allowed"});
  if(!okSecret(req.headers.authorization?.replace(/^Bearer\s+/i,""),process.env.CRON_SECRET))return json(res,401,{ok:false,error:"unauthorised"});
  const jobId="IRC-RUN-"+day(),now=utc();
+ log("invoked",{runId:jobId});
  let google;
  try{
   google=await googleAccessToken();
   const data=await readAll(google);
   const opts=settings(data.settings);
   const past=objects(data.runs);
-  if(past.some(x=>x.runId===jobId))return json(res,200,{ok:true,runId:jobId,outcome:"ALREADY_RECORDED"});
+  if(past.some(x=>x.runId===jobId)){
+   log("already_recorded",{runId:jobId});
+   return json(res,200,{ok:true,runId:jobId,outcome:"ALREADY_RECORDED"});
+  }
   const eligible=chooseEligible(data,now,Math.min(10,Number(opts.daily_send_cap)||10));
   const enabled=truthy(opts.daily_scheduler_enabled),sheetSend=truthy(opts.auto_send_enabled);
   let outcome=enabled?"RESEARCH_ONLY":"DISABLED",sent=0,held=eligible.held.length;
@@ -122,9 +128,12 @@ export default async function handler(req,res){
   }
   await appendRow(google,"Runs",[jobId,now,utc(),"Approved first-party inputs only",0,0,eligible.chosen.length,sent,held,outcome,
     "Daily eligible-contact review. No personal buyer addresses harvested. Email submission held until durable idempotency and Microsoft Graph app-permission acceptance."]);
+  log("completed",{runId:jobId,outcome,eligible:eligible.chosen.length,held,messagesSent:0});
   return json(res,200,{ok:true,runId:jobId,outcome,eligible:eligible.chosen.length,held,messagesSent:0,source:"approved_inputs"});
  }catch(e){
-  // Redact provider payloads, credentials and recipient details.
-  return json(res,503,{ok:false,runId:jobId,outcome:"BLOCKED",error:String(e.message||"unknown").slice(0,180)});
+  // Only bounded internal error categories are available here, never provider response bodies.
+  const error=String(e.message||"unknown").slice(0,180);
+  console.error(JSON.stringify({component:"tss-irc-daily",event:"blocked",runId:jobId,error}));
+  return json(res,503,{ok:false,runId:jobId,outcome:"BLOCKED",error});
  }
 }
