@@ -32,8 +32,11 @@ async function appendBuyer(auth,record){
 export default async function handler(req,res){
  if(req.method!=="POST")return RESP(res,405,{ok:false,message:"Method not allowed"});
  if(process.env.TSS_IRC_BUYER_INTAKE_ENABLED!=="true")return RESP(res,503,{ok:false,message:"Property enquiry service is not accepting submissions"});
+ if(!/^application\/json(?:\s*;|\s*$)/i.test(String(req.headers["content-type"]||"")))return RESP(res,415,{ok:false,message:"Use JSON requests"});
  if(!allowedOrigins.has(req.headers.origin))return RESP(res,403,{ok:false,message:"Origin not permitted"});
- const size=Number(req.headers["content-length"]||0);if(size>10000)return RESP(res,413,{ok:false,message:"Submission exceeds the limit"});
+ const size=Number(req.headers["content-length"]||0);
+ // Both header and parsed body are bounded: client-provided length is not authoritative.
+ if(size>10000 || JSON.stringify(req.body??{}).length>10000)return RESP(res,413,{ok:false,message:"Submission exceeds the limit"});
  const b=req.body;
  if(!b||typeof b!=="object"||Array.isArray(b))return RESP(res,400,{ok:false,message:"Invalid enquiry"});
  // Honeypot and time-to-complete reduce casual bot traffic, not a CAPTCHA or hard rate limit.
@@ -44,6 +47,9 @@ export default async function handler(req,res){
  for(const f of fields)if(!valid(b[f],1,f==="email"?200:120))return RESP(res,400,{ok:false,message:"Please complete every required field"});
  if(!email(b.email))return RESP(res,400,{ok:false,message:"Please enter a valid email"});
  if(!["Cyprus","Greece","Either"].includes(b.destination))return RESP(res,400,{ok:false,message:"Please select a destination"});
+ if(!["Apartment","House / villa","Commercial property","Still exploring"].includes(b.propertyType))return RESP(res,400,{ok:false,message:"Invalid property choice"});
+ if(!["Under €150,000","€150,000–€300,000","€300,000–€600,000","€600,000+","Prefer to discuss"].includes(b.budgetBand))return RESP(res,400,{ok:false,message:"Invalid budget choice"});
+ if(!["Within 3 months","3–6 months","6–12 months","More than 12 months","Exploring"].includes(b.purchaseHorizon))return RESP(res,400,{ok:false,message:"Invalid timeframe choice"});
  if(b.requestContact!==true||b.privacyAcknowledged!==true)return RESP(res,400,{ok:false,message:"Permission to respond is required"});
  if(b.marketingOptIn!==true&&b.marketingOptIn!==false)return RESP(res,400,{ok:false,message:"Invalid marketing selection"});
  const iso=new Date().toISOString(),ref="IRC-BUY-"+randomUUID().replace(/-/g,"").slice(0,18).toUpperCase(),address=b.email.toLowerCase().trim();
