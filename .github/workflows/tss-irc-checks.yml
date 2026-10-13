@@ -9,6 +9,7 @@ on:
       - "lib/tssIrcEligibility.mjs"
       - "tests/tssIrcEligibility.test.mjs"
       - "tests/tssIrcHtmlSafety.test.mjs"
+      - "tests/tssIrcCronAcceptance.test.mjs"
       - "vercel.json"
       - ".github/workflows/tss-irc-checks.yml"
 permissions:
@@ -27,7 +28,7 @@ jobs:
         run: |
           node --check api/tss-irc-daily.js
           node --check lib/tssIrcEligibility.mjs
-          node --test tests/tssIrcEligibility.test.mjs tests/tssIrcHtmlSafety.test.mjs
+          node --test tests/tssIrcEligibility.test.mjs tests/tssIrcHtmlSafety.test.mjs tests/tssIrcCronAcceptance.test.mjs
           node --input-type=commonjs -e '
             const fs=require("node:fs"),vm=require("node:vm");
             const html=fs.readFileSync("research-center/index.html","utf8");
