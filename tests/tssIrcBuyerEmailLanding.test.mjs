@@ -50,3 +50,13 @@ test('new buyer page reuses the actual shared site colors, fonts, header, footer
  assert.match(strategic,/<a class="btn dark" href="buyer-interest\/">Explore the buyer enquiry route/);
  assert.doesNotMatch(strategic,/<a class="maplink" href="buyer-interest\/">/);
 });
+
+test('buyer navigation stays on the buyer page even with the root base href',()=>{
+ assert.match(html, /<base href="\/">/);
+ assert.match(html, /href="\/buyer-interest\/#how-we-work"/);
+ assert.doesNotMatch(html, /href="#how-we-work"/);
+ assert.match(html, /id="how-we-work"/);
+ const resolved=new URL('/buyer-interest/#how-we-work','https://www.thesmartysolution.com/');
+ assert.equal(resolved.pathname, '/buyer-interest/');
+ assert.equal(resolved.hash, '#how-we-work');
+});
