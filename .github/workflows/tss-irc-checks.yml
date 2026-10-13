@@ -1,13 +1,14 @@
 name: TSS International Research Center checks
 on:
   push:
-    branches: ["feature/irc-v1-safe-cron-20261013"]
+    branches: ["feature/irc-v1-safe-cron-20261013", "feature/irc-independent-acceptance-20261013"]
   pull_request:
     paths:
       - "research-center/**"
       - "api/tss-irc-daily.js"
       - "lib/tssIrcEligibility.mjs"
       - "tests/tssIrcEligibility.test.mjs"
+      - "tests/tssIrcHtmlSafety.test.mjs"
       - "vercel.json"
       - ".github/workflows/tss-irc-checks.yml"
 permissions:
@@ -26,7 +27,7 @@ jobs:
         run: |
           node --check api/tss-irc-daily.js
           node --check lib/tssIrcEligibility.mjs
-          node --test tests/tssIrcEligibility.test.mjs
+          node --test tests/tssIrcEligibility.test.mjs tests/tssIrcHtmlSafety.test.mjs
           node --input-type=commonjs -e '
             const fs=require("node:fs"),vm=require("node:vm");
             const html=fs.readFileSync("research-center/index.html","utf8");
