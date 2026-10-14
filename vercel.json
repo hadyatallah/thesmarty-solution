@@ -20,6 +20,26 @@
       "source": "/admin/",
       "destination": "/data-center/",
       "permanent": false
+    },
+    {
+      "source": "/research",
+      "destination": "/research-center/",
+      "permanent": false
+    },
+    {
+      "source": "/research/",
+      "destination": "/research-center/",
+      "permanent": false
+    },
+    {
+      "source": "/research-app",
+      "destination": "/research-center/",
+      "permanent": false
+    },
+    {
+      "source": "/research-app/",
+      "destination": "/research-center/",
+      "permanent": false
     }
   ],
   "crons": [
