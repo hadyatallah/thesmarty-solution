@@ -19,8 +19,8 @@ test('Data Center remains owner-authenticated and preserves native commercial Co
  assert.match(app,/cfg\.allowedEmail/);
  assert.match(config,/allowedEmail: "thesmartysolution@gmail\.com"/);
  assert.match(contact,/d6b2a98a-ef6b-4a18-9c99-cf39ea2925e5/);
- assert.match(siteNavigation,/href="\/admin"/);
- assert.match(siteNavigation,/href="\/research-center\/"/);
+ assert.match(siteNavigation,/href="\/admin-login\/"/);
+ assert.match(read("admin-login/index.html"),/href="\/research-center\/"/);
 });
 test('retired CRM stays retired while PWA points at private app route',()=>{
  const manifest=JSON.parse(read('data-center/manifest.webmanifest'));
