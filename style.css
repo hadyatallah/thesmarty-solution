@@ -74,6 +74,9 @@ form[data-tss-form][hidden]{display:none!important}
 @media(max-width:620px){.contact-page .contact-section{padding:28px 0 50px}.contact-page .contact-intro{margin-bottom:22px}.contact-page .contact-form-area{padding:20px 16px}.contact-page .fields2{grid-template-columns:1fr}}
 
 /* Direct, discoverable buyer-enquiry route within TSS's existing business-led layout. */
+.home-hero .home-buyer-hint{margin:17px 0 0;color:#d4e6e9;font-size:.92rem;line-height:1.5}
+.home-hero .home-buyer-hint a{color:#5ce6df;font-weight:800;text-decoration:underline;text-underline-offset:4px}
+.home-hero .home-buyer-hint a:hover{color:#fff}
 .home-objectives .home-buyer-path{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
 .home-objectives .home-buyer-path p{margin:0 0 6px;color:var(--muted);font-size:.88rem;line-height:1.5}
 .home-objectives .home-buyer-path a{display:inline-block;color:var(--teal2);font-size:.91rem;font-weight:800;text-decoration:underline;text-underline-offset:4px}
