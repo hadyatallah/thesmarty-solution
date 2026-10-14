@@ -13,13 +13,14 @@ test('website Admin Login redirects to stable production app, not retired CRM or
  assert.doesNotMatch(JSON.stringify(c),/script\.google\.com|\/crm\//);
 });
 test('Data Center remains owner-authenticated and preserves native commercial Contact form',()=>{
- const app=read('data-center/app.js'),config=read('data-center/config.js'),contact=read('contact.html'),index=read('index.html');
+ const app=read('data-center/app.js'),config=read('data-center/config.js'),contact=read('contact.html'),siteNavigation=read('script.js');
  assert.match(app,/spreadsheets\.readonly/);
  assert.match(app,/email_verified/);
  assert.match(app,/cfg\.allowedEmail/);
  assert.match(config,/allowedEmail: "thesmartysolution@gmail\.com"/);
  assert.match(contact,/d6b2a98a-ef6b-4a18-9c99-cf39ea2925e5/);
- assert.match(index,/href="\/admin"/);
+ assert.match(siteNavigation,/href="\/admin-login\/"/);
+ assert.match(read("admin-login/index.html"),/href="\/research-center\/"/);
 });
 test('retired CRM stays retired while PWA points at private app route',()=>{
  const manifest=JSON.parse(read('data-center/manifest.webmanifest'));

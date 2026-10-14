@@ -87,3 +87,8 @@ form[data-tss-form][hidden]{display:none!important}
 .buyer-service-path p:not(.kicker){margin:0;max-width:740px;color:var(--text);font-size:.97rem}
 .buyer-service-path .btn{white-space:nowrap;justify-self:end;text-align:center}
 @media(max-width:760px){.buyer-service-path{grid-template-columns:1fr;gap:22px;margin:28px 0}.buyer-service-path .btn{white-space:normal;justify-self:start}}
+
+/* Discreet website footer entry to the existing Google-managed private workspaces. */
+.footerbottom .tss-admin-login{display:inline-flex;align-items:center;justify-content:center;margin:12px 0 0 14px;padding:9px 16px;border-radius:9px;border:1px solid #49b6b0;color:#fff;background:rgba(73,182,176,.13);font-weight:700;text-decoration:none;white-space:nowrap}
+.footerbottom .tss-admin-login:hover,.footerbottom .tss-admin-login:focus-visible{background:#49b6b0;color:#07182b;outline-offset:3px}
+@media(max-width:620px){.footerbottom .tss-admin-login{margin:14px 0 0}}
