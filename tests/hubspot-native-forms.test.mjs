@@ -22,9 +22,10 @@ test('old form IDs and custom submit API cannot be loaded from Contact page', ()
   assert.doesNotMatch(shell, /fetch\(|XMLHttpRequest|script\.google\.com|\/api\/crm/);
 });
 
-test('legacy Kiti URL sends visitor to ordinary Contact, no preselection', () => {
-  assert.match(redirect, /url=contact\.html/);
-  assert.doesNotMatch(redirect, /enquiry=kiti|data-tss-form/);
+test('legacy Kiti URL routes to the single native Contact form with its enquiry context', () => {
+  assert.match(redirect, /url=contact\.html\?enquiry=kiti/);
+  assert.match(redirect, /tss_enquiry_route=Kiti%20Residential%20Development/);
+  assert.doesNotMatch(redirect, /data-tss-form|data-form-id|<form\b/);
 });
 
 test('historical form adapter cannot run on the new Contact page', () => {
@@ -32,16 +33,18 @@ test('historical form adapter cannot run on the new Contact page', () => {
   assert.ok(oldAdapter.length > 0, 'historical adapter remains unchanged pending wider retirement');
 });
 
-test('admin login sends to owner-private ChatGPT-first Data Center, not retired CRM',()=>{
+test('admin resolves to owner-private Data Center, never the retired CRM',()=>{
  const cfg=JSON.parse(read('vercel.json'));
  for(const route of ['/admin','/admin/']){
   const items=(cfg.redirects||[]).filter(r=>r.source===route);
   assert.equal(items.length,1);
   assert.equal(items[0].permanent,false);
-  assert.equal(items[0].destination,'https://docs.google.com/document/d/1CqVTdI6I402HFvJtTT0y3QfhL7T09Ku1bjex9Ac6CGI/edit');
+  assert.equal(items[0].destination,'/data-center/');
  }
- assert.match(read('index.html'), /href="\/admin"/);
- assert.match(contact, /href="\/admin"/);
- assert.match(read('script.js'), /href="\/admin"/);
+ assert.ok(read('data-center/index.html').includes('TSS'), 'current private Data Center exists');
+ for(const publicPage of ['index.html','contact.html']){
+  assert.doesNotMatch(read(publicPage), /href="\/crm\//);
+ }
+ assert.doesNotMatch(read('script.js'), /href="\/crm\//);
  assert.equal((cfg.redirects||[]).some(r=>['/crm','/crm/'].includes(r.source)),false);
 });
