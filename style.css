@@ -72,3 +72,15 @@ form[data-tss-form][hidden]{display:none!important}
 .private-kiti-contact{margin-top:24px}
 @media(max-width:940px){.contact-page .contact{grid-template-columns:1fr}}
 @media(max-width:620px){.contact-page .contact-section{padding:28px 0 50px}.contact-page .contact-intro{margin-bottom:22px}.contact-page .contact-form-area{padding:20px 16px}.contact-page .fields2{grid-template-columns:1fr}}
+
+/* Direct, discoverable buyer-enquiry route within TSS's existing business-led layout. */
+.home-objectives .home-buyer-path{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.home-objectives .home-buyer-path p{margin:0 0 6px;color:var(--muted);font-size:.88rem;line-height:1.5}
+.home-objectives .home-buyer-path a{display:inline-block;color:var(--teal2);font-size:.91rem;font-weight:800;text-decoration:underline;text-underline-offset:4px}
+.home-objectives .home-buyer-path a:hover{color:var(--ink2)}
+.buyer-service-path{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:30px;margin:32px 0 38px;padding:clamp(24px,4vw,40px);border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:var(--r);background:var(--ice)}
+.buyer-service-path .kicker{margin:0 0 12px;color:var(--teal2)}
+.buyer-service-path h2{font-size:clamp(1.7rem,3vw,2.6rem);line-height:1.16;margin:0 0 13px}
+.buyer-service-path p:not(.kicker){margin:0;max-width:740px;color:var(--text);font-size:.97rem}
+.buyer-service-path .btn{white-space:nowrap;justify-self:end;text-align:center}
+@media(max-width:760px){.buyer-service-path{grid-template-columns:1fr;gap:22px;margin:28px 0}.buyer-service-path .btn{white-space:normal;justify-self:start}}
