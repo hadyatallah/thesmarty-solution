@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#091e32">
+<title>Admin Login | The Smarty Solution</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/admin-login/style.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="/data-center/config.js" defer></script>
+<script src="/admin-login/app.js" defer></script>
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="/" aria-label="The Smarty Solution homepage">
+    <img src="/logo-mark-light.png" alt="" width="62" height="48">
+    <span><strong>THE SMARTY SOLUTION</strong><small>PRIVATE ACCESS</small></span>
+  </a>
+  <a href="/" class="back">← Public website</a>
+</header>
+<main class="main">
+  <section class="panel" aria-labelledby="pageTitle">
+    <p class="eyebrow">TSS / OWNER WORKSPACES</p>
+    <h1 id="pageTitle">Admin Login</h1>
+    <p class="intro" id="intro">Verify your authorized TSS Google email before choosing a workspace.</p>
+    <div id="notice" role="status" aria-live="polite" hidden></div>
+    <div id="verifyPanel">
+      <p class="detail">Sign in with the approved TSS Google account. Google verifies the account email. No passwords, verification codes, or Google access tokens are stored on this website.</p>
+      <button id="verifyButton" type="button" class="button primary">Verify with Google</button>
+    </div>
+    <section id="workspacePanel" aria-labelledby="workspaceTitle" hidden>
+      <div class="verified"><span aria-hidden="true">✓</span><span id="verifiedIdentity">Verified account</span><button id="lockButton" type="button" class="button secondary">Lock</button></div>
+      <h2 id="workspaceTitle">Choose your workspace</h2>
+      <div class="options">
+        <a class="option" href="/data-center/">
+          <span class="option-label">01 · PRIVATE RESEARCH</span>
+          <strong>Intelligent Data Center</strong>
+          <span>Companies, projects, sources and review queues.</span>
+          <span class="open">Open Data Center →</span>
+        </a>
+        <a class="option" href="/research-center/">
+          <span class="option-label">02 · INTERNATIONAL RESEARCH</span>
+          <strong>International Research Center</strong>
+          <span>Buyer enquiries, referral organisations and outreach review.</span>
+          <span class="open">Open Research Center →</span>
+        </a>
+      </div>
+      <p class="fine">You can switch between the two workspaces from either app. Each app continues to enforce its own Google authorization and may request access when opened.</p>
+    </section>
+  </section>
+</main>
+<footer class="foot">The Smarty Solution LTD · Private access · <a href="/privacy.html">Privacy</a></footer>
+</body>
+</html>
