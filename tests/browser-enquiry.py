@@ -7,6 +7,7 @@ from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from urllib.parse import urlsplit
 import threading
+import re
 
 from playwright.sync_api import sync_playwright, expect
 
@@ -97,12 +98,13 @@ with sync_playwright() as playwright:
         context, page, state = context_with_local_only(browser, 390)
         try:
             page.goto(ORIGIN + "/kiti-enquiry.html", wait_until="domcontentloaded")
-            page.wait_for_url("**/contact.html")
+            page.wait_for_url(re.compile(r"/contact\.html\?enquiry=kiti"))
             expect(page.locator("#synthetic-hubspot-frame")).to_have_count(1)
-            assert "enquiry=kiti" not in page.url
+            assert "enquiry=kiti" in page.url
+            expect(page.locator("#tssEnquiryContext")).to_contain_text("Kiti Residential Development")
             assert state["embeds"] == 1
             assert not state["unexpected"] and not state["pageerrors"]
-            print("PASS legacy Kiti URL redirects to generic Contact", flush=True)
+            print("PASS legacy Kiti URL reaches single native Contact with current enquiry context", flush=True)
         finally:
             context.close()
     finally:
