@@ -21,6 +21,8 @@ test('ordinary user can find buyer enquiry directly from homepage Strategic Conn
  assert.ok(linkMatches(card).includes(href));
  assert.equal(new URL(href,origin).pathname,'/buyer-interest/');
  assert.match(home,/<a href="divisions\.html">What We Do<\/a>/);
+ assert.match(home,/Looking for property in Cyprus or Greece\?/);
+ assert.match(home,/data-cta-location="home-hero-secondary"/);
 });
 
 test('What We Do remains business-led and offers one conspicuous buyer CTA',()=>{
@@ -52,6 +54,7 @@ test('new pathways inherit the canonical TSS responsive design without exposing 
  assert.match(css,/\.buyer-service-path\{display:grid;grid-template-columns:minmax\(0,1fr\) auto/);
  assert.match(css,/@media\(max-width:760px\)\{\.buyer-service-path\{grid-template-columns:1fr;/);
  assert.match(css,/\.home-objectives \.home-buyer-path a\{[^}]*color:var\(--teal2\)/);
+ assert.match(css,/\.home-hero \.home-buyer-hint a\{color:#5ce6df/);
  assert.match(css,/@media\(max-width:940px\)\{\.menu\{display:grid\}/);
  assert.ok(home.includes('href="style.css?v=20261013-buyer-discovery"'));
  assert.ok(what.includes('href="style.css?v=20261013-buyer-discovery"'));
@@ -59,6 +62,6 @@ test('new pathways inherit the canonical TSS responsive design without exposing 
  assert.match(home,/class="footer"/);
  assert.match(what,/class="footer"/);
  assert.doesNotMatch(home+'\n'+what,/HH Overseas|Jemma|Cyprus Emerald/);
- assert.equal(linkMatches(home).filter(x=>x===href).length,1);
+ assert.equal(linkMatches(home).filter(x=>x===href).length,2);
  assert.equal(linkMatches(what).filter(x=>x===href).length,1);
 });
