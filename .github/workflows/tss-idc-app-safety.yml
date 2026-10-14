@@ -3,6 +3,12 @@ on:
   pull_request:
     paths:
       - 'data-center/**'
+      - 'admin-login/**'
+      - 'script.js'
+      - 'contact.html'
+      - 'style.css'
+      - 'tests/private-workspaces-links.test.mjs'
+      - 'tests/admin-login-auth.test.mjs'
       - '.github/workflows/tss-idc-app-safety.yml'
   workflow_dispatch:
 jobs:
@@ -20,5 +26,6 @@ jobs:
           node --check data-center/app.js
           node --check data-center/model.mjs
           node --check data-center/config.js
+          node --check admin-login/app.js
       - name: Validate security, joins and search with synthetic fixtures
-        run: node --test data-center/tests/*.test.mjs
+        run: node --test data-center/tests/*.test.mjs tests/private-workspaces-links.test.mjs tests/admin-login-auth.test.mjs
