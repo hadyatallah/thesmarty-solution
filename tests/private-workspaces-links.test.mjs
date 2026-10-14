@@ -10,6 +10,9 @@ test('public website footer exposes both private research entry points', () => {
   assert.match(script, /href="\/admin">Intelligent Data Center<\/a>/);
   assert.match(script, /href="\/research-center\/">International Research Center<\/a>/);
   assert.match(read('style.css'), /\.tss-private-workspaces\{/);
+  const contact = read('contact.html');
+  assert.match(contact, /href="\/admin">Intelligent Data Center<\/a>/);
+  assert.match(contact, /href="\/research-center\/">International Research Center<\/a>/);
 });
 
 test('existing admin redirects stay targeted to the Data Center', () => {
