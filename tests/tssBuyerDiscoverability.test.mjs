@@ -53,8 +53,8 @@ test('new pathways inherit the canonical TSS responsive design without exposing 
  assert.match(css,/@media\(max-width:760px\)\{\.buyer-service-path\{grid-template-columns:1fr;/);
  assert.match(css,/\.home-objectives \.home-buyer-path a\{[^}]*color:var\(--teal2\)/);
  assert.match(css,/@media\(max-width:940px\)\{\.menu\{display:grid\}/);
- assert.ok(home.includes('href="style.css?v=20260928-home-short"'));
- assert.ok(what.includes('href="style.css?v=20260925-phase7"'));
+ assert.ok(home.includes('href="style.css?v=20261013-buyer-discovery"'));
+ assert.ok(what.includes('href="style.css?v=20261013-buyer-discovery"'));
  assert.ok(buyer.includes('href="/style.css?v=20260925-phase7"'));
  assert.match(home,/class="footer"/);
  assert.match(what,/class="footer"/);
