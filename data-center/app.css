@@ -6,3 +6,6 @@
 .request-preview{display:block;width:100%;font:inherit;color:var(--text);background:#fff;border:1px solid #c9d6dc;border-radius:8px;padding:10px;min-height:60px;margin-top:10px}
 .request-preview[hidden]{display:none!important}
 @media(max-width:680px){.request-section{padding:12px}.request-section .button-line button{min-height:44px}}
+
+.workspace-switch{display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap;font-size:12px}
+@media(max-width:760px){.workspace-switch{white-space:normal;text-align:center;font-size:11px}}
