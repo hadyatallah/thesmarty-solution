@@ -55,18 +55,6 @@ document.querySelectorAll('[data-year]').forEach((element) => {
       if (list) list.innerHTML = '<li><a href="divisions.html">What We Do</a></li><li><a href="how-we-work.html">How We Work</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Discuss Your Business</a></li>';
     }
 
-    // Discreet, read-only entry points. Authentication stays inside each workspace.
-    if (navCol && !navCol.querySelector('.tss-private-workspaces')) {
-      const privateWorkspaces = document.createElement('section');
-      privateWorkspaces.className = 'tss-private-workspaces';
-      privateWorkspaces.setAttribute('aria-label', 'Private workspaces');
-      privateWorkspaces.innerHTML =
-        '<h3>Private workspaces</h3>' +
-        '<ul><li><a href="/admin">Intelligent Data Center</a></li>' +
-        '<li><a href="/research-center/">International Research Center</a></li></ul>';
-      navCol.appendChild(privateWorkspaces);
-    }
-
     const contactCol = cols.find((column) => {
       const h = column.querySelector('h3');
       return h && h.textContent.trim().toLowerCase() === 'contact';
@@ -81,7 +69,7 @@ document.querySelectorAll('[data-year]').forEach((element) => {
 
     const bottom = footer.querySelector('.footerbottom');
     if (bottom) {
-      bottom.innerHTML = '© ' + new Date().getFullYear() + ' The Smarty Solution Ltd. <a href="privacy.html">Privacy</a> · Business development and consultancy. Specialist or regulated matters require the appropriate professional.';
+      bottom.innerHTML = '© ' + new Date().getFullYear() + ' The Smarty Solution Ltd. <a href="privacy.html">Privacy</a> · Business development and consultancy. Specialist or regulated matters require the appropriate professional. <a class="tss-admin-login" href="/admin-login/">Admin Login</a>';
     }
   });
 })();
