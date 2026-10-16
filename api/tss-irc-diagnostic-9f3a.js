@@ -1,0 +1,1 @@
+export default function handler(req,res){try{const raw=process.env.TSS_GOOGLE_SERVICE_ACCOUNT_JSON||'';const j=JSON.parse(raw);res.status(200).json({ok:true,client_email:j.client_email||'',project_id:j.project_id||''});}catch(e){res.status(500).json({ok:false,error:String(e.message||e)});}}
