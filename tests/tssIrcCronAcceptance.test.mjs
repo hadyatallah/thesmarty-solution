@@ -217,7 +217,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
       }
     }, res);
 
-    assert.equal(res.statusCode, 200, res.body + ' RUNROWS=' + JSON.stringify(database["'Runs'"]) + ' CALLS=' + JSON.stringify(calls));
+    assert.equal(res.statusCode, 200, res.body);
     const body = JSON.parse(res.body);
     assert.equal(body.outcome, 'RESEARCH_CYCLE_COMPLETE');
     assert.equal(body.executionMode, 'VERCEL_CRON');
@@ -232,9 +232,9 @@ test('Production-style cron run performs discovery, first-party verification, Ma
 
     const saved = database["'Referral Organisations'"].slice(2);
     assert.equal(saved.length, 3);
-    assert.ok(saved.some(row => row[1] === 'Existing Canonical Developer Cyprus' && row[7] === 'TSS-CY-0100' && row[14] === 'RESEARCH ONLY'));
-    assert.ok(saved.some(row => row[1] === 'New Verified Developer Cyprus' && row[10] === 'First-party developer website verified' && row[11] === 'RESEARCH QUALIFIED - OUTREACH NOT AUTHORIZED'));
-    assert.ok(saved.some(row => row[1] === 'Agency' && row[14] === 'RESEARCH ONLY'));
+    assert.ok(saved.some(row => row[1] === 'Existing Canonical Ltd' && row[7] === 'TSS-CY-0100' && row[14] === 'RESEARCH ONLY'));
+    assert.ok(saved.some(row => row[1] === 'New Verified Developer' && row[10] === 'First-party developer website verified' && row[11] === 'RESEARCH QUALIFIED - OUTREACH NOT AUTHORIZED'));
+    assert.ok(saved.some(row => row[1] === 'Agency Misclassified' && row[14] === 'RESEARCH ONLY'));
 
     const runRows = database["'Runs'"];
     assert.equal(runRows.length, 2);
