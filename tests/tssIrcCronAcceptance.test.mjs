@@ -110,7 +110,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     private_key: privateKey
   });
   process.env.TSS_IRC_SPREADSHEET_ID = 'irc-test-sheet';
-  process.env.TSS_MASTER_SPREADSHEET_ID = 'master-test-sheet';
+  process.env.TSS_MASTER_SPREADSHEET_ID = '1mZ7vd2UoGXlyxzwZ8Man593UhlLGt2uS1kIS3ZAWPsU';
 
   const database = makeDatabase();
   const calls = [];
@@ -127,7 +127,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     if (u.includes('/values:batchGet?')) {
       const parsed = new URL(u);
       const ranges = parsed.searchParams.getAll('ranges');
-      const isMaster = u.includes('/master-test-sheet/');
+      const isMaster = u.includes('/1mZ7vd2UoGXlyxzwZ8Man593UhlLGt2uS1kIS3ZAWPsU/');
       if (isMaster) {
         return response(200, { valueRanges: [{ values: masterRows }] });
       }
@@ -242,7 +242,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
 
     const overview = database["'Overview'"];
     assert.equal(overview[1][1], '0');
-    assert.equal(overview[2][1], '4');
+    assert.equal(overview[2][1], 4);
     assert.match(String(overview[8][1]), /RESEARCH CYCLE COMPLETE/);
 
     assert.ok(logs.some(x => x.includes('"event":"invoked"')));
