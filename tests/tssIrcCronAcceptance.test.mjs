@@ -242,7 +242,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(runRows[1][12], 'VERCEL_CRON');
 
     const overview = database["'Overview'"];
-    assert.equal(overview[1][1], '0');
+    assert.equal(overview[1][1], 0);
     assert.equal(overview[2][1], 4);
     assert.match(String(overview[8][1]), /RESEARCH CYCLE COMPLETE/);
 
