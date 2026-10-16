@@ -58,61 +58,38 @@ async function readJson(response) {
 }
 
 function parseServiceAccountJson(raw) {
-  const source = text(raw).replace(/^\\uFEFF/, '').trim();
-  const parse = value => {
-    let current = value;
-    for (let i = 0; i < 3; i++) {
-      if (typeof current !== 'string') return current;
-      const candidate = current.trim();
-      if (!candidate) return null;
-      try {
-        current = JSON.parse(candidate);
-      } catch {
-        if (i === 0) {
-          let normalized = '';
-          let quoted = false;
-          let escaped = false;
-          for (const ch of candidate) {
-            if (escaped) {
-              normalized += ch;
-              escaped = false;
-              continue;
-            }
-            if (ch === '\\\\') {
-              normalized += ch;
-              escaped = true;
-              continue;
-            }
-            if (ch === '"') {
-              quoted = !quoted;
-              normalized += ch;
-              continue;
-            }
-            if (quoted && ch === '\\n') {
-              normalized += '\\\\n';
-            } else if (quoted && ch === '\\r') {
-              normalized += '\\\\r';
-            } else if (quoted && ch === '\\t') {
-              normalized += '\\\\t';
-            } else {
-              normalized += ch;
-            }
-          }
-          try {
-            current = JSON.parse(normalized);
-          } catch {
-            return null;
-          }
-        } else {
-          return null;
-        }
-      }
+  // Google credentials may arrive as JSON, double-encoded JSON, or JSON whose
+  // PEM private_key contains physical newlines. Never log the credentials.
+  const source = text(raw).replace(/^\uFEFF/, '').trim();
+  function escapeQuotedControls(value) {
+    let out = '', inString = false, escaped = false;
+    for (const ch of value) {
+      if (escaped) { out += ch; escaped = false; continue; }
+      if (ch === '\\') { out += ch; escaped = true; continue; }
+      if (ch === '"') { out += ch; inString = !inString; continue; }
+      if (inString && ch === '\n') { out += '\\n'; continue; }
+      if (inString && ch === '\r') { out += '\\r'; continue; }
+      if (inString && ch === '\t') { out += '\\t'; continue; }
+      out += ch;
     }
-    return current;
-  };
-  const service = parse(source);
-  if (!service || typeof service !== 'object') throw Error('GOOGLE_SERVICE_ACCOUNT_JSON_INVALID');
-  return service;
+    return out;
+  }
+
+  let value = source;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      return value;
+    }
+    if (typeof value !== 'string' || !value.trim()) break;
+    const candidate = value.trim();
+    try {
+      value = JSON.parse(candidate);
+    } catch {
+      try { value = JSON.parse(escapeQuotedControls(candidate)); }
+      catch { break; }
+    }
+  }
+  throw Error('GOOGLE_SERVICE_ACCOUNT_JSON_INVALID');
 }
 
 async function googleAccessToken() {
@@ -131,10 +108,13 @@ async function googleAccessToken() {
     iat: now,
     exp: now + 3300
   });
+  // A copied service-account JSON may leave literal \n characters in the PEM.
+  // Normalize that representation without displaying or exporting any key.
+  const privateKey = String(service.private_key).replace(/\\n/g, '\n');
   const signer = createSign('RSA-SHA256');
   signer.update(head + '.' + body);
   signer.end();
-  const assertion = head + '.' + body + '.' + signer.sign(service.private_key).toString('base64url');
+  const assertion = head + '.' + body + '.' + signer.sign(privateKey).toString('base64url');
 
   const response = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
