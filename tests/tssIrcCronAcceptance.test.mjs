@@ -30,11 +30,12 @@ const applyRange = (database, range, values) => {
   const startRow = Number(m[3]) - 1;
   const colToNum = letters => [...letters].reduce((n, c) => n * 26 + c.charCodeAt(0) - 64, 0) - 1;
   const startCol = colToNum(startColLetters);
-  database[sheet] ||= [];
+  const key = "'" + sheet + "'";
+  database[key] ||= [];
   for (let r = 0; r < values.length; r++) {
-    database[sheet][startRow + r] ||= [];
+    database[key][startRow + r] ||= [];
     for (let c = 0; c < values[r].length; c++) {
-      database[sheet][startRow + r][startCol + c] = values[r][c];
+      database[key][startRow + r][startCol + c] = values[r][c];
     }
   }
 };
