@@ -241,7 +241,7 @@ function dedupeSignals(signals) {
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') return json(res, 405, { ok: false, error: 'method_not_allowed' });
-  const supplied = req.headers.authorization?.replace(/^Bearer\\s+/i, '');
+  const supplied = req.headers.authorization?.replace(/^Bearer\s+/i, '');
   if (!authorised(supplied, process.env.CRON_SECRET)) {
     return json(res, 401, { ok: false, error: 'unauthorised' });
   }
