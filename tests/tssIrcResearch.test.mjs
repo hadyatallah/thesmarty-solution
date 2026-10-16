@@ -23,7 +23,7 @@ const response = (status, body, contentType='text/html') => ({
 
 test('discovery uses the documented INDEX AI Agent API and required bounded filters', () => {
   const url = discoveryUrl('larnaca', 10);
-  assert.match(url, /^https:\/\/agent\\.index\\.cy\/v1\/listings\\?/);
+  assert.ok(url.startsWith('https://agent.index.cy/v1/listings?'));
   assert.match(url, /seller_type=developer/);
   assert.match(url, /district=larnaca/);
   assert.match(url, /listed_within_days=30/);
