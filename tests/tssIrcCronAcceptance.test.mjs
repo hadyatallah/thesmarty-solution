@@ -217,6 +217,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
       }
     }, res);
 
+    if (res.statusCode !== 200) console.info('DEBUG_RUN_ROWS=' + JSON.stringify(database["'Runs'"]) + ' DEBUG_CALLS=' + JSON.stringify(calls));
     assert.equal(res.statusCode, 200, res.body);
     const body = JSON.parse(res.body);
     assert.equal(body.outcome, 'RESEARCH_CYCLE_COMPLETE');
