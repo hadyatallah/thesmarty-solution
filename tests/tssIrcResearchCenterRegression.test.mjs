@@ -14,7 +14,7 @@ test('dashboard and scheduler classify real Vercel research cycles as scheduler 
   assert.match(html, /x\\.runType==="RESEARCH_CYCLE"\\&\\&x\\.executionMode==="VERCEL_CRON"/);
   assert.match(html, /approved INDEX AI Agent API/);
   assert.match(html, /Master Companies/);
-  assert.match(html, /Every scheduled research run is recorded as <strong>RESEARCH_CYCLE<\\/strong> with <strong>VERCEL_CRON<\\/strong> execution mode/);
+  assert.ok(html.includes('Every scheduled research run is recorded as <strong>RESEARCH_CYCLE</strong> with <strong>VERCEL_CRON</strong> execution mode'));
   assert.doesNotMatch(html, /Only an ELIGIBILITY_REVIEW run counts as scheduler evidence/);
 });
 
