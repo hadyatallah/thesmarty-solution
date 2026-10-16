@@ -7,6 +7,7 @@ on:
       - "research-center/**"
       - "api/tss-irc-daily.js"
       - "lib/tssIrcEligibility.mjs"
+      - "lib/tssIrcResearch.mjs"
       - "tests/tssIrcEligibility.test.mjs"
       - "tests/tssIrcHtmlSafety.test.mjs"
       - "tests/tssIrcCronAcceptance.test.mjs"
@@ -28,7 +29,8 @@ jobs:
         run: |
           node --check api/tss-irc-daily.js
           node --check lib/tssIrcEligibility.mjs
-          node --test tests/tssIrcEligibility.test.mjs tests/tssIrcHtmlSafety.test.mjs tests/tssIrcCronAcceptance.test.mjs
+          node --check lib/tssIrcResearch.mjs
+          node --test tests/tssIrcEligibility.test.mjs tests/tssIrcHtmlSafety.test.mjs tests/tssIrcCronAcceptance.test.mjs tests/tssIrcResearch.test.mjs
           node --input-type=commonjs -e '
             const fs=require("node:fs"),vm=require("node:vm");
             const html=fs.readFileSync("research-center/index.html","utf8");
