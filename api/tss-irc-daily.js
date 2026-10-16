@@ -57,15 +57,68 @@ async function readJson(response) {
   return body;
 }
 
+function parseServiceAccountJson(raw) {
+  const source = text(raw).replace(/^\\uFEFF/, '').trim();
+  const parse = value => {
+    let current = value;
+    for (let i = 0; i < 3; i++) {
+      if (typeof current !== 'string') return current;
+      const candidate = current.trim();
+      if (!candidate) return null;
+      try {
+        current = JSON.parse(candidate);
+      } catch {
+        if (i === 0) {
+          let normalized = '';
+          let quoted = false;
+          let escaped = false;
+          for (const ch of candidate) {
+            if (escaped) {
+              normalized += ch;
+              escaped = false;
+              continue;
+            }
+            if (ch === '\\\\') {
+              normalized += ch;
+              escaped = true;
+              continue;
+            }
+            if (ch === '"') {
+              quoted = !quoted;
+              normalized += ch;
+              continue;
+            }
+            if (quoted && ch === '\\n') {
+              normalized += '\\\\n';
+            } else if (quoted && ch === '\\r') {
+              normalized += '\\\\r';
+            } else if (quoted && ch === '\\t') {
+              normalized += '\\\\t';
+            } else {
+              normalized += ch;
+            }
+          }
+          try {
+            current = JSON.parse(normalized);
+          } catch {
+            return null;
+          }
+        } else {
+          return null;
+        }
+      }
+    }
+    return current;
+  };
+  const service = parse(source);
+  if (!service || typeof service !== 'object') throw Error('GOOGLE_SERVICE_ACCOUNT_JSON_INVALID');
+  return service;
+}
+
 async function googleAccessToken() {
   const raw = process.env.TSS_GOOGLE_SERVICE_ACCOUNT_JSON;
   if (!raw) throw Error('GOOGLE_SERVICE_ACCOUNT_NOT_CONFIGURED');
-  let service;
-  try {
-    service = JSON.parse(raw);
-  } catch {
-    throw Error('GOOGLE_SERVICE_ACCOUNT_JSON_INVALID');
-  }
+  const service = parseServiceAccountJson(raw);
   if (!service.client_email || !service.private_key) throw Error('GOOGLE_SERVICE_ACCOUNT_FIELDS_MISSING');
 
   const now = Math.floor(Date.now() / 1000);
