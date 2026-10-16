@@ -6,6 +6,7 @@ on:
       - "research-center/**"
       - "api/tss-irc-daily.js"
       - "lib/tssIrcEligibility.mjs"
+      - "lib/tssIrcResearch.mjs"
       - "tests/tssIrc*.test.mjs"
       - ".github/workflows/tss-irc-tests.yml"
   push:
@@ -24,4 +25,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node --test tests/tssIrcCronAcceptance.test.mjs tests/tssIrcResearchCenterRegression.test.mjs
+      - run: node --test tests/tssIrcCronAcceptance.test.mjs tests/tssIrcResearchCenterRegression.test.mjs tests/tssIrcResearch.test.mjs
