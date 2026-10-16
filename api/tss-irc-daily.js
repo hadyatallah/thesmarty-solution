@@ -246,7 +246,7 @@ export default async function handler(req, res) {
     return json(res, 401, { ok: false, error: 'unauthorised' });
   }
 
-  const scheduled = /^vercel-cron\\/1\\.0$/i.test(text(req.headers['user-agent']));
+  const scheduled = /^vercel-cron\/1\.0$/i.test(text(req.headers['user-agent']));
   const runId = 'IRC-RES-' + day();
   const startedAt = utc();
   log('invoked', { runId, executionMode: scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL' });
