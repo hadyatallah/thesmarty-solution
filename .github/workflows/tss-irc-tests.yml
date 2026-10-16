@@ -1,0 +1,27 @@
+name: TSS IRC regression tests
+
+on:
+  pull_request:
+    paths:
+      - "research-center/**"
+      - "api/tss-irc-daily.js"
+      - "lib/tssIrcEligibility.mjs"
+      - "tests/tssIrc*.test.mjs"
+      - ".github/workflows/tss-irc-tests.yml"
+  push:
+    branches: ["main"]
+    paths:
+      - "research-center/**"
+      - "api/tss-irc-daily.js"
+      - "lib/tssIrcEligibility.mjs"
+      - "tests/tssIrc*.test.mjs"
+
+jobs:
+  irc-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test tests/tssIrcCronAcceptance.test.mjs tests/tssIrcResearchCenterRegression.test.mjs

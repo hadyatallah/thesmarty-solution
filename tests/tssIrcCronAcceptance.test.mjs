@@ -17,7 +17,7 @@ const blank=[
  {values:[["referralId","organisationName","legalName","country","website","publicEmail","organisationType","canonicalCompanyId","sourceURL","sourceObservedAt","verification"]]},
  {values:[["queueId","leadType","leadId","recipientEmail","recipientName","jurisdiction","recipientClass","permissionBasis","permissionEvidenceURL","reviewedBy","reviewedAt","sendApproved","optedOut","sendAfter","status","messageTemplate","lastAttemptAt","sentAt","providerMessageId","notes"]]},
  {values:[["emailLower","suppressedAt","reason"]]},
- {values:[["runId","startedAt","finishedAt","discoverySources","newResearchSignals","newBuyerEnquiries","eligibleForEmail","messagesSent","held","outcome","details"]]}
+ {values:[["runId","startedAt","finishedAt","discoverySources","newResearchSignals","newBuyerEnquiries","eligibleForEmail","messagesSent","held","outcome","details","runType","executionMode"]]}
 ];
 
 test("authorized scheduled review persists a zero-send run with non-sensitive telemetry and rejects replay",async()=>{
@@ -51,11 +51,13 @@ test("authorized scheduled review persists a zero-send run with non-sensitive te
   const resp=mkRes();await handler({method:"GET",headers:{authorization:"Bearer SYNTHETIC_TEST_KEY"}},resp);
   assert.equal(resp.statusCode,200,resp.body);
   const outcome=JSON.parse(resp.body);
-  assert.equal(outcome.outcome,"RESEARCH_ONLY");
+  assert.equal(outcome.outcome,"ELIGIBILITY_REVIEW_ONLY");
   assert.equal(outcome.messagesSent,0);
   assert.equal(outcome.eligible,0);
   assert.equal(append.length,1);
-  assert.equal(append[0][9],"RESEARCH_ONLY");
+  assert.equal(append[0][9],"ELIGIBILITY_REVIEW_ONLY");
+  assert.equal(append[0][11],"ELIGIBILITY_REVIEW");
+  assert.equal(append[0][12],"VERCEL_CRON");
   assert.ok(logs.some(x=>x.includes('"event":"invoked"')));
   assert.ok(logs.some(x=>x.includes('"event":"completed"')));
   assert.ok(calls.every(x=>!x.includes("graph.microsoft.com")&&!x.includes("hubapi.com")));

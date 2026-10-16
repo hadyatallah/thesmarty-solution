@@ -8,7 +8,7 @@ import {objects,settings,chooseEligible,messageFor,truthy,normEmail} from "../li
 const SHEET_RANGES={
  settings:"'Settings'!A1:C100",buyers:"'Buyer Enquiries'!A1:U1000",
  partners:"'Referral Organisations'!A1:Q1000",queue:"'Outreach Queue'!A1:T1000",
- suppressions:"'Suppressions'!A1:G1000",runs:"'Runs'!A1:K1000"
+ suppressions:"'Suppressions'!A1:G1000",runs:"'Runs'!A1:M1000"
 };
 const GOOGLE="https://sheets.googleapis.com/v4/spreadsheets/";
 const utc=()=>new Date().toISOString(),day=()=>utc().slice(0,10);
@@ -118,7 +118,7 @@ export default async function handler(req,res){
   }
   const eligible=chooseEligible(data,now,Math.min(10,Number(opts.daily_send_cap)||10));
   const enabled=truthy(opts.daily_scheduler_enabled),sheetSend=truthy(opts.auto_send_enabled);
-  let outcome=enabled?"RESEARCH_ONLY":"DISABLED",sent=0,held=eligible.held.length;
+  let outcome=enabled?"ELIGIBILITY_REVIEW_ONLY":"DISABLED",sent=0,held=eligible.held.length;
   if(enabled && sheetSend && process.env.TSS_IRC_AUTO_SEND_ENABLED==="true"){
     // No permission-based sends may run without an independently accepted durable
     // anti-double-send reservation. Sheets value updates alone are not atomic CAS.
@@ -127,9 +127,10 @@ export default async function handler(req,res){
     outcome="SEND_APPROVAL_GATE_OFF";
   }
   await appendRow(google,"Runs",[jobId,now,utc(),"Approved first-party inputs only",0,0,eligible.chosen.length,sent,held,outcome,
-    "Daily eligible-contact review. No personal buyer addresses harvested. Email submission held until durable idempotency and Microsoft Graph app-permission acceptance."]);
+    "Daily eligibility review only. No discovery or personal buyer harvesting. Email submission held until durable idempotency and Microsoft Graph app-permission acceptance.",
+    "ELIGIBILITY_REVIEW","VERCEL_CRON"]);
   log("completed",{runId:jobId,outcome,eligible:eligible.chosen.length,held,messagesSent:0});
-  return json(res,200,{ok:true,runId:jobId,outcome,eligible:eligible.chosen.length,held,messagesSent:0,source:"approved_inputs"});
+  return json(res,200,{ok:true,runId:jobId,outcome,eligible:eligible.chosen.length,held,messagesSent:0,source:"approved_inputs_eligibility_review",runType:"ELIGIBILITY_REVIEW",executionMode:"VERCEL_CRON"});
  }catch(e){
   // Only bounded internal error categories are available here, never provider response bodies.
   const error=String(e.message||"unknown").slice(0,180);

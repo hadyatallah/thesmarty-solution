@@ -142,8 +142,8 @@ function response(){
 }
 test('configured scheduler with no persisted run is shown as unverified, not active',async()=>{
  const h=createHarness();await h.login();await h.goto('scheduler');
- assert.match(h.get('content').innerHTML,/Not yet verified/);
- assert.match(h.get('content').innerHTML,/no confirmed run yet/i);
+ assert.match(h.get('content').innerHTML,/Configured \/ not verified/);
+ assert.match(h.get('content').innerHTML,/no verified scheduler run yet/i);
  assert.match(h.get('content').innerHTML,/Off/);
 });
 
