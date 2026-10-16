@@ -499,7 +499,7 @@ export default async function handler(req, res) {
 
     const overview = await batchGet(token, ircSheetId(), ["'Overview'!A1:C9"]);
     const overviewRows = overview[0] || [];
-    const dashboardState = text(overviewRows[7]?.[1]);
+    const dashboardState = text(overviewRows[8]?.[1]);
     if (!/RESEARCH CYCLE COMPLETE/i.test(dashboardState)) throw Error('DASHBOARD_REFRESH_READBACK_FAILED');
 
     log('completed', {
