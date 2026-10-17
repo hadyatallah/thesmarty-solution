@@ -1,5 +1,7 @@
 
-import { createSign, timingSafeEqual } from 'node:crypto';
+import { timingSafeEqual } from 'node:crypto';
+import { getVercelOidcToken } from '@vercel/oidc';
+import { ExternalAccountClient } from 'google-auth-library';
 import {
   DISCOVERY_DISTRICTS,
   discoverDeveloperSignals,
@@ -85,47 +87,33 @@ function parseServiceAccountJson(raw) {
     try {
       value = JSON.parse(candidate);
     } catch {
-      try { value = JSON.parse(escapeQuotedControls(candidate)); }
-      catch { break; }
-    }
+      try { value = JSON.parse(escapeQuotedControls(candiasync function googleAccessToken() {
+  const projectNumber = text(process.env.GCP_PROJECT_NUMBER);
+  const projectId = text(process.env.GCP_PROJECT_ID);
+  const serviceAccountEmail = text(process.env.GCP_SERVICE_ACCOUNT_EMAIL);
+  const poolId = text(process.env.GCP_WORKLOAD_IDENTITY_POOL_ID);
+  const providerId = text(process.env.GCP_WORKLOAD_IDENTITY_POOL_PROVIDER_ID);
+  if (!projectNumber || !projectId || !serviceAccountEmail || !poolId || !providerId) {
+    throw Error('GOOGLE_OIDC_CONFIGURATION_INCOMPLETE');
   }
-  throw Error('GOOGLE_SERVICE_ACCOUNT_JSON_INVALID');
-}
 
-async function googleAccessToken() {
-  const raw = process.env.TSS_GOOGLE_SERVICE_ACCOUNT_JSON;
-  if (!raw) throw Error('GOOGLE_SERVICE_ACCOUNT_NOT_CONFIGURED');
-  const service = parseServiceAccountJson(raw);
-  if (!service.client_email || !service.private_key) throw Error('GOOGLE_SERVICE_ACCOUNT_FIELDS_MISSING');
-
-  const now = Math.floor(Date.now() / 1000);
-  const b64 = value => Buffer.from(JSON.stringify(value)).toString('base64url');
-  const head = b64({ alg: 'RS256', typ: 'JWT' });
-  const body = b64({
-    iss: service.client_email,
-    scope: 'https://www.googleapis.com/auth/spreadsheets',
-    aud: 'https://oauth2.googleapis.com/token',
-    iat: now,
-    exp: now + 3300
+  const authClient = ExternalAccountClient.fromJSON({
+    type: 'external_account',
+    audience: `//iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${poolId}/providers/${providerId}`,
+    subject_token_type: 'urn:ietf:params:oauth:token-type:jwt',
+    token_url: 'https://sts.googleapis.com/v1/token',
+    service_account_impersonation_url:
+      `https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${serviceAccountEmail}:generateAccessToken`,
+    subject_token_supplier: {
+      getSubjectToken: getVercelOidcToken
+    }
   });
-  // A copied service-account JSON may leave literal \n characters in the PEM.
-  // Normalize that representation without displaying or exporting any key.
-  const privateKey = String(service.private_key).replace(/\\n/g, '\n');
-  const signer = createSign('RSA-SHA256');
-  signer.update(head + '.' + body);
-  signer.end();
-  const assertion = head + '.' + body + '.' + signer.sign(privateKey).toString('base64url');
 
-  const response = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'content-type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-      assertion
-    })
-  });
-  const result = await readJson(response);
-  if (!result.access_token) throw Error('GOOGLE_ACCESS_TOKEN_MISSING');
+  const accessToken = await authClient.getAccessToken();
+  if (!accessToken) throw Error('GOOGLE_ACCESS_TOKEN_MISSING');
+  log('google_oidc_token_acquired', { projectId, serviceAccountEmail });
+  return accessToken;
+} (!result.access_token) throw Error('GOOGLE_ACCESS_TOKEN_MISSING');
   return result.access_token;
 }
 
