@@ -45,7 +45,7 @@
   "crons": [
     {
       "path": "/api/tss-irc-daily",
-      "schedule": "0 */4 * * *"
+      "schedule": "35 6 * * *"
     }
   ]
 }
