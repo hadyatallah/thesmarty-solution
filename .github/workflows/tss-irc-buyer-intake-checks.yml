@@ -1,0 +1,33 @@
+name: TSS IRC buyer opt-in safety checks
+on:
+  push:
+    branches: ["feature/irc-optin-buyer-20261013"]
+  pull_request:
+    paths:
+      - "api/irc-buyer-enquiry.js"
+      - "property-interest/**"
+      - "tests/tssIrcBuyerIntake.test.mjs"
+      - ".github/workflows/tss-irc-buyer-intake-checks.yml"
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+      - name: Buyer permission and intake unit tests
+        run: |
+          node --check api/irc-buyer-enquiry.js
+          node --test tests/tssIrcBuyerIntake.test.mjs
+          node --input-type=commonjs -e '
+            const fs=require("node:fs"),vm=require("node:vm");
+            const html=fs.readFileSync("property-interest/index.html","utf8");
+            const script=html.match(/<script>([\s\S]+?)<\/script>/);
+            if(!script)throw Error("Buyer opt-in script missing");
+            new vm.Script(script[1]);
+          '
