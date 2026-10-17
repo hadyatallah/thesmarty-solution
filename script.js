@@ -177,3 +177,6 @@ document.addEventListener('click', (event) => {
   notice.querySelector('.tss-consent-accept').addEventListener('click', () => choose('accepted'));
   notice.querySelector('.tss-consent-reject').addEventListener('click', () => choose('rejected'));
 })();
+
+/* Shared TSS Insights link */
+(()=>{const p=location.pathname,i=p==='/insights'||p.startsWith('/insights/');document.querySelectorAll('.navlinks').forEach(l=>{if(!l.querySelector('a[href="insights/"]')){const x=document.createElement('li');x.innerHTML='<a href="/insights/"'+(i?' aria-current="page"':'')+'>Insights</a>';const c=l.querySelector('.navcta')?.closest('li');c?l.insertBefore(x,c):l.appendChild(x)}});document.querySelectorAll('.footergrid').forEach(g=>{const n=[...g.querySelectorAll('div')].find(d=>d.querySelector('h3')?.textContent.trim().toLowerCase()==='navigate'),l=n?.querySelector('ul');if(l&&!l.querySelector('a[href="insights/"]')){const x=document.createElement('li');x.innerHTML='<a href="/insights/">TSS Insights</a>';l.appendChild(x)}})})();
