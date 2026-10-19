@@ -59,35 +59,7 @@ async function readJson(response) {
   return body;
 }
 
-function parseServiceAccountJson(raw) {
-  // Google credentials may arrive as JSON, double-encoded JSON, or JSON whose
-  // PEM private_key contains physical newlines. Never log the credentials.
-  const source = text(raw).replace(/^\uFEFF/, '').trim();
-  function escapeQuotedControls(value) {
-    let out = '', inString = false, escaped = false;
-    for (const ch of value) {
-      if (escaped) { out += ch; escaped = false; continue; }
-      if (ch === '\\') { out += ch; escaped = true; continue; }
-      if (ch === '"') { out += ch; inString = !inString; continue; }
-      if (inString && ch === '\n') { out += '\\n'; continue; }
-      if (inString && ch === '\r') { out += '\\r'; continue; }
-      if (inString && ch === '\t') { out += '\\t'; continue; }
-      out += ch;
-    }
-    return out;
-  }
-
-  let value = source;
-  for (let attempt = 0; attempt < 4; attempt++) {
-    if (value && typeof value === 'object' && !Array.isArray(value)) {
-      return value;
-    }
-    if (typeof value !== 'string' || !value.trim()) break;
-    const candidate = value.trim();
-    try {
-      value = JSON.parse(candidate);
-    } catch {
-      try { value = JSON.parse(escapeQuotedControls(candiasync function googleAccessToken() {
+async function googleAccessToken() {
   const projectNumber = text(process.env.GCP_PROJECT_NUMBER);
   const projectId = text(process.env.GCP_PROJECT_ID);
   const serviceAccountEmail = text(process.env.GCP_SERVICE_ACCOUNT_EMAIL);
@@ -104,17 +76,13 @@ function parseServiceAccountJson(raw) {
     token_url: 'https://sts.googleapis.com/v1/token',
     service_account_impersonation_url:
       `https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${serviceAccountEmail}:generateAccessToken`,
-    subject_token_supplier: {
-      getSubjectToken: getVercelOidcToken
-    }
+    subject_token_supplier: { getSubjectToken: getVercelOidcToken }
   });
 
   const accessToken = await authClient.getAccessToken();
   if (!accessToken) throw Error('GOOGLE_ACCESS_TOKEN_MISSING');
   log('google_oidc_token_acquired', { projectId, serviceAccountEmail });
   return accessToken;
-} (!result.access_token) throw Error('GOOGLE_ACCESS_TOKEN_MISSING');
-  return result.access_token;
 }
 
 function approvedMasterSheetId() {
