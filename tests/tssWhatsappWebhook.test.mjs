@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHmac } from 'node:crypto';
 import { Readable } from 'node:stream';
-import { createWebhookHandler, parseEvents, validSignature, MAX_BODY_BYTES } from '../lib/tssWhatsappWebhook.mjs';
+import { createWebhookHandler, parseEvents, validSignature, readRawBody, MAX_BODY_BYTES } from '../lib/tssWhatsappWebhook.mjs';
 
 const appSecret = 'synthetic-app-secret-for-tests-only';
 const verifyToken = 'synthetic-verify-token-for-tests-only';
@@ -29,6 +29,15 @@ async function invoke(handler, { method = 'POST', url = '/', raw = Buffer.from(J
   await handler(req, res);
   return res;
 }
+test('Vercel lazy request.body getter is not invoked before raw signature bytes', async () => {
+  const raw = Buffer.from('{"b": 2,  "a": 1}');
+  const req = Readable.from([raw]);
+  let getterCalled = false;
+  Object.defineProperty(req, 'body', { configurable: true, get() { getterCalled = true; throw Error('UNSAFE_PARSED_BODY_ACCESS'); } });
+  const result = await readRawBody(req);
+  assert.deepEqual(result, raw);
+  assert.equal(getterCalled, false);
+});
 test('challenge valid, invalid, missing, duplicate query and wrong mode', async () => {
   const { handler } = harness();
   const url = '/?hub.mode=subscribe&hub.verify_token=' + verifyToken + '&hub.challenge=123456';
