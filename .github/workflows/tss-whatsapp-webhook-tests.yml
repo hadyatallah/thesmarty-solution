@@ -18,19 +18,22 @@ jobs:
           node-version: '24'
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: node --test tests/tssWhatsapp*.test.mjs
-      - name: Inspect live test-only webhook response with nonsecret canary
+      - name: Live webhook invalid-challenge canary without secrets
         run: |
-          set -euo pipefail
-          status="$(curl --silent --show-error --max-time 20 --retry 2 --output /dev/null --write-out '%{http_code}' --get \
-            --data-urlencode 'hub.mode=subscribe' \
-            --data-urlencode 'hub.verify_token=TSS_PUBLIC_NONSECRET_CANARY_20261021' \
-            --data-urlencode 'hub.challenge=PUBLIC_TEST_ONLY' \
-            'https://www.thesmartysolution.com/api/tss-whatsapp-webhook')"
-          echo "TSS_WEBHOOK_INVALID_CHALLENGE_HTTP=$status"
-          case "$status" in
-            403) echo "Probe reached configured challenge validation." ;;
-            503) echo "Probe blocked by disabled endpoint or Google dependencies." ;;
-            000) echo "Probe could not reach endpoint." ;;
-            *) echo "Probe returned HTTP $status; investigate before Meta verification." ;;
-          esac
-          # Informational smoke step: no Meta secret or auth material used.
+          node --input-type=module <<'JS'
+          const url = new URL('https://www.thesmartysolution.com/api/tss-whatsapp-webhook');
+          url.searchParams.set('hub.mode', 'subscribe');
+          url.searchParams.set('hub.verify_token', 'TSS_PUBLIC_NONSECRET_CANARY_20261021');
+          url.searchParams.set('hub.challenge', 'PUBLIC_TEST_ONLY');
+          try {
+            const res = await fetch(url, { redirect: 'manual', signal: AbortSignal.timeout(20000) });
+            console.log('WEBHOOK_CANARY_HTTP=' + res.status);
+            const body = (await res.text()).slice(0, 100);
+            console.log('WEBHOOK_CANARY_BODY=' + JSON.stringify(body));
+            console.log(res.status === 403 ? 'CHALLENGE_REJECTION_REACHED'
+              : res.status === 503 ? 'GOOGLE_DEPENDENCY_OR_DISABLED'
+              : 'OTHER_HTTP_STATUS_REQUIRES_INVESTIGATION');
+          } catch (e) {
+            console.log('WEBHOOK_CANARY_NETWORK_ERROR=' + String(e?.cause?.code || e?.name || 'FETCH_FAILED'));
+          }
+          JS
