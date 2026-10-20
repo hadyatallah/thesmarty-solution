@@ -1,12 +1,20 @@
 # WhatsApp webhook checkpoint | 20 October 2026
 
-Status: implemented and locally tested, inactive by default. NOT Meta-accepted or ready for number migration.
+Status: implemented, locally tested and deployed INACTIVE to Production. NOT Meta-accepted or ready for number migration.
+
+Initial implementation commit: `7adaf84887c8e6b9e13b66212002c4abfb780a6c`. Draft PR: https://github.com/hadyatallah/thesmarty-solution/pull/117
+
+Verified Production deployment: `dpl_26H1d6nqvRPohEoGtB5dPieBUzSw`, READY. Deployment reference: https://vercel.com/tss21/thesmarty-solution-agent/26H1d6nqvRPohEoGtB5dPieBUzSw
+
+Public candidate callback: https://www.thesmartysolution.com/api/tss-whatsapp-webhook
+
+Live HTTPS GET and POST returned 503 `Webhook inactive`. Independent Vercel fetch confirmed GET 503 and Cache-Control no-store at 19:35:55 UTC on 20 October 2026. No valid Meta challenge or signed POST was attempted against Production because no approved secret/store is configured. Homepage, Admin Login, Data Center, Research Center and Contact page returned HTTP 200. These are route/HTML smoke checks, not authenticated app or scheduled-job execution proof.
 
 ## Release base and isolation
 
 Base is deployed Production commit `bab6eba92b0de3e345d1d86bfb5e0faa46b72f33` on `fix/research-center-keyless-production`, not main. Main still contains the older service-account JSON implementation. Do not merge this branch into main without reconciling the existing keyless repair. PR #71's offline preparation was inspected. Its SHA1-capable verifier and in-memory Set are unsuitable for this endpoint. The receiver retains the same message/status envelope concepts with stricter validation and persistent atomic insertion.
 
-No existing app, publisher, Research Center, HubSpot, Outlook, schedule, or website files were changed. No outbound Graph API calls, HubSpot writes, app publication or number registration exist in this receiver.
+No existing app, publisher, Research Center, HubSpot, Outlook, schedule, or website implementation files were changed. The package lock was synchronized with the already-declared keyless dependencies after CI exposed a pre-existing mismatch. No new package was added to package.json. No outbound Graph API calls, HubSpot writes, app publication or number registration exist in this receiver.
 
 ## Endpoint and security
 
