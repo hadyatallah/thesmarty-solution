@@ -1,7 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { googleDependencies } from '../lib/tssWhatsappGoogle.mjs';
+import { googleDependencies, googleAccessTokenValue } from '../lib/tssWhatsappGoogle.mjs';
 
+test('Google access-token response must supply an actual token string', () => {
+  assert.equal(googleAccessTokenValue({ token: 'valid-synthetic-google-token' }), 'valid-synthetic-google-token');
+  for (const result of [undefined, null, {}, { token: null }, { token: 'short' }, 'valid-synthetic-google-token']) {
+    assert.throws(() => googleAccessTokenValue(result), /TOKEN_UNAVAILABLE/);
+  }
+});
 const settings = { appSecret: 'synthetic-app-secret-for-tests', verifyToken: 'synthetic-verification-token-for-tests', allowedPairs: [{ wabaId: '1', phoneNumberId: '2' }] };
 const env = { TSS_WHATSAPP_SECRET_VERSION: 'projects/test/secrets/whatsapp/versions/1', TSS_WHATSAPP_FIRESTORE_PARENT: 'projects/test/databases/(default)/documents' };
 const secretReply = () => Response.json({ payload: { data: Buffer.from(JSON.stringify(settings)).toString('base64') } });
