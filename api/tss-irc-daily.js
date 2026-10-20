@@ -31,7 +31,10 @@ const IRC_RANGES = {
 const MASTER_RANGE = "'Companies'!A1:G5000";
 
 const utc = () => new Date().toISOString();
-const day = () => utc().slice(0, 10);
+export const localResearchDay = (date = new Date()) => new Intl.DateTimeFormat('en-CA', {
+  timeZone: 'Asia/Nicosia', year: 'numeric', month: '2-digit', day: '2-digit'
+}).format(date);
+const day = () => localResearchDay();
 const text = value => String(value ?? '');
 const log = (event, details = {}) => console.info(JSON.stringify({
   component: 'tss-irc-research',
@@ -71,6 +74,7 @@ async function googleAccessToken() {
 
   const authClient = ExternalAccountClient.fromJSON({
     type: 'external_account',
+    scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     audience: `//iam.googleapis.com/projects/${projectNumber}/locations/global/workloadIdentityPools/${poolId}/providers/${providerId}`,
     subject_token_type: 'urn:ietf:params:oauth:token-type:jwt',
     token_url: 'https://sts.googleapis.com/v1/token',
@@ -79,8 +83,10 @@ async function googleAccessToken() {
     subject_token_supplier: { getSubjectToken: getVercelOidcToken }
   });
 
-  const accessToken = await authClient.getAccessToken();
-  if (!accessToken) throw Error('GOOGLE_ACCESS_TOKEN_MISSING');
+  if (!authClient) throw Error('GOOGLE_OIDC_CLIENT_INVALID');
+  const tokenResponse = await authClient.getAccessToken();
+  const accessToken = tokenResponse?.token;
+  if (typeof accessToken !== 'string' || !accessToken.trim()) throw Error('GOOGLE_ACCESS_TOKEN_MISSING');
   log('google_oidc_token_acquired', { projectId, serviceAccountEmail });
   return accessToken;
 }
@@ -243,6 +249,10 @@ export default async function handler(req, res) {
   try {
     const token = await googleAccessToken();
     const state = await readState(token);
+    const configuration = Object.fromEntries(state.settings.slice(1).map(row => [text(row[0]), text(row[1])]));
+    if (scheduled && !/^true$/i.test(configuration.daily_scheduler_enabled || '')) {
+      return json(res, 200, { ok: true, runId, outcome: 'SCHEDULER_DISABLED', messagesSent: 0 });
+    }
     const previousRun = parseRowsForRun(state).find(x => x.runId === runId);
     if (previousRun) {
       log('already_recorded', { runId, executionMode: previousRun.executionMode });
@@ -481,6 +491,14 @@ export default async function handler(req, res) {
     const verifyState = await readState(token);
     const runReadback = parseRowsForRun(verifyState).find(x => x.runId === runId);
     if (!runReadback) throw Error('SAVE_READBACK_RUN_MISSING');
+    for (const [sheet, expected] of [['referrals', referralRows], ['evidence', evidenceRows], ['activity', activityRows], ['runs', [runRow]]]) {
+      for (const row of expected) {
+        const saved = (verifyState[sheet] || []).find(candidate => text(candidate[0]) === text(row[0]));
+        if (!saved || row.some((value, index) => text(saved[index]) !== text(value))) {
+          throw Error('SAVE_READBACK_' + sheet.toUpperCase() + '_MISMATCH');
+        }
+      }
+    }
 
     const savedIds = new Set((verifyState.referrals || []).slice(1).map(row => text(row[0])));
     const missing = referralRows.map(row => row[0]).filter(id => !savedIds.has(id));
