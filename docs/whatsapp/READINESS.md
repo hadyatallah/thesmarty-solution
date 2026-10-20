@@ -1,3 +1,25 @@
+# Live checkpoint — 21 October 2026
+
+This checkpoint supersedes the earlier 20 October "unprovisioned" status for the resources listed here. Do not interpret the earlier text below as current for IAM or secret provisioning.
+
+- Google project `tss-crm-508908`: dedicated `tss-whatsapp-webhook` service account, secret-level accessor, restricted create-only Firestore role and Vercel OIDC impersonation were saved and read back by the owner in Cloud Shell.
+- Firestore `(default)`, Standard/Native, `europe-west1`, exists. **Valid signed event persistence and independent readback remain PENDING.**
+- Secret Manager `tss-whatsapp-webhook-config` version **2** was created by owner rotation. The Meta App Secret and private verify token stay external to Vercel/GitHub.
+- Vercel production configuration uses the dedicated WhatsApp service-account identifier and Secret Manager numeric version 2. The Research Center service-account setting was not replaced.
+- PR #117 contains fixes for JavaScript regex escapes, Vercel OIDC retrieval, extracting `getAccessToken().token`, and avoiding Vercel's lazy `req.body` getter before raw-body signature verification.
+- **Live deployed checks passed:** GET with a deliberately wrong verify token returns **403**; POST with intentionally invalid SHA-256 HMAC returns **401**. GitHub Actions separately passed webhook unit tests.
+- Most recently verified functional production deployment: `dpl_EpheAFAak7rWodc2PBgKkuo3aqym`, commit `48fecc1f839a1c2fb7253ce871a91c06b72ccd1b`. Subsequent branch-only CI edits do not alter this runtime.
+- Test-only webhook gate currently enabled for the Secret Manager allowlist, containing only WABA `2882413005471663` and phone `1378287792033123`. **No real customer or production WABA is registered or subscribed.**
+- Vercel Runtime Logs documentation says Search Params may appear in request metadata. Do not assume Meta's verification-token query string is redacted. Rotate the handshake token after verification or document and approve a compensating control.
+- Meta callback **Verify and save**, `messages` subscriptions, unpublished-app resolution and genuine inbound events are **NOT DONE**.
+- TSS production +357 99 810330 remains in WhatsApp Business; no migration or customer sends are authorized yet.
+
+## Next acceptance action
+
+Use the owner's locally executed synthetic signed acceptance helper to send the same test-only signed webhook payload twice and read the resulting Firestore document independently under the owner's account. This tests **real persistence and retry/dedupe** without revealing the App Secret or sending WhatsApp messages. Record the returned statuses; do not claim it passed before execution.
+
+---
+
 # WhatsApp webhook checkpoint | 20 October 2026
 
 Status: implemented, locally tested and deployed INACTIVE to Production. NOT Meta-accepted or ready for number migration.
