@@ -36,4 +36,20 @@ jobs:
           } catch (e) {
             console.log('WEBHOOK_CANARY_NETWORK_ERROR=' + String(e?.cause?.code || e?.name || 'FETCH_FAILED'));
           }
+          try {
+            const res = await fetch('https://www.thesmartysolution.com/api/tss-whatsapp-webhook', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Hub-Signature-256': 'sha256=' + '0'.repeat(64)
+              },
+              body: JSON.stringify({ object: 'whatsapp_business_account', entry: [] }),
+              redirect: 'manual',
+              signal: AbortSignal.timeout(20000)
+            });
+            console.log('WEBHOOK_BAD_SIGNATURE_HTTP=' + res.status);
+            console.log('WEBHOOK_BAD_SIGNATURE_REJECTED=' + (res.status === 401));
+          } catch (e) {
+            console.log('WEBHOOK_BAD_SIGNATURE_NETWORK_ERROR=' + String(e?.cause?.code || e?.name || 'FETCH_FAILED'));
+          }
           JS
