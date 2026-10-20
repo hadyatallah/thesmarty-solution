@@ -25,4 +25,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node --test tests/tssIrcCronAcceptance.test.mjs tests/tssIrcResearchCenterRegression.test.mjs tests/tssIrcResearch.test.mjs
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - run: node --test tests/tssIrcCronAcceptance.test.mjs tests/tssIrcResearchCenterRegression.test.mjs tests/tssIrcResearch.test.mjs tests/tssIrcEligibility.test.mjs tests/tssIrcRepair.test.mjs

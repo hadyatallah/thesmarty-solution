@@ -1,7 +1,7 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { generateKeyPairSync } from 'node:crypto';
+import { ExternalAccountClient } from 'google-auth-library';
 import handler from '../api/tss-irc-daily.js';
 
 const mkRes = () => ({
@@ -90,6 +90,8 @@ const masterRows = [
 
 test('Production-style cron run performs discovery, first-party verification, Master Companies dedupe, save, read-back and dashboard refresh without communication side effects', async () => {
   const prev = {
+    fromJSON: ExternalAccountClient.fromJSON,
+    env: { ...process.env },
     CRON_SECRET: process.env.CRON_SECRET,
     TSS_GOOGLE_SERVICE_ACCOUNT_JSON: process.env.TSS_GOOGLE_SERVICE_ACCOUNT_JSON,
     TSS_IRC_SPREADSHEET_ID: process.env.TSS_IRC_SPREADSHEET_ID,
@@ -99,17 +101,14 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     error: console.error
   };
 
-  const { privateKey } = generateKeyPairSync('rsa', {
-    modulusLength: 2048,
-    publicKeyEncoding: { type: 'spki', format: 'pem' },
-    privateKeyEncoding: { type: 'pkcs8', format: 'pem' }
-  });
-
   process.env.CRON_SECRET = 'SYNTHETIC_TEST_KEY';
-  process.env.TSS_GOOGLE_SERVICE_ACCOUNT_JSON = JSON.stringify({
-    client_email: 'qa@example.test',
-    private_key: privateKey
-  });
+  for (const key of ['GCP_PROJECT_NUMBER','GCP_PROJECT_ID','GCP_SERVICE_ACCOUNT_EMAIL','GCP_WORKLOAD_IDENTITY_POOL_ID','GCP_WORKLOAD_IDENTITY_POOL_PROVIDER_ID']) process.env[key] = 'synthetic-test';
+  ExternalAccountClient.fromJSON = config => {
+    assert.deepEqual(config.scopes, ['https://www.googleapis.com/auth/spreadsheets']);
+    assert.equal(config.type, 'external_account');
+    assert.equal(typeof config.subject_token_supplier.getSubjectToken, 'function');
+    return { getAccessToken: async () => ({ token: 'SYNTHETIC_TOKEN' }) };
+  };
   process.env.TSS_IRC_SPREADSHEET_ID = 'irc-test-sheet';
   process.env.TSS_MASTER_SPREADSHEET_ID = '1mZ7vd2UoGXlyxzwZ8Man593UhlLGt2uS1kIS3ZAWPsU';
 
@@ -120,6 +119,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
   global.fetch = async (url, options = {}) => {
     const u = String(url);
     calls.push(u);
+    if (u.includes('sheets.googleapis.com')) assert.equal(options.headers.authorization, 'Bearer SYNTHETIC_TOKEN');
 
     if (u.includes('oauth2.googleapis.com/token')) {
       return response(200, { access_token: 'SYNTHETIC_TOKEN' });
@@ -262,7 +262,22 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(replay.statusCode, 200);
     assert.equal(JSON.parse(replay.body).outcome, 'ALREADY_RECORDED');
     assert.equal(database["'Runs'"].length, 2);
+    database["'Settings'"][1][1] = 'FALSE';
+    const disabled = mkRes();
+    await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY','user-agent':'vercel-cron/1.0'}},disabled);
+    assert.equal(JSON.parse(disabled.body).outcome, 'SCHEDULER_DISABLED');
+    assert.equal(database["'Runs'"].length, 2);
+    ExternalAccountClient.fromJSON = () => ({getAccessToken: async () => ({token:null})});
+    const noToken = mkRes();
+    await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},noToken);
+    assert.equal(noToken.statusCode, 503);
+    assert.equal(JSON.parse(noToken.body).error, 'GOOGLE_ACCESS_TOKEN_MISSING');
+
   } finally {
+    ExternalAccountClient.fromJSON = prev.fromJSON;
+    for (const key of ['GCP_PROJECT_NUMBER','GCP_PROJECT_ID','GCP_SERVICE_ACCOUNT_EMAIL','GCP_WORKLOAD_IDENTITY_POOL_ID','GCP_WORKLOAD_IDENTITY_POOL_PROVIDER_ID']) {
+      if (prev.env[key] === undefined) delete process.env[key]; else process.env[key] = prev.env[key];
+    }
     for (const key of ['CRON_SECRET','TSS_GOOGLE_SERVICE_ACCOUNT_JSON','TSS_IRC_SPREADSHEET_ID','TSS_MASTER_SPREADSHEET_ID']) {
       if (prev[key] === undefined) delete process.env[key];
       else process.env[key] = prev[key];
