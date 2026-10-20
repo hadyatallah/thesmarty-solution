@@ -93,6 +93,17 @@ test('inactive and missing dependencies fail closed, no external send or CRM wri
   const missing = harness({ loadDependencies: async () => ({}) });
   assert.equal((await invoke(missing.handler)).statusCode, 503);
 });
+test('failed Google WIF is classified without leaking provider messages', async () => {
+  const audit = [];
+  const handler = createWebhookHandler({
+    enabled: true,
+    loadDependencies: async () => { throw Error('GOOGLE_WIF_UNAVAILABLE'); },
+    audit: (event, data) => audit.push({ event, data })
+  });
+  const response = await invoke(handler, { method: 'GET', url: '/?hub.mode=subscribe&hub.verify_token=public-fake&hub.challenge=X' });
+  assert.equal(response.statusCode, 503);
+  assert.deepEqual(audit, [{ event: 'dependency_unavailable', data: { category: 'GOOGLE_WIF_UNAVAILABLE' } }]);
+});
 test('provider errors persist for review without logging their contents', async () => {
   const h = harness(); const payload = sample();
   const value = payload.entry[0].changes[0].value; delete value.messages; delete value.statuses;
