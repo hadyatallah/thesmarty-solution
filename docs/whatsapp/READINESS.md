@@ -14,9 +14,21 @@ This checkpoint supersedes the earlier 20 October "unprovisioned" status for the
 - Meta callback **Verify and save**, `messages` subscriptions, unpublished-app resolution and genuine inbound events are **NOT DONE**.
 - TSS production +357 99 810330 remains in WhatsApp Business; no migration or customer sends are authorized yet.
 
-## Next acceptance action
+## Live signed/persistence acceptance — 21 October 2026
 
-Use the owner's locally executed synthetic signed acceptance helper to send the same test-only signed webhook payload twice and read the resulting Firestore document independently under the owner's account. This tests **real persistence and retry/dedupe** without revealing the App Secret or sending WhatsApp messages. Record the returned statuses; do not claim it passed before execution.
+**PASS (owner-confirmed Cloud Shell test, independently corroborated by Vercel runtime logs).**
+
+The owner reported `RESULT: PASS` from `tss_whatsapp_live_acceptance.py` using Secret Manager version 2 and the test-only WABA/phone pair. The helper sends two *identical* valid-HMAC synthetic events, checks both HTTP 200 acknowledgements, and independently reads back the resulting Firestore record after each send with the owner's Google identity. It confirms the record's ID, event, and `held_for_review` state and checks that duplicate delivery did not change `createTime` or `updateTime`.
+
+Independent Vercel runtime logs from deployment `dpl_EpheAFAak7rWodc2PBgKkuo3aqym` show:
+- First test POST: `inbox_committed`, `created:1`, `duplicates:0`.
+- Second test POST: `inbox_committed`, `created:0`, `duplicates:1`.
+
+No Meta callback has yet been configured or verified. The Meta app remains unpublished. No production WhatsApp number was migrated and no real WhatsApp messages were sent.
+
+**Next gate:** Register the app-level `whatsapp_business_account` callback on Meta for the test account, subscribe to `messages`, verify test WABA app subscription, and test Meta-generated events. Because Meta sends the verification token as a GET query parameter, note that Vercel request metadata can contain search params; no guarantee of platform-level query redaction is claimed.
+
+
 
 ---
 
