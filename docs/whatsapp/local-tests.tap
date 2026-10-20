@@ -1,0 +1,30 @@
+✔ Admin Login starts locked, without calls to Google Sheets or storing tokens (9.036396ms)
+✔ wrong verified email never opens workspaces (3.367761ms)
+✔ unverified owner email never opens workspaces (4.042256ms)
+✔ no Google client fails closed without redirect or fallback (2.55649ms)
+✔ new official HubSpot embed is the only Contact submission surface (4.50256ms)
+✔ old form IDs and custom submit API cannot be loaded from Contact page (1.165124ms)
+✔ legacy Kiti URL routes to the single native Contact form with its enquiry context (0.718008ms)
+✔ historical form adapter cannot run on the new Contact page (0.494085ms)
+✔ admin resolves to owner-private Data Center, never the retired CRM (3.65825ms)
+✔ organisation research form requires explicit verification (6.679574ms)
+✔ dashboard and scheduler classify real Vercel research cycles as scheduler evidence (1.457636ms)
+✔ research UI keeps communication and canonical-company creation outside the scheduler (0.23101ms)
+✔ Secret Manager and inbox calls use ephemeral bearer, fixed hosts and timeout, not env secrets (7.265837ms)
+✔ only explicit ALREADY_EXISTS counts as a duplicate, all ambiguous failures retry (4.755297ms)
+✔ missing resource config, secret denial, and malformed secret all fail closed (1.437025ms)
+✔ challenge valid, invalid, missing, duplicate query and wrong mode (6.592374ms)
+✔ strict SHA256 HMAC checks original bytes, Unicode, malformed and missing signatures (16.746677ms)
+✔ message/status fields preserved and replay deduplicates across new handlers and concurrency (19.725799ms)
+✔ partial commit returns retryable 503 and retry retains committed event (4.668747ms)
+✔ malformed JSON/schema, wrong accounts and oversize bodies rejected before write (9.468804ms)
+✔ inactive and missing dependencies fail closed, no external send or CRM writes (0.842921ms)
+✔ provider errors persist for review without logging their contents (2.719224ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 461.2116

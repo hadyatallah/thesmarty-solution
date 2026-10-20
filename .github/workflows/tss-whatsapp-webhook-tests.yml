@@ -1,0 +1,20 @@
+name: WhatsApp webhook security tests
+on:
+  push:
+    paths: ['api/tss-whatsapp-webhook.js', 'lib/tssWhatsapp*.mjs', 'tests/tssWhatsapp*.test.mjs', '.github/workflows/tss-whatsapp-webhook-tests.yml']
+  pull_request:
+    paths: ['api/tss-whatsapp-webhook.js', 'lib/tssWhatsapp*.mjs', 'tests/tssWhatsapp*.test.mjs', '.github/workflows/tss-whatsapp-webhook-tests.yml']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node --test tests/tssWhatsapp*.test.mjs
