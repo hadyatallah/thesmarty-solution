@@ -41,6 +41,7 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
  try {
   const handler=createInboxHandler({enabled:true,env,
    verifyIdentity:async()=>({email:env.TSS_WHATSAPP_OWNER_EMAIL,email_verified:true}),
+   readerAccessToken:async()=>directToken,
    fetcher:async(url,options)=>{
     assert.equal(stage,2); assert.equal(options.method,'GET');
     assert.equal(options.headers.Authorization,'Bearer '+reader);
