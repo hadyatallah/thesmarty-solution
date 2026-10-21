@@ -7,7 +7,10 @@ import {
 
 const env = {
   TSS_WHATSAPP_OWNER_EMAIL: 'thesmartysolution@gmail.com',
-  TSS_WHATSAPP_FIRESTORE_PARENT: 'projects/tss-crm-508908/databases/(default)/documents'
+  TSS_WHATSAPP_FIRESTORE_PARENT: 'projects/tss-crm-508908/databases/(default)/documents',
+  TSS_WHATSAPP_READER_AUTH_READY: 'true',
+  TSS_WHATSAPP_READER_SERVICE_ACCOUNT_EMAIL: 'tss-whatsapp-inbox-reader@tss-crm-508908.iam.gserviceaccount.com',
+  TSS_WHATSAPP_GOOGLE_CLIENT_ID: '103840050410-dlhipb15600ot54jk7m6qj0olrbms7i4.apps.googleusercontent.com'
 };
 const token = 'ya29.mock-short-lived-access-token-with-owner-scopes';
 const baseName = 'projects/tss-crm-508908/databases/(default)/documents/tss_whatsapp_inbox/';
@@ -32,10 +35,13 @@ function harness({ enabled = true, config = env, profile = { email: 'thesmartyso
   const calls = [];
   const fetcher = alternate || (async (url, options) => {
     calls.push({ url, options });
-    if (url.endsWith('/userinfo')) return Response.json(profile);
     return storeResponse || Response.json({ documents: [document()], nextPageToken: 'NEXT+' });
   });
-  const handler = createInboxHandler({ enabled, env: config, fetcher });
+  let verifyCount = 0;
+  const handler = createInboxHandler({ enabled, env: config, fetcher,
+    verifyIdentity: async () => { verifyCount++; return profile; },
+    readerAccessToken: async () => 'keyless-scoped-reader-token'
+  });
   async function run({ method = 'GET', url = '/api/tss-whatsapp-inbox', auth = 'Bearer ' + token } = {}) {
     const request = { method, url, headers: { authorization: auth } };
     const response = {
@@ -45,7 +51,7 @@ function harness({ enabled = true, config = env, profile = { email: 'thesmartyso
     await handler(request, response);
     return response;
   }
-  return { run, calls };
+  return { run, calls, get verifyCount() { return verifyCount; } };
 }
 test('owner profile requires an exact verified Google account', () => {
   assert.ok(isOwnerProfile({ email: 'TheSmartySolution@Gmail.com', email_verified: true }));
@@ -104,11 +110,10 @@ test('owner token is authenticated by Google before restricted Firestore read', 
   assert.equal(result.body.sendingEnabled, false);
   assert.equal(result.body.automatedReplies, false);
   assert.equal(result.body.retentionPolicyApproved, false);
-  assert.equal(h.calls.length, 2);
-  assert.equal(h.calls[0].url, 'https://www.googleapis.com/oauth2/v3/userinfo');
-  assert.equal(h.calls[0].options.headers.Authorization, 'Bearer ' + token);
-  assert.match(h.calls[1].url, /^https:\/\/firestore\.googleapis\.com\/v1\/projects\/tss-crm-508908\/databases\/\(default\)\/documents\/tss_whatsapp_inbox/);
-  assert.equal(h.calls[1].options.headers.Authorization, 'Bearer ' + token);
+  assert.equal(h.calls.length, 1);
+  assert.equal(h.verifyCount, 1);
+  assert.match(h.calls[0].url, /^https:\/\/firestore\.googleapis\.com\/v1\/projects\/tss-crm-508908\/databases\/\(default\)\/documents\/tss_whatsapp_inbox/);
+  assert.equal(h.calls[0].options.headers.Authorization, 'Bearer keyless-scoped-reader-token');
   assert.ok(h.calls.every(x => x.options.method === 'GET'));
   assert.equal(result.headers['Cache-Control'], 'private, no-store, max-age=0');
   assert.doesNotMatch(JSON.stringify(result.body), /ya29\.mock/);
@@ -122,12 +127,13 @@ test('wrong and unverified users are rejected before Firestore', async () => {
     const result = await h.run();
     assert.equal(result.statusCode, 403);
     assert.equal(result.body.error, 'owner_only');
-    assert.equal(h.calls.length, 1);
+    assert.equal(h.calls.length, 0);
+    assert.equal(h.verifyCount, 1);
   }
 });
 test('expired Google bearer and rejected Firestore scope do not expose data', async () => {
-  const unauthorized = harness({ fetcher: async () => new Response('', { status: 401 }) });
-  assert.equal((await unauthorized.run()).statusCode, 401);
+  const unauthorized = harness({ profile: { email: 'notowner@gmail.com', email_verified: true } });
+  assert.equal((await unauthorized.run()).statusCode, 403);
   const denied = harness({ storeResponse: Response.json({ error: { message: 'private provider detail' } }, { status: 403 }) });
   const result = await denied.run();
   assert.equal(result.statusCode, 403);
