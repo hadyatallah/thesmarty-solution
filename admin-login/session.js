@@ -19,7 +19,7 @@ $('verifyButton').addEventListener('click',()=>{
  try {window.google.accounts.oauth2.initTokenClient({client_id:config.googleClientId,scope:'https://www.googleapis.com/auth/userinfo.email',login_hint:config.allowedEmail,
  callback:async result=>{try{if(result.error||!result.access_token)throw Error('Google sign-in was not completed.');unlocked(await call('POST',{accessToken:result.access_token}));}catch(e){locked('Admin sign-in failed: '+e.message);}finally{$('verifyButton').disabled=false;}},
  error_callback:()=>{$('verifyButton').disabled=false;notice('Google sign-in was cancelled or blocked.');}
- }).requestAccessToken({prompt:'',login_hint:config.allowedEmail});}
+ }).requestAccessToken({prompt:'select_account'});}
  catch {$('verifyButton').disabled=false;notice('Google sign-in could not start.');}
 });
 $('lockButton').textContent='Log out';
