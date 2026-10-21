@@ -25,6 +25,7 @@ jobs:
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: node --check lib/tssWhatsappInbox.mjs
       - run: node --check api/tss-whatsapp-inbox.js
       - run: node --check whatsapp-inbox/app.js
