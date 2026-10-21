@@ -1,3 +1,17 @@
+## Meta dashboard webhook retest — 21 October 2026, 03:50 Nicosia
+
+**Meta dashboard reported successful submission at 03:50:24, but server did not accept the event as an allowlisted account.** This is a controlled expected security rejection, not a successful end-to-end Meta event ingestion.
+
+Independent Vercel production runtime log at `2026-10-21T00:50:25.072Z` (03:50:25 Nicosia), deployed `dpl_GnqzEBciJTw63vRhFicWZ1tSgiPM`:
+
+`{"component":"whatsapp_webhook","code":"account_rejected"}`
+
+A retry at 00:50:55Z also logged `account_rejected`. The handler emits this code only *after valid HMAC verification* and parsing reaches the restricted WABA/phone-ID allowlist. Hence an authentic Meta-signed payload reached the live endpoint and passed HMAC, but its account IDs were not the only permitted test pair (`2882413005471663`, `1378287792033123`). Handler returned HTTP 403 and did not write the disallowed payload to Firestore. Meta UI's green confirmation only establishes dispatch, not recipient 200 ACK.
+
+The earlier synthetic test using the actual allowlisted test pair already proved signed HTTP 200 + Firestore create/readback + duplicate replay. The Meta dashboard's canned event and signed synthetic acceptance together verify separate useful facets; neither proves real inbound messages from the unpublished app. Do **not** expand the allowed account IDs to dashboard sample IDs or disable HMAC for a cosmetic green check. Continue with app publication readiness and owner-approved production cutover preparation; no customer send, app publication or Cyprus-number migration authorized.
+
+---
+
 ## Meta dashboard test diagnostic — 21 October 2026, 03:42–03:49 Nicosia
 
 Owner pressed `messages` → `Test` → `Send to server v26.0` and observed Meta's green send confirmation. This confirms only dashboard submission, **not signed webhook acceptance**.
