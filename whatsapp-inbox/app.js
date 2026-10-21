@@ -158,7 +158,7 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
 }
 function signIn() {
   if (accessToken) return;
-  if (!/^[0-9]+-[a-z0-9-]+\.apps\.googleusercontent\\.com$/.test(googleClientId)) {
+  if (!googleClientId) {
     notice('The existing TSS Google OAuth client is unavailable. No Google credentials were requested.', 'error'); return;
   }
   const render = () => {
