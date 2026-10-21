@@ -39,18 +39,20 @@ def canonical(value):return json.dumps(value,sort_keys=True,separators=(',',':')
 def digest(value):return hashlib.sha256(canonical(value).encode()).hexdigest()
 def compare_protected(before,after):
     # Google documents earliestVersionTime as continuously updated output metadata.
-    # Keep updateTime, etag and every other field in the protected comparison.
+    # Preserve updateTime and every configuration field. Record etag separately:
+    # it is a server checksum of other fields, including changing output metadata.
     differences={}
     for key in ('provider','readerPolicy','webhookPolicy','database'):
         old=copy.deepcopy(before[key]);new=copy.deepcopy(after[key])
         if key=='database':
             report['databaseVersionWindow']={'before':old.pop('earliestVersionTime',None),'after':new.pop('earliestVersionTime',None),'ignoredForConfigurationComparison':True}
+            report['databaseEtags']={'before':old.pop('etag',None),'after':new.pop('etag',None),'recordedSeparately':True}
             report['databaseConfigurationSnapshots']={'before':old,'after':new}
         if digest(old)!=digest(new):
             differences[key]=[field for field in sorted(set(old)|set(new)) if old.get(field)!=new.get(field)]
     report['protectedResourceChangedFields']=differences
     check(not differences,'Protected resource changed during execution: '+','.join(differences))
-    report['protectedResourceReadback']='PASS: provider, reader/webhook policies and database configuration unchanged; earliestVersionTime excluded only'
+    report['protectedResourceReadback']='PASS: provider, reader/webhook policies and database configuration unchanged; earliestVersionTime and etag recorded separately'
 
 def sa_policy(email):return run(['iam','service-accounts','get-iam-policy',email])
 def bindings(policy,member):return [b for b in policy.get('bindings',[]) if member in b.get('members',[])]

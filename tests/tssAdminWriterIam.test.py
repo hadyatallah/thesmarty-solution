@@ -23,7 +23,7 @@ EXPR='resource.name == "projects/tss-crm-508908/databases/(default)"'
 
 class FakeCloud:
  def __init__(self):
-  self.calls=[];self.writer=None;self.role=None;self.writerPolicy={'bindings':[]};self.dbReads=0;self.changeDatabase=False
+  self.calls=[];self.writer=None;self.role=None;self.writerPolicy={'bindings':[]};self.dbReads=0;self.changeDatabase=False;self.changeUpdate=False
   self.readerPolicy={'bindings':[{'role':'roles/iam.workloadIdentityUser','members':[PRINCIPAL]}]}
   self.projectPolicy={'bindings':[{'role':'projects/'+PROJECT+'/roles/tssWhatsappInboxReader','members':['serviceAccount:'+READER]}]}
  def run(self,command,**kwargs):
@@ -35,8 +35,9 @@ class FakeCloud:
   elif a[:3]==['iam','workload-identity-pools','providers']:data={'state':'ACTIVE','attributeMapping':{'google.subject':'assertion.sub'},'oidc':{'issuerUri':'https://oidc.vercel.com/tss21'}}
   elif a[:3]==['firestore','databases','describe']:
    self.dbReads+=1
-   data={'locationId':'europe-west1','earliestVersionTime':str(self.dbReads),'updateTime':'fixed-config-version','deleteProtectionState':'DELETE_PROTECTION_ENABLED'}
+   data={'locationId':'europe-west1','earliestVersionTime':str(self.dbReads),'etag':'etag-'+str(self.dbReads),'updateTime':'fixed-config-version','deleteProtectionState':'DELETE_PROTECTION_ENABLED'}
    if self.changeDatabase and self.dbReads>1:data['deleteProtectionState']='DELETE_PROTECTION_DISABLED'
+   if self.changeUpdate and self.dbReads>1:data['updateTime']='changed-config-version'
   elif a[:2]==['projects','get-ancestors']:data=[{'type':'project','id':'103840050410'}]
   elif a[:2]==['projects','get-iam-policy']:data=self.projectPolicy
   elif a[:3]==['iam','service-accounts','describe']:data=self.writer;missing=data is None
@@ -89,5 +90,9 @@ class ScriptTests(unittest.TestCase):
  def test_verify_is_read_only_and_checks_configuration(self):
   cloud=FakeCloud();self.execute(cloud,'--apply');cloud.calls=[]
   r=self.execute(cloud,'--verify');self.assertEqual(r['iamReadback'],'PASS');self.assertEqual(cloud.mutations(),[])
+
+ def test_configuration_update_timestamp_still_blocks(self):
+  cloud=FakeCloud();cloud.changeUpdate=True;r=self.execute(cloud,'--apply')
+  self.assertEqual(r['result'],'BLOCKED');self.assertEqual(r['protectedResourceChangedFields'],{'database':['updateTime']})
 
 if __name__=='__main__':unittest.main()

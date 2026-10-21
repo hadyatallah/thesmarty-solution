@@ -26,16 +26,24 @@ historical run because the old script did not retain the original snapshots.
 
 Reference: https://docs.cloud.google.com/firestore/docs/reference/rest/v1/projects.databases
 
-The corrected guard excludes only `earliestVersionTime`. It still compares
-`updateTime`, `etag`, all configuration fields, provider configuration and existing
-reader/webhook policies. Reports now retain database configuration snapshots and
-changed field names. Seven fake-CLI tests prove that moving timestamps pass, real
-delete-protection changes fail, verify mode is read-only, and prior safety checks
-remain intact. No existing security assertion was removed.
+Owner read-only Cloud Shell comparison at 15:56 Nicosia returned only `etag` as
+changed after excluding `earliestVersionTime`. All other fields matched. Region
+was `europe-west1`; database `updateTime` was `2026-10-20T20:24:05.736028Z`, before
+today's IAM work. Combined with the script's absence of database-modification
+commands, this closes the warning as a metadata comparison defect. The historical
+snapshots were not retained, so this is a current readback and timestamp-based
+conclusion rather than a reconstructed original diff.
+
+Google documents `etag` as a server checksum computed from other field values.
+The final guard records both `earliestVersionTime` and `etag` separately, and still
+compares `updateTime` plus every configuration field and existing identity/provider
+policy. Eight fake-CLI tests verify benign metadata changes pass while real
+configuration and updateTime changes still block. No live database mutation or
+security setting was changed to fix this check.
 
 ## Remaining acceptance limits
 
-- Historical metadata mismatch requires a read-only live configuration/audit check.
+- Metadata warning CLOSED with the owner-provided read-only comparison above.
 - Live session expiry has not been independently observed; automated expiry tests
   passed. No hidden session extension is implemented.
 - Pagination cannot be exercised with the single existing event. Automated page
