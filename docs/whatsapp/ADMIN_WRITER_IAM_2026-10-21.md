@@ -50,7 +50,7 @@ Do not report IAM PASS without that readback or equivalent live provider evidenc
 
 ## Verification
 
-76 local Node tests pass, including the preserved session/Google account/security
+77 local Node tests pass, including the preserved session/Google account/security
 cases and new identity-separation/failure tests. Four fake-CLI script tests verify
 read-only default, exact grants, independent readback, idempotence, wrong-subject
 denial and refusal to overwrite a broader role. These are not live IAM evidence.

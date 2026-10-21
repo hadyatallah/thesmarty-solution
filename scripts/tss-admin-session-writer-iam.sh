@@ -125,7 +125,6 @@ def verify(s):
     report['wifTrustReadback']='PASS: exact subject binding and unchanged provider; token exchange is NOT yet proven'
 
 try:
-    before=snapshot();audit(before)
     print('PROPOSED IAM CHANGES (no data writes):')
     print('1. Create dedicated service account only if absent: '+WRITER)
     print('2. Create custom role only if absent: '+ROLE+' => datastore.entities.create only')
@@ -135,6 +134,7 @@ try:
     print('4. Add roles/iam.workloadIdentityUser on the dedicated writer for exactly: '+PRINCIPAL)
     print('   This subject covers preview deployments of this project, not one Git branch.')
     print('No pool/provider edits, existing identity edits, keys, API enablement, billing changes or diagnostic impersonation grants.')
+    before=snapshot();audit(before)
     if mode=='--apply':
         print('Type APPLY TSS ADMIN SESSION WRITER to apply the already approved changes:')
         with open('/dev/tty','r') as terminal:answer=terminal.readline().strip()
