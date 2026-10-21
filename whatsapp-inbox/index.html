@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#142f40">
+<meta http-equiv="Cache-Control" content="no-store">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://accounts.google.com https://www.gstatic.com; style-src 'self'; img-src 'self' data:; connect-src 'self' https://accounts.google.com https://www.googleapis.com; frame-src https://accounts.google.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>TSS | Private WhatsApp Inbox Preview</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="stylesheet" href="/whatsapp-inbox/style.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="/data-center/config.js" defer></script>
+<script type="module" src="/whatsapp-inbox/app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to inbox</a>
+<header class="topbar">
+  <a class="brand" href="/"><span class="mark" aria-hidden="true">TSS</span><span><strong>THE SMARTY SOLUTION</strong><small>PRIVATE WHATSAPP INBOX · PREVIEW</small></span></a>
+  <nav aria-label="Owner workspaces"><a href="/data-center/">Data Center</a><a href="/research-center/">Research Center</a></nav>
+  <div class="actions"><span id="identity">Locked</span><button type="button" id="lockButton" class="secondary" hidden>Lock</button></div>
+</header>
+<main id="main" class="container">
+  <div class="intro"><div><p class="eyebrow">TSS / OWNER COMMUNICATIONS</p><h1>WhatsApp Inbox</h1><p class="description">Read-only incoming messages and delivery events. No customer replies or automated messages can be sent from this preview.</p></div><span class="preview">REVIEW ONLY</span></div>
+  <div id="notice" class="notice" role="status" aria-live="polite">Google owner sign-in is required. No messages are publicly accessible.</div>
+  <section id="loginCard" class="login">
+    <h2>Owner sign-in required</h2>
+    <p>This screen reads the existing TSS Firestore inbox using an owner-approved short-lived Google token. Your session stays in this browser tab, and no credentials are saved by the website.</p>
+    <button type="button" id="loginButton" class="primary">Connect TSS Google account</button>
+    <p class="fine">Expected account: <strong>thesmartysolution@gmail.com</strong>. Google may request consent for Firestore read access. No Google Cloud IAM roles or credentials are created.</p>
+  </section>
+  <section id="inboxShell" hidden>
+    <div class="toolbar">
+      <div><strong id="count">Inbox locked</strong><p class="fine">Only events received by the verified Meta webhook are shown.</p></div>
+      <div class="toolbar-actions"><button type="button" id="refreshButton" class="secondary">Refresh</button><button type="button" id="notifyButton" class="secondary">Enable browser alerts</button></div>
+    </div>
+    <div class="workspace">
+      <section class="list-pane" aria-label="Incoming WhatsApp event list">
+        <div class="filters"><label>Filter <select id="kindFilter"><option value="all">All events</option><option value="message">Messages</option><option value="status">Delivery statuses</option><option value="provider_error">Provider errors</option></select></label><label>Search <input id="searchInput" type="search" maxlength="80" placeholder="Sender or message text"></label></div>
+        <div id="eventList" class="event-list" role="list"></div>
+        <button type="button" id="nextButton" class="secondary" hidden>Load older records</button>
+      </section>
+      <section class="detail-pane" aria-label="Selected message">
+        <h2 id="detailTitle">Select an event</h2>
+        <div id="detail" class="details">Your message details will appear here after secure sign-in.</div>
+        <section id="replyPanel" hidden>
+          <h3>Prepare a reply</h3>
+          <p class="fine">Draft only. Copying a draft is a manual action; this preview has no WhatsApp send button or Graph API permissions.</p>
+          <label for="replyDraft">Unsent draft</label>
+          <textarea id="replyDraft" rows="6" maxlength="2000" placeholder="Type your proposed reply here. No message will be sent."></textarea>
+          <div class="draft-actions"><button id="copyDraft" type="button" class="secondary" disabled>Copy unsent draft</button><span id="draftStatus" class="fine" role="status"></span></div>
+        </section>
+      </section>
+    </div>
+    <div class="footer-notes"><p><strong>Retention:</strong> Policy under owner review. Existing Firestore records are not automatically deleted.</p><p><strong>Alerts:</strong> Browser notifications only while this page is open and unlocked. No background monitoring or automatic replies.</p></div>
+  </section>
+</main>
+<footer class="site-footer">The Smarty Solution Ltd · Owner-only preview · No outbound WhatsApp API calls · <a href="/privacy.html">Privacy, Retention &amp; Deletion</a></footer>
+</body>
+</html>
