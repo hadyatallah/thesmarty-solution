@@ -1,3 +1,15 @@
+## Meta dashboard test diagnostic — 21 October 2026, 03:42–03:49 Nicosia
+
+Owner pressed `messages` → `Test` → `Send to server v26.0` and observed Meta's green send confirmation. This confirms only dashboard submission, **not signed webhook acceptance**.
+
+Existing Vercel logs on deployment `dpl_EpheAFAak7rWodc2PBgKkuo3aqym` show several `signature_rejected` events, latest `2026-10-21T00:36:20Z` (03:36 Nicosia), **before** the 03:42 reported dashboard test; do not attribute these to the latest test without proof. No `inbox_committed` was observed for the Meta dashboard test.
+
+A minimal safe diagnostic was committed on branch `feat/whatsapp-secure-webhook`: emits fixed `signature_header_rejected` for absent or malformed SHA-256 header, `signature_rejected` for formatted but mismatched HMAC, and `account_rejected` for verified signatures with WABA/phone IDs outside the test allowlist. No payload, signature, raw header, secret or identity is logged. Unit tests passed (GitHub Actions run `39523515963`). Production deployment `dpl_GnqzEBciJTw63vRhFicWZ1tSgiPM` READY and assigned custom domains.
+
+**Pending:** Owner should send exactly one new `messages` dashboard sample from the Meta UI after this deployment; then inspect Vercel runtime logs for new diagnostic category and HTTP outcome. Do not broaden allowlist or disable HMAC. App remains unpublished, and Cyprus production number has not been migrated.
+
+---
+
 ## Test-WABA GET readback accepted — 21 October 2026, 03:34 Nicosia
 
 The owner confirmed with Meta Graph API Explorer read-only `GET /v26.0/2882413005471663/subscribed_apps` that **both** apps are listed:
