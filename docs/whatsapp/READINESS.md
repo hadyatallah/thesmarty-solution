@@ -1,3 +1,13 @@
+## Meta app callback verification checkpoint — 21 October 2026
+
+**Meta app-level POST received HTTP 200, but app-level GET /subscriptions readback returned no WhatsApp subscription. Do not reissue the POST blindly.** The owner ran the existing guarded helper from Google Cloud Shell; it explicitly stopped with "Meta accepted registration but did not return a WhatsApp subscription on readback".
+
+**Independent live proof of callback handshake:** Vercel production deployment `dpl_EpheAFAak7rWodc2PBgKkuo3aqym` logged `{"component":"whatsapp_webhook","code":"challenge_verified"}` at `2026-10-21T00:16:24.399Z` (03:16:24 Nicosia on 21 Oct). That is evidence Meta's callback challenge reached the real webhook with the current Secret Manager version 2 verify token; it is not proof the app subscriptions list has persisted or that `messages` events are subscribed.
+
+**Next step, READ-ONLY only:** Reinspect `GET /v26.0/{app-id}/subscriptions` using the already-uploaded helper with stdin redirected from /dev/null so it cannot confirm any change: `python3 TSS_Meta_Webhook_Setup_2026-10-21.py </dev/null`. If it now finds the app-level WhatsApp object with expected callback and messages field, proceed to separate WABA subscribed-app verification. Otherwise investigate Meta dashboard before any further POST, and keep the production number untouched.
+
+---
+
 # Live checkpoint — 21 October 2026
 
 This checkpoint supersedes the earlier 20 October "unprovisioned" status for the resources listed here. Do not interpret the earlier text below as current for IAM or secret provisioning.
