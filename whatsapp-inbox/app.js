@@ -48,7 +48,7 @@ function lock(reason = 'Session locked. Connect the owner Google account to reop
   ui.loginCard.hidden = false; ui.inboxShell.hidden = true; ui.lockButton.hidden = true;
   ui.identity.textContent = 'Locked'; ui.eventList.replaceChildren(); ui.detail.replaceChildren();
   ui.replyDraft.value = ''; ui.draftStatus.textContent = ''; ui.notifyButton.textContent = 'Enable browser alerts';
-  ui.loginButton.disabled = false; ui.refreshButton.disabled = true;
+  ui.refreshButton.disabled = true;
   notice(reason);
 }
 function updateToolbar() {
@@ -169,13 +169,10 @@ function signIn() {
       if (!response?.credential) { notice('Google identity verification was not completed.', 'error'); return; }
       accessToken = response.credential; // short-lived Google ID token, never Firestore OAuth scope
       renewIdleLock();
-      ui.loginButton.disabled = true;
       await fetchEvents();
-      ui.loginButton.disabled = false;
     }
   });
   google.accounts.id.renderButton(ui.loginButton, { type: 'standard', theme: 'outline', size: 'large', text: 'signin_with' });
-  ui.loginButton.disabled = true;
   notice('Select the TSS Google account in the Google sign-in control.');
 }
 async function enableAlerts() {
@@ -188,7 +185,7 @@ async function enableAlerts() {
   if (!monitor) monitor = setInterval(() => { if (accessToken && !document.hidden) fetchEvents({ quiet: true }); }, 60000);
   notice('Private event alerts enabled only while this page is open and unlocked. No background service is running.', 'ok');
 }
-ui.loginButton.addEventListener('click', signIn);
+signIn();
 ui.lockButton.addEventListener('click', () => lock());
 ui.refreshButton.addEventListener('click', () => fetchEvents());
 ui.notifyButton.addEventListener('click', enableAlerts);
