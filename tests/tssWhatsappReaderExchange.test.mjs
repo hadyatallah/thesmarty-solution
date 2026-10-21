@@ -15,6 +15,8 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
  const subject = [Buffer.from(JSON.stringify({alg:'RS256'})).toString('base64url'), Buffer.from(JSON.stringify({exp:Math.floor(Date.now()/1000)+3600,sub:'synthetic-preview-subject',aud:'https://vercel.com/tss21'})).toString('base64url'), 'synthetic-signature-only'].join('.');
  const sts = 'synthetic-sts-token-not-reader-token';
  const reader = 'synthetic-impersonated-reader-access-token';
+ let directToken;
+ let injectedReaderCalls = 0;
  const prior = process.env.VERCEL_OIDC_TOKEN;
  const priorFile = process.env.VERCEL_OIDC_TOKEN_FILE;
  process.env.VERCEL_OIDC_TOKEN=subject;
@@ -39,6 +41,8 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
   return {data:{accessToken:reader,expireTime:new Date(Date.now()+3600000).toISOString()}};
  });
  try {
+  directToken = await keylessToken(env);
+  assert.equal(directToken, reader);
   const handler=createInboxHandler({enabled:true,env,
    verifyIdentity:async()=>({email:env.TSS_WHATSAPP_OWNER_EMAIL,email_verified:true}),
    readerAccessToken:async()=>{ injectedReaderCalls++; return directToken; },
