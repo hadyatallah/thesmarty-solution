@@ -205,6 +205,7 @@ async function enableAlerts() {
   notice('Private event alerts enabled only while this page is open and unlocked. No background service is running.', 'ok');
 }
 signIn();
+byId('manualSignIn')?.addEventListener('click', signIn);
 
 ui.lockButton.addEventListener('click', () => lock());
 ui.refreshButton.addEventListener('click', () => fetchEvents());
