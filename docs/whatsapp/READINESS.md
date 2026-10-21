@@ -1,3 +1,19 @@
+## Meta app subscription confirmed — 21 October 2026, 03:20 Nicosia
+
+The owner ran the Meta registration helper in **read-only mode** (`python3 TSS_Meta_Webhook_Setup_2026-10-21.py </dev/null`) after an earlier Meta registration POST returned HTTP 200 but immediate readback was empty. The subsequent read returned:
+
+- `EXISTING_APP_OBJECT_SUBSCRIPTIONS: 1`
+- `WHATSAPP_SUBSCRIPTION_FOUND: YES`
+- `CALLBACK_MATCH: True`
+- `MESSAGES_FIELD_FOUND: True`
+- `RESULT: APP CALLBACK ALREADY CONFIGURED. No Meta changes made.`
+
+Together with the independently observed production `challenge_verified` entry, **app-level subscription and callback acceptance are verified.** The earlier empty immediate readback should not be misclassified as a permanent failure.
+
+**Remaining independent acceptance gates:** verify test WABA `2882413005471663` `GET /{WABA-ID}/subscribed_apps` with suitable authorized Meta user/system access token (`whatsapp_business_management`), then test a Meta-generated webhook event. A dashboard-only sample may use fixed IDs outside the configured test-only allowlist and must not trigger broadening the receiver's allowed WABA/phone pairs. Do not activate the Cyprus production WABA, publish the app, or migrate +357 99 810330.
+
+---
+
 ## Meta app callback verification checkpoint — 21 October 2026
 
 **Meta app-level POST received HTTP 200, but app-level GET /subscriptions readback returned no WhatsApp subscription. Do not reissue the POST blindly.** The owner ran the existing guarded helper from Google Cloud Shell; it explicitly stopped with "Meta accepted registration but did not return a WhatsApp subscription on readback".
