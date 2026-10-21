@@ -2,6 +2,10 @@ name: WhatsApp owner inbox security tests
 on:
   push:
     paths:
+      - 'api/tss-admin-session.js'
+      - 'lib/tssAdminSession.mjs'
+      - 'tests/tssAdminSession.test.mjs'
+      - 'admin-login/**'
       - 'api/tss-whatsapp-inbox.js'
       - 'lib/tssWhatsappInbox.mjs'
       - 'lib/tssWhatsappGoogle.mjs'
@@ -11,6 +15,10 @@ on:
       - '.github/workflows/tss-whatsapp-owner-inbox-tests.yml'
   pull_request:
     paths:
+      - 'api/tss-admin-session.js'
+      - 'lib/tssAdminSession.mjs'
+      - 'tests/tssAdminSession.test.mjs'
+      - 'admin-login/**'
       - 'api/tss-whatsapp-inbox.js'
       - 'lib/tssWhatsappInbox.mjs'
       - 'lib/tssWhatsappGoogle.mjs'
@@ -33,5 +41,7 @@ jobs:
       - run: node --check lib/tssWhatsappInbox.mjs
       - run: node --check api/tss-whatsapp-inbox.js
       - run: node --check whatsapp-inbox/app.js
-      - run: node --test tests/tssWhatsappInbox.test.mjs tests/tssWhatsappReaderExchange.test.mjs
+      - run: node --test tests/tssAdminSession.test.mjs tests/tssWhatsapp*.test.mjs tests/admin-login-auth.test.mjs tests/private-workspaces-links.test.mjs data-center/tests/*.test.mjs
+      - run: node --check admin-login/session.js
+
 

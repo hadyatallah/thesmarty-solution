@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="/admin-login/style.css">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="/data-center/config.js" defer></script>
-<script src="/admin-login/app.js" defer></script>
+<script src="/admin-login/session.js" defer></script>
 </head>
 <body>
 <header class="bar">
@@ -28,7 +28,7 @@
     <p class="intro" id="intro">Verify your authorized TSS Google email before choosing a workspace.</p>
     <div id="notice" role="status" aria-live="polite" hidden></div>
     <div id="verifyPanel">
-      <p class="detail">Sign in with the approved TSS Google account. Google verifies the account email. No passwords, verification codes, or Google access tokens are stored on this website.</p>
+      <p class="detail">Sign in with the approved TSS Google account. Google verifies the account email. Google credentials are verified server-side and discarded. A secure cookie keeps your Admin session open for up to 15 minutes.</p>
       <button id="verifyButton" type="button" class="button primary">Verify with Google</button>
     </div>
     <section id="workspacePanel" aria-labelledby="workspaceTitle" hidden>
@@ -47,8 +47,9 @@
           <span>Buyer enquiries, referral organisations and outreach review.</span>
           <span class="open">Open Research Center →</span>
         </a>
+        <a class="option" href="/whatsapp-inbox/"><span class="option-label">03 · COMMUNICATIONS</span><strong>WhatsApp Inbox</strong><span>Incoming messages, delivery events and copy-only drafts.</span><span class="open">Open WhatsApp Inbox →</span></a>
       </div>
-      <p class="fine">You can switch between the two workspaces from either app. Each app continues to enforce its own Google authorization and may request access when opened.</p>
+      <p class="fine">WhatsApp uses this secure Admin session. Data Center and Research Center retain their working Google Sheets authorization while shared access is verified.</p>
     </section>
   </section>
 </main>

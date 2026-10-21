@@ -1,7 +1,7 @@
 import { createInboxHandler } from '../lib/tssWhatsappInbox.mjs';
-
-// Deliberately separate from the live inbound webhook and its create-only
-// service account. Never expand webhook IAM for this owner-delegated reader.
+import { createSessionService } from '../lib/tssAdminSession.mjs';
+const sessions=createSessionService();
 export default createInboxHandler({
-  enabled: process.env.TSS_WHATSAPP_INBOX_ENABLED === 'true'
+ enabled:process.env.TSS_WHATSAPP_INBOX_ENABLED==='true' && process.env.TSS_ADMIN_SESSION_ENABLED==='true',
+ authenticateSession:sessions.authenticate
 });

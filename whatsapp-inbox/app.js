@@ -1,14 +1,16 @@
 // Owner-only browser viewer. All private data and short-lived OAuth credentials
 // remain in this tab's memory. No automatic messages, CRM writes, or local storage.
 const allowedEmail = 'thesmartysolution@gmail.com';
-const googleClientId = window.TSS_IDC_CONFIG?.googleClientId || '103840050410-dlhipb15600ot54jk7m6qj0olrbms7i4.apps.googleusercontent.com';
 const byId = id => document.getElementById(id);
 const ui = Object.fromEntries([
   'notice','identity','lockButton','loginButton','loginCard','inboxShell','refreshButton','notifyButton',
   'eventList','detail','detailTitle','replyPanel','replyDraft','copyDraft','draftStatus',
   'kindFilter','searchInput','nextButton','count'
 ].map(id => [id, byId(id)]));
-let accessToken = '';
+let sessionActive = false;
+let csrf = '';
+let sessionExpiresAt = 0;
+let generation = 0;
 let entries = [];
 let nextPageToken = '';
 let selectedKey = '';
@@ -22,7 +24,7 @@ let idleTimer = null;
 const IDLE_LOCK_MS = 15 * 60 * 1000;
 function renewIdleLock() {
   if (idleTimer) clearTimeout(idleTimer);
-  if (accessToken) idleTimer = setTimeout(() => lock('Session locked after 15 minutes of inactivity.'), IDLE_LOCK_MS);
+  if (sessionActive) idleTimer = setTimeout(() => lock('Session locked after 15 minutes of inactivity.'), IDLE_LOCK_MS);
 }
 
 function notice(message, level = '') {
@@ -43,7 +45,8 @@ function lock(reason = 'Session locked. Connect the owner Google account to reop
   if (monitor) clearInterval(monitor);
   if (idleTimer) clearTimeout(idleTimer);
   monitor = null; idleTimer = null;
-  accessToken = ''; entries = []; nextPageToken = ''; selectedKey = '';
+  generation++;
+  sessionActive = false; entries = []; nextPageToken = ''; selectedKey = '';
   pendingDrafts.clear(); seenKeys.clear(); hasLoaded = false; alertsEnabled = false; loading = false;
   ui.loginCard.hidden = false; ui.inboxShell.hidden = true; ui.lockButton.hidden = true;
   ui.identity.textContent = 'Locked'; ui.eventList.replaceChildren(); ui.detail.replaceChildren();
@@ -109,7 +112,8 @@ function renderList() {
   updateToolbar();
 }
 async function fetchEvents({ append = false, quiet = false } = {}) {
-  if (!accessToken || loading) return;
+  if (!sessionActive || loading) return;
+  const requestGeneration = generation;
   loading = true; ui.refreshButton.disabled = true; ui.nextButton.disabled = true;
   if (!quiet) notice('Reading the protected WhatsApp inbox…');
   try {
@@ -118,11 +122,13 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
     if (new URLSearchParams(location.search).get('diagnostic') === '1') params.set('diagnostic', '1');
     const path = '/api/tss-whatsapp-inbox' + (params.toString() ? '?' + params.toString() : '');
     const response = await fetch(path, {
-      method: 'GET', cache: 'no-store', credentials: 'omit', redirect: 'error',
-      headers: { Authorization: 'Bearer ' + accessToken, Accept: 'application/json' },
+      method: 'GET', cache: 'no-store', credentials: 'same-origin', redirect: 'error',
+      headers: { Accept: 'application/json' },
       signal: AbortSignal.timeout(18000)
     });
     const data = await response.json().catch(() => ({ ok: false, error: 'invalid_server_response' }));
+    if (requestGeneration !== generation) return;
+    if (Date.now() >= sessionExpiresAt) { lock('Admin session expired. Open Admin Login to continue.'); return; }
     if (response.status === 401 && data.error === 'google_identity_invalid') {
       const reason = data.reason ? ' (' + data.reason.replace(/_/g, ' ') + ')' : '';
       lock('Google identity validation failed' + reason + '.'); return;
@@ -193,60 +199,39 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
     lock(reason + ' Session locked; sign in again to refresh.');
     notice(reason + ' Session locked; sign in again to refresh.', 'error');
   } finally {
-    loading = false; ui.refreshButton.disabled = !accessToken; ui.nextButton.disabled = !nextPageToken;
+    loading = false; ui.refreshButton.disabled = !sessionActive; ui.nextButton.disabled = !nextPageToken;
   }
 }
-let googleInitialized = false;
-function signIn() {
-  if (accessToken || googleInitialized) return;
-  if (!googleClientId) {
-    notice('The existing TSS Google OAuth client is unavailable. No Google credentials were requested.', 'error'); return;
-  }
-  const initialize = () => {
-    if (googleInitialized || !window.google?.accounts?.id) return false;
-    google.accounts.id.initialize({
-      client_id: googleClientId,
-      auto_select: false,
-      callback: async response => {
-        if (!response?.credential) { notice('Google identity verification was not completed.', 'error'); return; }
-        accessToken = response.credential; // short-lived Google ID token, never Firestore OAuth scope
-        renewIdleLock();
-        await fetchEvents();
-      }
-    });
-    ui.loginButton.replaceChildren();
-    google.accounts.id.renderButton(ui.loginButton, {
-      type: 'standard', theme: 'outline', size: 'large',
-      text: 'signin_with', width: 240
-    });
-    googleInitialized = true;
-    notice('Use the Google sign-in control above to continue.');
-    return true;
-  };
-  if (initialize()) return;
-  notice('Loading Google sign-in…');
-  let attempts = 0;
-  const wait = setInterval(() => {
-    if (initialize() || ++attempts >= 100) {
-      clearInterval(wait);
-      if (attempts >= 100 && !window.google?.accounts?.id)
-        notice('Google sign-in did not load. Refresh the page and try again.', 'error');
-    }
-  }, 100);
+async function openAdminSession() {
+  try {
+    const response=await fetch('/api/tss-admin-session',{credentials:'same-origin',cache:'no-store',redirect:'error'});
+    const data=await response.json();
+    if(!response.ok||!data.ok)throw Error('Admin sign-in required. Open Admin Login to continue.');
+    csrf=data.csrf;sessionExpiresAt=data.expiresAt;sessionActive=true;
+    renewIdleLock();await fetchEvents();
+  }catch(e){lock(e.message);}
+}
+async function logout() {
+  try {
+    const response=await fetch('/api/tss-admin-session',{method:'DELETE',credentials:'same-origin',cache:'no-store',redirect:'error',headers:{'X-TSS-CSRF':csrf}});
+    if(!response.ok)throw Error('Logout could not be confirmed. Retry.');
+    lock('Logged out.');
+  }catch(e){notice(e.message,'error');}
 }
 async function enableAlerts() {
-  if (!accessToken) return;
+  if (!sessionActive) return;
   if (!('Notification' in window)) { notice('This browser does not support local notifications. Use Refresh to check new events.'); return; }
   const permission = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
   if (permission !== 'granted') { notice('Browser notification permission was not granted. The inbox remains usable.'); return; }
   alertsEnabled = true;
   ui.notifyButton.textContent = 'Alerts on (while open)';
-  if (!monitor) monitor = setInterval(() => { if (accessToken && !document.hidden) fetchEvents({ quiet: true }); }, 60000);
+  if (!monitor) monitor = setInterval(() => { if (sessionActive && !document.hidden) fetchEvents({ quiet: true }); }, 60000);
   notice('Private event alerts enabled only while this page is open and unlocked. No background service is running.', 'ok');
 }
-signIn();
 
-ui.lockButton.addEventListener('click', () => lock());
+
+ui.lockButton.textContent='Log out';
+ui.lockButton.addEventListener('click', logout);
 ui.refreshButton.addEventListener('click', () => fetchEvents());
 ui.notifyButton.addEventListener('click', enableAlerts);
 ui.kindFilter.addEventListener('change', renderList);
@@ -266,10 +251,13 @@ ui.copyDraft.addEventListener('click', async () => {
     ui.draftStatus.textContent = 'Clipboard unavailable. Select and copy the draft manually.';
   }
 });
-lock('Private WhatsApp inbox preview. Connect the TSS owner account to continue.');
+lock('Checking your Admin session…');
+openAdminSession();
+setInterval(()=>{if(sessionActive && Date.now()>=sessionExpiresAt)lock('Admin session expired. Open Admin Login to continue.');},1000);
 
 // Any owner interaction extends the short active-session window. Do not persist it.
 for (const eventName of ['pointerdown', 'keydown']) {
   document.addEventListener(eventName, renewIdleLock, { passive: true });
 }
+
 

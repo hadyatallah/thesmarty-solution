@@ -11,15 +11,15 @@
 <title>TSS | Private WhatsApp Inbox Preview</title>
 <link rel="icon" href="/favicon.ico">
 <link rel="stylesheet" href="/whatsapp-inbox/style.css">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="/data-center/config.js" defer></script>
-<script type="module" src="/whatsapp-inbox/app.js?v=reader-diagnostic-20261021-v3"></script>
+
+
+<script type="module" src="/whatsapp-inbox/app.js?v=admin-session-20261021"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to inbox</a>
 <header class="topbar">
   <a class="brand" href="/"><span class="mark" aria-hidden="true">TSS</span><span><strong>THE SMARTY SOLUTION</strong><small>PRIVATE WHATSAPP INBOX · PREVIEW</small></span></a>
-  <nav aria-label="Owner workspaces"><a href="/data-center/">Data Center</a><a href="/research-center/">Research Center</a></nav>
+  <nav aria-label="Owner workspaces"><a href="/admin-login/">Admin workspace</a><a href="/data-center/">Data Center</a><a href="/research-center/">Research Center</a></nav>
   <div class="actions"><span id="identity">Locked</span><button type="button" id="lockButton" class="secondary" hidden>Lock</button></div>
 </header>
 <main id="main" class="container">
@@ -27,9 +27,8 @@
   <div id="notice" class="notice" role="status" aria-live="polite">Google owner sign-in is required. No messages are publicly accessible.</div>
   <section id="loginCard" class="login">
     <h2>Owner sign-in required</h2>
-    <p>This screen reads the existing TSS Firestore inbox using an owner-approved short-lived Google token. Your session stays in this browser tab, and no credentials are saved by the website.</p>
-    <div id="loginButton" aria-label="Sign in with the TSS Google account"></div>
-    <p class="fine">Expected account: <strong>thesmartysolution@gmail.com</strong>. Google verifies your identity. Firestore access uses a separate read-only server identity. No Google Cloud IAM roles or credentials are created.</p>
+    <p>Sign in once through the TSS Admin workspace to view private events.</p>
+    <a id="loginButton" href="/admin-login/">Open Admin Login →</a>
   </section>
   <section id="inboxShell" hidden>
     <div class="toolbar">
@@ -60,4 +59,5 @@
 <footer class="site-footer">The Smarty Solution Ltd · Owner-only preview · No outbound WhatsApp API calls · <a href="/privacy.html">Privacy, Retention &amp; Deletion</a></footer>
 </body>
 </html>
+
 
