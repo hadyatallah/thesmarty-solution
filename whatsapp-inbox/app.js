@@ -174,11 +174,9 @@ function signIn() {
       ui.loginButton.disabled = false;
     }
   });
-  google.accounts.id.prompt(notification => {
-    if (notification.isNotDisplayed?.() || notification.isSkippedMoment?.()) {
-      notice('Google sign-in prompt unavailable. Check popup/cookie settings or use the Google account chooser.', 'error');
-    }
-  });
+  google.accounts.id.renderButton(ui.loginButton, { type: 'standard', theme: 'outline', size: 'large', text: 'signin_with' });
+  ui.loginButton.disabled = true;
+  notice('Select the TSS Google account in the Google sign-in control.');
 }
 async function enableAlerts() {
   if (!accessToken) return;
