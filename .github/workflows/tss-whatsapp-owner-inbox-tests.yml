@@ -5,6 +5,8 @@ on:
       - 'api/tss-admin-session.js'
       - 'lib/tssAdminSession.mjs'
       - 'tests/tssAdminSession.test.mjs'
+      - 'tests/tssAdminWriter.test.mjs'
+      - 'scripts/tss-admin-session-writer-iam.sh'
       - 'admin-login/**'
       - 'api/tss-whatsapp-inbox.js'
       - 'lib/tssWhatsappInbox.mjs'
@@ -18,6 +20,8 @@ on:
       - 'api/tss-admin-session.js'
       - 'lib/tssAdminSession.mjs'
       - 'tests/tssAdminSession.test.mjs'
+      - 'tests/tssAdminWriter.test.mjs'
+      - 'scripts/tss-admin-session-writer-iam.sh'
       - 'admin-login/**'
       - 'api/tss-whatsapp-inbox.js'
       - 'lib/tssWhatsappInbox.mjs'
@@ -41,7 +45,9 @@ jobs:
       - run: node --check lib/tssWhatsappInbox.mjs
       - run: node --check api/tss-whatsapp-inbox.js
       - run: node --check whatsapp-inbox/app.js
-      - run: node --test tests/tssAdminSession.test.mjs tests/tssWhatsapp*.test.mjs tests/admin-login-auth.test.mjs tests/private-workspaces-links.test.mjs data-center/tests/*.test.mjs
+      - run: node --test tests/tssAdmin*.test.mjs tests/tssWhatsapp*.test.mjs tests/admin-login-auth.test.mjs tests/private-workspaces-links.test.mjs data-center/tests/*.test.mjs
       - run: node --check admin-login/session.js
 
 
+      - run: bash -n scripts/tss-admin-session-writer-iam.sh
+      - run: python3 tests/tssAdminWriterIam.test.py

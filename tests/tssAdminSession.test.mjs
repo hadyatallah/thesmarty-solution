@@ -6,7 +6,7 @@ import {createSessionService,firestoreSessionStore} from '../lib/tssAdminSession
 import {createInboxHandler} from '../lib/tssWhatsappInbox.mjs';
 const owner='thesmartysolution@gmail.com',origin='https://whatsapp-preview.thesmartysolution.com';
 const client='103840050410-dlhipb15600ot54jk7m6qj0olrbms7i4.apps.googleusercontent.com';
-const env={TSS_ADMIN_SESSION_ENABLED:'true',TSS_ADMIN_ORIGIN:origin,TSS_WHATSAPP_OWNER_EMAIL:owner,TSS_WHATSAPP_FIRESTORE_PARENT:'projects/tss-crm-508908/databases/(default)/documents',TSS_WHATSAPP_READER_AUTH_READY:'true',TSS_WHATSAPP_READER_SERVICE_ACCOUNT_EMAIL:'tss-whatsapp-inbox-reader@tss-crm-508908.iam.gserviceaccount.com',TSS_WHATSAPP_GOOGLE_CLIENT_ID:client};
+const env={TSS_ADMIN_SESSION_WRITER_SERVICE_ACCOUNT_EMAIL:'tss-admin-session-writer@tss-crm-508908.iam.gserviceaccount.com',TSS_ADMIN_SESSION_ENABLED:'true',TSS_ADMIN_ORIGIN:origin,TSS_WHATSAPP_OWNER_EMAIL:owner,TSS_WHATSAPP_FIRESTORE_PARENT:'projects/tss-crm-508908/databases/(default)/documents',TSS_WHATSAPP_READER_AUTH_READY:'true',TSS_WHATSAPP_READER_SERVICE_ACCOUNT_EMAIL:'tss-whatsapp-inbox-reader@tss-crm-508908.iam.gserviceaccount.com',TSS_WHATSAPP_GOOGLE_CLIENT_ID:client};
 const hash=s=>createHash('sha256').update(s).digest('hex');
 function harness(overrides={}) {
  let now=1000000;const records=new Map(),revoked=new Set();let verifyCalls=0;
@@ -48,7 +48,7 @@ test('session Firestore uses separate reader and create-only writer, never PATCH
  const calls=[];const store=firestoreSessionStore({env,getToken:async(_env,key)=>key,fetcher:async(url,options)=>{calls.push({url,options});return options.method==='GET'?new Response('',{status:404}):Response.json({});}});
  await store.create('a'.repeat(64),{origin,csrf:'test',expiresAt:Date.now()+1000});await store.get('a'.repeat(64));await store.revoke('a'.repeat(64));
  assert.deepEqual(calls.map(c=>c.options.method),['POST','GET','POST']);
- assert.match(calls[0].options.headers.Authorization,/TSS_WHATSAPP_SERVICE_ACCOUNT_EMAIL/);
+ assert.match(calls[0].options.headers.Authorization,/TSS_ADMIN_SESSION_WRITER_SERVICE_ACCOUNT_EMAIL/);
  assert.match(calls[1].options.headers.Authorization,/TSS_WHATSAPP_READER_SERVICE_ACCOUNT_EMAIL/);
  assert.ok(calls.every(c=>!c.url.includes('tss_whatsapp_inbox')));
 });
