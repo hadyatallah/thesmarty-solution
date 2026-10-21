@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { createInboxHandler } from '../lib/tssWhatsappInbox.mjs';
+import { keylessToken } from '../lib/tssWhatsappGoogle.mjs';
 const { Gaxios } = createRequire(import.meta.url)('gaxios');
 
 test('real Google library exchanges a synthetic Vercel subject for the dedicated reader before Firestore', async t => {
