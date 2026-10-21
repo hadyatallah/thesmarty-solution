@@ -158,22 +158,36 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
 }
 function signIn() {
   if (accessToken) return;
-  if (!/^[0-9]+-[a-z0-9-]+\.apps\.googleusercontent\.com$/.test(googleClientId)) {
+  if (!/^[0-9]+-[a-z0-9-]+\\.apps\\.googleusercontent\\.com$/.test(googleClientId)) {
     notice('The existing TSS Google OAuth client is unavailable. No Google credentials were requested.', 'error'); return;
   }
-  if (!window.google?.accounts?.id) { notice('Google Identity Services has not loaded.', 'error'); return; }
-  google.accounts.id.initialize({
-    client_id: googleClientId,
-    auto_select: false,
-    callback: async response => {
-      if (!response?.credential) { notice('Google identity verification was not completed.', 'error'); return; }
-      accessToken = response.credential; // short-lived Google ID token, never Firestore OAuth scope
-      renewIdleLock();
-      await fetchEvents();
+  const render = () => {
+    if (accessToken || !window.google?.accounts?.id) return false;
+    google.accounts.id.initialize({
+      client_id: googleClientId,
+      auto_select: false,
+      callback: async response => {
+        if (!response?.credential) { notice('Google identity verification was not completed.', 'error'); return; }
+        accessToken = response.credential; // short-lived Google ID token, never Firestore OAuth scope
+        renewIdleLock();
+        await fetchEvents();
+      }
+    });
+    ui.loginButton.replaceChildren();
+    google.accounts.id.renderButton(ui.loginButton, { type: 'standard', theme: 'outline', size: 'large', text: 'signin_with' });
+    notice('Select the TSS Google account in the Google sign-in control.');
+    return true;
+  };
+  if (render()) return;
+  notice('Loading Google sign-in…');
+  let attempts = 0;
+  const wait = setInterval(() => {
+    if (render() || ++attempts >= 100) {
+      clearInterval(wait);
+      if (attempts >= 100 && !window.google?.accounts?.id)
+        notice('Google sign-in did not load. Refresh the page and try again.', 'error');
     }
-  });
-  google.accounts.id.renderButton(ui.loginButton, { type: 'standard', theme: 'outline', size: 'large', text: 'signin_with' });
-  notice('Select the TSS Google account in the Google sign-in control.');
+  }, 100);
 }
 async function enableAlerts() {
   if (!accessToken) return;
