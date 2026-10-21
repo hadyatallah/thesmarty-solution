@@ -1,3 +1,14 @@
+## Test-WABA subscription inspection — 21 October 2026, 03:30 Nicosia
+
+Owner ran **read-only** `GET /v26.0/2882413005471663/subscribed_apps` in Graph API Explorer, selected TSS Publisher app and `whatsapp_business_management`-permitted user access token. Meta returned only one app:
+- `WA DevX Webhook Events 1P App`, app ID `2202427980234937`
+
+TSS Publisher app `1707395857227784` was **not** returned. This is the **test WABA**, not the TSS production WABA or Cyprus mobile number. App-level WhatsApp callback and `messages` field are verified separately, but test-WABA subscription is **NOT ACCEPTED** yet.
+
+Next owner action in Explorer: change only method to `POST` on the *same test WABA* `/2882413005471663/subscribed_apps` with TSS Publisher selected; **do not DELETE the existing DevX subscription**. POST is Meta's documented subscription action, and then use GET to inspect whether the TSS app is present. If authorization is insufficient, stop without repeated attempts and request exact error. Never change production WABA or register any phone number on this step.
+
+---
+
 ## Meta app subscription confirmed — 21 October 2026, 03:20 Nicosia
 
 The owner ran the Meta registration helper in **read-only mode** (`python3 TSS_Meta_Webhook_Setup_2026-10-21.py </dev/null`) after an earlier Meta registration POST returned HTTP 200 but immediate readback was empty. The subsequent read returned:
