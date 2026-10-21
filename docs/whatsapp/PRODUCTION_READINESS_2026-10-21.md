@@ -20,7 +20,7 @@
 | Live operator inbox / readback | BLOCKED | Webhook service account has Firestore document-create only; no protected operator review/read interface is deployed |
 | Authorized outbound reply channel | BLOCKED | Webhook intentionally has no Graph API send capability or agent workflow |
 | Data retention / deletion implementation | NOT COMPLETE | Firestore stores message events `held_for_review`; no verified retention deletion automation or operator deletion procedure |
-| Approved privacy and deletion notice for Cloud API | REVIEW PENDING | Draft `privacy.html` update and `data-deletion.html` on PR #117 branch **not published** |
+| Combined privacy, retention and deletion instructions | PUBLISHED (website) | Owner approved one page at `https://www.thesmartysolution.com/privacy.html` on 21 October 2026; separate deletion URL intentionally not published |
 | Billing / pricing review and approval | PENDING | Meta dashboard displayed Payment: Not added; no paid services without owner approval |
 
 The Meta dashboard's canned sample can include WABA and phone IDs outside the authorized test pair. The resulting HTTP 403 is a correct security safeguard, **not** proof the receiver failed cryptographic verification. Do not expand the allowlist for the canned sample.
@@ -29,21 +29,21 @@ The Meta dashboard's canned sample can include WABA and phone IDs outside the au
 
 **Currently supported facts:** Business verification showed Complete in the owner's Meta WhatsApp setup screenshot. App was Unpublished, and an earlier Meta Basic Settings inspection reported a blank Privacy Policy URL, Terms URL, Data Deletion URL and category; this is a historical checkpoint, not fresh Basic Settings readback.
 
-**Staged publication material in this draft PR:**
+**Approved and published website copy (not Meta app publication):**
 
-- Public-facing privacy text expanded to cover website, email, WhatsApp messages/metadata, provider processing and deletion choices.
-- `data-deletion.html` draft explains the request mechanism using `info@thesmartysolution.com`, scope and lawful retention exceptions.
+- One consolidated `privacy.html` page explains website/email/WhatsApp data, retention, provider processing, and deletion requests via `info@thesmartysolution.com`.
+- Home footer has one link: `Privacy, Retention & Deletion`. No distinct `data-deletion.html` was published; the draft file was removed from PR #117.
 
-**Do not claim these URLs are live until a separate owner-approved website release has been deployed and tested.**
+**Verified website release:** Production deployment `dpl_6EjwQmZ7WLkPW2t5fG66ikijeb8o` published commit `7a7fa6b1958bcfea4a02d082e26937438eff6a66`. The live homepage/footer and `privacy.html` returned 200; the legacy nonexistent `data-deletion.html` returned 404 as expected.
 
-Before pressing Publish, inspect Meta's **current** Basic Settings / Publish requirements. Populate or verify only the fields Meta actually requires. Candidate links after approved release:
+Before pressing **Meta app Publish**, inspect Meta's **current** Basic Settings / Publish requirements. Populate or verify only fields Meta actually requires. Current public links:
 
 - Privacy: `https://www.thesmartysolution.com/privacy.html`
-- Deletion instructions: `https://www.thesmartysolution.com/data-deletion.html`
+- Deletion instructions section on same page: `https://www.thesmartysolution.com/privacy.html#data-deletion`
 - Terms: **no approved TSS terms page exists; determine if Meta requires it, draft and request legal review if required**
 - Category, app icon, app domains and support address: inspect, do not invent values.
 
-**Owner review required:** confirm the published privacy wording accurately reflects real TSS practices and make an explicit retention/deletion policy decision. Legal/privacy review is recommended where applicable. Filling in Basic Settings is preparatory; **publication remains a separate explicit approval**.
+**Owner approved publication of the consolidated website notice**, but an operational retention/deletion policy and any applicable legal/privacy review are still outstanding. Filling in Meta Basic Settings is preparatory; **Meta app publication remains a separate explicit approval**.
 
 Meta's privacy guidance emphasizes explaining data categories, purposes and a deletion route. See https://developers.meta.com/vr/policy/privacy-policy/ (broader Meta platform reference; not a substitute for WhatsApp-specific terms).
 
@@ -103,7 +103,7 @@ Unknowns requiring verified current Meta dashboard state: actual publication eli
 
 ## 7. Release controls
 
-- GitHub PR #117 remains **draft** until owner approves any legal copy, operational IAM grants and production messaging behavior.
+- GitHub PR #117 remains **draft**: owner has approved only the published unified website notice, not new operational IAM grants, outbound messaging, Meta app publication or phone migration.
 - Existing Research Center, Data Center, HubSpot/Outlook, website and keyless Google configuration must remain intact.
 - No TinyFish; no paid services without advance approval.
 - Keep approved TSS email signature for any later commercial email. This webhook stage sends **no** commercial email or WhatsApp messages.
