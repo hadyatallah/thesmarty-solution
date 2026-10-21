@@ -125,7 +125,19 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
       lock('Google identity validation failed' + reason + '.'); return;
     }
     if (data.error === 'reader_token_rejected') {
-      throw Error('The dedicated Firestore reader token was rejected. Owner identity was accepted.'); 
+      const reasons = {
+        access_token_expired: 'access token expired',
+        access_token_type_unsupported: 'access token type unsupported',
+        access_token_scope_insufficient: 'access token scope insufficient',
+        auth_token_invalid: 'authentication token invalid',
+        credentials_missing: 'credentials missing',
+        account_state_invalid: 'account state invalid',
+        service_disabled: 'service disabled', consumer_invalid: 'consumer invalid',
+        google_unauthenticated: 'Google unauthenticated',
+        unclassified_upstream_401: 'unclassified upstream 401'
+      };
+      const reason = reasons[data.reason] || 'unclassified upstream 401';
+      throw Error('The dedicated Firestore reader token was rejected (' + reason + '). Owner identity was accepted.'); 
     }
     if (!response.ok || !data.ok || !Array.isArray(data.records)) {
       if (response.status === 403 && data.error === 'firestore_permission_or_scope_denied')
@@ -239,3 +251,4 @@ lock('Private WhatsApp inbox preview. Connect the TSS owner account to continue.
 for (const eventName of ['pointerdown', 'keydown']) {
   document.addEventListener(eventName, renewIdleLock, { passive: true });
 }
+

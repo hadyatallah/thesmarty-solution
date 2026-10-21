@@ -4,15 +4,19 @@ on:
     paths:
       - 'api/tss-whatsapp-inbox.js'
       - 'lib/tssWhatsappInbox.mjs'
+      - 'lib/tssWhatsappGoogle.mjs'
       - 'whatsapp-inbox/**'
       - 'tests/tssWhatsappInbox.test.mjs'
+      - 'tests/tssWhatsappReaderExchange.test.mjs'
       - '.github/workflows/tss-whatsapp-owner-inbox-tests.yml'
   pull_request:
     paths:
       - 'api/tss-whatsapp-inbox.js'
       - 'lib/tssWhatsappInbox.mjs'
+      - 'lib/tssWhatsappGoogle.mjs'
       - 'whatsapp-inbox/**'
       - 'tests/tssWhatsappInbox.test.mjs'
+      - 'tests/tssWhatsappReaderExchange.test.mjs'
 permissions:
   contents: read
 jobs:
@@ -29,4 +33,5 @@ jobs:
       - run: node --check lib/tssWhatsappInbox.mjs
       - run: node --check api/tss-whatsapp-inbox.js
       - run: node --check whatsapp-inbox/app.js
-      - run: node --test tests/tssWhatsappInbox.test.mjs
+      - run: node --test tests/tssWhatsappInbox.test.mjs tests/tssWhatsappReaderExchange.test.mjs
+

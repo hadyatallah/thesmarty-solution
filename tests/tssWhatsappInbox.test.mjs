@@ -171,3 +171,23 @@ test('provider errors and unexpected responses fail closed', async () => {
   assert.equal(res.statusCode, 503);
   assert.doesNotMatch(JSON.stringify(res), /SECRET_VALUE_NEVER_LOG_THIS/);
 });
+
+
+test('Firestore 401 uses only allowlisted owner-visible categories and never raw provider details', async () => {
+  for (const [body, expected] of [
+    [{ error: { status: 'UNAUTHENTICATED', message: 'SECRET_TOKEN_NEVER_EXPOSE', details: [{ '@type': 'type.googleapis.com/google.rpc.ErrorInfo', domain: 'googleapis.com', reason: 'ACCESS_TOKEN_EXPIRED', metadata: { secret: 'SECRET_TOKEN_NEVER_EXPOSE' } }] } }, 'access_token_expired'],
+    [{ error: { status: 'UNAUTHENTICATED', message: 'SECRET_TOKEN_NEVER_EXPOSE', details: [{ '@type': 'type.googleapis.com/google.rpc.ErrorInfo', domain: 'googleapis.com', reason: 'SECRET_TOKEN_NEVER_EXPOSE' }] } }, 'google_unauthenticated'],
+    [{ error: { details: [{ '@type': 'untrusted', domain: 'googleapis.com', reason: 'ACCESS_TOKEN_EXPIRED' }] } }, 'unclassified_upstream_401'],
+    [{ error: { details: [{ '@type': 'type.googleapis.com/google.rpc.ErrorInfo', domain: 'untrusted', reason: 'ACCESS_TOKEN_EXPIRED' }] } }, 'unclassified_upstream_401'],
+    [{ error: { details: 'malformed', message: 'SECRET_TOKEN_NEVER_EXPOSE' } }, 'unclassified_upstream_401']
+  ]) {
+    const h = harness({ storeResponse: Response.json(body, { status: 401 }) });
+    const result = await h.run();
+    assert.equal(result.statusCode, 503);
+    assert.deepEqual(result.body, { ok: false, error: 'reader_token_rejected', reason: expected });
+    assert.equal(h.verifyCount, 1);
+    assert.doesNotMatch(JSON.stringify(result.body), /SECRET_TOKEN_NEVER_EXPOSE|metadata/);
+  }
+  const malformed = harness({ storeResponse: new Response('<private upstream failure>', { status: 401 }) });
+  assert.equal((await malformed.run()).body.reason, 'unclassified_upstream_401');
+});
