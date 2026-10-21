@@ -6,7 +6,7 @@ import {createSessionService,firestoreSessionStore} from '../lib/tssAdminSession
 import {createInboxHandler} from '../lib/tssWhatsappInbox.mjs';
 const owner='thesmartysolution@gmail.com',origin='https://whatsapp-preview.thesmartysolution.com';
 const client='103840050410-dlhipb15600ot54jk7m6qj0olrbms7i4.apps.googleusercontent.com';
-const env={TSS_ADMIN_SESSION_WRITER_SERVICE_ACCOUNT_EMAIL:'tss-admin-session-writer@tss-crm-508908.iam.gserviceaccount.com',TSS_ADMIN_SESSION_ENABLED:'true',TSS_ADMIN_ORIGIN:origin,TSS_WHATSAPP_OWNER_EMAIL:owner,TSS_WHATSAPP_FIRESTORE_PARENT:'projects/tss-crm-508908/databases/(default)/documents',TSS_WHATSAPP_READER_AUTH_READY:'true',TSS_WHATSAPP_READER_SERVICE_ACCOUNT_EMAIL:'tss-whatsapp-inbox-reader@tss-crm-508908.iam.gserviceaccount.com',TSS_WHATSAPP_GOOGLE_CLIENT_ID:client};
+const env={VERCEL_ENV:'preview',TSS_ADMIN_SESSION_WRITER_SERVICE_ACCOUNT_EMAIL:'tss-admin-session-writer@tss-crm-508908.iam.gserviceaccount.com',TSS_ADMIN_SESSION_ENABLED:'true',TSS_ADMIN_ORIGIN:origin,TSS_WHATSAPP_OWNER_EMAIL:owner,TSS_WHATSAPP_FIRESTORE_PARENT:'projects/tss-crm-508908/databases/(default)/documents',TSS_WHATSAPP_READER_AUTH_READY:'true',TSS_WHATSAPP_READER_SERVICE_ACCOUNT_EMAIL:'tss-whatsapp-inbox-reader@tss-crm-508908.iam.gserviceaccount.com',TSS_WHATSAPP_GOOGLE_CLIENT_ID:client};
 const hash=s=>createHash('sha256').update(s).digest('hex');
 function harness(overrides={}) {
  let now=1000000;const records=new Map(),revoked=new Set();let verifyCalls=0;

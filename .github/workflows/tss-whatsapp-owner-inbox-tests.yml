@@ -7,6 +7,9 @@ on:
       - 'tests/tssAdminSession.test.mjs'
       - 'tests/tssAdminWriter.test.mjs'
       - 'tests/tssAdminWriterIam.test.py'
+      - 'tests/tssAdminProduction.test.mjs'
+      - 'tests/tssAdminProductionIam.test.py'
+      - 'scripts/tss-admin-production-iam.sh'
       - 'scripts/tss-admin-session-writer-iam.sh'
       - 'admin-login/**'
       - 'api/tss-whatsapp-inbox.js'
@@ -23,6 +26,9 @@ on:
       - 'tests/tssAdminSession.test.mjs'
       - 'tests/tssAdminWriter.test.mjs'
       - 'tests/tssAdminWriterIam.test.py'
+      - 'tests/tssAdminProduction.test.mjs'
+      - 'tests/tssAdminProductionIam.test.py'
+      - 'scripts/tss-admin-production-iam.sh'
       - 'scripts/tss-admin-session-writer-iam.sh'
       - 'admin-login/**'
       - 'api/tss-whatsapp-inbox.js'
@@ -53,3 +59,6 @@ jobs:
 
       - run: bash -n scripts/tss-admin-session-writer-iam.sh
       - run: python3 tests/tssAdminWriterIam.test.py
+      - run: bash -n scripts/tss-admin-production-iam.sh
+      - run: python3 tests/tssAdminProductionIam.test.py
+
