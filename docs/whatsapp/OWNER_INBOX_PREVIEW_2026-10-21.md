@@ -1,6 +1,6 @@
 # TSS WhatsApp Owner Inbox | Preview Implementation & Acceptance Gates
 **Date:** 21 October 2026  
-**Mode:** development preview only; NO production release or WhatsApp number migration approved
+**Mode:** protected Vercel development preview deployed; NO production release or WhatsApp number migration approved
 
 ## Objective and current state
 
@@ -31,7 +31,7 @@ Firestore operations can consume existing Google Cloud quota; no new paid infras
 
 ### Environment configuration
 
-**Production stays unchanged.** New preview-only nonsecret Vercel settings required before live test:
+**Production stays unchanged.** The following nonsecret, **branch-scoped Preview-only** Vercel settings were created and read back on 21 October:
 
 - `TSS_WHATSAPP_INBOX_ENABLED=true` on **Preview** only
 - `TSS_WHATSAPP_OWNER_EMAIL=thesmartysolution@gmail.com` on **Preview** only
@@ -43,19 +43,29 @@ The current sender webhook keeps its independent `TSS_WHATSAPP_WEBHOOK_ENABLED` 
 
 | Gate | Status until tested |
 |---|---|
-| JS syntax, unit test: exact owner email, Google identity verification, unauthorized access denied | NOT RUN |
-| Unit test: fixed collection, GET-only, no send, strict OAuth bearer | NOT RUN |
-| Preview deployment READY and private HTML loads (without public data) | NOT RUN |
-| Preview unauthenticated API returns 401 (not event payload) | NOT RUN |
-| Google OAuth owner consent for `datastore` scope | NOT RUN — requires user's own Google authentication |
+| JS syntax, unit test: exact owner email, Google identity verification, unauthorized access denied | **PASSED** — GitHub Actions run 39530730896 |
+| Unit test: fixed collection, GET-only, no send, strict OAuth bearer | **PASSED** — GitHub Actions run 39530730896 |
+| Preview deployment READY and private HTML loads (without public data) | **PASSED** — Vercel dpl_C9fbHxt5EHB8TvrLBDkZmeuBRpNQ; static HTML/JS/CSS and existing workspaces returned 200 |
+| Preview unauthenticated API returns 401 (not event payload) | **UNIT PASSED / LIVE PENDING** — Vercel Preview Authentication blocked independent API fetch; do not infer the app's HTTP response |
+| Google OAuth owner consent for `datastore` scope | **NOT RUN** — requires user authorization; preview origin may not yet be registered on the existing Google OAuth client |
 | Real Firestore list returns expected signed test records | NOT RUN |
 | Replay records remain distinct/unchanged; messages render safely | NOT RUN |
-| Draft is local only and no Graph API request occurs | UNIT TEST / MANUAL REVIEW |
+| Draft is local only and no Graph API request occurs | **CODE INSPECTED** — static page/JS is copy-only; no sender route or Graph API call. Manual browser copy test pending |
 | Manual browser alerts while tab open | NOT RUN |
 | Retention policy, backend notifications, approved send/token/audit | BLOCKED PENDING OWNER DECISIONS |
 | Meta app publication and production number migration | **NOT AUTHORIZED** |
 
 If Google OAuth rejects the new `datastore` scope, **do not** weaken access controls or add broad IAM. Capture only the nonsecret error code and present a narrower authorization alternative.
+
+## Live preview evidence
+
+- Draft pull request: https://github.com/hadyatallah/thesmarty-solution/pull/118
+- Protected preview page: https://thesmarty-solution-agent-5re0lufhi-tss21.vercel.app/whatsapp-inbox/
+- Vercel deployment: `dpl_C9fbHxt5EHB8TvrLBDkZmeuBRpNQ`, `READY`, from isolated branch `feat/whatsapp-owner-inbox-20261021`.
+- Automated inbox security CI: `39530730896` PASS; existing WhatsApp webhook CI: `39530730892` PASS.
+- The public `https://www.thesmartysolution.com/whatsapp-inbox/` currently returns 404. No customer access or live Google Firestore read has occurred through the new inbox.
+- Vercel Preview Authentication can intercept anonymous API test calls; frontend Google OAuth consent and real protected Firestore read remain unverified. An ephemeral preview origin may require authorization on the existing Google OAuth web client. **Do not alter OAuth settings or grant broad scopes until the owner reviews that requirement.**
+- Session lock after 15 minutes of inactivity and fail-closed clearing of private records upon refresh errors are implemented.
 
 ## Next work after preview review
 
