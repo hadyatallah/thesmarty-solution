@@ -23,7 +23,7 @@ EXPR='resource.name == "projects/tss-crm-508908/databases/(default)"'
 
 class FakeCloud:
  def __init__(self):
-  self.calls=[];self.writer=None;self.role=None;self.writerPolicy={'bindings':[]}
+  self.calls=[];self.writer=None;self.role=None;self.writerPolicy={'bindings':[]};self.dbReads=0;self.changeDatabase=False
   self.readerPolicy={'bindings':[{'role':'roles/iam.workloadIdentityUser','members':[PRINCIPAL]}]}
   self.projectPolicy={'bindings':[{'role':'projects/'+PROJECT+'/roles/tssWhatsappInboxReader','members':['serviceAccount:'+READER]}]}
  def run(self,command,**kwargs):
@@ -33,7 +33,10 @@ class FakeCloud:
   if a[:2]==['projects','describe']:data={'projectNumber':'103840050410'}
   elif a[:2]==['services','list']:data=[{'config':{'name':n}} for n in ['iam.googleapis.com','iamcredentials.googleapis.com','sts.googleapis.com','firestore.googleapis.com']]
   elif a[:3]==['iam','workload-identity-pools','providers']:data={'state':'ACTIVE','attributeMapping':{'google.subject':'assertion.sub'},'oidc':{'issuerUri':'https://oidc.vercel.com/tss21'}}
-  elif a[:3]==['firestore','databases','describe']:data={'locationId':'europe-west1'}
+  elif a[:3]==['firestore','databases','describe']:
+   self.dbReads+=1
+   data={'locationId':'europe-west1','earliestVersionTime':str(self.dbReads),'updateTime':'fixed-config-version','deleteProtectionState':'DELETE_PROTECTION_ENABLED'}
+   if self.changeDatabase and self.dbReads>1:data['deleteProtectionState']='DELETE_PROTECTION_DISABLED'
   elif a[:2]==['projects','get-ancestors']:data=[{'type':'project','id':'103840050410'}]
   elif a[:2]==['projects','get-iam-policy']:data=self.projectPolicy
   elif a[:3]==['iam','service-accounts','describe']:data=self.writer;missing=data is None
@@ -75,5 +78,16 @@ class ScriptTests(unittest.TestCase):
   cloud=FakeCloud();cloud.readerPolicy={'bindings':[]};r=self.execute(cloud,'--apply');self.assertEqual(r['result'],'BLOCKED');self.assertEqual(cloud.mutations(),[])
  def test_existing_broader_role_is_never_overwritten(self):
   cloud=FakeCloud();cloud.role={'includedPermissions':['datastore.entities.create','datastore.entities.delete']};r=self.execute(cloud,'--apply');self.assertEqual(r['result'],'BLOCKED');self.assertEqual(cloud.mutations(),[])
+
+ def test_moving_version_timestamp_does_not_mask_configuration_checks(self):
+  cloud=FakeCloud();r=self.execute(cloud,'--apply');self.assertEqual(r['protectedResourceReadback'].split(':')[0],'PASS')
+  self.assertNotEqual(r['databaseVersionWindow']['before'],r['databaseVersionWindow']['after'])
+  self.assertEqual(r['databaseConfigurationSnapshots']['before'],r['databaseConfigurationSnapshots']['after'])
+ def test_real_database_change_still_blocks_and_names_field(self):
+  cloud=FakeCloud();cloud.changeDatabase=True;r=self.execute(cloud,'--apply')
+  self.assertEqual(r['result'],'BLOCKED');self.assertEqual(r['protectedResourceChangedFields'],{'database':['deleteProtectionState']})
+ def test_verify_is_read_only_and_checks_configuration(self):
+  cloud=FakeCloud();self.execute(cloud,'--apply');cloud.calls=[]
+  r=self.execute(cloud,'--verify');self.assertEqual(r['iamReadback'],'PASS');self.assertEqual(cloud.mutations(),[])
 
 if __name__=='__main__':unittest.main()
