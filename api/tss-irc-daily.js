@@ -1,5 +1,7 @@
 
-import { timingSafeEqual } from 'node:crypto';
+import { createHash, timingSafeEqual } from 'node:crypto';
+import { createSessionService, sameOrigin } from '../lib/tssAdminSession.mjs';
+import { nicosiaDay, seasonActive, safeFailureCode } from '../lib/tssIrcRuntime.mjs';
 import { getVercelOidcToken } from '@vercel/oidc';
 import { ExternalAccountClient } from 'google-auth-library';
 import {
@@ -31,7 +33,7 @@ const IRC_RANGES = {
 const MASTER_RANGE = "'Companies'!A1:G5000";
 
 const utc = () => new Date().toISOString();
-const day = () => utc().slice(0, 10);
+const day = () => nicosiaDay(new Date());
 const text = value => String(value ?? '');
 const log = (event, details = {}) => console.info(JSON.stringify({
   component: 'tss-irc-research',
@@ -78,7 +80,8 @@ async function googleAccessToken() {
       `https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${serviceAccountEmail}:generateAccessToken`,
     // Google supplies its own audience as callback context. Do not forward it
     // as Vercel OIDC options, which would exchange for the wrong audience.
-    subject_token_supplier: { getSubjectToken: () => getVercelOidcToken() }
+    subject_token_supplier: { getSubjectToken: () => getVercelOidcToken() },
+    scopes: ['https://www.googleapis.com/auth/spreadsheets']
   });
 
   const tokenResponse = await authClient.getAccessToken();
@@ -97,7 +100,9 @@ function approvedMasterSheetId() {
 }
 
 function ircSheetId() {
-  return text(process.env.TSS_IRC_SPREADSHEET_ID) || APPROVED_IRC_SHEET_ID;
+  const configured = text(process.env.TSS_IRC_SPREADSHEET_ID);
+  if (configured && configured !== APPROVED_IRC_SHEET_ID) throw Error('IRC_WORKBOOK_CONFIGURATION_MISMATCH');
+  return APPROVED_IRC_SHEET_ID;
 }
 
 async function batchGet(token, spreadsheetId, ranges) {
@@ -107,6 +112,7 @@ async function batchGet(token, spreadsheetId, ranges) {
     GOOGLE + encodeURIComponent(spreadsheetId) + '/values:batchGet?' + query,
     {
       headers: { authorization: 'Bearer ' + token },
+      signal: AbortSignal.timeout(12000),
       cache: 'no-store'
     }
   );
@@ -159,6 +165,7 @@ async function batchWrite(token, data) {
     GOOGLE + encodeURIComponent(ircSheetId()) + '/values:batchUpdate',
     {
       method: 'POST',
+      signal: AbortSignal.timeout(12000),
       headers: {
         authorization: 'Bearer ' + token,
         'content-type': 'application/json'
@@ -181,7 +188,7 @@ function rowsForOverview(state, appendedReferralCount, scheduledRun) {
   const sent = queue.filter(row => ['SENT', 'SUBMITTED'].includes(String(row[14] || ''))).length;
   const schedulerValue = scheduledRun ? scheduledRun.finishedAt || scheduledRun.startedAt : 'NOT VERIFIED';
   const stateValue = scheduledRun
-    ? 'RESEARCH CYCLE COMPLETE / SCHEDULER VERIFIED / AUTO EMAILS OFF'
+    ? 'RESEARCH CYCLE COMPLETE / CRON LABEL RECORDED - VERIFY VERCEL LOG / AUTO EMAILS OFF'
     : 'RESEARCH CYCLE COMPLETE / SCHEDULER UNVERIFIED / AUTO EMAILS OFF';
   return [
     [buyers],
@@ -215,7 +222,7 @@ function parseRowsForRun(state) {
 
 function findScheduledResearchRun(state) {
   return parseRowsForRun(state)
-    .filter(x => x.runType === 'RESEARCH_CYCLE' && x.executionMode === 'VERCEL_CRON')
+    .filter(x => x.runType === 'RESEARCH_CYCLE' && x.executionMode === 'VERCEL_CRON' && x.outcome === 'RESEARCH_CYCLE_COMPLETE')
     .at(-1) || null;
 }
 
@@ -232,22 +239,38 @@ function dedupeSignals(signals) {
 }
 
 export default async function handler(req, res) {
-  if (req.method !== 'GET') return json(res, 405, { ok: false, error: 'method_not_allowed' });
-  const supplied = req.headers.authorization?.replace(/^Bearer\s+/i, '');
-  if (!authorised(supplied, process.env.CRON_SECRET)) {
-    return json(res, 401, { ok: false, error: 'unauthorised' });
+  if (!['GET', 'POST'].includes(req.method)) return json(res, 405, { ok: false, error: 'method_not_allowed' });
+  if (req.method === 'POST') {
+    if (process.env.TSS_ADMIN_SESSION_ENABLED !== 'true') return json(res, 503, { ok: false, error: 'admin_session_not_enabled' });
+    if (!sameOrigin(req, process.env)) return json(res, 403, { ok: false, error: 'csrf_origin_denied' });
+    try {
+      const session = await createSessionService().authenticate(req);
+      const csrf = req.headers['x-tss-csrf'];
+      if (typeof csrf !== 'string' || csrf.length !== 43 || createHash('sha256').update(csrf).digest('hex') !== session.csrfHash) {
+        return json(res, 403, { ok: false, error: 'csrf_token_invalid' });
+      }
+    } catch { return json(res, 401, { ok: false, error: 'owner_session_required' }); }
+  } else {
+    const supplied = req.headers.authorization?.replace(/^Bearer\s+/i, '');
+    if (!authorised(supplied, process.env.CRON_SECRET)) return json(res, 401, { ok: false, error: 'unauthorised' });
   }
-
-  const scheduled = /^vercel-cron\/1\.0$/i.test(text(req.headers['user-agent']));
-  const runId = 'IRC-RES-' + day();
+  // User-Agent is a label, not independent proof of an unattended invocation.
+  const scheduled = req.method === 'GET' && /^vercel-cron\/1\.0$/i.test(text(req.headers['user-agent']));
+  const season = req.query?.season;
+  if (season && !['summer', 'winter'].includes(season)) return json(res, 400, { ok: false, error: 'invalid_season' });
+  if (season && !seasonActive(season, new Date())) return json(res, 200, { ok: true, outcome: 'INACTIVE_SEASON', messagesSent: 0 });
+  const runId = 'IRC-RES-' + day() + (scheduled ? '' : '-MANUAL-' + Date.now());
   const startedAt = utc();
+  let token, state, stage = 'GOOGLE_AUTH', writeAttempted = false;
   log('invoked', { runId, executionMode: scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL' });
-
   try {
-    const token = await googleAccessToken();
-    const state = await readState(token);
-    const previousRun = parseRowsForRun(state).find(x => x.runId === runId);
-    if (previousRun) {
+    token = await googleAccessToken();
+    stage = 'IRC_READ';
+    state = await readState(token);
+    const settings = Object.fromEntries(state.settings.slice(1).map(row => [text(row[0]), text(row[1])]));
+    if (!/^true$/i.test(settings.daily_scheduler_enabled || '')) return json(res, 200, { ok: true, outcome: 'PAUSED', messagesSent: 0 });
+    const previousRun = parseRowsForRun(state).find(x => x.runId === runId && x.outcome === 'RESEARCH_CYCLE_COMPLETE');
+    if (previousRun && previousRun.outcome === 'RESEARCH_CYCLE_COMPLETE') {
       log('already_recorded', { runId, executionMode: previousRun.executionMode });
       return json(res, 200, {
         ok: true,
@@ -258,7 +281,9 @@ export default async function handler(req, res) {
       });
     }
 
+    stage = 'MASTER_READ';
     const masterRows = await readMaster(token);
+    stage = 'DISCOVERY';
     const district = DISCOVERY_DISTRICTS[dayRotationIndex(new Date())];
     const discovery = await discoverDeveloperSignals(fetch, district, 10);
     const signals = dedupeSignals(discovery.candidates);
@@ -273,6 +298,7 @@ export default async function handler(req, res) {
     const activityRows = [];
     const outcomes = [];
 
+    stage = 'FIRST_PARTY_VERIFICATION';
     const verified = await Promise.all(signals.map(async signal => ({
       signal,
       firstParty: await verifyFirstPartySource(fetch, signal.sellerURL)
@@ -479,10 +505,13 @@ export default async function handler(req, res) {
       values: overviewValues
     });
 
+    stage = 'IRC_WRITE';
+    writeAttempted = true;
     await batchWrite(token, writeData);
+    stage = 'READBACK';
 
     const verifyState = await readState(token);
-    const runReadback = parseRowsForRun(verifyState).find(x => x.runId === runId);
+    const runReadback = parseRowsForRun(verifyState).find(x => x.runId === runId && x.outcome === 'RESEARCH_CYCLE_COMPLETE');
     if (!runReadback) throw Error('SAVE_READBACK_RUN_MISSING');
 
     const savedIds = new Set((verifyState.referrals || []).slice(1).map(row => text(row[0])));
@@ -525,19 +554,32 @@ export default async function handler(req, res) {
       masterSource: 'MASTER_COMPANIES_DIRECT_SHEETS_API'
     });
   } catch (error) {
-    const code = text(error?.message || 'UNKNOWN').slice(0, 180);
+    const code = safeFailureCode(error);
+    let failurePersisted = false;
+    // Never blindly retry an ambiguous write. Preserve diagnostics only before
+    // a commercial/evidence batch could have committed. Auth failures stay in logs.
+    if (token && state && !writeAttempted) {
+      try {
+        await batchWrite(token, [{
+          range: a1Range('Runs', state.runs.length + 1, 13, 1),
+          majorDimension: 'ROWS',
+          values: [[runId, startedAt, utc(), 'Research runtime', 0, 0, 0, 0, 0, 'BLOCKED', JSON.stringify({ stage, code }), 'RESEARCH_CYCLE', scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL']]
+        }]);
+        failurePersisted = Boolean(parseRowsForRun(await readState(token)).find(x => x.runId === runId && x.outcome === 'BLOCKED'));
+      } catch { /* Primary failure remains authoritative. Never log provider bodies. */ }
+    }
     console.error(JSON.stringify({
       component: 'tss-irc-research',
       event: 'blocked',
       runId,
       executionMode: scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL',
-      error: code
+      error: code, stage, failurePersisted
     }));
     return json(res, 503, {
       ok: false,
       runId,
       outcome: 'BLOCKED',
-      error: code
+      error: code, stage, failurePersisted
     });
   }
 }
