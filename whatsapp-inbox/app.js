@@ -120,9 +120,12 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
       signal: AbortSignal.timeout(18000)
     });
     const data = await response.json().catch(() => ({ ok: false, error: 'invalid_server_response' }));
-    if (response.status === 401) {
+    if (response.status === 401 && data.error === 'google_identity_invalid') {
       const reason = data.reason ? ' (' + data.reason.replace(/_/g, ' ') + ')' : '';
       lock('Google identity validation failed' + reason + '.'); return;
+    }
+    if (data.error === 'reader_token_rejected') {
+      throw Error('The dedicated Firestore reader token was rejected. Owner identity was accepted.'); 
     }
     if (!response.ok || !data.ok || !Array.isArray(data.records)) {
       if (response.status === 403 && data.error === 'firestore_permission_or_scope_denied')
