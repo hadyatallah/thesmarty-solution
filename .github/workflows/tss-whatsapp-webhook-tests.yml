@@ -1,0 +1,55 @@
+name: WhatsApp webhook security tests
+on:
+  push:
+    paths: ['api/tss-whatsapp-webhook.js', 'lib/tssWhatsapp*.mjs', 'tests/tssWhatsapp*.test.mjs', '.github/workflows/tss-whatsapp-webhook-tests.yml']
+  pull_request:
+    paths: ['api/tss-whatsapp-webhook.js', 'lib/tssWhatsapp*.mjs', 'tests/tssWhatsapp*.test.mjs', '.github/workflows/tss-whatsapp-webhook-tests.yml']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node --test tests/tssWhatsapp*.test.mjs
+      - name: Live webhook invalid-challenge canary without secrets
+        run: |
+          node --input-type=module <<'JS'
+          const url = new URL('https://www.thesmartysolution.com/api/tss-whatsapp-webhook');
+          url.searchParams.set('hub.mode', 'subscribe');
+          url.searchParams.set('hub.verify_token', 'TSS_PUBLIC_NONSECRET_CANARY_20261021');
+          url.searchParams.set('hub.challenge', 'PUBLIC_TEST_ONLY');
+          try {
+            const res = await fetch(url, { redirect: 'manual', signal: AbortSignal.timeout(20000) });
+            console.log('WEBHOOK_CANARY_HTTP=' + res.status);
+            const body = (await res.text()).slice(0, 100);
+            console.log('WEBHOOK_CANARY_BODY=' + JSON.stringify(body));
+            console.log(res.status === 403 ? 'CHALLENGE_REJECTION_REACHED'
+              : res.status === 503 ? 'GOOGLE_DEPENDENCY_OR_DISABLED'
+              : 'OTHER_HTTP_STATUS_REQUIRES_INVESTIGATION');
+          } catch (e) {
+            console.log('WEBHOOK_CANARY_NETWORK_ERROR=' + String(e?.cause?.code || e?.name || 'FETCH_FAILED'));
+          }
+          try {
+            const res = await fetch('https://www.thesmartysolution.com/api/tss-whatsapp-webhook', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Hub-Signature-256': 'sha256=' + '0'.repeat(64)
+              },
+              body: JSON.stringify({ object: 'whatsapp_business_account', entry: [] }),
+              redirect: 'manual',
+              signal: AbortSignal.timeout(20000)
+            });
+            console.log('WEBHOOK_BAD_SIGNATURE_HTTP=' + res.status);
+            console.log('WEBHOOK_BAD_SIGNATURE_REJECTED=' + (res.status === 401));
+          } catch (e) {
+            console.log('WEBHOOK_BAD_SIGNATURE_NETWORK_ERROR=' + String(e?.cause?.code || e?.name || 'FETCH_FAILED'));
+          }
+          JS
