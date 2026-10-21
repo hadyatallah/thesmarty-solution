@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="/whatsapp-inbox/style.css">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="/data-center/config.js" defer></script>
-<script type="module" src="/whatsapp-inbox/app.js?v=reader-diagnostic-20261021-v2"></script>
+<script type="module" src="/whatsapp-inbox/app.js?v=reader-diagnostic-20261021-v3"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to inbox</a>
@@ -28,8 +28,8 @@
   <section id="loginCard" class="login">
     <h2>Owner sign-in required</h2>
     <p>This screen reads the existing TSS Firestore inbox using an owner-approved short-lived Google token. Your session stays in this browser tab, and no credentials are saved by the website.</p>
-    <div id="loginButton" aria-label="Sign in with the TSS Google account"><button type="button" class="primary" id="manualSignIn">Sign in with Google</button></div>
-    <p class="fine">Expected account: <strong>thesmartysolution@gmail.com</strong>. Google may request consent for Firestore read access. No Google Cloud IAM roles or credentials are created.</p>
+    <div id="loginButton" aria-label="Sign in with the TSS Google account"></div>
+    <p class="fine">Expected account: <strong>thesmartysolution@gmail.com</strong>. Google verifies your identity. Firestore access uses a separate read-only server identity. No Google Cloud IAM roles or credentials are created.</p>
   </section>
   <section id="inboxShell" hidden>
     <div class="toolbar">
