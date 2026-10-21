@@ -11,11 +11,11 @@ test('organisation research form requires explicit verification', () => {
   assert.ok(html.includes('research candidate only'));
 });
 
-test('dashboard and scheduler classify real Vercel research cycles as scheduler evidence', () => {
+test('dashboard separates cron labels from independently verified invocation', () => {
   assert.ok(html.includes('x.runType==="RESEARCH_CYCLE"&&x.executionMode==="VERCEL_CRON"'));
   assert.ok(html.includes('approved INDEX AI Agent API'));
   assert.ok(html.includes('Master Companies'));
-  assert.ok(html.includes('Every scheduled research run is recorded as <strong>RESEARCH_CYCLE</strong> with <strong>VERCEL_CRON</strong> execution mode'));
+  assert.ok(html.includes('The label alone does not prove an unattended invocation.'));
   assert.ok(!html.includes('Only an ELIGIBILITY_REVIEW run counts as scheduler evidence'));
 });
 

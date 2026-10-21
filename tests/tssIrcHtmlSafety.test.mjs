@@ -143,7 +143,7 @@ function response(){
 test('configured scheduler with no persisted run is shown as unverified, not active',async()=>{
  const h=createHarness();await h.login();await h.goto('scheduler');
  assert.match(h.get('content').innerHTML,/Configured \/ not verified/);
- assert.match(h.get('content').innerHTML,/no verified scheduler run yet/i);
+ assert.match(h.get('content').innerHTML,/no cron-labelled run yet/i);
  assert.match(h.get('content').innerHTML,/Off/);
 });
 
@@ -153,8 +153,8 @@ test('daily cron rejects unauthorised callers before touching sources',async()=>
  assert.equal(r.statusCode,401);
  assert.equal(JSON.parse(r.body).error,'unauthorised');
 });
-test('daily cron rejects non-GET methods',async()=>{
+test('daily endpoint rejects unsupported methods',async()=>{
  const r=response();
- await cronHandler({method:'POST',headers:{}},r);
+ await cronHandler({method:'DELETE',headers:{}},r);
  assert.equal(r.statusCode,405);
 });

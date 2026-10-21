@@ -104,6 +104,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     }
     assert.match(url,/^https:\/\/iamcredentials.googleapis.com\/v1\/projects\/-\/serviceAccounts\/tss-hubspot-sheets-reader@tss-crm-508908.iam.gserviceaccount.com:generateAccessToken$/);
     assert.equal(new Headers(options.headers).get('authorization'),'Bearer synthetic-federated-token');
+    assert.deepEqual(options.data.scope,['https://www.googleapis.com/auth/spreadsheets']);
     return {data:{accessToken:'synthetic-sheets-impersonated-token',expireTime:new Date(Date.now()+3600000).toISOString()}};
   });
   const prev = {
@@ -117,11 +118,12 @@ test('Production-style cron run performs discovery, first-party verification, Ma
   };
 
   process.env.CRON_SECRET = 'SYNTHETIC_TEST_KEY';
-  process.env.TSS_IRC_SPREADSHEET_ID = 'irc-test-sheet';
+  process.env.TSS_IRC_SPREADSHEET_ID = '1KFLZk_IlFY64IMpEW63wYvJdNF5jmfjZoRM79aVbBKs';
   process.env.TSS_MASTER_SPREADSHEET_ID = '1mZ7vd2UoGXlyxzwZ8Man593UhlLGt2uS1kIS3ZAWPsU';
 
   const database = makeDatabase();
   const calls = [];
+  let sourceMode = "results";
   const logs = [];
 
   global.fetch = async (url, options = {}) => {
@@ -153,6 +155,8 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     }
 
     if (u.includes('agent.index.cy/v1/listings?')) {
+      if(sourceMode==='zero')return response(200,{total:0,results:[]});
+      if(sourceMode==='malformed')return response(200,{error:'bad upstream response'});
       return response(200, {
         total: 3,
         results: [
@@ -268,6 +272,34 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(replay.statusCode, 200);
     assert.equal(JSON.parse(replay.body).outcome, 'ALREADY_RECORDED');
     assert.equal(database["'Runs'"].length, 2);
+    // Pause must prevent all source requests and writes, including manual runs.
+    database["'Settings'"][1][1] = 'FALSE';
+    const before = calls.length;
+    const paused = mkRes();
+    await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},paused);
+    assert.equal(JSON.parse(paused.body).outcome,'PAUSED');
+    assert.equal(calls.slice(before).some(url=>url.includes('agent.index.cy')||url.includes('batchUpdate')),false);
+    database["'Settings'"][1][1] = 'TRUE';
+    database["'Runs'"] = database["'Runs'"].slice(0,1);
+    sourceMode='zero';
+    const manual=mkRes();
+    await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},manual);
+    assert.equal(manual.statusCode,200,manual.body);
+    assert.equal(JSON.parse(manual.body).discovered,0);
+    assert.match(JSON.parse(manual.body).runId,/-MANUAL-/);
+    const cronAfterManual=mkRes();
+    await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY','user-agent':'vercel-cron/1.0'}},cronAfterManual);
+    assert.equal(JSON.parse(cronAfterManual.body).outcome,'RESEARCH_CYCLE_COMPLETE');
+    assert.equal(database["'Runs'"].length,3);
+    sourceMode='malformed';
+    const failure=mkRes();
+    await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},failure);
+    assert.equal(failure.statusCode,503);
+    assert.equal(JSON.parse(failure.body).error,'INDEX_RESPONSE_SCHEMA_INVALID');
+    assert.equal(JSON.parse(failure.body).failurePersisted,true);
+    assert.equal(database["'Runs'"].at(-1)[9],'BLOCKED');
+
+
   } finally {
     for (const key of ['CRON_SECRET','TSS_GOOGLE_SERVICE_ACCOUNT_JSON','TSS_IRC_SPREADSHEET_ID','TSS_MASTER_SPREADSHEET_ID']) {
       if (prev[key] === undefined) delete process.env[key];
