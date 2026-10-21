@@ -1,3 +1,14 @@
+## Test-WABA GET readback accepted — 21 October 2026, 03:34 Nicosia
+
+The owner confirmed with Meta Graph API Explorer read-only `GET /v26.0/2882413005471663/subscribed_apps` that **both** apps are listed:
+
+- **The Smarty Solution Publisher**, app ID `1707395857227784` — subscribed.
+- **WA DevX Webhook Events 1P App**, app ID `2202427980234937` — original subscription preserved.
+
+This verifies the app-level WhatsApp callback, `messages` field, and the **test WABA** subscribed-app configuration. Remaining acceptance: a Meta-generated event and provider response, with an allowlist-matching test account. The Meta dashboard's canned sample may use a WABA/phone ID that does **not** match the restricted secret allowlist; that should yield `403 Unauthorized account`, not prompt expanding allowed accounts. An unpublished Meta app may only receive dashboard-origin test webhooks, not real messages. Do not remove DevX subscription, publish app, activate customer messaging, or migrate TSS production number.
+
+---
+
 ## Test WABA POST subscription accepted — 21 October 2026, 03:33 Nicosia
 
 Owner submitted a single POST in Meta Graph API Explorer, app `The Smarty Solution Publisher` selected, Graph API v26.0 path `/2882413005471663/subscribed_apps`; Meta returned `{"success": true}`. **Subscription readback is still pending**: obtain GET on the same test WABA and verify app ID `1707395857227784` appears. No real-number registration, app publication, or customer messaging occurred.
