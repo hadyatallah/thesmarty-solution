@@ -2,7 +2,6 @@
 // remain in this tab's memory. No automatic messages, CRM writes, or local storage.
 const allowedEmail = 'thesmartysolution@gmail.com';
 const googleClientId = window.TSS_IDC_CONFIG?.googleClientId || '';
-const requiredScopes = 'openid email profile';
 const byId = id => document.getElementById(id);
 const ui = Object.fromEntries([
   'notice','identity','lockButton','loginButton','loginCard','inboxShell','refreshButton','notifyButton',
@@ -162,24 +161,24 @@ function signIn() {
   if (!/^[0-9]+-[a-z0-9-]+\.apps\.googleusercontent\.com$/.test(googleClientId)) {
     notice('The existing TSS Google OAuth client is unavailable. No Google credentials were requested.', 'error'); return;
   }
-  if (!window.google?.accounts?.oauth2) { notice('Google sign-in has not loaded. Retry when available.', 'error'); return; }
-  const client = google.accounts.oauth2.initTokenClient({
-    client_id: googleClientId, scope: requiredScopes, include_granted_scopes: false,
-    login_hint: allowedEmail,
+  if (!window.google?.accounts?.id) { notice('Google Identity Services has not loaded.', 'error'); return; }
+  google.accounts.id.initialize({
+    client_id: googleClientId,
+    auto_select: false,
     callback: async response => {
-      if (!response.access_token || response.error) { notice('Google sign-in or Firestore consent was not completed.', 'error'); return; }
-      if (!String(response.scope || '').split(' ').includes('https://www.googleapis.com/auth/userinfo.email')) {
-        notice('Google did not grant basic email identity permission.', 'error'); return;
-      }
-      accessToken = response.access_token;
+      if (!response?.credential) { notice('Google identity verification was not completed.', 'error'); return; }
+      accessToken = response.credential; // short-lived Google ID token, never Firestore OAuth scope
       renewIdleLock();
       ui.loginButton.disabled = true;
       await fetchEvents();
       ui.loginButton.disabled = false;
-    },
-    error_callback: () => notice('The owner sign-in dialog was closed or blocked.', 'error')
+    }
   });
-  client.requestAccessToken({ prompt: '', login_hint: allowedEmail });
+  google.accounts.id.prompt(notification => {
+    if (notification.isNotDisplayed?.() || notification.isSkippedMoment?.()) {
+      notice('Google sign-in prompt unavailable. Check popup/cookie settings or use the Google account chooser.', 'error');
+    }
+  });
 }
 async function enableAlerts() {
   if (!accessToken) return;
