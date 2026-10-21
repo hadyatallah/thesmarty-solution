@@ -127,6 +127,12 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
       const reason = data.reason ? ' (' + data.reason.replace(/_/g, ' ') + ')' : '';
       lock('Google identity validation failed' + reason + '.'); return;
     }
+    if (response.status === 401) {
+      const allowed = new Set(['google_sign_in_required', 'google_identity_invalid', 'google_session_expired']);
+      const category = allowed.has(data.error) ? data.error : 'unclassified_401';
+      notice('Owner diagnostic: HTTP_401_' + category.toUpperCase() + '. Authentication was rejected before inbox readback.', 'error');
+      return;
+    }
     if (data.diagnostic === true) {
       const categories = new Set(['FIRESTORE_200', 'TOKEN_EXPIRED', 'MISSING_SCOPE', 'TOKEN_TYPE_INVALID', 'FIRESTORE_401', 'IAM_OR_FIRESTORE_DENIAL', 'FIRESTORE_UPSTREAM_FAILURE', 'OIDC_UNAVAILABLE', 'STS_OR_WIF_REJECTED', 'IMPERSONATION_DENIED', 'TOKEN_SHAPE_INVALID', 'READER_TOKEN_UNAVAILABLE']);
       const category = categories.has(data.category) ? data.category : 'DIAGNOSTIC_UNCLASSIFIED';
