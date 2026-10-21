@@ -30,7 +30,7 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
    mockStage = 'sts';
    assert.equal(url,'https://sts.googleapis.com/v1/token');
    assert.equal(options.data.get('subject_token'),subject);
-   assert.equal(options.data.get('scope'),'https://www.googleapis.com/auth/datastore');
+   assert.equal(options.data.get('scope'),'https://www.googleapis.com/auth/cloud-platform');
    assert.equal(options.data.get('audience'),'//iam.googleapis.com/projects/103840050410/locations/global/workloadIdentityPools/vercel-research-center/providers/vercel');
    stage++;
    return {data:{access_token:sts,expires_in:3600,token_type:'Bearer'}};
