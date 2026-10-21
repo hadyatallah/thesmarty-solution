@@ -2,7 +2,7 @@
 // remain in this tab's memory. No automatic messages, CRM writes, or local storage.
 const allowedEmail = 'thesmartysolution@gmail.com';
 const googleClientId = window.TSS_IDC_CONFIG?.googleClientId || '';
-const requiredScopes = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/datastore';
+const requiredScopes = 'openid email profile';
 const byId = id => document.getElementById(id);
 const ui = Object.fromEntries([
   'notice','identity','lockButton','loginButton','loginCard','inboxShell','refreshButton','notifyButton',
@@ -121,10 +121,10 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
       signal: AbortSignal.timeout(18000)
     });
     const data = await response.json().catch(() => ({ ok: false, error: 'invalid_server_response' }));
-    if (response.status === 401) { lock('Google session expired. Sign in to read the inbox again.'); return; }
+    if (response.status === 401) { lock('Google identity validation failed. Sign in again only after the authentication repair is completed.'); return; }
     if (!response.ok || !data.ok || !Array.isArray(data.records)) {
       if (response.status === 403 && data.error === 'firestore_permission_or_scope_denied')
-        throw Error('Firestore read permission or OAuth consent was denied. No IAM changes were made; the owner may need to approve the Google datastore scope.');
+        throw Error('Firestore reader permissions are not yet configured. No broad browser permissions are required.');
       if (data.error === 'inbox_not_enabled') throw Error('Private inbox preview is not yet enabled for this deployment.');
       throw Error('Private inbox unavailable (' + response.status + '). No customer messages were exposed.');
     }
@@ -168,8 +168,8 @@ function signIn() {
     login_hint: allowedEmail,
     callback: async response => {
       if (!response.access_token || response.error) { notice('Google sign-in or Firestore consent was not completed.', 'error'); return; }
-      if (!String(response.scope || '').split(' ').includes('https://www.googleapis.com/auth/datastore')) {
-        notice('Google did not grant the datastore scope. No private information was loaded.', 'error'); return;
+      if (!String(response.scope || '').split(' ').includes('https://www.googleapis.com/auth/userinfo.email')) {
+        notice('Google did not grant basic email identity permission.', 'error'); return;
       }
       accessToken = response.access_token;
       renewIdleLock();
