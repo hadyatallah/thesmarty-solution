@@ -1,3 +1,9 @@
+## Test WABA POST subscription accepted — 21 October 2026, 03:33 Nicosia
+
+Owner submitted a single POST in Meta Graph API Explorer, app `The Smarty Solution Publisher` selected, Graph API v26.0 path `/2882413005471663/subscribed_apps`; Meta returned `{"success": true}`. **Subscription readback is still pending**: obtain GET on the same test WABA and verify app ID `1707395857227784` appears. No real-number registration, app publication, or customer messaging occurred.
+
+---
+
 ## Test-WABA subscription inspection — 21 October 2026, 03:30 Nicosia
 
 Owner ran **read-only** `GET /v26.0/2882413005471663/subscribed_apps` in Graph API Explorer, selected TSS Publisher app and `whatsapp_business_management`-permitted user access token. Meta returned only one app:
