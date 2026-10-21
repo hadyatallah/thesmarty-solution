@@ -113,7 +113,10 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
   loading = true; ui.refreshButton.disabled = true; ui.nextButton.disabled = true;
   if (!quiet) notice('Reading the protected WhatsApp inbox…');
   try {
-    const path = '/api/tss-whatsapp-inbox' + (append && nextPageToken ? '?pageToken=' + encodeURIComponent(nextPageToken) : '');
+    const params = new URLSearchParams();
+    if (append && nextPageToken) params.set('pageToken', nextPageToken);
+    if (new URLSearchParams(location.search).get('diagnostic') === '1') params.set('diagnostic', '1');
+    const path = '/api/tss-whatsapp-inbox' + (params.toString() ? '?' + params.toString() : '');
     const response = await fetch(path, {
       method: 'GET', cache: 'no-store', credentials: 'omit', redirect: 'error',
       headers: { Authorization: 'Bearer ' + accessToken, Accept: 'application/json' },
