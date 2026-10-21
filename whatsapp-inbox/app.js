@@ -127,6 +127,13 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
       const reason = data.reason ? ' (' + data.reason.replace(/_/g, ' ') + ')' : '';
       lock('Google identity validation failed' + reason + '.'); return;
     }
+    // A 401 without an application error code may be emitted by Vercel's
+    // deployment protection before the request reaches this API handler.
+    // Do not misclassify it as a Google or Firestore rejection.
+    if (response.status === 401 && !data.error) {
+      notice('Owner diagnostic: HTTP_401_UNATTRIBUTED. Check preview deployment protection and API response content type.', 'error');
+      return;
+    }
     if (response.status === 401) {
       const allowed = new Set(['google_sign_in_required', 'google_identity_invalid', 'google_session_expired']);
       const category = allowed.has(data.error) ? data.error : 'unclassified_401';
@@ -238,7 +245,6 @@ async function enableAlerts() {
   notice('Private event alerts enabled only while this page is open and unlocked. No background service is running.', 'ok');
 }
 signIn();
-byId('manualSignIn')?.addEventListener('click', signIn);
 
 ui.lockButton.addEventListener('click', () => lock());
 ui.refreshButton.addEventListener('click', () => fetchEvents());
