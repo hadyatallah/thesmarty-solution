@@ -19,6 +19,12 @@ let hasLoaded = false;
 let loading = false;
 let monitor = null;
 let alertsEnabled = false;
+let idleTimer = null;
+const IDLE_LOCK_MS = 15 * 60 * 1000;
+function renewIdleLock() {
+  if (idleTimer) clearTimeout(idleTimer);
+  if (accessToken) idleTimer = setTimeout(() => lock('Session locked after 15 minutes of inactivity.'), IDLE_LOCK_MS);
+}
 
 function notice(message, level = '') {
   ui.notice.textContent = message;
@@ -36,7 +42,8 @@ function element(tag, cls = '', content = '') {
 }
 function lock(reason = 'Session locked. Connect the owner Google account to reopen the inbox.') {
   if (monitor) clearInterval(monitor);
-  monitor = null;
+  if (idleTimer) clearTimeout(idleTimer);
+  monitor = null; idleTimer = null;
   accessToken = ''; entries = []; nextPageToken = ''; selectedKey = '';
   pendingDrafts.clear(); seenKeys.clear(); hasLoaded = false; alertsEnabled = false; loading = false;
   ui.loginCard.hidden = false; ui.inboxShell.hidden = true; ui.lockButton.hidden = true;
@@ -133,6 +140,7 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
     entries.sort((a, b) => String(b.receivedAt).localeCompare(String(a.receivedAt)));
     nextPageToken = data.nextPageToken || '';
     hasLoaded = true;
+    renewIdleLock();
     ui.loginCard.hidden = true; ui.inboxShell.hidden = false; ui.lockButton.hidden = false;
     ui.identity.textContent = allowedEmail;
     if (selectedKey && !entries.some(x => x.key === selectedKey)) selectedKey = '';
@@ -141,7 +149,10 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
     else renderList();
     if (!quiet) notice('Private inbox refreshed. No outbound messages can be sent from this page.', 'ok');
   } catch (err) {
-    if (!quiet) notice(err.message || 'Unable to read private messages.', 'error');
+    // Fail closed: never leave a stale private snapshot visible after a failed refresh.
+    const reason = err?.message || 'Unable to read private messages.';
+    lock(reason + ' Session locked; sign in again to refresh.');
+    notice(reason + ' Session locked; sign in again to refresh.', 'error');
   } finally {
     loading = false; ui.refreshButton.disabled = !accessToken; ui.nextButton.disabled = !nextPageToken;
   }
@@ -161,6 +172,7 @@ function signIn() {
         notice('Google did not grant the datastore scope. No private information was loaded.', 'error'); return;
       }
       accessToken = response.access_token;
+      renewIdleLock();
       ui.loginButton.disabled = true;
       await fetchEvents();
       ui.loginButton.disabled = false;
@@ -201,3 +213,8 @@ ui.copyDraft.addEventListener('click', async () => {
   }
 });
 lock('Private WhatsApp inbox preview. Connect the TSS owner account to continue.');
+
+// Any owner interaction extends the short active-session window. Do not persist it.
+for (const eventName of ['pointerdown', 'keydown']) {
+  document.addEventListener(eventName, renewIdleLock, { passive: true });
+}
