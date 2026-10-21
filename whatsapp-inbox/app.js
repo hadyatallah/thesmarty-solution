@@ -1,3 +1,4 @@
+import {createOwnerAlerts} from './alerts.mjs';
 // Owner-only browser viewer. All private data and short-lived OAuth credentials
 // remain in this tab's memory. No automatic messages, CRM writes, or local storage.
 const allowedEmail = 'thesmartysolution@gmail.com';
@@ -5,7 +6,7 @@ const byId = id => document.getElementById(id);
 const ui = Object.fromEntries([
   'notice','identity','lockButton','loginButton','loginCard','inboxShell','refreshButton','notifyButton',
   'eventList','detail','detailTitle','replyPanel','replyDraft','copyDraft','draftStatus',
-  'kindFilter','searchInput','nextButton','count'
+  'kindFilter','searchInput','nextButton','count','validateTestReply'
 ].map(id => [id, byId(id)]));
 let sessionActive = false;
 let csrf = '';
@@ -22,6 +23,7 @@ let hasLoaded = false;
 let loading = false;
 let monitor = null;
 let alertsEnabled = false;
+const ownerAlerts=createOwnerAlerts({notify:message=>{if(alertsEnabled&&sessionActive&&'Notification' in window&&Notification.permission==='granted'){try{new Notification(message.title,{body:message.body,tag:message.tag});}catch{}}}});
 let idleTimer = null;
 const IDLE_LOCK_MS = 15 * 60 * 1000;
 function renewIdleLock() {
@@ -47,6 +49,7 @@ function lock(reason = 'Session locked. Connect the owner Google account to reop
   if (monitor) clearInterval(monitor);
   if (idleTimer) clearTimeout(idleTimer);
   monitor = null; idleTimer = null;
+  ownerAlerts.reset();
   generation++;
   sessionActive = false; entries = []; nextPageToken = ''; selectedKey = '';
   pendingDrafts.clear(); seenKeys.clear(); hasLoaded = false; alertsEnabled = false; loading = false;
@@ -176,12 +179,7 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
       if (data.error === 'inbox_not_enabled') throw Error('Private inbox preview is not yet enabled for this deployment.');
       throw Error('Private inbox unavailable (' + response.status + '). No customer messages were exposed.');
     }
-    if (hasLoaded && !append) {
-      const unseen = data.records.filter(record => !seenKeys.has(record.key));
-      if (unseen.length && alertsEnabled && 'Notification' in window && Notification.permission === 'granted') {
-        try { new Notification('TSS WhatsApp Inbox', { body: 'New private event received. Open your unlocked inbox to review.' }); } catch {}
-      }
-    }
+    ownerAlerts.observe(data.records,{append});
     for (const record of data.records) seenKeys.add(record.key);
     const combined = append ? [...entries, ...data.records] : data.records;
     entries = [...new Map(combined.filter(x => x && x.key).map(x => [x.key, x])).values()];
@@ -199,6 +197,7 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
   } catch (err) {
     // Fail closed: never leave a stale private snapshot visible after a failed refresh.
     const reason = err?.message || 'Unable to read private messages.';
+    ownerAlerts.failure();
     lock(reason + ' Session locked; sign in again to refresh.');
     notice(reason + ' Session locked; sign in again to refresh.', 'error');
   } finally {
@@ -222,14 +221,22 @@ async function logout() {
     lock('Logged out.');
   }catch(e){notice(e.message,'error');}
 }
+async function checkIngestionHealth(){
+ if(!alertsEnabled||!sessionActive)return;
+ try{
+  const r=await fetch('/api/tss-whatsapp-health',{credentials:'same-origin',cache:'no-store',redirect:'error',signal:AbortSignal.timeout(15000)});
+  if(!r.ok)ownerAlerts.failure();
+ }catch{ownerAlerts.failure();}
+}
 async function enableAlerts() {
   if (!sessionActive) return;
   if (!('Notification' in window)) { notice('This browser does not support local notifications. Use Refresh to check new events.'); return; }
   const permission = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
   if (permission !== 'granted') { notice('Browser notification permission was not granted. The inbox remains usable.'); return; }
   alertsEnabled = true;
+  checkIngestionHealth();
   ui.notifyButton.textContent = 'Alerts on (while open)';
-  if (!monitor) monitor = setInterval(() => { if (sessionActive && !document.hidden) fetchEvents({ quiet: true }); }, 60000);
+  if (!monitor) monitor = setInterval(() => { if (sessionActive && !document.hidden) { fetchEvents({ quiet: true }); checkIngestionHealth(); } }, 60000);
   notice('Private event alerts enabled only while this page is open and unlocked. No background service is running.', 'ok');
 }
 
@@ -265,3 +272,15 @@ for (const eventName of ['pointerdown', 'keydown']) {
 }
 
 
+
+ui.validateTestReply.addEventListener('click',async()=>{
+ if(!sessionActive||!selectedKey||!ui.replyDraft.value.trim())return;
+ ui.validateTestReply.disabled=true;
+ try{
+  const r=await fetch('/api/tss-whatsapp-operations',{method:'POST',credentials:'same-origin',cache:'no-store',redirect:'error',headers:{'Content-Type':'application/json','X-TSS-CSRF':csrf},body:JSON.stringify({action:'prepare-test-reply',eventKey:selectedKey,text:ui.replyDraft.value})});
+  const data=await r.json();
+  if(!sessionActive)return;
+  ui.draftStatus.textContent=r.ok&&data.sent===false?'Test draft validated. Nothing sent.':data.error==='reply_workflow_disabled'?'Test workflow is disabled. Nothing sent.':'Test draft rejected. Nothing sent.';
+ }catch{ui.draftStatus.textContent='Test validation unavailable. Nothing sent.';}
+ finally{ui.validateTestReply.disabled=false;}
+});

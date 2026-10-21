@@ -20,9 +20,9 @@ test('exact deployment origin allowlist rejects swapped, missing and arbitrary c
  }
 });
 test('production login, cookie, CSRF and durable logout; preview cookie cannot authorize production',async()=>{
- const records=new Map(),revoked=new Set();let reads=0;
+ const records=new Map(),revoked=new Set();let reads=0;const now=Date.now();
  const store={create:async(id,d)=>records.set(id,{...d,email:'thesmartysolution@gmail.com',csrfHash:hash(d.csrf)}),get:async id=>{reads++;return revoked.has(id)?null:records.get(id);},revoke:async id=>revoked.add(id)};
- const services=Object.fromEntries(Object.entries(origins).map(([environment,origin])=>[environment,createSessionService({env:{VERCEL_ENV:environment,TSS_ADMIN_ORIGIN:origin,TSS_ADMIN_SESSION_ENABLED:'true'},store,verifyGoogle:async()=>({aud:'103840050410-dlhipb15600ot54jk7m6qj0olrbms7i4.apps.googleusercontent.com',email:'thesmartysolution@gmail.com',email_verified:true,expiry_date:Date.now()+3600000})})]));
+ const services=Object.fromEntries(Object.entries(origins).map(([environment,origin])=>[environment,createSessionService({env:{VERCEL_ENV:environment,TSS_ADMIN_ORIGIN:origin,TSS_ADMIN_SESSION_ENABLED:'true'},store,now:()=>now,verifyGoogle:async()=>({aud:'103840050410-dlhipb15600ot54jk7m6qj0olrbms7i4.apps.googleusercontent.com',email:'thesmartysolution@gmail.com',email_verified:true,expiry_date:now+3600000})})]));
  async function run(environment,method,cookie='',headers={}){
   const r={headers:{},setHeader(k,v){this.headers[k]=v;},end(s){this.body=JSON.parse(s);}};
   await services[environment].handler({method,headers:{origin:origins[environment],cookie,'content-type':'application/json','x-tss-session':'1',...headers},body:{accessToken:'synthetic-owner-oauth-access-token'}},r);return r;
