@@ -120,7 +120,10 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
       signal: AbortSignal.timeout(18000)
     });
     const data = await response.json().catch(() => ({ ok: false, error: 'invalid_server_response' }));
-    if (response.status === 401) {\n      const reason = data.reason ? ' (' + data.reason.replace(/_/g, ' ') + ')' : '';\n      lock('Google identity validation failed' + reason + '.'); return;\n    }
+    if (response.status === 401) {
+      const reason = data.reason ? ' (' + data.reason.replace(/_/g, ' ') + ')' : '';
+      lock('Google identity validation failed' + reason + '.'); return;
+    }
     if (!response.ok || !data.ok || !Array.isArray(data.records)) {
       if (response.status === 403 && data.error === 'firestore_permission_or_scope_denied')
         throw Error('Firestore reader permissions are not yet configured. No broad browser permissions are required.');
