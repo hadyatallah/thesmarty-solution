@@ -28,7 +28,7 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
   if (stage===0) {
    assert.equal(url,'https://sts.googleapis.com/v1/token');
    assert.equal(options.data.get('subject_token'),subject);
-   assert.equal(options.data.get('scope'),'https://www.googleapis.com/auth/cloud-platform');
+   assert.equal(options.data.get('scope'),'https://www.googleapis.com/auth/datastore');
    assert.equal(options.data.get('audience'),'//iam.googleapis.com/projects/103840050410/locations/global/workloadIdentityPools/vercel-research-center/providers/vercel');
    stage++;
    return {data:{access_token:sts,expires_in:3600,token_type:'Bearer'}};
@@ -36,7 +36,7 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
   assert.equal(stage,1);
   assert.equal(url,'https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/'+env.TSS_WHATSAPP_READER_SERVICE_ACCOUNT_EMAIL+':generateAccessToken');
   assert.equal(new Headers(options.headers).get('authorization'),'Bearer '+sts);
-  assert.deepEqual(options.data.scope,['https://www.googleapis.com/auth/cloud-platform']);
+  assert.deepEqual(options.data.scope,['https://www.googleapis.com/auth/datastore']);
   stage++;
   return {data:{accessToken:reader,expireTime:new Date(Date.now()+3600000).toISOString()}};
  });
