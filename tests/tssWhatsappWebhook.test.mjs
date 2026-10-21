@@ -82,6 +82,21 @@ test('partial commit returns retryable 503 and retry retains committed event', a
   assert.equal((await invoke(h.handler)).statusCode, 200); assert.equal(h.records.size, 2);
   assert.doesNotMatch(JSON.stringify(h.audit), /Private|private provider|15550000000|wamid|synthetic-app/);
 });
+test('live rejection categories are fixed and do not disclose event bodies or secrets', async () => {
+  const h = harness();
+  const raw = Buffer.from(JSON.stringify(sample()));
+  assert.equal((await invoke(h.handler, { raw, signature: '' })).statusCode, 401);
+  assert.equal(h.audit.at(-1)[0], 'signature_header_rejected');
+  assert.equal((await invoke(h.handler, { raw, signature: 'sha256=' + '0'.repeat(64) })).statusCode, 401);
+  assert.equal(h.audit.at(-1)[0], 'signature_rejected');
+  const wrong = sample();
+  wrong.entry[0].id = '2247151412732806';
+  const unauthorized = Buffer.from(JSON.stringify(wrong));
+  assert.equal((await invoke(h.handler, { raw: unauthorized })).statusCode, 403);
+  assert.equal(h.audit.at(-1)[0], 'account_rejected');
+  assert.equal(h.records.size, 0);
+  assert.doesNotMatch(JSON.stringify(h.audit), /wamid|app-secret|2882413005471663|2247151412732806/);
+});
 test('malformed JSON/schema, wrong accounts and oversize bodies rejected before write', async () => {
   for (const payload of [null, {}, { ...sample(), entry: {} }, { ...sample(), entry: [null] }]) {
     const h = harness(); assert.equal((await invoke(h.handler, { raw: Buffer.from(JSON.stringify(payload)) })).statusCode, 400); assert.equal(h.records.size, 0);
