@@ -66,8 +66,8 @@ test('strict OAuth bearer parsing and query limits', () => {
   for (const value of ['', 'Basic abc', 'Bearer short', 'Bearer ' + token + '\nLeak', 'Bearer ' + token + ' x']) {
     assert.equal(parseBearer(value), '');
   }
-  assert.deepEqual(parseInboxRequest('/api/tss-whatsapp-inbox?pageToken=abc%2B'), { pageToken: 'abc+' });
-  for (const url of ['/?pageToken=one&pageToken=two', '/?debug=1', '/?pageToken=' + 'x'.repeat(2100), '/?pageToken=%00']) {
+  assert.deepEqual(parseInboxRequest('/api/tss-whatsapp-inbox?pageToken=abc%2B&diagnostic=1'), { pageToken: 'abc+', diagnostic: true });
+  for (const url of ['/?pageToken=one&pageToken=two', '/?debug=1', '/?diagnostic=2', '/?pageToken=' + 'x'.repeat(2100), '/?pageToken=%00']) {
     assert.throws(() => parseInboxRequest(url), /BAD_QUERY/);
   }
   const url = new URL(googleInboxUrl({ pageToken: 'a+/b=' }));
@@ -190,4 +190,21 @@ test('Firestore 401 uses only allowlisted owner-visible categories and never raw
   }
   const malformed = harness({ storeResponse: new Response('<private upstream failure>', { status: 401 }) });
   assert.equal((await malformed.run()).body.reason, 'unclassified_upstream_401');
+});
+
+test('owner-only diagnostic returns fixed Firestore categories without provider details', async () => {
+  for (const [status, category] of [[200, 'FIRESTORE_200'], [401, 'FIRESTORE_401'], [403, 'IAM_OR_FIRESTORE_DENIAL'], [500, 'FIRESTORE_UPSTREAM_FAILURE']]) {
+    const h = harness({ storeResponse: Response.json({ error: { message: 'SECRET_UPSTREAM_DETAIL' } }, { status }) });
+    const result = await h.run({ url: '/api/tss-whatsapp-inbox?diagnostic=1' });
+    assert.equal(result.statusCode, 200);
+    assert.equal(result.body.diagnostic, true);
+    assert.equal(result.body.category, category);
+    assert.match(result.body.requestId, /^[0-9a-f-]{36}$/);
+    assert.doesNotMatch(JSON.stringify(result.body), /SECRET_UPSTREAM_DETAIL|token|Authorization/i);
+  }
+  const denied = harness({ profile: { email: 'notowner@gmail.com', email_verified: true } });
+  const result = await denied.run({ url: '/api/tss-whatsapp-inbox?diagnostic=1' });
+  assert.equal(result.statusCode, 403);
+  assert.equal(result.body.error, 'owner_only');
+  assert.equal(denied.calls.length, 0);
 });
