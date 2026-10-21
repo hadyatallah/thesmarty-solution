@@ -41,7 +41,7 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
   return {data:{accessToken:reader,expireTime:new Date(Date.now()+3600000).toISOString()}};
  });
  try {
-  directToken = await keylessToken(env);
+  directToken = await keylessToken(env, 'TSS_WHATSAPP_READER_SERVICE_ACCOUNT_EMAIL');
   assert.equal(directToken, reader);
   const handler=createInboxHandler({enabled:true,env,
    verifyIdentity:async()=>({email:env.TSS_WHATSAPP_OWNER_EMAIL,email_verified:true}),
