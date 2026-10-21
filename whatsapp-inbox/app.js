@@ -156,13 +156,14 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
     loading = false; ui.refreshButton.disabled = !accessToken; ui.nextButton.disabled = !nextPageToken;
   }
 }
+let googleInitialized = false;
 function signIn() {
-  if (accessToken) return;
+  if (accessToken || googleInitialized) return;
   if (!googleClientId) {
     notice('The existing TSS Google OAuth client is unavailable. No Google credentials were requested.', 'error'); return;
   }
-  const render = () => {
-    if (accessToken || !window.google?.accounts?.id) return false;
+  const initialize = () => {
+    if (googleInitialized || !window.google?.accounts?.id) return false;
     google.accounts.id.initialize({
       client_id: googleClientId,
       auto_select: false,
@@ -173,21 +174,30 @@ function signIn() {
         await fetchEvents();
       }
     });
-    ui.loginButton.replaceChildren();
-    google.accounts.id.renderButton(ui.loginButton, { type: 'standard', theme: 'outline', size: 'large', text: 'signin_with' });
-    notice('Select the TSS Google account in the Google sign-in control.');
+    googleInitialized = true;
+    notice('Tap “Sign in with Google” to continue.');
     return true;
   };
-  if (render()) return;
+  if (initialize()) return;
   notice('Loading Google sign-in…');
   let attempts = 0;
   const wait = setInterval(() => {
-    if (render() || ++attempts >= 100) {
+    if (initialize() || ++attempts >= 100) {
       clearInterval(wait);
       if (attempts >= 100 && !window.google?.accounts?.id)
         notice('Google sign-in did not load. Refresh the page and try again.', 'error');
     }
   }, 100);
+}
+function openGooglePrompt() {
+  if (!googleInitialized || !window.google?.accounts?.id) {
+    signIn();
+    return;
+  }
+  google.accounts.id.prompt(notification => {
+    if (notification.isNotDisplayed() || notification.isSkippedMoment())
+      notice('Google sign-in was not opened. Allow pop-ups or try again.', 'error');
+  });
 }
 async function enableAlerts() {
   if (!accessToken) return;
@@ -200,7 +210,7 @@ async function enableAlerts() {
   notice('Private event alerts enabled only while this page is open and unlocked. No background service is running.', 'ok');
 }
 signIn();
-byId('manualSignIn')?.addEventListener('click', signIn);
+byId('manualSignIn')?.addEventListener('click', openGooglePrompt);
 ui.lockButton.addEventListener('click', () => lock());
 ui.refreshButton.addEventListener('click', () => fetchEvents());
 ui.notifyButton.addEventListener('click', enableAlerts);
