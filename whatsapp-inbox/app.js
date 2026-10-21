@@ -1,7 +1,7 @@
 // Owner-only browser viewer. All private data and short-lived OAuth credentials
 // remain in this tab's memory. No automatic messages, CRM writes, or local storage.
 const allowedEmail = 'thesmartysolution@gmail.com';
-const googleClientId = window.TSS_IDC_CONFIG?.googleClientId || '';
+const googleClientId = window.TSS_IDC_CONFIG?.googleClientId || '103840050410-dlhipb15600ot54jk7m6qj0olrbms7i4.apps.googleusercontent.com';
 const byId = id => document.getElementById(id);
 const ui = Object.fromEntries([
   'notice','identity','lockButton','loginButton','loginCard','inboxShell','refreshButton','notifyButton',
