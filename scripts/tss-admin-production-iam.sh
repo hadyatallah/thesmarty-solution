@@ -69,8 +69,8 @@ try:
   if not trusted(before['policies'][k]):REPORT['missingBindings'].append({'serviceAccount':sa,'role':'roles/iam.workloadIdentityUser','member':MEMBER})
  print(json.dumps({'proposedChanges':REPORT['missingBindings'],'scope':'Impersonation only. Existing reader get/list and writer create permissions unchanged.'},indent=2))
  if MODE=='--apply' and REPORT['missingBindings']:
-  with open('/dev/tty','r+') as tty:
-   tty.write('Type APPLY TSS PRODUCTION WIF to apply exactly the bindings above: ');tty.flush()
+  print('Type APPLY TSS PRODUCTION WIF to apply exactly the bindings above: ',end='',file=sys.stderr,flush=True)
+  with open('/dev/tty','r') as tty:
    check(tty.readline().strip()=='APPLY TSS PRODUCTION WIF','Confirmation not supplied')
   for change in REPORT['missingBindings']:
    run(['iam','service-accounts','add-iam-policy-binding',change['serviceAccount'],'--role=roles/iam.workloadIdentityUser','--member='+MEMBER,'--condition=None'])
