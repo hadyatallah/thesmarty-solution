@@ -51,7 +51,7 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
   });
   const res={setHeader(){},end(body){this.body=JSON.parse(body);}};
   await handler({method:'GET',url:'/api/tss-whatsapp-inbox',headers:{authorization:'Bearer '+'synthetic-owner-id-token'.repeat(3)}},res);
-  assert.equal(res.statusCode,200); assert.deepEqual(res.body.records,[]); assert.equal(stage,3);
+  assert.equal(res.statusCode,200, JSON.stringify(res.body)); assert.deepEqual(res.body.records,[]); assert.equal(stage,3);
  } finally {
   if(prior===undefined)delete process.env.VERCEL_OIDC_TOKEN;else process.env.VERCEL_OIDC_TOKEN=prior;
   if(priorFile===undefined)delete process.env.VERCEL_OIDC_TOKEN_FILE;else process.env.VERCEL_OIDC_TOKEN_FILE=priorFile;
