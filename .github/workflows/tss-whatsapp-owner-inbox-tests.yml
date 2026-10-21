@@ -1,0 +1,64 @@
+name: WhatsApp owner inbox security tests
+on:
+  push:
+    paths:
+      - 'api/tss-admin-session.js'
+      - 'lib/tssAdminSession.mjs'
+      - 'tests/tssAdminSession.test.mjs'
+      - 'tests/tssAdminWriter.test.mjs'
+      - 'tests/tssAdminWriterIam.test.py'
+      - 'tests/tssAdminProduction.test.mjs'
+      - 'tests/tssAdminProductionIam.test.py'
+      - 'scripts/tss-admin-production-iam.sh'
+      - 'scripts/tss-admin-session-writer-iam.sh'
+      - 'admin-login/**'
+      - 'api/tss-whatsapp-inbox.js'
+      - 'lib/tssWhatsappInbox.mjs'
+      - 'lib/tssWhatsappGoogle.mjs'
+      - 'whatsapp-inbox/**'
+      - 'tests/tssWhatsappInbox.test.mjs'
+      - 'tests/tssWhatsappReaderExchange.test.mjs'
+      - '.github/workflows/tss-whatsapp-owner-inbox-tests.yml'
+  pull_request:
+    paths:
+      - 'api/tss-admin-session.js'
+      - 'lib/tssAdminSession.mjs'
+      - 'tests/tssAdminSession.test.mjs'
+      - 'tests/tssAdminWriter.test.mjs'
+      - 'tests/tssAdminWriterIam.test.py'
+      - 'tests/tssAdminProduction.test.mjs'
+      - 'tests/tssAdminProductionIam.test.py'
+      - 'scripts/tss-admin-production-iam.sh'
+      - 'scripts/tss-admin-session-writer-iam.sh'
+      - 'admin-login/**'
+      - 'api/tss-whatsapp-inbox.js'
+      - 'lib/tssWhatsappInbox.mjs'
+      - 'lib/tssWhatsappGoogle.mjs'
+      - 'whatsapp-inbox/**'
+      - 'tests/tssWhatsappInbox.test.mjs'
+      - 'tests/tssWhatsappReaderExchange.test.mjs'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node --check lib/tssWhatsappInbox.mjs
+      - run: node --check api/tss-whatsapp-inbox.js
+      - run: node --check whatsapp-inbox/app.js
+      - run: node --test tests/tssAdmin*.test.mjs tests/tssWhatsapp*.test.mjs tests/admin-login-auth.test.mjs tests/private-workspaces-links.test.mjs data-center/tests/*.test.mjs
+      - run: node --check admin-login/session.js
+
+
+      - run: bash -n scripts/tss-admin-session-writer-iam.sh
+      - run: python3 tests/tssAdminWriterIam.test.py
+      - run: bash -n scripts/tss-admin-production-iam.sh
+      - run: python3 tests/tssAdminProductionIam.test.py
+

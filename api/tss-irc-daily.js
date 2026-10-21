@@ -76,11 +76,14 @@ async function googleAccessToken() {
     token_url: 'https://sts.googleapis.com/v1/token',
     service_account_impersonation_url:
       `https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/${serviceAccountEmail}:generateAccessToken`,
-    subject_token_supplier: { getSubjectToken: getVercelOidcToken }
+    // Google supplies its own audience as callback context. Do not forward it
+    // as Vercel OIDC options, which would exchange for the wrong audience.
+    subject_token_supplier: { getSubjectToken: () => getVercelOidcToken() }
   });
 
-  const accessToken = await authClient.getAccessToken();
-  if (!accessToken) throw Error('GOOGLE_ACCESS_TOKEN_MISSING');
+  const tokenResponse = await authClient.getAccessToken();
+  const accessToken = tokenResponse?.token;
+  if (typeof accessToken !== 'string' || !accessToken) throw Error('GOOGLE_ACCESS_TOKEN_MISSING');
   log('google_oidc_token_acquired', { projectId, serviceAccountEmail });
   return accessToken;
 }
@@ -538,3 +541,4 @@ export default async function handler(req, res) {
     });
   }
 }
+

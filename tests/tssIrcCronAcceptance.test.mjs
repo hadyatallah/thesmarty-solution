@@ -1,7 +1,8 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { generateKeyPairSync } from 'node:crypto';
+import { createRequire } from 'node:module';
+const { Gaxios } = createRequire(import.meta.url)('gaxios');
 import handler from '../api/tss-irc-daily.js';
 
 const mkRes = () => ({
@@ -88,7 +89,23 @@ const masterRows = [
   ['TSS-CY-0100','Existing Canonical Ltd','Developer','Larnaca','','','https://existing-canonical.cy/']
 ];
 
-test('Production-style cron run performs discovery, first-party verification, Master Companies dedupe, save, read-back and dashboard refresh without communication side effects', async () => {
+test('Production-style cron run performs discovery, first-party verification, Master Companies dedupe, save, read-back and dashboard refresh without communication side effects', async (t) => {
+  const wifEnv={GCP_PROJECT_NUMBER:'103840050410',GCP_PROJECT_ID:'tss-crm-508908',GCP_SERVICE_ACCOUNT_EMAIL:'tss-hubspot-sheets-reader@tss-crm-508908.iam.gserviceaccount.com',GCP_WORKLOAD_IDENTITY_POOL_ID:'vercel-research-center',GCP_WORKLOAD_IDENTITY_POOL_PROVIDER_ID:'vercel',VERCEL_OIDC_TOKEN:[Buffer.from(JSON.stringify({alg:'RS256'})).toString('base64url'),Buffer.from(JSON.stringify({exp:Math.floor(Date.now()/1000)+3600,sub:'synthetic-preview',aud:'https://vercel.com/tss21'})).toString('base64url'),'synthetic-signature'].join('.')};
+  const previousWif=Object.fromEntries(Object.keys(wifEnv).map(k=>[k,process.env[k]]));
+  const previousOidcFile=process.env.VERCEL_OIDC_TOKEN_FILE;
+  delete process.env.VERCEL_OIDC_TOKEN_FILE;
+  Object.assign(process.env,wifEnv);
+  let exchangeCalls=0;
+  t.mock.method(Gaxios.prototype,'request',async options=>{
+    const url=String(options.url);exchangeCalls++;
+    if(url==='https://sts.googleapis.com/v1/token'){
+      assert.equal(options.data.get('subject_token'),wifEnv.VERCEL_OIDC_TOKEN);
+      return {data:{access_token:'synthetic-federated-token',expires_in:3600,token_type:'Bearer'}};
+    }
+    assert.match(url,/^https:\/\/iamcredentials.googleapis.com\/v1\/projects\/-\/serviceAccounts\/tss-hubspot-sheets-reader@tss-crm-508908.iam.gserviceaccount.com:generateAccessToken$/);
+    assert.equal(new Headers(options.headers).get('authorization'),'Bearer synthetic-federated-token');
+    return {data:{accessToken:'synthetic-sheets-impersonated-token',expireTime:new Date(Date.now()+3600000).toISOString()}};
+  });
   const prev = {
     CRON_SECRET: process.env.CRON_SECRET,
     TSS_GOOGLE_SERVICE_ACCOUNT_JSON: process.env.TSS_GOOGLE_SERVICE_ACCOUNT_JSON,
@@ -99,17 +116,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     error: console.error
   };
 
-  const { privateKey } = generateKeyPairSync('rsa', {
-    modulusLength: 2048,
-    publicKeyEncoding: { type: 'spki', format: 'pem' },
-    privateKeyEncoding: { type: 'pkcs8', format: 'pem' }
-  });
-
   process.env.CRON_SECRET = 'SYNTHETIC_TEST_KEY';
-  process.env.TSS_GOOGLE_SERVICE_ACCOUNT_JSON = JSON.stringify({
-    client_email: 'qa@example.test',
-    private_key: privateKey
-  });
   process.env.TSS_IRC_SPREADSHEET_ID = 'irc-test-sheet';
   process.env.TSS_MASTER_SPREADSHEET_ID = '1mZ7vd2UoGXlyxzwZ8Man593UhlLGt2uS1kIS3ZAWPsU';
 
@@ -121,9 +128,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     const u = String(url);
     calls.push(u);
 
-    if (u.includes('oauth2.googleapis.com/token')) {
-      return response(200, { access_token: 'SYNTHETIC_TOKEN' });
-    }
+    if(u.startsWith('https://sheets.googleapis.com/')) assert.equal(options.headers.authorization,'Bearer synthetic-sheets-impersonated-token');
 
     if (u.includes('/values:batchGet?')) {
       const parsed = new URL(u);
@@ -218,6 +223,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     }, res);
 
     assert.equal(res.statusCode, 200, res.body);
+    assert.equal(exchangeCalls,2);
     const body = JSON.parse(res.body);
     assert.equal(body.outcome, 'RESEARCH_CYCLE_COMPLETE');
     assert.equal(body.executionMode, 'VERCEL_CRON');
@@ -267,8 +273,11 @@ test('Production-style cron run performs discovery, first-party verification, Ma
       if (prev[key] === undefined) delete process.env[key];
       else process.env[key] = prev[key];
     }
+    for(const [key,value] of Object.entries(previousWif)){if(value===undefined)delete process.env[key];else process.env[key]=value;}
+    if(previousOidcFile===undefined)delete process.env.VERCEL_OIDC_TOKEN_FILE;else process.env.VERCEL_OIDC_TOKEN_FILE=previousOidcFile;
     global.fetch = prev.fetch;
     console.info = prev.info;
     console.error = prev.error;
   }
 });
+
