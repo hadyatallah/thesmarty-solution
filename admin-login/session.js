@@ -3,6 +3,8 @@
 const config=window.TSS_IDC_CONFIG||{};
 const $=id=>document.getElementById(id);
 let csrf='',expiresAt=0;
+const sessionChannel=typeof BroadcastChannel==='function'?new BroadcastChannel('tss-admin-session'):null;
+if(sessionChannel)sessionChannel.onmessage=event=>{if(event.data==='logout')locked('Logged out.');};
 function notice(text){$('notice').hidden=!text;$('notice').textContent=text;}
 function locked(text=''){csrf='';expiresAt=0;$('workspacePanel').hidden=true;$('verifyPanel').hidden=false;notice(text);}
 function unlocked(data){csrf=data.csrf;expiresAt=data.expiresAt;$('verifiedIdentity').textContent='Verified: '+data.email;$('workspacePanel').hidden=false;$('verifyPanel').hidden=true;notice('');}
@@ -21,6 +23,6 @@ $('verifyButton').addEventListener('click',()=>{
  catch {$('verifyButton').disabled=false;notice('Google sign-in could not start.');}
 });
 $('lockButton').textContent='Log out';
-$('lockButton').addEventListener('click',async()=>{try{await call('DELETE');locked('Logged out.');}catch(e){notice('Logout could not be confirmed: '+e.message);}});
+$('lockButton').addEventListener('click',async()=>{try{await call('DELETE');sessionChannel?.postMessage('logout');locked('Logged out.');}catch(e){notice('Logout could not be confirmed: '+e.message);}});
 setInterval(()=>{if(expiresAt&&Date.now()>=expiresAt)locked('Session expired. Sign in again.');},1000);
 locked();call().then(unlocked).catch(e=>{if(!/owner_session/.test(e.message))notice('Admin session unavailable: '+e.message);});

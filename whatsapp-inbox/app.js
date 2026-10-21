@@ -11,6 +11,8 @@ let sessionActive = false;
 let csrf = '';
 let sessionExpiresAt = 0;
 let generation = 0;
+const sessionChannel = typeof BroadcastChannel === 'function' ? new BroadcastChannel('tss-admin-session') : null;
+if(sessionChannel) sessionChannel.onmessage=event=>{if(event.data==='logout')lock('Logged out from Admin.');};
 let entries = [];
 let nextPageToken = '';
 let selectedKey = '';
@@ -129,6 +131,7 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
     const data = await response.json().catch(() => ({ ok: false, error: 'invalid_server_response' }));
     if (requestGeneration !== generation) return;
     if (Date.now() >= sessionExpiresAt) { lock('Admin session expired. Open Admin Login to continue.'); return; }
+    if (response.status === 401) { lock('Admin sign-in required. Open Admin Login to continue.'); return; }
     if (response.status === 401 && data.error === 'google_identity_invalid') {
       const reason = data.reason ? ' (' + data.reason.replace(/_/g, ' ') + ')' : '';
       lock('Google identity validation failed' + reason + '.'); return;
@@ -215,6 +218,7 @@ async function logout() {
   try {
     const response=await fetch('/api/tss-admin-session',{method:'DELETE',credentials:'same-origin',cache:'no-store',redirect:'error',headers:{'X-TSS-CSRF':csrf}});
     if(!response.ok)throw Error('Logout could not be confirmed. Retry.');
+    sessionChannel?.postMessage('logout');
     lock('Logged out.');
   }catch(e){notice(e.message,'error');}
 }
