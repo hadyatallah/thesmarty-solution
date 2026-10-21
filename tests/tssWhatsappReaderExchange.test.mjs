@@ -17,6 +17,7 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
  const reader = 'synthetic-impersonated-reader-access-token';
  let directToken;
  let injectedReaderCalls = 0;
+ let mockStage = 'not_started';
  const prior = process.env.VERCEL_OIDC_TOKEN;
  const priorFile = process.env.VERCEL_OIDC_TOKEN_FILE;
  process.env.VERCEL_OIDC_TOKEN=subject;
@@ -26,6 +27,7 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
   const url=String(options.url);
   assert.equal(options.method,'POST');
   if (stage===0) {
+   mockStage = 'sts';
    assert.equal(url,'https://sts.googleapis.com/v1/token');
    assert.equal(options.data.get('subject_token'),subject);
    assert.equal(options.data.get('scope'),'https://www.googleapis.com/auth/datastore');
@@ -34,6 +36,7 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
    return {data:{access_token:sts,expires_in:3600,token_type:'Bearer'}};
   }
   assert.equal(stage,1);
+  mockStage = 'iam_credentials';
   assert.equal(url,'https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts/'+env.TSS_WHATSAPP_READER_SERVICE_ACCOUNT_EMAIL+':generateAccessToken');
   assert.equal(new Headers(options.headers).get('authorization'),'Bearer '+sts);
   assert.deepEqual(options.data.scope,['https://www.googleapis.com/auth/datastore']);
@@ -41,7 +44,8 @@ test('real Google library exchanges a synthetic Vercel subject for the dedicated
   return {data:{accessToken:reader,expireTime:new Date(Date.now()+3600000).toISOString()}};
  });
  try {
-  directToken = await keylessToken(env, 'TSS_WHATSAPP_READER_SERVICE_ACCOUNT_EMAIL');
+  try { directToken = await keylessToken(env, 'TSS_WHATSAPP_READER_SERVICE_ACCOUNT_EMAIL'); }
+  catch { assert.fail('reader exchange fixture failed at ' + mockStage); }
   assert.equal(directToken, reader);
   const handler=createInboxHandler({enabled:true,env,
    verifyIdentity:async()=>({email:env.TSS_WHATSAPP_OWNER_EMAIL,email_verified:true}),
