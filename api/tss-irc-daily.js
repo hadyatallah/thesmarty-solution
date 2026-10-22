@@ -1,6 +1,7 @@
 
-import { createHash, timingSafeEqual } from 'node:crypto';
+import { createHash, randomUUID, timingSafeEqual } from 'node:crypto';
 import { createSessionService, sameOrigin } from '../lib/tssAdminSession.mjs';
+import { acquireResearchLock } from '../lib/tssIrcLock.mjs';
 import { nicosiaDay, seasonActive, safeFailureCode } from '../lib/tssIrcRuntime.mjs';
 import { getVercelOidcToken } from '@vercel/oidc';
 import { ExternalAccountClient } from 'google-auth-library';
@@ -259,18 +260,29 @@ export default async function handler(req, res) {
   const season = req.query?.season;
   if (season && !['summer', 'winter'].includes(season)) return json(res, 400, { ok: false, error: 'invalid_season' });
   if (season && !seasonActive(season, new Date())) return json(res, 200, { ok: true, outcome: 'INACTIVE_SEASON', messagesSent: 0 });
-  const runId = 'IRC-RES-' + day() + (scheduled ? '' : '-MANUAL-' + Date.now());
+  const runId = 'IRC-RES-' + day() + (scheduled ? '' : '-MANUAL-' + Date.now() + '-' + randomUUID().slice(0, 8));
   const startedAt = utc();
-  let token, state, stage = 'GOOGLE_AUTH', writeAttempted = false;
+  let token, state, lock, stage = 'GOOGLE_AUTH', writeAttempted = false, completed = false;
+  async function releaseLock() {
+    const held = lock; lock = undefined;
+    if (!held) return;
+    try { await held.release(); } catch { log('lock_release_pending', { runId }); }
+  }
   log('invoked', { runId, executionMode: scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL' });
   try {
     token = await googleAccessToken();
+    stage = 'EXECUTION_LOCK';
+    lock = await acquireResearchLock(token, runId);
     stage = 'IRC_READ';
     state = await readState(token);
     const settings = Object.fromEntries(state.settings.slice(1).map(row => [text(row[0]), text(row[1])]));
-    if (!/^true$/i.test(settings.daily_scheduler_enabled || '')) return json(res, 200, { ok: true, outcome: 'PAUSED', messagesSent: 0 });
+    if (!/^true$/i.test(settings.daily_scheduler_enabled || '')) {
+      await releaseLock();
+      return json(res, 200, { ok: true, outcome: 'PAUSED', messagesSent: 0 });
+    }
     const previousRun = parseRowsForRun(state).find(x => x.runId === runId && x.outcome === 'RESEARCH_CYCLE_COMPLETE');
     if (previousRun && previousRun.outcome === 'RESEARCH_CYCLE_COMPLETE') {
+      await releaseLock();
       log('already_recorded', { runId, executionMode: previousRun.executionMode });
       return json(res, 200, {
         ok: true,
@@ -523,6 +535,8 @@ export default async function handler(req, res) {
     const dashboardState = text(overviewRows[8]?.[1]);
     if (!/RESEARCH CYCLE COMPLETE/i.test(dashboardState)) throw Error('DASHBOARD_REFRESH_READBACK_FAILED');
 
+    completed = true;
+    await releaseLock();
     log('completed', {
       runId,
       executionMode: scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL',
@@ -568,6 +582,7 @@ export default async function handler(req, res) {
         failurePersisted = Boolean(parseRowsForRun(await readState(token)).find(x => x.runId === runId && x.outcome === 'BLOCKED'));
       } catch { /* Primary failure remains authoritative. Never log provider bodies. */ }
     }
+    if (!writeAttempted) await releaseLock();
     console.error(JSON.stringify({
       component: 'tss-irc-research',
       event: 'blocked',
@@ -581,6 +596,12 @@ export default async function handler(req, res) {
       outcome: 'BLOCKED',
       error: code, stage, failurePersisted
     });
+  } finally {
+    // Retain the lease after an ambiguous write/readback. A later retry waits
+    // for expiry, reacquires atomically, then re-reads Runs before any write.
+    if (lock && (!writeAttempted || completed)) {
+      await releaseLock();
+    }
   }
 }
 

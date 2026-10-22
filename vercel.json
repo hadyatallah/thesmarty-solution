@@ -51,5 +51,10 @@
       "path": "/api/tss-irc-daily?season=winter",
       "schedule": "0 7 * * *"
     }
-  ]
+  ],
+  "functions": {
+    "api/tss-irc-daily.js": {
+      "maxDuration": 60
+    }
+  }
 }
