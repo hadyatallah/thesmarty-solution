@@ -1,3 +1,5 @@
+> Historical 21 October checkpoint. See PRODUCTION_CHECKPOINT_2026-10-22.md for the released scope repair and current acceptance evidence. Retention and activation proposals below remain unapproved.
+
 # TSS WhatsApp | Operational decision package (no activation)
 Date: 21 October 2026
 Status: **NO-GO for production phone migration**. This document does not authorize payment, publishing, sending, retention deletion or number migration.

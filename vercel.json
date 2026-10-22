@@ -44,8 +44,17 @@
   ],
   "crons": [
     {
-      "path": "/api/tss-irc-daily",
+      "path": "/api/tss-irc-daily?season=summer",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/tss-irc-daily?season=winter",
       "schedule": "0 7 * * *"
     }
-  ]
+  ],
+  "functions": {
+    "api/tss-irc-daily.js": {
+      "maxDuration": 60
+    }
+  }
 }

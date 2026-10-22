@@ -1,3 +1,5 @@
+> Historical 21 October checkpoint. See PRODUCTION_CHECKPOINT_2026-10-22.md for the released scope repair and current acceptance evidence. Retention and activation proposals below remain unapproved.
+
 # TSS WhatsApp operational readiness, 21 October 2026
 
 **Decision: NO-GO for number migration or real outbound messaging.** The accepted Admin Inbox remains useful, but a fresh ingestion check found a new production failure. No Meta publication, registration, account deletion, payment method or customer message was performed.
