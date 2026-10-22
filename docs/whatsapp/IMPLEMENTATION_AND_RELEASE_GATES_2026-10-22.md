@@ -55,7 +55,7 @@ substitute for those provider checks.
 | Identity | Proposed access | Boundary / material limitation |
 | --- | --- | --- |
 | tss-whatsapp-operations@tss-crm-508908.iam.gserviceaccount.com | Custom role: datastore.entities.create/get/list on the existing default database | No update/delete/export, no secret access. Firestore IAM cannot isolate a collection here. Application adapter pins the collection, but database-wide read/create remains the IAM blast radius. Owner must accept this tradeoff before any grant. |
-| tss-whatsapp-sender-secrets@tss-crm-508908.iam.gserviceaccount.com | secretmanager.versions.access on individually approved tss-whatsapp-test-sender and, if chosen, tss-whatsapp-owner-mail secrets | No access to the accepted webhook config and no datastore writes. Secret contents must be provisioned privately by the owner/provider. |
+| tss-whatsapp-sender-secrets@tss-crm-508908.iam.gserviceaccount.com | secretmanager.versions.access on individually approved tss-whatsapp-test-sender secret only (out of scope for this audit activation) | No access to the accepted webhook config and no datastore writes. Secret contents must be provisioned privately by the owner/provider. |
 | tss-whatsapp-notify-scheduler@tss-crm-508908.iam.gserviceaccount.com | Dedicated job identity used to issue an ID token for the exact notify endpoint | No business-data permissions. Scheduler service-agent token issuance must be reviewed. No browser token or shared CRON_SECRET is reused. |
 
 The two runtime identities need WIF impersonation for the exact existing Vercel
@@ -196,3 +196,18 @@ References for the corrected limits and secret-free Microsoft path:
 - https://vercel.com/docs/cron-jobs/usage-and-pricing
 - https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-google-cloud
 - https://learn.microsoft.com/en-us/exchange/permissions-exo/application-rbac
+
+
+Observed continuation evidence:
+- Preview synthetic run attempt `39c3c03894ff425d94bcdb22a8717269` was not
+  confirmed. No persisted audit success is claimed. Fixed internal failure
+  categories are now recorded without provider payloads or secrets.
+- Microsoft sign-in succeeded. The TSS tenant is Entra Free and the current
+  signed-in TSS user is a Global Administrator. Registration and scoped mail
+  permission acceptance remain separate from that login.
+- Current Vercel Trusted Sources supports custom OIDC issuers on all plans.
+  Exact Google subject/audience rules are a possible protected-Preview access
+  route, but Cloud Scheduler normally supplies its generated ID token through
+  Authorization, while Vercel requires x-vercel-trusted-oidc-idp-token. A tested
+  header-capable caller is required. No public exception or static bypass
+  credential has been created and no supported direct bridge is claimed.
