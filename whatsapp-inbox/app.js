@@ -7,7 +7,7 @@ const ui = Object.fromEntries([
   'notice','identity','lockButton','loginButton','loginCard','inboxShell','refreshButton','notifyButton',
   'eventList','detail','detailTitle','replyPanel','replyDraft','copyDraft','draftStatus',
   'kindFilter','searchInput','nextButton','count','validateTestReply','policyPreview',
-  'testApproval','approveExact','approveTestReply','sendApprovedTestReply'
+  'testApproval','markTestReviewed','approveExact','approveTestReply','sendApprovedTestReply'
 ].map(id => [id, byId(id)]));
 let sessionActive = false;
 let csrf = '';
@@ -317,4 +317,11 @@ ui.sendApprovedTestReply.addEventListener('click',async()=>{
  try{const r=await operationalRequest({action:'send-approved-test-reply',eventKey:approval.key,text:approval.text,approvalId:approval.approvalId,approvalToken:approval.approvalToken});
   if(sessionActive)ui.draftStatus.textContent=r.state==='SUBMITTED'?'Provider accepted the test reply. Delivery is not confirmed.':'Test reply outcome: '+r.state+'. Review before any further action.';
  }catch{if(sessionActive)ui.draftStatus.textContent='Test reply outcome is uncertain. Do not resend. Review the audit first.';}
+});
+
+ui.markTestReviewed.addEventListener('click',async()=>{
+ if(!sessionActive||!selectedKey||!testCapabilities.canApprove)return;
+ try{await operationalRequest({action:'mark-test-reviewed',eventKey:selectedKey});
+  if(sessionActive)ui.draftStatus.textContent='Test message review recorded. No reply sent.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Review acknowledgement unavailable. Nothing sent.';}
 });

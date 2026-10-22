@@ -31,6 +31,10 @@ number and Meta configuration are unchanged. No transmission or deletion is appr
   claims, probes the accepted receiver and runs the outbox. Incomplete scans stop
   with an explicit failure. Current safety bound is 500 documents per collection.
   High-volume operation needs a separately tested cursor/index design first.
+- Owner-only test review acknowledgements are sealed, read back and deduplicated;
+  the notification worker uses them to suppress unread escalation. Merely viewing
+  or refreshing a message does not mark it reviewed. Live acknowledgement requires
+  the separately reviewed audit writer.
 - Owner UI clears approvals on text/event changes, refresh and logout. Test send
   controls remain hidden unless the server allows approval, and disabled without
   cost/transmission configuration. Retention preview is a real selected-event

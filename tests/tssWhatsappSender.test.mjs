@@ -82,3 +82,13 @@ test('Firestore audit adapter only creates and reads pinned sealed records',asyn
  assert.equal(requests.length,2);assert.deepEqual(requests.map(r=>r.method),['POST','GET']);
  assert.ok(requests.every(r=>r.url.includes('/tss_whatsapp_operations')));
 });
+
+test('review acknowledgement is durable, deduplicated, owner-only and never sends',async()=>{
+ const f=fixture();const args={session:f.session,eventKey:f.eventKey};
+ assert.equal((await f.make().markReviewed(args)).reviewed,true);
+ assert.equal((await f.make().markReviewed(args)).duplicate,true);
+ assert.equal(f.rows.size,1);assert.equal(f.calls,0);
+ assert.ok(validSeal(f.rows.get(f.eventKey+'_review')));
+ await assert.rejects(f.make().markReviewed({...args,session:{...f.session,email:'other@example.com'}}));
+ f.env.VERCEL_ENV='production';await assert.rejects(f.make().markReviewed(args));
+});
