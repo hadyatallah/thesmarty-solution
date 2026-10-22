@@ -6,7 +6,8 @@ const byId = id => document.getElementById(id);
 const ui = Object.fromEntries([
   'notice','identity','lockButton','loginButton','loginCard','inboxShell','refreshButton','notifyButton',
   'eventList','detail','detailTitle','replyPanel','replyDraft','copyDraft','draftStatus',
-  'kindFilter','searchInput','nextButton','count','validateTestReply'
+  'kindFilter','searchInput','nextButton','count','validateTestReply','policyPreview',
+  'testApproval','approveExact','approveTestReply','sendApprovedTestReply'
 ].map(id => [id, byId(id)]));
 let sessionActive = false;
 let csrf = '';
@@ -23,6 +24,8 @@ let hasLoaded = false;
 let loading = false;
 let monitor = null;
 let alertsEnabled = false;
+let testApproval=null,testCapabilities={canApprove:false,canSendTest:false};
+function clearTestApproval(){testApproval=null;ui.approveExact.checked=false;ui.approveTestReply.disabled=true;ui.sendApprovedTestReply.disabled=true;}
 const ownerAlerts=createOwnerAlerts({notify:message=>{if(alertsEnabled&&sessionActive&&'Notification' in window&&Notification.permission==='granted'){try{new Notification(message.title,{body:message.body,tag:message.tag});}catch{}}}});
 let idleTimer = null;
 const IDLE_LOCK_MS = 15 * 60 * 1000;
@@ -46,6 +49,7 @@ function element(tag, cls = '', content = '') {
   return node;
 }
 function lock(reason = 'Session locked. Connect the owner Google account to reopen the inbox.') {
+  clearTestApproval();testCapabilities={canApprove:false,canSendTest:false};ui.testApproval.hidden=true;
   if (monitor) clearInterval(monitor);
   if (idleTimer) clearTimeout(idleTimer);
   monitor = null; idleTimer = null;
@@ -67,6 +71,7 @@ function storeCurrentDraft() {
   if (selectedKey) pendingDrafts.set(selectedKey, ui.replyDraft.value);
 }
 function selectEvent(key) {
+  clearTestApproval();
   storeCurrentDraft();
   selectedKey = key;
   const item = entries.find(x => x.key === key);
@@ -193,7 +198,7 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
     if (!selectedKey && entries.length) selectEvent(entries[0].key);
     else if (selectedKey) selectEvent(selectedKey);
     else renderList();
-    if (!quiet) notice('Private inbox refreshed. No outbound messages can be sent from this page.', 'ok');
+    if (!quiet) notice('Private inbox refreshed. Production sending is disabled.', 'ok');
   } catch (err) {
     // Fail closed: never leave a stale private snapshot visible after a failed refresh.
     const reason = err?.message || 'Unable to read private messages.';
@@ -211,6 +216,7 @@ async function openAdminSession() {
     if(!response.ok||!data.ok)throw Error('Admin sign-in required. Open Admin Login to continue.');
     csrf=data.csrf;sessionExpiresAt=data.expiresAt;sessionActive=true;
     renewIdleLock();await fetchEvents();
+    try{testCapabilities=await operationalRequest({action:'capabilities'});ui.testApproval.hidden=!testCapabilities.canApprove;}catch{ui.testApproval.hidden=true;}
   }catch(e){lock(e.message);}
 }
 async function logout() {
@@ -249,6 +255,7 @@ ui.kindFilter.addEventListener('change', renderList);
 ui.searchInput.addEventListener('input', renderList);
 ui.nextButton.addEventListener('click', () => fetchEvents({ append: true }));
 ui.replyDraft.addEventListener('input', () => {
+  clearTestApproval();
   ui.copyDraft.disabled = !ui.replyDraft.value.trim();
   ui.draftStatus.textContent = '';
   if (selectedKey) pendingDrafts.set(selectedKey, ui.replyDraft.value);
@@ -283,4 +290,31 @@ ui.validateTestReply.addEventListener('click',async()=>{
   ui.draftStatus.textContent=r.ok&&data.sent===false?'Test draft validated. Nothing sent.':data.error==='reply_workflow_disabled'?'Test workflow is disabled. Nothing sent.':'Test draft rejected. Nothing sent.';
  }catch{ui.draftStatus.textContent='Test validation unavailable. Nothing sent.';}
  finally{ui.validateTestReply.disabled=false;}
+});
+async function operationalRequest(body){
+ const r=await fetch('/api/tss-whatsapp-operations',{method:'POST',credentials:'same-origin',cache:'no-store',redirect:'error',headers:{'Content-Type':'application/json','X-TSS-CSRF':csrf},body:JSON.stringify(body)});
+ const data=await r.json();if(!r.ok)throw Error('operation_unavailable');return data;
+}
+ui.policyPreview.addEventListener('click',async()=>{
+ if(!sessionActive||!selectedKey)return;
+ try{const p=await operationalRequest({action:'policy-preview',eventKey:selectedKey,retentionDays:90});
+  if(sessionActive)ui.draftStatus.textContent='Review preview: '+p.candidates.length+' candidate(s) for the selected event. Legal holds or unknown hold status: '+p.inventory.legalHoldOrUnknown+'. Nothing deleted.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Retention preview unavailable. Nothing deleted.';}
+});
+ui.approveExact.addEventListener('change',()=>{ui.approveTestReply.disabled=!testCapabilities.canApprove||!ui.approveExact.checked||!ui.replyDraft.value.trim();});
+ui.approveTestReply.addEventListener('click',async()=>{
+ if(!sessionActive||!ui.approveExact.checked||!testCapabilities.canApprove)return;
+ const key=selectedKey,text=ui.replyDraft.value;ui.approveTestReply.disabled=true;
+ try{const a=await operationalRequest({action:'approve-test-reply',eventKey:key,text,explicitApproval:true});
+  if(!sessionActive||key!==selectedKey||text!==ui.replyDraft.value)return;
+  testApproval={...a,key,text};ui.sendApprovedTestReply.disabled=!testCapabilities.canSendTest;
+  ui.draftStatus.textContent='Exact test reply approval recorded. Nothing sent.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Approval was not confirmed. Nothing sent.';}
+});
+ui.sendApprovedTestReply.addEventListener('click',async()=>{
+ if(!sessionActive||!testApproval||!testCapabilities.canSendTest)return;
+ const approval=testApproval;clearTestApproval();
+ try{const r=await operationalRequest({action:'send-approved-test-reply',eventKey:approval.key,text:approval.text,approvalId:approval.approvalId,approvalToken:approval.approvalToken});
+  if(sessionActive)ui.draftStatus.textContent=r.state==='SUBMITTED'?'Provider accepted the test reply. Delivery is not confirmed.':'Test reply outcome: '+r.state+'. Review before any further action.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Test reply outcome is uncertain. Do not resend. Review the audit first.';}
 });

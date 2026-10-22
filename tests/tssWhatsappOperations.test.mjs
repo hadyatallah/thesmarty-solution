@@ -33,6 +33,15 @@ test('owner alerts suppress baseline and old pages, deduplicate, throttle, reset
  assert.doesNotMatch(JSON.stringify(alerts),/PRIVATE/);a.reset();a.observe([{key:'newest',kind:'message'}]);assert.equal(alerts.length,4);
 });
 import {createHealthHandler} from '../lib/tssWhatsappOperations.mjs';
+test('policy preview is selected-event only and production blocks even capability reads',async()=>{
+ const h=createOperationsHandler({env,authenticate:async()=>({email:'thesmartysolution@gmail.com',csrfHash:hash(csrf)}),loadEvent:async()=>({...event,receivedAt:'2026-10-22',legalHold:true})});
+ const r={setHeader(){},end(x){this.body=JSON.parse(x);}};
+ await h({method:'POST',headers:{origin:env.TSS_ADMIN_ORIGIN,'content-type':'application/json','x-tss-csrf':csrf},body:{action:'policy-preview',eventKey:key,retentionDays:90}},r);
+ assert.equal(r.statusCode,200);assert.equal(r.body.deletionAllowed,false);assert.equal(r.body.scope,'selected-event-only');assert.equal(r.body.inventory.legalHoldOrUnknown,1);
+ const production=createOperationsHandler({env:{...env,VERCEL_ENV:'production',TSS_ADMIN_ORIGIN:'https://www.thesmartysolution.com'},authenticate:async()=>({email:'thesmartysolution@gmail.com',csrfHash:hash(csrf)}),loadEvent:async()=>{throw Error('must_not_read');}});
+ await production({method:'POST',headers:{origin:'https://www.thesmartysolution.com','content-type':'application/json','x-tss-csrf':csrf},body:{action:'capabilities'}},r);
+ assert.equal(r.statusCode,423);
+});
 test('health is owner-gated, uses pinned URL without credentials and fails on wrong response',async()=>{
  for(const status of [400,403,503]){
   let calls=0;const h=createHealthHandler({env,authenticate:async req=>{if(!req.headers.cookie)throw Object.assign(Error('owner_session_required'),{status:401});return {email:'thesmartysolution@gmail.com'};},fetcher:async(url,options)=>{calls++;assert.equal(url,env.TSS_ADMIN_ORIGIN+'/api/tss-whatsapp-webhook');assert.equal(options.redirect,'error');assert.equal(options.headers,undefined);return new Response(status===400?'Invalid challenge':'Unavailable',{status});}});

@@ -46,10 +46,17 @@
         <div id="detail" class="details">Your message details will appear here after secure sign-in.</div>
         <section id="replyPanel" hidden>
           <h3>Prepare a reply</h3>
-          <p class="fine">Draft only. Copying a draft is a manual action; this inbox has no WhatsApp send button or Graph API permissions.</p>
+          <p class="fine">Drafts are not sent. Test sending requires separate activation and your approval of the exact reply. Production sending is disabled.</p>
           <label for="replyDraft">Unsent draft</label>
           <textarea id="replyDraft" rows="6" maxlength="2000" placeholder="Type your proposed reply here. No message will be sent."></textarea>
           <div class="draft-actions"><button id="copyDraft" type="button" class="secondary" disabled>Copy unsent draft</button><button id="validateTestReply" type="button" class="secondary">Validate test reply (no sending)</button><span id="draftStatus" class="fine" role="status"></span></div>
+          <button id="policyPreview" type="button" class="secondary">Preview retention review (no deletion)</button>
+          <div id="testApproval" hidden>
+            <label><input id="approveExact" type="checkbox"> I approve this exact test reply to the selected sender.</label>
+            <button id="approveTestReply" type="button" class="secondary" disabled>Record test reply approval</button>
+            <button id="sendApprovedTestReply" type="button" disabled>Send approved test reply once</button>
+            <p class="fine">An uncertain result requires review. Do not retry it as a new message.</p>
+          </div>
         </section>
       </section>
     </div>
