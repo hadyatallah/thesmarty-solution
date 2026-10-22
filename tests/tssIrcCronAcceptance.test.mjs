@@ -124,6 +124,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
   const database = makeDatabase();
   const calls = [];
   let sourceMode = "results";
+  let lockMetadata;
   const logs = [];
 
   global.fetch = async (url, options = {}) => {
@@ -131,6 +132,16 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     calls.push(u);
 
     if(u.startsWith('https://sheets.googleapis.com/')) assert.equal(options.headers.authorization,'Bearer synthetic-sheets-impersonated-token');
+
+    if (u.endsWith('/developerMetadata:search')) return response(200,{matchedDeveloperMetadata:lockMetadata?[{developerMetadata:lockMetadata}]:[]});
+    if (u.endsWith(':batchUpdate') && !u.includes('/values:batchUpdate')) {
+      let next=lockMetadata;
+      for(const request of JSON.parse(options.body).requests){
+        if(request.deleteDeveloperMetadata){const lookup=request.deleteDeveloperMetadata.dataFilter.developerMetadataLookup;if(next?.metadataValue===lookup.metadataValue)next=undefined;}
+        if(request.createDeveloperMetadata){if(next)return response(400,{});next=request.createDeveloperMetadata.developerMetadata;}
+      }
+      lockMetadata=next;return response(200,{replies:[]});
+    }
 
     if (u.includes('/values:batchGet?')) {
       const parsed = new URL(u);
@@ -278,7 +289,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     const paused = mkRes();
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},paused);
     assert.equal(JSON.parse(paused.body).outcome,'PAUSED');
-    assert.equal(calls.slice(before).some(url=>url.includes('agent.index.cy')||url.includes('batchUpdate')),false);
+    assert.equal(calls.slice(before).some(url=>url.includes('agent.index.cy')||url.includes('/values:batchUpdate')),false);
     database["'Settings'"][1][1] = 'TRUE';
     database["'Runs'"] = database["'Runs'"].slice(0,1);
     sourceMode='zero';
@@ -298,6 +309,18 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(JSON.parse(failure.body).error,'INDEX_RESPONSE_SCHEMA_INVALID');
     assert.equal(JSON.parse(failure.body).failurePersisted,true);
     assert.equal(database["'Runs'"].at(-1)[9],'BLOCKED');
+    sourceMode='zero';
+    database["'Runs'"]=database["'Runs'"].slice(0,1);
+    const concurrentA=mkRes(),concurrentB=mkRes();
+    const scheduledRequest={method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY','user-agent':'vercel-cron/1.0'}};
+    const beforeConcurrent=calls.length;
+    await Promise.all([handler(scheduledRequest,concurrentA),handler(scheduledRequest,concurrentB)]);
+    const responses=[JSON.parse(concurrentA.body),JSON.parse(concurrentB.body)];
+    assert.equal(responses.filter(x=>x.outcome==='RESEARCH_CYCLE_COMPLETE').length,1);
+    assert.equal(responses.filter(x=>x.error==='IRC_RUN_IN_PROGRESS').length,1);
+    assert.equal(database["'Runs'"].length,2);
+    assert.equal(calls.slice(beforeConcurrent).filter(url=>url.includes('agent.index.cy/v1/listings?')).length,1);
+
 
 
   } finally {
