@@ -124,6 +124,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
   const database = makeDatabase();
   const calls = [];
   let sourceMode = "results";
+  let concurrentExternalRun = false;
   let lockMetadata;
   const logs = [];
 
@@ -157,11 +158,16 @@ test('Production-style cron run performs discovery, first-party verification, Ma
       });
     }
 
+    if (u.includes(':append?')) {
+      database["'Runs'"].push(...JSON.parse(options.body).values);
+      return response(200, { updates: { updatedRows: 1 } });
+    }
     if (u.includes('/values:batchUpdate')) {
       const payload = JSON.parse(options.body || '{}');
       for (const item of payload.data || []) {
         applyRange(database, item.range, item.values || []);
       }
+      if(concurrentExternalRun){database["'Runs'"].push(['EXTERNAL-APPROVED-RUN']);concurrentExternalRun=false;}
       return response(200, { totalUpdatedCells: 100 });
     }
 
@@ -293,6 +299,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     database["'Settings'"][1][1] = 'TRUE';
     database["'Runs'"] = database["'Runs'"].slice(0,1);
     sourceMode='zero';
+    concurrentExternalRun=true;
     const manual=mkRes();
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},manual);
     assert.equal(manual.statusCode,200,manual.body);
@@ -301,7 +308,8 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     const cronAfterManual=mkRes();
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY','user-agent':'vercel-cron/1.0'}},cronAfterManual);
     assert.equal(JSON.parse(cronAfterManual.body).outcome,'RESEARCH_CYCLE_COMPLETE');
-    assert.equal(database["'Runs'"].length,3);
+    assert.equal(database["'Runs'"].length,4);
+    assert.ok(database["'Runs'"].some(row=>row[0]==='EXTERNAL-APPROVED-RUN'));
     sourceMode='malformed';
     const failure=mkRes();
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},failure);
