@@ -180,6 +180,18 @@ async function batchWrite(token, data) {
   return readJson(response);
 }
 
+async function appendRun(token, row) {
+  // Allocate the run row server-side: another approved workflow may write Runs
+  // while research is executing. Never overwrite its row using a stale count.
+  const response = await fetch(GOOGLE + encodeURIComponent(ircSheetId()) +
+    '/values/' + encodeURIComponent("'Runs'!A:M") + ':append?valueInputOption=RAW&insertDataOption=INSERT_ROWS', {
+    method: 'POST', signal: AbortSignal.timeout(12000),
+    headers: { authorization: 'Bearer ' + token, 'content-type': 'application/json' },
+    body: JSON.stringify({ majorDimension: 'ROWS', values: [row] })
+  });
+  return readJson(response);
+}
+
 function rowsForOverview(state, appendedReferralCount, scheduledRun) {
   const buyers = Math.max(0, state.buyers.length - 1);
   const referrals = Math.max(0, state.referrals.length - 1) + appendedReferralCount;
@@ -501,11 +513,6 @@ export default async function handler(req, res) {
         values: activityRows
       });
     }
-    writeData.push({
-      range: a1Range('Runs', state.runs.length + 1, 13, 1),
-      majorDimension: 'ROWS',
-      values: [runRow]
-    });
 
     const scheduledRunAfter = scheduled
       ? { runId, startedAt, finishedAt, executionMode: 'VERCEL_CRON' }
@@ -520,6 +527,7 @@ export default async function handler(req, res) {
     stage = 'IRC_WRITE';
     writeAttempted = true;
     await batchWrite(token, writeData);
+    await appendRun(token, runRow);
     stage = 'READBACK';
 
     const verifyState = await readState(token);
@@ -574,11 +582,7 @@ export default async function handler(req, res) {
     // a commercial/evidence batch could have committed. Auth failures stay in logs.
     if (token && state && !writeAttempted) {
       try {
-        await batchWrite(token, [{
-          range: a1Range('Runs', state.runs.length + 1, 13, 1),
-          majorDimension: 'ROWS',
-          values: [[runId, startedAt, utc(), 'Research runtime', 0, 0, 0, 0, 0, 'BLOCKED', JSON.stringify({ stage, code }), 'RESEARCH_CYCLE', scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL']]
-        }]);
+        await appendRun(token, [runId, startedAt, utc(), 'Research runtime', 0, 0, 0, 0, 0, 'BLOCKED', JSON.stringify({ stage, code }), 'RESEARCH_CYCLE', scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL']);
         failurePersisted = Boolean(parseRowsForRun(await readState(token)).find(x => x.runId === runId && x.outcome === 'BLOCKED'));
       } catch { /* Primary failure remains authoritative. Never log provider bodies. */ }
     }
