@@ -7,7 +7,7 @@ const ui = Object.fromEntries([
   'notice','identity','lockButton','loginButton','loginCard','inboxShell','refreshButton','notifyButton',
   'eventList','detail','detailTitle','replyPanel','replyDraft','copyDraft','draftStatus',
   'kindFilter','searchInput','nextButton','count','validateTestReply','policyPreview',
-  'testApproval','markTestReviewed','approveExact','approveTestReply','sendApprovedTestReply'
+  'testApproval','auditAcceptance','markTestReviewed','approveExact','approveTestReply','sendApprovedTestReply'
 ].map(id => [id, byId(id)]));
 let sessionActive = false;
 let csrf = '';
@@ -49,7 +49,7 @@ function element(tag, cls = '', content = '') {
   return node;
 }
 function lock(reason = 'Session locked. Connect the owner Google account to reopen the inbox.') {
-  clearTestApproval();testCapabilities={canApprove:false,canSendTest:false};ui.testApproval.hidden=true;
+  clearTestApproval();testCapabilities={canApprove:false,canSendTest:false};ui.testApproval.hidden=true;ui.auditAcceptance.hidden=true;
   if (monitor) clearInterval(monitor);
   if (idleTimer) clearTimeout(idleTimer);
   monitor = null; idleTimer = null;
@@ -216,7 +216,7 @@ async function openAdminSession() {
     if(!response.ok||!data.ok)throw Error('Admin sign-in required. Open Admin Login to continue.');
     csrf=data.csrf;sessionExpiresAt=data.expiresAt;sessionActive=true;
     renewIdleLock();await fetchEvents();
-    try{testCapabilities=await operationalRequest({action:'capabilities'});ui.testApproval.hidden=!testCapabilities.canApprove;}catch{ui.testApproval.hidden=true;}
+    try{testCapabilities=await operationalRequest({action:'capabilities'});ui.testApproval.hidden=!testCapabilities.canApprove;ui.auditAcceptance.hidden=!testCapabilities.canAudit;}catch{ui.testApproval.hidden=true;ui.auditAcceptance.hidden=true;}
   }catch(e){lock(e.message);}
 }
 async function logout() {
@@ -324,4 +324,13 @@ ui.markTestReviewed.addEventListener('click',async()=>{
  try{await operationalRequest({action:'mark-test-reviewed',eventKey:selectedKey});
   if(sessionActive)ui.draftStatus.textContent='Test message review recorded. No reply sent.';
  }catch{if(sessionActive)ui.draftStatus.textContent='Review acknowledgement unavailable. Nothing sent.';}
+});
+
+ui.auditAcceptance.addEventListener('click',async()=>{
+ if(!sessionActive||!testCapabilities.canAudit)return;
+ ui.auditAcceptance.disabled=true;const runId=crypto.randomUUID().replaceAll('-','');
+ try{const result=await operationalRequest({action:'audit-acceptance',runId});
+  if(sessionActive)ui.draftStatus.textContent='Audit acceptance saved: '+result.runId+'. No WhatsApp or email transmitted. Independent Cloud Shell readback pending.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Audit acceptance not confirmed. No messages transmitted. Run reference: '+runId;}
+ finally{ui.auditAcceptance.disabled=false;}
 });

@@ -4,6 +4,7 @@ import {keylessToken} from '../lib/tssWhatsappGoogle.mjs';
 import {parseFirestoreDocument} from '../lib/tssWhatsappInbox.mjs';
 import {createApprovedSender,metaTestTransport} from '../lib/tssWhatsappSender.mjs';
 import {operationsLedger,metaSenderSecret} from '../lib/tssWhatsappOperationsRuntime.mjs';
+import {createAuditAcceptance} from '../lib/tssWhatsappAuditAcceptance.mjs';
 const sessions=createSessionService();
 async function loadEvent(key){
   if(!/^[a-f0-9]{64}$/.test(key||''))throw Error('event_key_invalid');
@@ -21,4 +22,4 @@ const env=process.env;
 const sender=createApprovedSender({env,ledger:operationsLedger(env),loadEvent,
  transport:metaTestTransport({env,getToken:()=>metaSenderSecret(env)})});
 export default createOperationsHandler({env,authenticate:sessions.authenticate,loadEvent,
- approvedSender:sender,audit:event=>console.info(JSON.stringify(event))});
+ approvedSender:sender,auditAcceptance:createAuditAcceptance({env,ledger:operationsLedger(env)}),audit:event=>console.info(JSON.stringify(event))});

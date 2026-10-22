@@ -22,6 +22,11 @@ on:
       - 'lib/tssWhatsappNotificationWorker.mjs'
       - 'lib/tssWhatsappOperationsRuntime.mjs'
       - 'lib/tssWhatsappPolicy.mjs'
+      - 'lib/tssWhatsappMailIdentity.mjs'
+      - 'lib/tssWhatsappAuditAcceptance.mjs'
+      - 'tests/tssWhatsapp*.test.mjs'
+      - 'tests/tssWhatsappInfrastructure.test.py'
+      - 'scripts/tss-whatsapp-infrastructure.py'
       - 'api/tss-whatsapp-notify.js'
       - 'scripts/tss-whatsapp-private-acceptance.py'
       - 'tests/tssWhatsappPrivateAcceptance.test.py'
@@ -54,6 +59,11 @@ on:
       - 'lib/tssWhatsappNotificationWorker.mjs'
       - 'lib/tssWhatsappOperationsRuntime.mjs'
       - 'lib/tssWhatsappPolicy.mjs'
+      - 'lib/tssWhatsappMailIdentity.mjs'
+      - 'lib/tssWhatsappAuditAcceptance.mjs'
+      - 'tests/tssWhatsapp*.test.mjs'
+      - 'tests/tssWhatsappInfrastructure.test.py'
+      - 'scripts/tss-whatsapp-infrastructure.py'
       - 'api/tss-whatsapp-notify.js'
       - 'scripts/tss-whatsapp-private-acceptance.py'
       - 'tests/tssWhatsappPrivateAcceptance.test.py'
@@ -89,4 +99,5 @@ jobs:
       - run: python3 tests/tssAdminProductionIam.test.py
 
       - run: python3 tests/tssWhatsappPrivateAcceptance.test.py
+      - run: python3 tests/tssWhatsappInfrastructure.test.py
       - run: node --check api/tss-whatsapp-notify.js
