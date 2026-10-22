@@ -103,3 +103,22 @@ cannot restore Business App registration or history. No cutover is authorized.
 
 GO for the limited dependency-scope repair. Full webhook persistence acceptance
 and number migration remain NO-GO until their respective gates pass.
+
+
+## Signed production acceptance completed at 14:36 Nicosia
+
+This section supersedes the earlier signed-test blocker above. The owner ran the pinned helper in the existing authenticated Cloud Shell and supplied its sanitized successful output. Independent Vercel production logs and Admin UI readback were then checked in Work.
+
+- Deployment remains dpl_AgbqFV6TF95k6y2xogESY2EAxrk5 at5594f072aa53283cff2ed59e973422ac00ff9168.
+- Correct challenge verified11:36:08.543Z. Invalid signature rejected11:36:09.302Z.
+- Signed ingestion committed11:36:11.065Z:created1,duplicates0.
+- Replay committed11:36:12.318Z:created0,duplicates1.
+- Wrong WABA and wrong phone rejected11:36:13.337Z and11:36:13.605Z.
+- Owner helper independently read Firestore, checked expected event/body and unchanged createTime/updateTime after replay. ReceivedAt2026-10-22T11:36:10.329Z. Firestore createTime2026-10-22T11:36:11.014269Z.
+- Work independently authenticated the owner and read the new production Inbox record. MessageID:wamid.TSS_SYNTHETIC_ACCEPTANCE_f20f3e94ac754fd4a6b90b31878e351f. Test WABA2882413005471663 /phone1378287792033123. Synthetic body and held_for_review state match. There are2total events:the existing October20fixture and this new one, not two copies of the new event.
+- Recomputed the Inbox event identity hash:40fa3a42492bd6c57bb58ecbd965c363022345c813a021a545c0b6b41a90f89d. It exactly matches the owner helper's independently read Firestore eventKey.
+- Customer messages sent0, Meta Graph calls0, IAM changes0. No number migration, publication, allowlist or secret change.
+
+The limited production webhook receiver acceptance is PASS, including new signed persistence, replay protection and Admin display. This was a signed synthetic event, not a real Meta-to-customer send or proof of the future production WABA subscription.
+
+PR121 stays DRAFT and unreleased to production. Remaining gates are live preview draft validation, a verified sender/audit/token integration, dependable closed-browser alerts, and separately approved retention, billing/publication and number migration. The private helper no longer needs to be rerun.
