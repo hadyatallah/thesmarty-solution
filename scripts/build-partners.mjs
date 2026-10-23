@@ -5,13 +5,19 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const esc = (v) => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function renderDirectory(data) {
   const ids = new Set();
-  const categories = new Map(data.categories.map(c => [c.id, c.label]));
+  const categories = new Map();
+  for (const category of data.categories) {
+    if (!/^[a-z][a-z0-9-]*$/.test(category.id) || category.id === 'all' || categories.has(category.id) || !category.label) throw new Error('Invalid, reserved or duplicate category ID');
+    categories.set(category.id, category.label);
+  }
   for (const item of data.entries) {
     if (!item.id || ids.has(item.id)) throw new Error('Missing or duplicate entry ID');
     ids.add(item.id);
     if (!categories.has(item.category)) throw new Error(`Unknown category: ${item.category}`);
     if (!['draft', 'published'].includes(item.status)) throw new Error('Unknown publish status');
     if (!/^(https:\/\/|\/(?!\/))/.test(item.url)) throw new Error('Only HTTPS or root-relative links are allowed');
+    const url = new URL(item.url, 'https://www.thesmartysolution.com');
+    if (url.protocol !== 'https:' || url.username || url.password || /[\\\s]/.test(item.url)) throw new Error('Invalid public destination URL');
     for (const field of ['name', 'description', 'relationship', 'verifiedOn']) if (!item[field]) throw new Error(`Missing ${field}`);
   }
   const published = data.entries.filter(e => e.status === 'published');
