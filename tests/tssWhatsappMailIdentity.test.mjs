@@ -28,3 +28,7 @@ test('wrong Google subject or issuer cannot reach Microsoft and provider errors 
  }
  const f=fixture();f.dependencies.fetcher=async()=>{throw Error('PRIVATE_PROVIDER_TOKEN');};await assert.rejects(federatedMailToken(env,f.dependencies),/^Error: mail_federation_unavailable$/);
 });
+test('production mail requires a separate release gate; all pinned identity checks remain',async()=>{
+ const f=fixture();assert.equal(await federatedMailToken({...env,VERCEL_ENV:'production',TSS_WHATSAPP_PRODUCTION_MAIL_RELEASE:'approved'},f.dependencies),'PRIVATE_GRAPH_ACCESS_TOKEN');
+ const g=fixture();await assert.rejects(federatedMailToken({...env,VERCEL_ENV:'production',TSS_WHATSAPP_PRODUCTION_MAIL_RELEASE:'approved',TSS_WHATSAPP_MAIL_CLIENT_ID:'other'},g.dependencies),/not_configured/);assert.equal(g.calls.length,0);
+});

@@ -361,3 +361,7 @@ mailAuthButton.after(mailTestButton);
 const mailStatusButton=document.createElement('button');mailStatusButton.type='button';mailStatusButton.textContent='Check test email status';
 mailStatusButton.addEventListener('click',async()=>{try{const result=await operationalRequest({action:'mail-acceptance-status'});if(sessionActive)ui.draftStatus.textContent='Test email state: '+result.state;}catch{if(sessionActive)ui.draftStatus.textContent='Test email status unavailable.';}});
 mailTestButton.after(mailStatusButton);
+
+const inventoryCheckButton=document.createElement('button');inventoryCheckButton.type='button';inventoryCheckButton.textContent='Check notification inventory';
+inventoryCheckButton.addEventListener('click',async()=>{if(!sessionActive)return;inventoryCheckButton.disabled=true;try{const value=await operationalRequest({action:'notification-inventory-check'});if(sessionActive)ui.draftStatus.textContent='Notification inventory verified: '+value.records+' operational records. No email sent.';}catch{if(sessionActive)ui.draftStatus.textContent='Notification inventory check failed. No email sent.';}finally{inventoryCheckButton.disabled=false;}});
+mailStatusButton.after(inventoryCheckButton);

@@ -1,3 +1,5 @@
+import {notificationOperationsInventory} from '../lib/tssWhatsappNotificationInventory.mjs';
+import {operationsToken} from '../lib/tssWhatsappOperationsRuntime.mjs';
 import {waitUntil} from '@vercel/functions';
 import {setTimeout as delay} from 'node:timers/promises';
 import {createMailAcceptance} from '../lib/tssWhatsappMailAcceptance.mjs';
@@ -26,4 +28,4 @@ const env=process.env;
 const sender=createApprovedSender({env,ledger:operationsLedger(env),loadEvent,
  transport:metaTestTransport({env,getToken:()=>metaSenderSecret(env)})});
 export default createOperationsHandler({env,authenticate:sessions.authenticate,loadEvent,
- approvedSender:sender,mailAcceptance:createMailAcceptance({env,ledger:operationsLedger(env),transport:outlookOwnerTransport({env,getToken:()=>outlookNotificationToken(env)}),defer:waitUntil,delay}),checkMailAuthentication:async()=>{await outlookNotificationToken(env);},auditAcceptance:createAuditAcceptance({env,ledger:operationsLedger(env)}),audit:event=>console.info(JSON.stringify(event))});
+ approvedSender:sender,checkNotificationInventory:async()=>{const value=await notificationOperationsInventory({ledger:operationsLedger(env),getToken:()=>operationsToken(env,'TSS_WHATSAPP_OPERATIONS_SERVICE_ACCOUNT_EMAIL')});if(value.truncated)throw Error('notification_inventory_incomplete');return {ok:true,inventoryVerified:true,records:value.operations.length,emailsSent:0};},mailAcceptance:createMailAcceptance({env,ledger:operationsLedger(env),transport:outlookOwnerTransport({env,getToken:()=>outlookNotificationToken(env)}),defer:waitUntil,delay}),checkMailAuthentication:async()=>{await outlookNotificationToken(env);},auditAcceptance:createAuditAcceptance({env,ledger:operationsLedger(env)}),audit:event=>console.info(JSON.stringify(event))});
