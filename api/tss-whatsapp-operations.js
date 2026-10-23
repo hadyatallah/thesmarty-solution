@@ -3,7 +3,7 @@ import {createOperationsHandler} from '../lib/tssWhatsappOperations.mjs';
 import {keylessToken} from '../lib/tssWhatsappGoogle.mjs';
 import {parseFirestoreDocument} from '../lib/tssWhatsappInbox.mjs';
 import {createApprovedSender,metaTestTransport} from '../lib/tssWhatsappSender.mjs';
-import {operationsLedger,metaSenderSecret} from '../lib/tssWhatsappOperationsRuntime.mjs';
+import {operationsLedger,metaSenderSecret,outlookNotificationToken} from '../lib/tssWhatsappOperationsRuntime.mjs';
 import {createAuditAcceptance} from '../lib/tssWhatsappAuditAcceptance.mjs';
 const sessions=createSessionService();
 async function loadEvent(key){
@@ -22,4 +22,4 @@ const env=process.env;
 const sender=createApprovedSender({env,ledger:operationsLedger(env),loadEvent,
  transport:metaTestTransport({env,getToken:()=>metaSenderSecret(env)})});
 export default createOperationsHandler({env,authenticate:sessions.authenticate,loadEvent,
- approvedSender:sender,auditAcceptance:createAuditAcceptance({env,ledger:operationsLedger(env)}),audit:event=>console.info(JSON.stringify(event))});
+ approvedSender:sender,checkMailAuthentication:async()=>{await outlookNotificationToken(env);},auditAcceptance:createAuditAcceptance({env,ledger:operationsLedger(env)}),audit:event=>console.info(JSON.stringify(event))});

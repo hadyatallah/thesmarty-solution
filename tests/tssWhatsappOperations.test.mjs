@@ -49,3 +49,12 @@ test('health is owner-gated, uses pinned URL without credentials and fails on wr
   assert.equal((await run('')).statusCode,401);assert.equal(calls,0);const r=await run('owner');assert.equal(r.statusCode,status===400?200:503);assert.equal(r.body.endToEndVerified,false);
  }
 });
+
+ test('mail authentication check is owner and CSRF guarded and never returns the token',async()=>{
+ let calls=0;
+ const h=createOperationsHandler({env,authenticate:async req=>({email:req.headers.cookie==='owner'?'thesmartysolution@gmail.com':'other@example.com',csrfHash:hash(csrf)}),checkMailAuthentication:async()=>{calls++;return 'PRIVATE_GRAPH_TOKEN';}});
+ const run=async(headers={})=>{const res={setHeader(){},end(v){this.body=JSON.parse(v);}};await h({method:'POST',headers:{cookie:'owner',origin:env.TSS_ADMIN_ORIGIN,'content-type':'application/json','x-tss-csrf':csrf,...headers},body:{action:'mail-auth-check'}},res);return res;};
+ assert.equal((await run({cookie:'other'})).statusCode,403);
+ assert.equal((await run({'x-tss-csrf':'bad'})).statusCode,403);assert.equal(calls,0);
+ const r=await run();assert.equal(r.statusCode,200);assert.equal(r.body.emailsSent,0);assert.equal(calls,1);assert.doesNotMatch(JSON.stringify(r.body),/PRIVATE/);
+ });
