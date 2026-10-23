@@ -1,6 +1,6 @@
 # Mail security and background notification continuation
 
-23 October 2026. PR121 Preview only. No production release or permission changes.
+23 October 2026. PR121 Preview only. No production release. Owner performed the separately approved Microsoft scope replacement below.
 
 ## Accepted boundary
 
@@ -17,15 +17,16 @@ WhatsApp or email transmission occurred.
 - Client ID: 1b834ef7-b258-41fb-8ca9-ea9f093b4264.
 - Enterprise service principal: 791b0876-f7e7-4cde-b27c-1cdafecff1a2.
 - Application registration object: 036466e0-c784-419a-9f73-438db116b4cc.
-- Last direct Entra observation, 22 October: application Mail.Send granted,
-  delegated Mail.Send/User.Read and offline_access granted. One existing secret
-  was listed, but no value was accessed or reused.
-
-Application Mail.Send alone does not establish effective mailbox isolation.
-Exchange Application Access Policies constrain the Entra permission path.
-Exchange Application RBAC is additive and must also be evaluated. A narrow RBAC
-scope does not override an unscoped Entra grant. Current effective scope is
-UNKNOWN, not demonstrated tenant-wide access and not demonstrated isolation.
+- Owner-provided live readback, 23 October 10:36 Europe/Nicosia: Exchange scope
+  `TSS-WebsiteMailer-InfoOnly` has filter `PrimarySmtpAddress -eq 'info@thesmartysolution.com'`.
+- Assignment `TSS-WebsiteMailer-InfoOnly-MailSend` grants only `Application Mail.Send`
+  within that scope. Test-ServicePrincipalAuthorization for the TSS mailbox returns InScope True.
+- Owner screenshots at 10:31 and 10:34 show the application-level Graph Mail.Send
+  grant revoked and its configured app-registration request removed. Delegated
+  Mail.Send, User.Read and previously granted offline_access were preserved.
+- Only one actual mailbox exists. Unrelated-mailbox denial was not tested and is
+  still pending. Do not invent a negative test or create a paid mailbox to satisfy it.
+- Accepted mailbox configuration is not runtime token-exchange or email-delivery acceptance.
 
 ## Read-only verification operation
 
@@ -108,3 +109,40 @@ channel verification and protected Preview access are pending. No 24/7 claim.
 - https://vercel.com/docs/cron-jobs/usage-and-pricing
 - https://vercel.com/docs/deployment-protection/methods-to-bypass-deployment-protection/trusted-sources
 - https://cloud.google.com/scheduler/pricing
+
+## Runtime continuation after scoped Microsoft acceptance
+
+Latest owner authorization: exactly one notification addressed to
+`info@thesmartysolution.com`. The transport now hardcodes this address as both
+sender and recipient, preserving the approved signature. Browser alert data
+cannot override the recipient. The keyless adapter additionally pins the tenant
+and client IDs above, rejecting other well-formed GUIDs before any token call.
+151 relevant local Node tests pass. These are fixture/security results, not live
+authentication, transmission, delivery or browser-closed acceptance.
+
+No mail identity provisioning is evidenced. Current Preview metadata has owner
+email and worker gates disabled and no configured mail federation parameters.
+The remaining trust is a distinct permission change, not the completed audit IAM:
+
+1. Dedicated Google service account:
+   `tss-whatsapp-owner-mail@tss-crm-508908.iam.gserviceaccount.com`.
+2. On that service account only, grant `roles/iam.serviceAccountOpenIdTokenCreator`
+   (only `iam.serviceAccounts.getOpenIdToken`) to the existing exact Preview subject:
+   `principal://iam.googleapis.com/projects/103840050410/locations/global/workloadIdentityPools/vercel-research-center/subject/owner:tss21:project:thesmarty-solution-agent:environment:preview`.
+   This covers all Preview deployments of this Vercel project, not one Git branch.
+   No Google data roles, access-token minting, signing, keys, or production binding.
+3. On the existing Website Mailer app registration, one federated identity credential:
+   issuer `https://accounts.google.com`, audience `api://AzureADTokenExchange`,
+   subject exactly the dedicated Google account's provider-returned numeric unique ID.
+   Never substitute the project number, account email or a guessed subject.
+   No Graph permission grant or client secret is required for this trust.
+4. Configure only nonsecret identifiers and release gates in branch-specific Preview.
+   Keep routine worker sending off while a single uniquely identified acceptance
+   outbox item is prepared. Graph 202 remains SUBMITTED_UNVERIFIED, not delivery.
+
+Owner permission review is required before applying this new Google identity trust.
+No available connected Google IAM or Entra administrative write API is exposed in
+this session. An owner Cloud Shell operation/portal federation entry is needed
+once the exact grant is authorized and the account unique ID is read back.
+No test email has been sent. Exactly-one owner transmission and closed-browser
+background delivery remain BLOCKED, not PASS. No production changes or Meta actions.

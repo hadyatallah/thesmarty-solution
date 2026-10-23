@@ -34,6 +34,6 @@ test('notification timeout and ambiguous audit outcome never automatically resen
 test('Outlook adapter fixes owner/sender and signature;202 is never delivery',async()=>{
  const alert=planOwnerAlerts({events:[event]})[0];let calls=0;
  const env={TSS_WHATSAPP_OWNER_EMAIL_NOTIFICATIONS:'approved'};
- const h=outlookOwnerTransport({env,getToken:async()=> 'synthetic',fetcher:async(url,o)=>{calls++;assert.match(url,/users\/info%40thesmartysolution.com\/sendMail$/);const payload=JSON.parse(o.body);assert.deepEqual(payload.message.toRecipients,[{emailAddress:{address:'thesmartysolution@gmail.com'}}]);assert.match(payload.message.body.content,/Hady Atallah\nThe Smarty Solution LTD/);assert.doesNotMatch(JSON.stringify(payload),/PRIVATE/);return new Response(null,{status:202});}});
+ const h=outlookOwnerTransport({env,getToken:async()=> 'synthetic',fetcher:async(url,o)=>{calls++;assert.match(url,/users\/info%40thesmartysolution.com\/sendMail$/);const payload=JSON.parse(o.body);assert.deepEqual(payload.message.toRecipients,[{emailAddress:{address:'info@thesmartysolution.com'}}]);assert.match(payload.message.body.content,/Hady Atallah\nThe Smarty Solution LTD/);assert.doesNotMatch(JSON.stringify(payload),/PRIVATE/);return new Response(null,{status:202});}});
  assert.equal((await h(alert)).state,'SUBMITTED_UNVERIFIED');delete env.TSS_WHATSAPP_OWNER_EMAIL_NOTIFICATIONS;await assert.rejects(h(alert));assert.equal(calls,1);
 });
