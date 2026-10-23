@@ -1,0 +1,107 @@
+{
+  "topics": [
+    {
+      "id": "business",
+      "label": "Business & Partnerships"
+    },
+    {
+      "id": "property",
+      "label": "Cyprus Property"
+    }
+  ],
+  "entries": [
+    {
+      "id": "before-a-business-partnership-questions-worth-asking",
+      "type": "article",
+      "topic": "business",
+      "name": "Before a business partnership: questions worth asking",
+      "description": "Six practical questions to assess an existing potential business partner, from delivery capacity and incentives to a manageable first test and clear working boundaries.",
+      "url": "/insights/before-a-business-partnership-questions-worth-asking/",
+      "image": "/hero-connection.webp",
+      "status": "published",
+      "relationship": "TSS Insights",
+      "verifiedOn": "2026-10-23"
+    },
+    {
+      "id": "buying-property-cyprus-useful-buyer-brief",
+      "type": "article",
+      "topic": "property",
+      "name": "Buying property in Cyprus: how to prepare a useful buyer brief",
+      "description": "A practical guide to defining your intended use, location, overall budget and timing before starting a property enquiry in Cyprus.",
+      "url": "/insights/buying-property-cyprus-useful-buyer-brief/",
+      "image": "/aphrodites-rock-cyprus.webp",
+      "status": "published",
+      "relationship": "TSS Insights",
+      "verifiedOn": "2026-10-23"
+    },
+    {
+      "id": "entering-new-market-five-questions-before-approaching-partners",
+      "type": "article",
+      "topic": "business",
+      "name": "Entering a new market: five questions to answer before approaching partners",
+      "description": "Before approaching potential partners, clarify your target customer, test local demand, choose a workable sales route and check whether your team can deliver. These five questions provide a practical starting point.",
+      "url": "/insights/entering-new-market-five-questions-before-approaching-partners/",
+      "image": "/hero-connection.webp",
+      "status": "published",
+      "relationship": "TSS Insights",
+      "verifiedOn": "2026-10-23"
+    },
+    {
+      "id": "from-enquiry-to-next-step-simple-follow-up-process-small-businesses",
+      "type": "article",
+      "topic": "business",
+      "name": "From enquiry to next step: a simple follow-up process for small businesses",
+      "description": "Give every business enquiry a clear owner, a useful next step and an accurate status. This practical process helps small teams follow through on promises and decide which conversations should progress, pause or close.",
+      "url": "/insights/from-enquiry-to-next-step-simple-follow-up-process-small-businesses/",
+      "image": "/hero-connection.webp",
+      "status": "published",
+      "relationship": "TSS Insights",
+      "verifiedOn": "2026-10-23"
+    },
+    {
+      "id": "what-makes-a-business-introduction-valuable",
+      "type": "article",
+      "topic": "business",
+      "name": "What makes a business introduction valuable?",
+      "description": "A practical guide to preparing relevant business introductions, confirming both parties\u2019 interest and agreeing a clear next step.",
+      "url": "/insights/what-makes-a-business-introduction-valuable/",
+      "image": "/hero-connection.webp",
+      "status": "published",
+      "relationship": "TSS Insights",
+      "verifiedOn": "2026-10-23"
+    },
+    {
+      "id": "how-tss-works",
+      "name": "How working with TSS works",
+      "description": "Understand our approach before starting a conversation about your business.",
+      "relationship": "TSS \u00b7 Our own information",
+      "url": "/how-we-work.html",
+      "status": "published",
+      "verifiedOn": "2026-10-23",
+      "type": "resource",
+      "topic": "business"
+    },
+    {
+      "id": "strategic-connections",
+      "name": "Finding the right commercial connection",
+      "description": "Explore how TSS approaches relevant introductions around a defined business objective.",
+      "relationship": "TSS \u00b7 Our own information",
+      "url": "/strategic-connections.html",
+      "status": "published",
+      "verifiedOn": "2026-10-23",
+      "type": "resource",
+      "topic": "business"
+    },
+    {
+      "id": "market-entry",
+      "name": "Exploring the Cyprus market",
+      "description": "Learn about TSS market-entry and commercial-representation support.",
+      "relationship": "TSS \u00b7 Our own information",
+      "url": "/market-entry.html",
+      "status": "published",
+      "verifiedOn": "2026-10-23",
+      "type": "resource",
+      "topic": "business"
+    }
+  ]
+}
