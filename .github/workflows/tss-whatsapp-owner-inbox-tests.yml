@@ -27,6 +27,8 @@ on:
       - 'tests/tssWhatsapp*.test.mjs'
       - 'tests/tssWhatsappInfrastructure.test.py'
       - 'scripts/tss-whatsapp-infrastructure.py'
+      - 'scripts/tss-whatsapp-exchange-preflight.ps1'
+      - 'tests/tssWhatsappExchangePreflight.test.ps1'
       - 'api/tss-whatsapp-notify.js'
       - 'scripts/tss-whatsapp-private-acceptance.py'
       - 'tests/tssWhatsappPrivateAcceptance.test.py'
@@ -64,6 +66,8 @@ on:
       - 'tests/tssWhatsapp*.test.mjs'
       - 'tests/tssWhatsappInfrastructure.test.py'
       - 'scripts/tss-whatsapp-infrastructure.py'
+      - 'scripts/tss-whatsapp-exchange-preflight.ps1'
+      - 'tests/tssWhatsappExchangePreflight.test.ps1'
       - 'api/tss-whatsapp-notify.js'
       - 'scripts/tss-whatsapp-private-acceptance.py'
       - 'tests/tssWhatsappPrivateAcceptance.test.py'
@@ -101,3 +105,7 @@ jobs:
       - run: python3 tests/tssWhatsappPrivateAcceptance.test.py
       - run: python3 tests/tssWhatsappInfrastructure.test.py
       - run: node --check api/tss-whatsapp-notify.js
+
+      - name: Exchange effective scope fixtures (no Microsoft connection)
+        shell: pwsh
+        run: ./tests/tssWhatsappExchangePreflight.test.ps1
