@@ -177,3 +177,22 @@ document.addEventListener('click', (event) => {
   notice.querySelector('.tss-consent-accept').addEventListener('click', () => choose('accepted'));
   notice.querySelector('.tss-consent-reject').addEventListener('click', () => choose('rejected'));
 })();
+
+// One shared discovery menu for articles, confirmed partners and useful resources.
+(() => {
+  const nav=document.querySelector('.navlinks');
+  if(nav&&!nav.querySelector('[data-insights-menu]')){
+    const item=document.createElement('li');item.dataset.insightsMenu='';
+    item.innerHTML='<details class="insights-menu"><summary>Insights &amp; Resources</summary><ul><li><a href="/insights/">Explore Insights &amp; Resources</a></li><li><a href="/insights/#articles">Articles</a></li><li><a href="/insights/#partners">Partners</a></li><li><a href="/insights/#resources">Useful Resources</a></li></ul></details>';
+    const cta=nav.querySelector('.navcta')?.closest('li');cta?nav.insertBefore(item,cta):nav.appendChild(item);
+    const details=item.querySelector('details');
+    document.addEventListener('click',event=>{if(!item.contains(event.target))details.open=false;});
+    item.addEventListener('click',event=>{if(event.target.closest('a'))details.open=false;});
+    item.addEventListener('keydown',event=>{if(event.key==='Escape'){details.open=false;item.querySelector('summary').focus();}});
+  }
+  document.querySelectorAll('.navlinks a,.footer a').forEach(a=>{const href=a.getAttribute('href');if(href&&/^[a-z][a-z0-9-]*\.html(?:[?#].*)?$/.test(href))a.setAttribute('href','/'+href);});
+  document.querySelectorAll('.footergrid').forEach(grid=>{
+    const column=[...grid.children].find(el=>el.querySelector('h3')?.textContent.trim().toLowerCase()==='navigate');const list=column?.querySelector('ul');
+    if(list&&!list.querySelector('a[href="/insights/"]')){const item=document.createElement('li');item.innerHTML='<a href="/insights/">Insights &amp; Resources</a>';list.appendChild(item);}
+  });
+})();
