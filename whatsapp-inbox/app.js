@@ -334,3 +334,15 @@ ui.auditAcceptance.addEventListener('click',async()=>{
  }catch{if(sessionActive)ui.draftStatus.textContent='Audit acceptance not confirmed. No messages transmitted. Run reference: '+runId;}
  finally{ui.auditAcceptance.disabled=false;}
 });
+
+// Owner-session request uses the same CSRF path as other operations. Never sends mail.
+const mailAuthButton=document.createElement('button');
+mailAuthButton.type='button';mailAuthButton.textContent='Check mail authentication';
+mailAuthButton.addEventListener('click',async()=>{
+ if(!sessionActive)return;
+ mailAuthButton.disabled=true;
+ try{await operationalRequest({action:'mail-auth-check'});if(sessionActive)ui.draftStatus.textContent='Mail token exchange passed. No email sent.';}
+ catch{if(sessionActive)ui.draftStatus.textContent='Mail authentication check failed. No email sent.';}
+ finally{mailAuthButton.disabled=false;}
+});
+ui.auditAcceptance.after(mailAuthButton);
