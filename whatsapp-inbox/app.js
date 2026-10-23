@@ -346,3 +346,18 @@ mailAuthButton.addEventListener('click',async()=>{
  finally{mailAuthButton.disabled=false;}
 });
 ui.auditAcceptance.after(mailAuthButton);
+
+const mailTestButton=document.createElement('button');
+mailTestButton.type='button';
+mailTestButton.textContent='Send one approved test email to info@thesmartysolution.com';
+mailTestButton.addEventListener('click',async()=>{
+ if(!sessionActive)return;mailTestButton.disabled=true;
+ try{const result=await operationalRequest({action:'mail-acceptance-start',explicitApproval:'Send exactly one Preview test notification to info@thesmartysolution.com'});
+ if(sessionActive)ui.draftStatus.textContent=result.duplicateSuppressed?'Duplicate test request suppressed. No new send scheduled.':'One test email queued for background processing in 30 seconds. No other notifications enabled.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Test request unavailable. Check durable status before any retry.';}
+ finally{mailTestButton.disabled=false;}
+});
+mailAuthButton.after(mailTestButton);
+const mailStatusButton=document.createElement('button');mailStatusButton.type='button';mailStatusButton.textContent='Check test email status';
+mailStatusButton.addEventListener('click',async()=>{try{const result=await operationalRequest({action:'mail-acceptance-status'});if(sessionActive)ui.draftStatus.textContent='Test email state: '+result.state;}catch{if(sessionActive)ui.draftStatus.textContent='Test email status unavailable.';}});
+mailTestButton.after(mailStatusButton);

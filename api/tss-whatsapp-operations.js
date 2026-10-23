@@ -1,3 +1,7 @@
+import {waitUntil} from '@vercel/functions';
+import {setTimeout as delay} from 'node:timers/promises';
+import {createMailAcceptance} from '../lib/tssWhatsappMailAcceptance.mjs';
+import {outlookOwnerTransport} from '../lib/tssWhatsappNotifications.mjs';
 import {createSessionService} from '../lib/tssAdminSession.mjs';
 import {createOperationsHandler} from '../lib/tssWhatsappOperations.mjs';
 import {keylessToken} from '../lib/tssWhatsappGoogle.mjs';
@@ -22,4 +26,4 @@ const env=process.env;
 const sender=createApprovedSender({env,ledger:operationsLedger(env),loadEvent,
  transport:metaTestTransport({env,getToken:()=>metaSenderSecret(env)})});
 export default createOperationsHandler({env,authenticate:sessions.authenticate,loadEvent,
- approvedSender:sender,checkMailAuthentication:async()=>{await outlookNotificationToken(env);},auditAcceptance:createAuditAcceptance({env,ledger:operationsLedger(env)}),audit:event=>console.info(JSON.stringify(event))});
+ approvedSender:sender,mailAcceptance:createMailAcceptance({env,ledger:operationsLedger(env),transport:outlookOwnerTransport({env,getToken:()=>outlookNotificationToken(env)}),defer:waitUntil,delay}),checkMailAuthentication:async()=>{await outlookNotificationToken(env);},auditAcceptance:createAuditAcceptance({env,ledger:operationsLedger(env)}),audit:event=>console.info(JSON.stringify(event))});
