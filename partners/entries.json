@@ -1,0 +1,48 @@
+{
+  "categories": [
+    {
+      "id": "resources",
+      "label": "Useful Cyprus resources"
+    },
+    {
+      "id": "editorial",
+      "label": "Editorial collaborations"
+    },
+    {
+      "id": "commercial",
+      "label": "Commercial partners"
+    }
+  ],
+  "entries": [
+    {
+      "id": "how-tss-works",
+      "category": "resources",
+      "name": "How working with TSS works",
+      "description": "Understand our approach before starting a conversation about your business.",
+      "relationship": "TSS \u00b7 Our own information",
+      "url": "/how-we-work.html",
+      "status": "published",
+      "verifiedOn": "2026-10-23"
+    },
+    {
+      "id": "strategic-connections",
+      "category": "resources",
+      "name": "Finding the right commercial connection",
+      "description": "Explore how TSS approaches relevant introductions around a defined business objective.",
+      "relationship": "TSS \u00b7 Our own information",
+      "url": "/strategic-connections.html",
+      "status": "published",
+      "verifiedOn": "2026-10-23"
+    },
+    {
+      "id": "market-entry",
+      "category": "resources",
+      "name": "Exploring the Cyprus market",
+      "description": "Learn about TSS market-entry and commercial-representation support.",
+      "relationship": "TSS \u00b7 Our own information",
+      "url": "/market-entry.html",
+      "status": "published",
+      "verifiedOn": "2026-10-23"
+    }
+  ]
+}

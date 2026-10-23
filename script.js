@@ -177,3 +177,19 @@ document.addEventListener('click', (event) => {
   notice.querySelector('.tss-consent-accept').addEventListener('click', () => choose('accepted'));
   notice.querySelector('.tss-consent-reject').addEventListener('click', () => choose('rejected'));
 })();
+
+// Keep the curated directory discoverable without crowding the primary navigation.
+(() => {
+  document.querySelectorAll('.footergrid').forEach(grid => {
+    const column = [...grid.children].find(el => el.querySelector('h3')?.textContent.trim().toLowerCase() === 'navigate');
+    const list = column?.querySelector('ul');
+    if (!list || list.querySelector('a[href="/partners/"]')) return;
+    const item = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = '/partners/';
+    link.textContent = 'Partners & Useful Resources';
+    if (/^\/partners\/?$/.test(location.pathname)) link.setAttribute('aria-current', 'page');
+    item.appendChild(link);
+    list.appendChild(item);
+  });
+})();
