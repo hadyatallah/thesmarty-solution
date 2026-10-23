@@ -1,3 +1,4 @@
+import {createOwnerAlerts} from './alerts.mjs';
 // Owner-only browser viewer. All private data and short-lived OAuth credentials
 // remain in this tab's memory. No automatic messages, CRM writes, or local storage.
 const allowedEmail = 'thesmartysolution@gmail.com';
@@ -5,7 +6,8 @@ const byId = id => document.getElementById(id);
 const ui = Object.fromEntries([
   'notice','identity','lockButton','loginButton','loginCard','inboxShell','refreshButton','notifyButton',
   'eventList','detail','detailTitle','replyPanel','replyDraft','copyDraft','draftStatus',
-  'kindFilter','searchInput','nextButton','count'
+  'kindFilter','searchInput','nextButton','count','validateTestReply','policyPreview',
+  'testApproval','auditAcceptance','markTestReviewed','approveExact','approveTestReply','sendApprovedTestReply'
 ].map(id => [id, byId(id)]));
 let sessionActive = false;
 let csrf = '';
@@ -22,6 +24,9 @@ let hasLoaded = false;
 let loading = false;
 let monitor = null;
 let alertsEnabled = false;
+let testApproval=null,testCapabilities={canApprove:false,canSendTest:false};
+function clearTestApproval(){testApproval=null;ui.approveExact.checked=false;ui.approveTestReply.disabled=true;ui.sendApprovedTestReply.disabled=true;}
+const ownerAlerts=createOwnerAlerts({notify:message=>{if(alertsEnabled&&sessionActive&&'Notification' in window&&Notification.permission==='granted'){try{new Notification(message.title,{body:message.body,tag:message.tag});}catch{}}}});
 let idleTimer = null;
 const IDLE_LOCK_MS = 15 * 60 * 1000;
 function renewIdleLock() {
@@ -44,9 +49,11 @@ function element(tag, cls = '', content = '') {
   return node;
 }
 function lock(reason = 'Session locked. Connect the owner Google account to reopen the inbox.') {
+  clearTestApproval();testCapabilities={canApprove:false,canSendTest:false};ui.testApproval.hidden=true;ui.auditAcceptance.hidden=true;
   if (monitor) clearInterval(monitor);
   if (idleTimer) clearTimeout(idleTimer);
   monitor = null; idleTimer = null;
+  ownerAlerts.reset();
   generation++;
   sessionActive = false; entries = []; nextPageToken = ''; selectedKey = '';
   pendingDrafts.clear(); seenKeys.clear(); hasLoaded = false; alertsEnabled = false; loading = false;
@@ -64,6 +71,7 @@ function storeCurrentDraft() {
   if (selectedKey) pendingDrafts.set(selectedKey, ui.replyDraft.value);
 }
 function selectEvent(key) {
+  clearTestApproval();
   storeCurrentDraft();
   selectedKey = key;
   const item = entries.find(x => x.key === key);
@@ -176,12 +184,7 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
       if (data.error === 'inbox_not_enabled') throw Error('Private inbox preview is not yet enabled for this deployment.');
       throw Error('Private inbox unavailable (' + response.status + '). No customer messages were exposed.');
     }
-    if (hasLoaded && !append) {
-      const unseen = data.records.filter(record => !seenKeys.has(record.key));
-      if (unseen.length && alertsEnabled && 'Notification' in window && Notification.permission === 'granted') {
-        try { new Notification('TSS WhatsApp Inbox', { body: 'New private event received. Open your unlocked inbox to review.' }); } catch {}
-      }
-    }
+    ownerAlerts.observe(data.records,{append});
     for (const record of data.records) seenKeys.add(record.key);
     const combined = append ? [...entries, ...data.records] : data.records;
     entries = [...new Map(combined.filter(x => x && x.key).map(x => [x.key, x])).values()];
@@ -195,10 +198,11 @@ async function fetchEvents({ append = false, quiet = false } = {}) {
     if (!selectedKey && entries.length) selectEvent(entries[0].key);
     else if (selectedKey) selectEvent(selectedKey);
     else renderList();
-    if (!quiet) notice('Private inbox refreshed. No outbound messages can be sent from this page.', 'ok');
+    if (!quiet) notice('Private inbox refreshed. Production sending is disabled.', 'ok');
   } catch (err) {
     // Fail closed: never leave a stale private snapshot visible after a failed refresh.
     const reason = err?.message || 'Unable to read private messages.';
+    ownerAlerts.failure();
     lock(reason + ' Session locked; sign in again to refresh.');
     notice(reason + ' Session locked; sign in again to refresh.', 'error');
   } finally {
@@ -212,6 +216,7 @@ async function openAdminSession() {
     if(!response.ok||!data.ok)throw Error('Admin sign-in required. Open Admin Login to continue.');
     csrf=data.csrf;sessionExpiresAt=data.expiresAt;sessionActive=true;
     renewIdleLock();await fetchEvents();
+    try{testCapabilities=await operationalRequest({action:'capabilities'});ui.testApproval.hidden=!testCapabilities.canApprove;ui.auditAcceptance.hidden=!testCapabilities.canAudit;}catch{ui.testApproval.hidden=true;ui.auditAcceptance.hidden=true;}
   }catch(e){lock(e.message);}
 }
 async function logout() {
@@ -222,14 +227,22 @@ async function logout() {
     lock('Logged out.');
   }catch(e){notice(e.message,'error');}
 }
+async function checkIngestionHealth(){
+ if(!alertsEnabled||!sessionActive)return;
+ try{
+  const r=await fetch('/api/tss-whatsapp-health',{credentials:'same-origin',cache:'no-store',redirect:'error',signal:AbortSignal.timeout(15000)});
+  if(!r.ok)ownerAlerts.failure();
+ }catch{ownerAlerts.failure();}
+}
 async function enableAlerts() {
   if (!sessionActive) return;
   if (!('Notification' in window)) { notice('This browser does not support local notifications. Use Refresh to check new events.'); return; }
   const permission = Notification.permission === 'granted' ? 'granted' : await Notification.requestPermission();
   if (permission !== 'granted') { notice('Browser notification permission was not granted. The inbox remains usable.'); return; }
   alertsEnabled = true;
+  checkIngestionHealth();
   ui.notifyButton.textContent = 'Alerts on (while open)';
-  if (!monitor) monitor = setInterval(() => { if (sessionActive && !document.hidden) fetchEvents({ quiet: true }); }, 60000);
+  if (!monitor) monitor = setInterval(() => { if (sessionActive && !document.hidden) { fetchEvents({ quiet: true }); checkIngestionHealth(); } }, 60000);
   notice('Private event alerts enabled only while this page is open and unlocked. No background service is running.', 'ok');
 }
 
@@ -242,6 +255,7 @@ ui.kindFilter.addEventListener('change', renderList);
 ui.searchInput.addEventListener('input', renderList);
 ui.nextButton.addEventListener('click', () => fetchEvents({ append: true }));
 ui.replyDraft.addEventListener('input', () => {
+  clearTestApproval();
   ui.copyDraft.disabled = !ui.replyDraft.value.trim();
   ui.draftStatus.textContent = '';
   if (selectedKey) pendingDrafts.set(selectedKey, ui.replyDraft.value);
@@ -265,3 +279,89 @@ for (const eventName of ['pointerdown', 'keydown']) {
 }
 
 
+
+ui.validateTestReply.addEventListener('click',async()=>{
+ if(!sessionActive||!selectedKey||!ui.replyDraft.value.trim())return;
+ ui.validateTestReply.disabled=true;
+ try{
+  const r=await fetch('/api/tss-whatsapp-operations',{method:'POST',credentials:'same-origin',cache:'no-store',redirect:'error',headers:{'Content-Type':'application/json','X-TSS-CSRF':csrf},body:JSON.stringify({action:'prepare-test-reply',eventKey:selectedKey,text:ui.replyDraft.value})});
+  const data=await r.json();
+  if(!sessionActive)return;
+  ui.draftStatus.textContent=r.ok&&data.sent===false?'Test draft validated. Nothing sent.':data.error==='reply_workflow_disabled'?'Test workflow is disabled. Nothing sent.':'Test draft rejected. Nothing sent.';
+ }catch{ui.draftStatus.textContent='Test validation unavailable. Nothing sent.';}
+ finally{ui.validateTestReply.disabled=false;}
+});
+async function operationalRequest(body){
+ const r=await fetch('/api/tss-whatsapp-operations',{method:'POST',credentials:'same-origin',cache:'no-store',redirect:'error',headers:{'Content-Type':'application/json','X-TSS-CSRF':csrf},body:JSON.stringify(body)});
+ const data=await r.json();if(!r.ok)throw Error('operation_unavailable');return data;
+}
+ui.policyPreview.addEventListener('click',async()=>{
+ if(!sessionActive||!selectedKey)return;
+ try{const p=await operationalRequest({action:'policy-preview',eventKey:selectedKey,retentionDays:90});
+  if(sessionActive)ui.draftStatus.textContent='Review preview: '+p.candidates.length+' candidate(s) for the selected event. Legal holds or unknown hold status: '+p.inventory.legalHoldOrUnknown+'. Nothing deleted.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Retention preview unavailable. Nothing deleted.';}
+});
+ui.approveExact.addEventListener('change',()=>{ui.approveTestReply.disabled=!testCapabilities.canApprove||!ui.approveExact.checked||!ui.replyDraft.value.trim();});
+ui.approveTestReply.addEventListener('click',async()=>{
+ if(!sessionActive||!ui.approveExact.checked||!testCapabilities.canApprove)return;
+ const key=selectedKey,text=ui.replyDraft.value;ui.approveTestReply.disabled=true;
+ try{const a=await operationalRequest({action:'approve-test-reply',eventKey:key,text,explicitApproval:true});
+  if(!sessionActive||key!==selectedKey||text!==ui.replyDraft.value)return;
+  testApproval={...a,key,text};ui.sendApprovedTestReply.disabled=!testCapabilities.canSendTest;
+  ui.draftStatus.textContent='Exact test reply approval recorded. Nothing sent.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Approval was not confirmed. Nothing sent.';}
+});
+ui.sendApprovedTestReply.addEventListener('click',async()=>{
+ if(!sessionActive||!testApproval||!testCapabilities.canSendTest)return;
+ const approval=testApproval;clearTestApproval();
+ try{const r=await operationalRequest({action:'send-approved-test-reply',eventKey:approval.key,text:approval.text,approvalId:approval.approvalId,approvalToken:approval.approvalToken});
+  if(sessionActive)ui.draftStatus.textContent=r.state==='SUBMITTED'?'Provider accepted the test reply. Delivery is not confirmed.':'Test reply outcome: '+r.state+'. Review before any further action.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Test reply outcome is uncertain. Do not resend. Review the audit first.';}
+});
+
+ui.markTestReviewed.addEventListener('click',async()=>{
+ if(!sessionActive||!selectedKey||!testCapabilities.canApprove)return;
+ try{await operationalRequest({action:'mark-test-reviewed',eventKey:selectedKey});
+  if(sessionActive)ui.draftStatus.textContent='Test message review recorded. No reply sent.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Review acknowledgement unavailable. Nothing sent.';}
+});
+
+ui.auditAcceptance.addEventListener('click',async()=>{
+ if(!sessionActive||!testCapabilities.canAudit)return;
+ ui.auditAcceptance.disabled=true;const runId=crypto.randomUUID().replaceAll('-','');
+ try{const result=await operationalRequest({action:'audit-acceptance',runId});
+  if(sessionActive)ui.draftStatus.textContent='Audit acceptance saved: '+result.runId+'. No WhatsApp or email transmitted. Independent Cloud Shell readback pending.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Audit acceptance not confirmed. No messages transmitted. Run reference: '+runId;}
+ finally{ui.auditAcceptance.disabled=false;}
+});
+
+// Owner-session request uses the same CSRF path as other operations. Never sends mail.
+const mailAuthButton=document.createElement('button');
+mailAuthButton.type='button';mailAuthButton.textContent='Check mail authentication';
+mailAuthButton.addEventListener('click',async()=>{
+ if(!sessionActive)return;
+ mailAuthButton.disabled=true;
+ try{await operationalRequest({action:'mail-auth-check'});if(sessionActive)ui.draftStatus.textContent='Mail token exchange passed. No email sent.';}
+ catch{if(sessionActive)ui.draftStatus.textContent='Mail authentication check failed. No email sent.';}
+ finally{mailAuthButton.disabled=false;}
+});
+ui.auditAcceptance.after(mailAuthButton);
+
+const mailTestButton=document.createElement('button');
+mailTestButton.type='button';
+mailTestButton.textContent='Send one approved test email to info@thesmartysolution.com';
+mailTestButton.addEventListener('click',async()=>{
+ if(!sessionActive)return;mailTestButton.disabled=true;
+ try{const result=await operationalRequest({action:'mail-acceptance-start',explicitApproval:'Send exactly one Preview test notification to info@thesmartysolution.com'});
+ if(sessionActive)ui.draftStatus.textContent=result.duplicateSuppressed?'Duplicate test request suppressed. No new send scheduled.':'One test email queued for background processing in 30 seconds. No other notifications enabled.';
+ }catch{if(sessionActive)ui.draftStatus.textContent='Test request unavailable. Check durable status before any retry.';}
+ finally{mailTestButton.disabled=false;}
+});
+mailAuthButton.after(mailTestButton);
+const mailStatusButton=document.createElement('button');mailStatusButton.type='button';mailStatusButton.textContent='Check test email status';
+mailStatusButton.addEventListener('click',async()=>{try{const result=await operationalRequest({action:'mail-acceptance-status'});if(sessionActive)ui.draftStatus.textContent='Test email state: '+result.state;}catch{if(sessionActive)ui.draftStatus.textContent='Test email status unavailable.';}});
+mailTestButton.after(mailStatusButton);
+
+const inventoryCheckButton=document.createElement('button');inventoryCheckButton.type='button';inventoryCheckButton.textContent='Check notification inventory';
+inventoryCheckButton.addEventListener('click',async()=>{if(!sessionActive)return;inventoryCheckButton.disabled=true;try{const value=await operationalRequest({action:'notification-inventory-check'});if(sessionActive)ui.draftStatus.textContent='Notification inventory verified: '+value.records+' operational records. No email sent.';}catch{if(sessionActive)ui.draftStatus.textContent='Notification inventory check failed. No email sent.';}finally{inventoryCheckButton.disabled=false;}});
+mailStatusButton.after(inventoryCheckButton);

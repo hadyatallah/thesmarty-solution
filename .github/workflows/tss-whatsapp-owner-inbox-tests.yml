@@ -13,6 +13,28 @@ on:
       - 'scripts/tss-admin-session-writer-iam.sh'
       - 'admin-login/**'
       - 'api/tss-whatsapp-inbox.js'
+      - 'api/tss-whatsapp-operations.js'
+      - 'api/tss-whatsapp-health.js'
+      - 'lib/tssWhatsappOperations.mjs'
+      - 'lib/tssWhatsappLedger.mjs'
+      - 'lib/tssWhatsappSender.mjs'
+      - 'lib/tssWhatsappNotifications.mjs'
+      - 'lib/tssWhatsappNotificationWorker.mjs'
+      - 'lib/tssWhatsappNotificationInventory.mjs'
+      - 'lib/tssWhatsappOperationsRuntime.mjs'
+      - 'lib/tssWhatsappPolicy.mjs'
+      - 'lib/tssWhatsappMailIdentity.mjs'
+      - 'lib/tssWhatsappAuditAcceptance.mjs'
+      - 'tests/tssWhatsapp*.test.mjs'
+      - 'tests/tssWhatsappInfrastructure.test.py'
+      - 'scripts/tss-whatsapp-infrastructure.py'
+      - 'scripts/tss-whatsapp-production-preflight.py'
+      - 'scripts/tss-whatsapp-exchange-preflight.ps1'
+      - 'tests/tssWhatsappExchangePreflight.test.ps1'
+      - 'api/tss-whatsapp-notify.js'
+      - 'scripts/tss-whatsapp-private-acceptance.py'
+      - 'tests/tssWhatsappPrivateAcceptance.test.py'
+      - 'tests/tssWhatsappOperations.test.mjs'
       - 'lib/tssWhatsappInbox.mjs'
       - 'lib/tssWhatsappGoogle.mjs'
       - 'whatsapp-inbox/**'
@@ -32,6 +54,28 @@ on:
       - 'scripts/tss-admin-session-writer-iam.sh'
       - 'admin-login/**'
       - 'api/tss-whatsapp-inbox.js'
+      - 'api/tss-whatsapp-operations.js'
+      - 'api/tss-whatsapp-health.js'
+      - 'lib/tssWhatsappOperations.mjs'
+      - 'lib/tssWhatsappLedger.mjs'
+      - 'lib/tssWhatsappSender.mjs'
+      - 'lib/tssWhatsappNotifications.mjs'
+      - 'lib/tssWhatsappNotificationWorker.mjs'
+      - 'lib/tssWhatsappNotificationInventory.mjs'
+      - 'lib/tssWhatsappOperationsRuntime.mjs'
+      - 'lib/tssWhatsappPolicy.mjs'
+      - 'lib/tssWhatsappMailIdentity.mjs'
+      - 'lib/tssWhatsappAuditAcceptance.mjs'
+      - 'tests/tssWhatsapp*.test.mjs'
+      - 'tests/tssWhatsappInfrastructure.test.py'
+      - 'scripts/tss-whatsapp-infrastructure.py'
+      - 'scripts/tss-whatsapp-production-preflight.py'
+      - 'scripts/tss-whatsapp-exchange-preflight.ps1'
+      - 'tests/tssWhatsappExchangePreflight.test.ps1'
+      - 'api/tss-whatsapp-notify.js'
+      - 'scripts/tss-whatsapp-private-acceptance.py'
+      - 'tests/tssWhatsappPrivateAcceptance.test.py'
+      - 'tests/tssWhatsappOperations.test.mjs'
       - 'lib/tssWhatsappInbox.mjs'
       - 'lib/tssWhatsappGoogle.mjs'
       - 'whatsapp-inbox/**'
@@ -62,3 +106,10 @@ jobs:
       - run: bash -n scripts/tss-admin-production-iam.sh
       - run: python3 tests/tssAdminProductionIam.test.py
 
+      - run: python3 tests/tssWhatsappPrivateAcceptance.test.py
+      - run: python3 tests/tssWhatsappInfrastructure.test.py
+      - run: node --check api/tss-whatsapp-notify.js
+
+      - name: Exchange effective scope fixtures (no Microsoft connection)
+        shell: pwsh
+        run: ./tests/tssWhatsappExchangePreflight.test.ps1

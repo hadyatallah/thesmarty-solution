@@ -4,10 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "dejavu-fonts-ttf": "2.37.3",
-    "openai": "^5.0.0",
-    "sharp": "^0.34.3",
+    "@vercel/functions": "^3.10.3",
     "@vercel/oidc": "^4.0.0",
-    "google-auth-library": "^10.0.0"
+    "dejavu-fonts-ttf": "2.37.3",
+    "google-auth-library": "^10.0.0",
+    "openai": "^5.0.0",
+    "sharp": "^0.34.3"
   }
 }
