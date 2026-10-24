@@ -43,7 +43,7 @@ An existing activity with incomplete source metadata requires `enrichActivity` a
 
 Only after logging is verified does `nextAction` produce a task operation. Supply an explicit ID, subject/body, verified owner, and source-backed status. Search existing related tasks first. If updating, supply an immutable owner-authorized `revisionId` (same exact retry retains it; a newly authorized body/date/state revision uses a new ID), `targetTaskId`, its freshly verified body, exact company/contact associations and compatible current owner, and specific update authority; preserve the existing owner/history. Reply receipt alone cannot mark a task completed: completion requires verified fulfillment evidence.
 
-An unknown due date is omitted. If `dueAt` is provided it must be an actual explicitly supported date and `dueAtExplicit:true`. Never substitute message time or invent a follow-up interval. A downstream connector that cannot create an undated task must return that exact blocker rather than create a date.
+This HubSpot portal requires `hs_timestamp` for new tasks and may auto-fill a date when omitted. A new task without an owner-authorized `dueAt` is therefore HELD with `TASK_DUE_DATE_REQUIRED`; retain the suggested next action without creating it. `dueAtExplicit:true` and an actual supported date are required. Never substitute message time or invent an interval. Updating an existing task without a due-date change preserves its existing date.
 
 ## Production acceptance still required
 
