@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { nicosiaDay, seasonActive, safeFailureCode } from '../lib/tssIrcRuntime.mjs';
+import { nicosiaDay, seasonActive, safeFailureCode, safeIndexDiagnostics } from '../lib/tssIrcRuntime.mjs';
 import { discoverDeveloperSignals } from '../lib/tssIrcResearch.mjs';
 import handler from '../api/tss-irc-daily.js';
 test('season gates select one daily research trigger across Nicosia DST changes',()=>{
@@ -28,4 +28,11 @@ test('production execution rejects anonymous, cross-origin and unsupported reque
   for(const [method,headers,status] of [['GET',{},401],['POST',{origin:'https://attacker.example'},503],['DELETE',{},405]]){
     const r=res();await handler({method,headers},r);assert.equal(r.statusCode,status);
   }
+});
+
+test('persistence boundary drops extra or inconsistent provider metadata',()=>{
+ const error=Object.assign(Error('INDEX_API_502'),{indexDiagnostics:{upstreamStatus:502,elapsedMs:7,responseType:'text/html',retryAfterSeconds:120,body:'SECRET',authorization:'SECRET'}});
+ assert.deepEqual(safeIndexDiagnostics(error),{upstreamStatus:502,elapsedMs:7,responseType:'text/html',retryAfterSeconds:120});
+ error.indexDiagnostics.upstreamStatus=429;assert.equal(safeIndexDiagnostics(error),undefined);
+ assert.equal(safeIndexDiagnostics(Error('SECRET')),undefined);
 });

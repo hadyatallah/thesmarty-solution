@@ -176,6 +176,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
 
     if (u.includes('agent.index.cy/v1/listings?')) {
       if(sourceMode==='zero')return response(200,{total:0,results:[]});
+      if(sourceMode==='gateway')return {ok:false,status:502,headers:{get:name=>name==='content-type'?'text/html':name==='retry-after'?'60':null}};
       if(sourceMode==='malformed')return response(200,{error:'bad upstream response'});
       return response(200, {
         total: 3,
@@ -335,6 +336,15 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY','user-agent':'vercel-cron/1.0'}},failedCron);
     assert.equal(failedCron.statusCode,503);
     assert.match(database["'Overview'"][7][2], /BLOCKED/);
+    sourceMode='gateway';
+    const gatewayFailure=mkRes();
+    await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},gatewayFailure);
+    const gatewayBody=JSON.parse(gatewayFailure.body);
+    assert.equal(gatewayBody.error,'INDEX_API_502');
+    assert.equal(gatewayBody.diagnostics.upstreamStatus,502);
+    assert.equal(gatewayBody.diagnostics.responseType,'text/html');
+    assert.equal(gatewayBody.diagnostics.retryAfterSeconds,60);
+    assert.deepEqual(JSON.parse(database["'Runs'"].at(-1)[10]).diagnostics,gatewayBody.diagnostics);
     sourceMode='zero';
     const manualRecovery=mkRes();
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},manualRecovery);
