@@ -1,6 +1,7 @@
 
 import { createHash, randomUUID, timingSafeEqual } from 'node:crypto';
 import { createSessionService, sameOrigin } from '../lib/tssAdminSession.mjs';
+import { researchNextAction } from '../lib/tssIrcHandoff.mjs';
 import { acquireResearchLock } from '../lib/tssIrcLock.mjs';
 import { nicosiaDay, seasonActive, safeFailureCode } from '../lib/tssIrcRuntime.mjs';
 import { getVercelOidcToken } from '@vercel/oidc';
@@ -200,7 +201,9 @@ function rowsForOverview(state, appendedReferralCount, scheduledRun) {
   const ready = queue.filter(row => String(row[14] || '') === 'READY').length;
   const sent = queue.filter(row => ['SENT', 'SUBMITTED'].includes(String(row[14] || ''))).length;
   const schedulerValue = scheduledRun ? scheduledRun.finishedAt || scheduledRun.startedAt : 'NOT VERIFIED';
-  const stateValue = scheduledRun
+  const stateValue = scheduledRun && scheduledRun.outcome !== 'RESEARCH_CYCLE_COMPLETE'
+    ? 'LATEST SCHEDULED RESEARCH BLOCKED / CHECK RUNS / AUTO EMAILS OFF'
+    : scheduledRun
     ? 'RESEARCH CYCLE COMPLETE / CRON LABEL RECORDED - VERIFY VERCEL LOG / AUTO EMAILS OFF'
     : 'RESEARCH CYCLE COMPLETE / SCHEDULER UNVERIFIED / AUTO EMAILS OFF';
   return [
@@ -217,7 +220,8 @@ function rowsForOverview(state, appendedReferralCount, scheduledRun) {
 
 function parseRowsForRun(state) {
   const runs = state.runs || [];
-  return runs.slice(1).map(row => ({
+  return runs.slice(1).map((row, index) => ({
+    rowNumber: index + 2,
     runId: text(row[0]),
     startedAt: text(row[1]),
     finishedAt: text(row[2]),
@@ -235,7 +239,8 @@ function parseRowsForRun(state) {
 
 function findScheduledResearchRun(state) {
   return parseRowsForRun(state)
-    .filter(x => x.runType === 'RESEARCH_CYCLE' && x.executionMode === 'VERCEL_CRON' && x.outcome === 'RESEARCH_CYCLE_COMPLETE')
+    .filter(x => x.runType === 'RESEARCH_CYCLE' && x.executionMode === 'VERCEL_CRON')
+    .sort((a, b) => Date.parse(a.startedAt) - Date.parse(b.startedAt))
     .at(-1) || null;
 }
 
@@ -292,6 +297,8 @@ export default async function handler(req, res) {
       await releaseLock();
       return json(res, 200, { ok: true, outcome: 'PAUSED', messagesSent: 0 });
     }
+    const unresolvedWrite = parseRowsForRun(state).find(x => x.outcome === 'WRITE_VERIFICATION_PENDING');
+    if (unresolvedWrite) throw Error('IRC_WRITE_RECONCILIATION_REQUIRED');
     const previousRun = parseRowsForRun(state).find(x => x.runId === runId && x.outcome === 'RESEARCH_CYCLE_COMPLETE');
     if (previousRun && previousRun.outcome === 'RESEARCH_CYCLE_COMPLETE') {
       await releaseLock();
@@ -357,12 +364,12 @@ export default async function handler(req, res) {
           startedAt,
           'Research',
           existingResearchId,
-          'Automated bounded discovery',
+          'Research commercial handoff',
           classification.status,
           'INDEX AI Agent API + existing IRC workbook',
           '',
           scheduled ? 'Vercel scheduler' : 'TSS automation',
-          'Existing research record matched by name/domain. No duplicate row or communication created.'
+          JSON.stringify({kind: 'research-commercial-handoff/v1', sourceRunId: runId, ...researchNextAction(classification, existingResearchId), canonicalCompanyId: classification.canonicalCompanyId || '', note: 'Existing research record; no duplicate row or communication created.'})
         ]);
         continue;
       }
@@ -438,12 +445,12 @@ export default async function handler(req, res) {
         startedAt,
         'Referral',
         referralId,
-        'Automated bounded discovery → verification → qualification → deduplication',
+        'Research commercial handoff',
         classification.status,
         'INDEX AI Agent API + first-party source + Master Companies',
         '',
         scheduled ? 'Vercel scheduler' : 'TSS automation',
-        'No outreach, no HubSpot write, no duplicate communication. Canonical Company creation is not performed by this workflow.'
+        JSON.stringify({kind: 'research-commercial-handoff/v1', sourceRunId: runId, ...researchNextAction(classification, referralId), canonicalCompanyId: classification.canonicalCompanyId || '', note: 'No outreach, no HubSpot write, no duplicate communication. Canonical Company creation is not performed by this workflow.'})
       ]);
 
       outcomes.push({
@@ -485,7 +492,7 @@ export default async function handler(req, res) {
       0,
       0,
       held,
-      'RESEARCH_CYCLE_COMPLETE',
+      'WRITE_VERIFICATION_PENDING',
       runDetails,
       'RESEARCH_CYCLE',
       scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL'
@@ -515,23 +522,29 @@ export default async function handler(req, res) {
     }
 
     const scheduledRunAfter = scheduled
-      ? { runId, startedAt, finishedAt, executionMode: 'VERCEL_CRON' }
+      ? { runId, startedAt, finishedAt, outcome: 'RESEARCH_CYCLE_COMPLETE', executionMode: 'VERCEL_CRON' }
       : findScheduledResearchRun(state);
     const overviewValues = rowsForOverview(state, referralRows.length, scheduledRunAfter);
     writeData.push({
       range: "'Overview'!B2:B9",
       majorDimension: 'ROWS',
-      values: overviewValues
+      values: overviewValues.map((row, index) => index === 7 ? ['RESEARCH WRITE VERIFICATION PENDING / AUTO EMAILS OFF'] : row)
     });
 
     stage = 'IRC_WRITE';
     writeAttempted = true;
-    await batchWrite(token, writeData);
+    writeData.push({range: "'Overview'!C8:C9", majorDimension: 'ROWS', values: [
+      ['Latest recorded scheduled attempt; a cron label alone is not scheduler-origin proof.'],
+      ['Research state only. Outreach and CRM transitions require independent approval and execution evidence.']
+    ]});
+    // Persist a non-success marker BEFORE the data batch. An uncertain write
+    // leaves reconciliation pending and blocks blind retries, even next day.
     await appendRun(token, runRow);
+    await batchWrite(token, writeData);
     stage = 'READBACK';
 
     const verifyState = await readState(token);
-    const runReadback = parseRowsForRun(verifyState).find(x => x.runId === runId && x.outcome === 'RESEARCH_CYCLE_COMPLETE');
+    const runReadback = parseRowsForRun(verifyState).find(x => x.runId === runId && x.outcome === 'WRITE_VERIFICATION_PENDING');
     if (!runReadback) throw Error('SAVE_READBACK_RUN_MISSING');
 
     const savedIds = new Set((verifyState.referrals || []).slice(1).map(row => text(row[0])));
@@ -541,8 +554,22 @@ export default async function handler(req, res) {
     const overview = await batchGet(token, ircSheetId(), ["'Overview'!A1:C9"]);
     const overviewRows = overview[0] || [];
     const dashboardState = text(overviewRows[8]?.[1]);
-    if (!/RESEARCH CYCLE COMPLETE/i.test(dashboardState)) throw Error('DASHBOARD_REFRESH_READBACK_FAILED');
-
+    if (dashboardState !== 'RESEARCH WRITE VERIFICATION PENDING / AUTO EMAILS OFF') throw Error('DASHBOARD_REFRESH_READBACK_FAILED');
+    for (const [key, expected] of [['referrals', referralRows], ['evidence', evidenceRows], ['activity', activityRows]]) {
+      for (const row of expected) {
+        const matches = (verifyState[key] || []).filter(saved => text(saved[0]) === text(row[0]));
+        if (matches.length !== 1 || row.some((value, index) => text(matches[0][index]) !== text(value))) {
+          throw Error('SAVE_READBACK_CONTENT_MISMATCH');
+        }
+      }
+    }
+    // Only data already read back successfully may receive a completion marker.
+    // Finalization is bounded to this verified unique row and the dashboard.
+    stage = 'FINALIZE';
+    await batchWrite(token, [
+      {range: "'Runs'!J" + runReadback.rowNumber + ':J' + runReadback.rowNumber, majorDimension: 'ROWS', values: [['RESEARCH_CYCLE_COMPLETE']]},
+      {range: "'Overview'!B9:B9", majorDimension: 'ROWS', values: [overviewValues[7]]}
+    ]);
     completed = true;
     await releaseLock();
     log('completed', {
@@ -584,6 +611,16 @@ export default async function handler(req, res) {
       try {
         await appendRun(token, [runId, startedAt, utc(), 'Research runtime', 0, 0, 0, 0, 0, 'BLOCKED', JSON.stringify({ stage, code }), 'RESEARCH_CYCLE', scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL']);
         failurePersisted = Boolean(parseRowsForRun(await readState(token)).find(x => x.runId === runId && x.outcome === 'BLOCKED'));
+        if (failurePersisted) {
+          const updates = [{range: "'Overview'!B9:C9", majorDimension: 'ROWS', values: [[
+            'RESEARCH BLOCKED / ' + stage + ' / ' + code + ' / AUTO EMAILS OFF',
+            'Latest attempt ' + runId + ' failed. See Runs for timestamp and diagnostics; no successful-cycle claim.'
+          ]]}];
+          if (scheduled) updates.push({range: "'Overview'!B8:C8", majorDimension: 'ROWS', values: [[
+            startedAt, 'Latest scheduled attempt BLOCKED; not the timestamp of the last success.'
+          ]]});
+          await batchWrite(token, updates);
+        }
       } catch { /* Primary failure remains authoritative. Never log provider bodies. */ }
     }
     if (!writeAttempted) await releaseLock();
