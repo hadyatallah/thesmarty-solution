@@ -127,6 +127,10 @@ test('Production-style cron run performs discovery, first-party verification, Ma
   let concurrentExternalRun = false;
   let injectReadbackFailure = false, failNextReadback = false;
   let lockMetadata;
+  let concurrentActivity = false;
+  let rejectDataBatch = false, loseDataResponse = false;
+  const sheetNames = Object.keys(database);
+  const sheetId = title => sheetNames.indexOf(title) + 1;
   const logs = [];
 
   global.fetch = async (url, options = {}) => {
@@ -135,14 +139,32 @@ test('Production-style cron run performs discovery, first-party verification, Ma
 
     if(u.startsWith('https://sheets.googleapis.com/')) assert.equal(options.headers.authorization,'Bearer synthetic-sheets-impersonated-token');
 
+    if (u.endsWith('?fields=sheets.properties')) return response(200, {sheets: sheetNames.map(title => ({properties:{title:title.slice(1,-1),sheetId:sheetId(title),gridProperties:{rowCount:Math.max(1000,database[title].length+10)}}}))});
     if (u.endsWith('/developerMetadata:search')) return response(200,{matchedDeveloperMetadata:lockMetadata?[{developerMetadata:lockMetadata}]:[]});
     if (u.endsWith(':batchUpdate') && !u.includes('/values:batchUpdate')) {
+      const dataBatch=JSON.parse(options.body).requests.some(r=>r.appendCells);
+      if(dataBatch&&rejectDataBatch){rejectDataBatch=false;return response(400,{});}
       let next=lockMetadata;
       for(const request of JSON.parse(options.body).requests){
         if(request.deleteDeveloperMetadata){const lookup=request.deleteDeveloperMetadata.dataFilter.developerMetadataLookup;if(next?.metadataValue===lookup.metadataValue)next=undefined;}
         if(request.createDeveloperMetadata){if(next)return response(400,{});next=request.createDeveloperMetadata.developerMetadata;}
       }
-      lockMetadata=next;return response(200,{replies:[]});
+      lockMetadata=next;
+      const requests=JSON.parse(options.body).requests;
+      if (requests.some(r=>r.appendCells) && concurrentActivity) {database["'Activity Log'"].push(['CONCURRENT-CONSUMER-RECEIPT']);concurrentActivity=false;}
+      for (const r of requests) {
+        if(r.appendCells) database[sheetNames[r.appendCells.sheetId-1]].push(...r.appendCells.rows.map(row=>row.values.map(c=>c.userEnteredValue?.numberValue ?? c.userEnteredValue?.stringValue ?? '')));
+        if(r.updateCells) {
+          const w=r.updateCells, title=sheetNames[w.start.sheetId-1];
+          w.rows.forEach((row,i)=>{database[title][w.start.rowIndex+i] ||= [];row.values.forEach((c,j)=>{database[title][w.start.rowIndex+i][w.start.columnIndex+j]=c.userEnteredValue?.numberValue ?? c.userEnteredValue?.stringValue ?? '';});});
+        }
+      }
+      if(requests.some(r=>r.updateCells?.start.sheetId===sheetId("'Overview'")&&r.updateCells.start.rowIndex===1)) {
+        if(concurrentExternalRun){database["'Runs'"].push(['EXTERNAL-APPROVED-RUN']);concurrentExternalRun=false;}
+        if(injectReadbackFailure){failNextReadback=true;injectReadbackFailure=false;}
+      }
+      if(dataBatch&&loseDataResponse){loseDataResponse=false;throw Error('Synthetic lost response after commit');}
+      return response(200,{replies:[]});
     }
 
     if (u.includes('/values:batchGet?')) {
@@ -155,7 +177,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
       }
       return response(200, {
         valueRanges: ranges.map(range => ({
-          values: database[range.split('!')[0]] || []
+          values: (database[range.split('!')[0]] || []).slice(Number(range.match(/!A(\d+)/)?.[1] || 1)-1,Number(range.match(/:[A-Z]+(\d+)/)?.[1] || 100000))
         }))
       });
     }
@@ -321,6 +343,28 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(JSON.parse(cronAfterManual.body).outcome,'RESEARCH_CYCLE_COMPLETE');
     assert.equal(database["'Runs'"].length,4);
     assert.ok(database["'Runs'"].some(row=>row[0]==='EXTERNAL-APPROVED-RUN'));
+    // Real handler on a >2000-row journal, including a concurrent consumer append.
+    database["'Activity Log'"] = [database["'Activity Log'"][0], ...Array.from({length:2100},(_,i)=>['LEGACY-'+i])];
+    const originalJournal = structuredClone(database["'Activity Log'"]);
+    sourceMode='results'; concurrentActivity=true;
+    const largeJournal = mkRes();
+    await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},largeJournal);
+    assert.equal(largeJournal.statusCode,200,largeJournal.body);
+    assert.deepEqual(database["'Activity Log'"].slice(0,2101),originalJournal);
+    assert.equal(database["'Activity Log'"][2101][0],'CONCURRENT-CONSUMER-RECEIPT');
+    assert.equal(database["'Activity Log'"].length,2105);
+    const newIds=database["'Activity Log'"].slice(-3).map(row=>row[0]);
+    assert.equal(new Set(newIds).size,3);
+    assert.ok(newIds.every(id=>/^IRC-ACT-RESEARCH-[a-f0-9]{64}-\d{4}$/.test(id)));
+    // Pending markers beyond the old cap must block discovery and writes.
+    const originalRuns=structuredClone(database["'Runs'"]);
+    database["'Runs'"]=Array.from({length:2102},(_,i)=>i===0?originalRuns[0]:['OLD-'+i]);
+    database["'Runs'"][2101]=['PENDING-BEYOND-CAP','','','','','','','','','WRITE_VERIFICATION_PENDING'];
+    const beforePending=calls.length; const pendingBeyond=mkRes();
+    await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},pendingBeyond);
+    assert.equal(pendingBeyond.statusCode,503);
+    assert.equal(calls.slice(beforePending).some(url=>url.includes('agent.index.cy')),false);
+    database["'Runs'"]=originalRuns;
     sourceMode='malformed';
     const failure=mkRes();
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},failure);
@@ -380,9 +424,28 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(JSON.parse(reconcile.body).error,'IRC_WRITE_RECONCILIATION_REQUIRED');
     assert.equal(calls.slice(beforeRetry).some(url=>url.includes('agent.index.cy')),false);
 
-
-
-
+    for (const mode of ['rejected','lost-response']) {
+      database["'Runs'"]=database["'Runs'"].slice(0,1); lockMetadata=undefined; sourceMode='results';
+      const activityBefore=structuredClone(database["'Activity Log'"]);
+      const evidenceBefore=structuredClone(database["'Evidence'"]);
+      rejectDataBatch=mode==='rejected'; loseDataResponse=mode==='lost-response';
+      const failedBatch=mkRes(); await handler(scheduledRequest,failedBatch);
+      assert.equal(failedBatch.statusCode,503);
+      assert.equal(database["'Runs'"].at(-1)[9],'WRITE_VERIFICATION_PENDING');
+      if(mode==='rejected') {
+        assert.deepEqual(database["'Activity Log'"],activityBefore);
+        assert.deepEqual(database["'Evidence'"],evidenceBefore);
+      } else {
+        assert.equal(database["'Activity Log'"].length,activityBefore.length+3);
+        assert.deepEqual(database["'Activity Log'"].slice(0,activityBefore.length),activityBefore);
+      }
+      lockMetadata=undefined;
+      const beforeReplay=calls.length, afterFailure=structuredClone(database["'Activity Log'"]);
+      const retry=mkRes(); await handler(scheduledRequest,retry);
+      assert.equal(JSON.parse(retry.body).error,'IRC_WRITE_RECONCILIATION_REQUIRED');
+      assert.equal(calls.slice(beforeReplay).some(url=>url.includes('agent.index.cy')),false);
+      assert.deepEqual(database["'Activity Log'"],afterFailure);
+    }
   } finally {
     for (const key of ['CRON_SECRET','TSS_GOOGLE_SERVICE_ACCOUNT_JSON','TSS_IRC_SPREADSHEET_ID','TSS_MASTER_SPREADSHEET_ID']) {
       if (prev[key] === undefined) delete process.env[key];

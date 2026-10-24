@@ -125,9 +125,60 @@ async function batchGet(token, spreadsheetId, ranges) {
 }
 
 async function readState(token) {
-  const keys = Object.keys(IRC_RANGES);
-  const values = await batchGet(token, ircSheetId(), Object.values(IRC_RANGES));
-  return Object.fromEntries(keys.map((key, i) => [key, values[i]]));
+  const response = await fetch(GOOGLE + encodeURIComponent(ircSheetId()) + '?fields=sheets.properties', {
+    headers: { authorization: 'Bearer ' + token }, signal: AbortSignal.timeout(12000), cache: 'no-store'
+  });
+  const metadata = await readJson(response);
+  const state = {}, sheetIds = {}, pages = [];
+  for (const [key, range] of Object.entries(IRC_RANGES)) {
+    const [, title, width] = range.match(/^'([^']+)'!A1:([A-Z]+)\d+$/);
+    const props = metadata.sheets?.find(sheet => sheet.properties?.title === title)?.properties;
+    const count = props?.gridProperties?.rowCount;
+    if (!Number.isInteger(count) || count < 1 || count > 200000 || !Number.isInteger(props.sheetId)) throw Error('INCOMPLETE_SHEET_READ');
+    sheetIds[title] = props.sheetId;
+    state[key] = [];
+    // Read every allocated page, including empty internal pages. Never treat
+    // a capped first page as the end of a journal or pending-run history.
+    for (let start = 1; start <= count; start += 1000) {
+      const end = Math.min(count, start + 999);
+      pages.push({key, start, end, range: "'" + title + "'!A" + start + ':' + width + end});
+    }
+  }
+  // Batch bounded pages to avoid one network round trip per tab.
+  for (let i = 0; i < pages.length; i += 8) {
+    const group = pages.slice(i, i + 8);
+    const values = await batchGet(token, ircSheetId(), group.map(page => page.range));
+    group.forEach(({key, start, end}, index) => {
+      const page = values[index];
+      if (page.length > end - start + 1) throw Error('INCOMPLETE_SHEET_READ');
+      for (let offset = 0; offset <= end - start; offset++) state[key][start - 1 + offset] = page[offset] || [];
+    });
+  }
+  for (const rows of Object.values(state)) while (rows.length && rows.at(-1).length === 0) rows.pop();
+  const overview = metadata.sheets?.find(sheet => sheet.properties?.title === 'Overview')?.properties;
+  if (!Number.isInteger(overview?.sheetId)) throw Error('INCOMPLETE_SHEET_READ');
+  sheetIds.Overview = overview.sheetId;
+  state.sheetIds = sheetIds;
+  return state;
+}
+
+async function writeResearchBatch(token, state, data, appends) {
+  const cell = value => ({ userEnteredValue: typeof value === 'number' ? {numberValue: value} : {stringValue: text(value)} });
+  const requests = data.map(item => {
+    const [, title, startColumn, startRow] = item.range.match(/^'([^']+)'!([A-Z]+)(\d+):[A-Z]+\d+$/);
+    const columnIndex = [...startColumn].reduce((n, c) => n * 26 + c.charCodeAt(0) - 64, 0) - 1;
+    return {updateCells: {start: {sheetId: state.sheetIds[title], rowIndex: Number(startRow) - 1, columnIndex}, rows: item.values.map(row => ({values: row.map(cell)})), fields: 'userEnteredValue'}};
+  });
+  for (const [title, rows] of appends) if (rows.length) requests.push({appendCells: {
+    sheetId: state.sheetIds[title], rows: rows.map(row => ({values: row.map(cell)})), fields: 'userEnteredValue'
+  }});
+  // One Sheets transaction: all research records and their handoffs commit
+  // together. Allocation is server-side even when another writer appends.
+  return readJson(await fetch(GOOGLE + encodeURIComponent(ircSheetId()) + ':batchUpdate', {
+    method: 'POST', signal: AbortSignal.timeout(12000),
+    headers: {authorization: 'Bearer ' + token, 'content-type': 'application/json'},
+    body: JSON.stringify({requests})
+  }));
 }
 
 async function readMaster(token) {
@@ -142,24 +193,8 @@ async function readMaster(token) {
 function nextIds(rows) {
   return {
     referral: nextNumericId(rows.referrals, 'IRC-ORG-'),
-    evidence: nextNumericId(rows.evidence, 'IRC-EV-'),
-    activity: nextNumericId(rows.activity, 'IRC-ACT-')
+    evidence: nextNumericId(rows.evidence, 'IRC-EV-')
   };
-}
-
-function colLetter(number) {
-  let n = number, out = '';
-  while (n > 0) {
-    const r = (n - 1) % 26;
-    out = String.fromCharCode(65 + r) + out;
-    n = Math.floor((n - 1) / 26);
-  }
-  return out;
-}
-
-function a1Range(sheet, startRow, width, rowCount) {
-  const endRow = startRow + rowCount - 1;
-  return "'" + sheet + "'!" + 'A' + startRow + ':' + colLetter(width) + endRow;
 }
 
 async function batchWrite(token, data) {
@@ -322,7 +357,8 @@ export default async function handler(req, res) {
     const ids = nextIds(state);
     let nextReferral = ids.referral;
     let nextEvidence = ids.evidence;
-    let nextActivity = ids.activity;
+    let nextActivity = 0;
+    const activityPrefix = 'IRC-ACT-RESEARCH-' + createHash('sha256').update(runId).digest('hex') + '-';
 
     const referralRows = [];
     const evidenceRows = [];
@@ -360,7 +396,7 @@ export default async function handler(req, res) {
           saved: false
         });
         activityRows.push([
-          'IRC-ACT-' + String(nextActivity++).padStart(4, '0'),
+          activityPrefix + String(nextActivity++).padStart(4, '0'),
           startedAt,
           'Research',
           existingResearchId,
@@ -441,7 +477,7 @@ export default async function handler(req, res) {
       evidenceRows.push(...evRows);
 
       activityRows.push([
-        'IRC-ACT-' + String(nextActivity++).padStart(4, '0'),
+        activityPrefix + String(nextActivity++).padStart(4, '0'),
         startedAt,
         'Referral',
         referralId,
@@ -499,27 +535,6 @@ export default async function handler(req, res) {
     ];
 
     const writeData = [];
-    if (referralRows.length) {
-      writeData.push({
-        range: a1Range('Referral Organisations', state.referrals.length + 1, 17, referralRows.length),
-        majorDimension: 'ROWS',
-        values: referralRows
-      });
-    }
-    if (evidenceRows.length) {
-      writeData.push({
-        range: a1Range('Evidence', state.evidence.length + 1, 11, evidenceRows.length),
-        majorDimension: 'ROWS',
-        values: evidenceRows
-      });
-    }
-    if (activityRows.length) {
-      writeData.push({
-        range: a1Range('Activity Log', state.activity.length + 1, 10, activityRows.length),
-        majorDimension: 'ROWS',
-        values: activityRows
-      });
-    }
 
     const scheduledRunAfter = scheduled
       ? { runId, startedAt, finishedAt, outcome: 'RESEARCH_CYCLE_COMPLETE', executionMode: 'VERCEL_CRON' }
@@ -540,7 +555,7 @@ export default async function handler(req, res) {
     // Persist a non-success marker BEFORE the data batch. An uncertain write
     // leaves reconciliation pending and blocks blind retries, even next day.
     await appendRun(token, runRow);
-    await batchWrite(token, writeData);
+    await writeResearchBatch(token, state, writeData, [['Referral Organisations', referralRows], ['Evidence', evidenceRows], ['Activity Log', activityRows]]);
     stage = 'READBACK';
 
     const verifyState = await readState(token);
