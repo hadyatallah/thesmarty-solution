@@ -104,3 +104,23 @@ test('classification blocks duplicate research records and canonical duplicates 
   assert.equal(accepted.disposition, 'ACCEPTED_RESEARCH_CANDIDATE');
   assert.equal(candidateSummary(accepted), 'ACCEPTED');
 });
+
+
+test('discovery exposes fixed transport codes without provider details or automatic retries', async () => {
+  for (const [error, code] of [[new TypeError('private provider URL and token'), 'INDEX_NETWORK_FAILURE'], [Object.assign(new Error('private'), {name:'AbortError'}), 'INDEX_TIMEOUT']]) {
+    let calls=0;
+    await assert.rejects(discoverDeveloperSignals(async()=>{calls++;throw error;},'larnaca'), {message:code});
+    assert.equal(calls,1);
+  }
+});
+test('malformed JSON is not a zero-result run and does not expose the body', async () => {
+  await assert.rejects(discoverDeveloperSignals(async()=>({ok:true,status:200,json:async()=>{throw SyntaxError('private body');}}),'larnaca'), {message:'INDEX_RESPONSE_INVALID_JSON'});
+});
+test('body timeout remains a timeout, not an invalid-JSON or network label', async () => {
+  await assert.rejects(discoverDeveloperSignals(async()=>({ok:true,status:200,json:async()=>{throw Object.assign(Error('private'),{name:'AbortError'});}}),'larnaca'), {message:'INDEX_TIMEOUT'});
+});
+test('upstream 429 records HTTP code and does not fall back or retry', async () => {
+  let calls=0;
+  await assert.rejects(discoverDeveloperSignals(async()=>{calls++;return response(429,{secret:'never retained'});},'larnaca'),{message:'INDEX_API_429'});
+  assert.equal(calls,1);
+});

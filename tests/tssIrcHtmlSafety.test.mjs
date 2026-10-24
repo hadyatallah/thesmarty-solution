@@ -8,7 +8,7 @@ import {default as cronHandler} from '../api/tss-irc-daily.js';
 const html=readFileSync(new URL('../research-center/index.html', import.meta.url),'utf8');
 const script=html.match(/<script>([\s\S]+?)<\/script>\s*<\/body>/)?.[1];
 assert.ok(script,'Research Center inline JavaScript must exist');
-const TAB_NAMES=['Buyer Enquiries','Referral Organisations','Opportunities','Evidence','Outreach Queue','Suppressions','Runs','Settings'];
+const TAB_NAMES=['Buyer Enquiries','Referral Organisations','Opportunities','Evidence','Outreach Queue','Suppressions','Runs','Settings','Activity Log'];
 const COLS={
  'Buyer Enquiries':['buyerId','createdAt','firstName','lastName','email','originCountry','destination','propertyType','budgetBand','purchaseHorizon','sourceType','sourceURL','sourceObservedAt','requestEvidence','contactPermission','contactPermissionAt','sharePermission','status','owner','lastContactAt','notes'],
  'Referral Organisations':['referralId','organisationName','legalName','country','website','publicEmail','organisationType','canonicalCompanyId','sourceURL','sourceObservedAt','verification','channelAssessment','contactBasis','contactPermissionEvidence','engagementStatus','lastContactAt','notes'],
@@ -17,7 +17,8 @@ const COLS={
  'Outreach Queue':['queueId','leadType','leadId','recipientEmail'],
  'Suppressions':['emailLower','suppressedAt','reason'],
  'Runs':['runId','startedAt','finishedAt'],
- 'Settings':['key','value','purpose']
+ 'Settings':['key','value','purpose'],
+ 'Activity Log':['activityId','timestamp','entityType','entityId','event','result','source','messageId','actor','notes']
 };
 class FakeClassList {
  constructor(){this.values=new Set()}
@@ -142,7 +143,7 @@ function response(){
 }
 test('configured scheduler with no persisted run is shown as unverified, not active',async()=>{
  const h=createHarness();await h.login();await h.goto('scheduler');
- assert.match(h.get('content').innerHTML,/Configured \/ not verified/);
+ assert.match(h.get('content').innerHTML,/Configured \/ not verified|Not observed today/);
  assert.match(h.get('content').innerHTML,/no cron-labelled run yet/i);
  assert.match(h.get('content').innerHTML,/Off/);
 });
@@ -157,4 +158,16 @@ test('daily endpoint rejects unsupported methods',async()=>{
  const r=response();
  await cronHandler({method:'DELETE',headers:{}},r);
  assert.equal(r.statusCode,405);
+});
+
+
+test('saved commercial handoff is displayed without sends or CRM writes',async()=>{
+ const h=createHarness();
+ h.data['Activity Log'].push(['IRC-ACT-TEST','2026-10-24T08:00:00Z','Referral','IRC-ORG-TEST','Research commercial handoff','','','','',JSON.stringify({kind:'research-commercial-handoff/v1',recordId:'IRC-ORG-TEST',action:'VERIFY_COMMERCIAL_FIT',instruction:'Review <script>unsafe</script> evidence'})]);
+ await h.login();
+ assert.match(h.get('content').innerHTML,/IRC-ORG-TEST/);
+ assert.match(h.get('content').innerHTML,/VERIFY_COMMERCIAL_FIT/);
+ assert.match(h.get('content').innerHTML,/&lt;script&gt;unsafe&lt;\/script&gt;/);
+ assert.equal(h.requests.writes.length,0);
+ assert.equal(h.requests.urls.some(url=>/hubapi|graph\.microsoft/i.test(url)),false);
 });

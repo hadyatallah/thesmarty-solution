@@ -5,8 +5,8 @@ on:
     paths:
       - "research-center/**"
       - "api/tss-irc-daily.js"
-      - "lib/tssIrcEligibility.mjs"
-      - "lib/tssIrcResearch.mjs"
+      - "lib/tssIrc*.mjs"
+      - "scripts/tss-irc-handoff.mjs"
       - "tests/tssIrc*.test.mjs"
       - ".github/workflows/tss-irc-tests.yml"
   push:
@@ -14,7 +14,8 @@ on:
     paths:
       - "research-center/**"
       - "api/tss-irc-daily.js"
-      - "lib/tssIrcEligibility.mjs"
+      - "lib/tssIrc*.mjs"
+      - "scripts/tss-irc-handoff.mjs"
       - "tests/tssIrc*.test.mjs"
 
 jobs:
@@ -26,4 +27,4 @@ jobs:
         with:
           node-version: 22
       - run: npm ci --ignore-scripts --no-audit --no-fund
-      - run: node --test tests/tssIrcCronAcceptance.test.mjs tests/tssIrcResearchCenterRegression.test.mjs tests/tssIrcResearch.test.mjs
+      - run: node --test tests/tssIrc*.test.mjs

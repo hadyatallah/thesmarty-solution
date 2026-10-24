@@ -125,6 +125,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
   const calls = [];
   let sourceMode = "results";
   let concurrentExternalRun = false;
+  let injectReadbackFailure = false, failNextReadback = false;
   let lockMetadata;
   const logs = [];
 
@@ -145,6 +146,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     }
 
     if (u.includes('/values:batchGet?')) {
+      if (failNextReadback) { failNextReadback=false; return response(503, {}); }
       const parsed = new URL(u);
       const ranges = parsed.searchParams.getAll('ranges');
       const isMaster = u.includes('/1mZ7vd2UoGXlyxzwZ8Man593UhlLGt2uS1kIS3ZAWPsU/');
@@ -168,6 +170,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
         applyRange(database, item.range, item.values || []);
       }
       if(concurrentExternalRun){database["'Runs'"].push(['EXTERNAL-APPROVED-RUN']);concurrentExternalRun=false;}
+      if (injectReadbackFailure && payload.data.some(item=>item.range==="'Overview'!B2:B9")) { failNextReadback=true; injectReadbackFailure=false; }
       return response(200, { totalUpdatedCells: 100 });
     }
 
@@ -256,6 +259,13 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(body.saved, 3);
     assert.equal(body.messagesSent, 0);
     assert.equal(body.dashboardRefresh, true);
+    const handoffs = database["'Activity Log'"].slice(1).map(row => JSON.parse(row[9]));
+    assert.equal(handoffs.length, 3);
+    assert.ok(handoffs.some(item => item.action === 'VERIFY_COMMERCIAL_FIT'));
+    assert.ok(handoffs.some(item => item.action === 'RESOLVE_EXISTING_HUBSPOT_IDENTITY'));
+    assert.ok(handoffs.some(item => item.action === 'KEEP_REJECTED'));
+    assert.ok(handoffs.every(item => item.kind === 'research-commercial-handoff/v1' && item.sendsAuthorized === false && item.crmWritesAuthorized === false));
+    assert.equal(database["'Outreach Queue'"].length, 1, 'Research handoff must not create approval or send-ready queue entries');
 
     const saved = database["'Referral Organisations'"].slice(2);
     assert.equal(saved.length, 3);
@@ -317,6 +327,20 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(JSON.parse(failure.body).error,'INDEX_RESPONSE_SCHEMA_INVALID');
     assert.equal(JSON.parse(failure.body).failurePersisted,true);
     assert.equal(database["'Runs'"].at(-1)[9],'BLOCKED');
+    assert.match(database["'Overview'"][8][1], /RESEARCH BLOCKED.*DISCOVERY.*INDEX_RESPONSE_SCHEMA_INVALID/);
+    assert.match(database["'Overview'"][8][2], /failed/);
+    // A newer scheduled failure must replace yesterday's success in the overview.
+    database["'Runs'"]=database["'Runs'"].filter(row=>row[12]!=='VERCEL_CRON');
+    const failedCron=mkRes();
+    await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY','user-agent':'vercel-cron/1.0'}},failedCron);
+    assert.equal(failedCron.statusCode,503);
+    assert.match(database["'Overview'"][7][2], /BLOCKED/);
+    sourceMode='zero';
+    const manualRecovery=mkRes();
+    await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},manualRecovery);
+    assert.equal(manualRecovery.statusCode,200,manualRecovery.body);
+    assert.match(database["'Overview'"][8][1], /LATEST SCHEDULED RESEARCH BLOCKED/);
+
     sourceMode='zero';
     database["'Runs'"]=database["'Runs'"].slice(0,1);
     const concurrentA=mkRes(),concurrentB=mkRes();
@@ -328,6 +352,24 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(responses.filter(x=>x.error==='IRC_RUN_IN_PROGRESS').length,1);
     assert.equal(database["'Runs'"].length,2);
     assert.equal(calls.slice(beforeConcurrent).filter(url=>url.includes('agent.index.cy/v1/listings?')).length,1);
+
+    // A successful provider write followed by failed readback is never success.
+    database["'Runs'"]=database["'Runs'"].slice(0,1);
+    injectReadbackFailure=true;
+    const uncertain=mkRes();
+    await handler(scheduledRequest,uncertain);
+    assert.equal(uncertain.statusCode,503);
+    assert.equal(database["'Runs'"].at(-1)[9],'WRITE_VERIFICATION_PENDING');
+    assert.match(database["'Overview'"][8][1],/VERIFICATION PENDING/);
+    assert.equal(database["'Runs'"].some(row=>row[9]==='RESEARCH_CYCLE_COMPLETE'),false);
+    // Model the next execution after the lease expires: reconciliation gate
+    // prevents another discovery/data batch, rather than blindly replaying.
+    lockMetadata=undefined;
+    const beforeRetry=calls.length, reconcile=mkRes();
+    await handler(scheduledRequest,reconcile);
+    assert.equal(JSON.parse(reconcile.body).error,'IRC_WRITE_RECONCILIATION_REQUIRED');
+    assert.equal(calls.slice(beforeRetry).some(url=>url.includes('agent.index.cy')),false);
+
 
 
 
