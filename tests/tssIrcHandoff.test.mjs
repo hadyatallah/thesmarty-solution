@@ -156,12 +156,13 @@ test('unresolved moved-message aliases block duplicate activity creation', () =>
   const s = withEvent(); s.history.ambiguousSourceAlias = true;
   assert.equal(planCommercialHandoff(s).reason, 'SOURCE_IDENTITY_AMBIGUOUS');
 });
-test('an authorized undated next action omits due date rather than inventing one', () => {
+test('an undated next action is held because the portal requires a real authorized due date', () => {
   const s = withEvent(); Object.assign(s.history.events[0], { crmRecordId: '999', sourceEvidenceComplete: true, companyId: '123', contactId: '456' });
   s.nextAction = { id: 'review-reply', subject: 'Review reply', body: 'Synthetic next step', ownerId: '789' };
-  const action = planCommercialHandoff(s).steps[0];
-  assert.equal(action.action, 'CREATE_TASK');
-  assert.equal('hs_timestamp' in action.payload.properties, false);
+  const result = planCommercialHandoff(s);
+  assert.equal(result.reason, 'TASK_DUE_DATE_REQUIRED');
+  assert.equal(result.outcome, 'HELD');
+  assert.deepEqual(result.steps, []);
 });
 
 test('verified existing task updates preserve body and owner, and cannot infer completion', () => {
