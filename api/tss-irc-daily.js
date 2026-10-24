@@ -3,7 +3,7 @@ import { createHash, randomUUID, timingSafeEqual } from 'node:crypto';
 import { createSessionService, sameOrigin } from '../lib/tssAdminSession.mjs';
 import { researchNextAction } from '../lib/tssIrcHandoff.mjs';
 import { acquireResearchLock } from '../lib/tssIrcLock.mjs';
-import { nicosiaDay, seasonActive, safeFailureCode } from '../lib/tssIrcRuntime.mjs';
+import { nicosiaDay, seasonActive, safeFailureCode, safeIndexDiagnostics } from '../lib/tssIrcRuntime.mjs';
 import { getVercelOidcToken } from '@vercel/oidc';
 import { ExternalAccountClient } from 'google-auth-library';
 import {
@@ -604,12 +604,13 @@ export default async function handler(req, res) {
     });
   } catch (error) {
     const code = safeFailureCode(error);
+    const diagnostics = stage === 'DISCOVERY' ? safeIndexDiagnostics(error) : undefined;
     let failurePersisted = false;
     // Never blindly retry an ambiguous write. Preserve diagnostics only before
     // a commercial/evidence batch could have committed. Auth failures stay in logs.
     if (token && state && !writeAttempted) {
       try {
-        await appendRun(token, [runId, startedAt, utc(), 'Research runtime', 0, 0, 0, 0, 0, 'BLOCKED', JSON.stringify({ stage, code }), 'RESEARCH_CYCLE', scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL']);
+        await appendRun(token, [runId, startedAt, utc(), 'Research runtime', 0, 0, 0, 0, 0, 'BLOCKED', JSON.stringify({ stage, code, ...(diagnostics ? { diagnostics } : {}) }), 'RESEARCH_CYCLE', scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL']);
         failurePersisted = Boolean(parseRowsForRun(await readState(token)).find(x => x.runId === runId && x.outcome === 'BLOCKED'));
         if (failurePersisted) {
           const updates = [{range: "'Overview'!B9:C9", majorDimension: 'ROWS', values: [[
@@ -629,13 +630,13 @@ export default async function handler(req, res) {
       event: 'blocked',
       runId,
       executionMode: scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL',
-      error: code, stage, failurePersisted
+      error: code, stage, failurePersisted, ...(diagnostics ? { diagnostics } : {})
     }));
     return json(res, 503, {
       ok: false,
       runId,
       outcome: 'BLOCKED',
-      error: code, stage, failurePersisted
+      error: code, stage, failurePersisted, ...(diagnostics ? { diagnostics } : {})
     });
   } finally {
     // Retain the lease after an ambiguous write/readback. A later retry waits

@@ -124,3 +124,29 @@ test('upstream 429 records HTTP code and does not fall back or retry', async () 
   await assert.rejects(discoverDeveloperSignals(async()=>{calls++;return response(429,{secret:'never retained'});},'larnaca'),{message:'INDEX_API_429'});
   assert.equal(calls,1);
 });
+
+test('502 and 429 retain only bounded diagnostics without reading bodies or retrying', async()=>{
+  for(const status of [502,429]) {
+    let calls=0,bodyReads=0;
+    await assert.rejects(discoverDeveloperSignals(async()=>{
+      calls++;
+      return {ok:false,status,headers:{get:name=>({'content-type':'text/html; private=SECRET','retry-after':'120','authorization':'SECRET'}[name])},json:async()=>{bodyReads++;throw Error('SECRET')}};
+    },'limassol'), error=>{
+      assert.equal(error.message,'INDEX_API_'+status);
+      assert.equal(error.indexDiagnostics.upstreamStatus,status);
+      assert.equal(error.indexDiagnostics.responseType,'text/html');
+      assert.equal(error.indexDiagnostics.retryAfterSeconds,120);
+      assert.ok(error.indexDiagnostics.elapsedMs>=0);
+      assert.equal(JSON.stringify(error).includes('SECRET'),false);
+      return true;
+    });
+    assert.equal(calls,1); assert.equal(bodyReads,0);
+  }
+});
+test('untrusted header strings cannot enter persisted diagnostics', async()=>{
+  await assert.rejects(discoverDeveloperSignals(async()=>({ok:false,status:502,headers:{get:()=> 'SECRET'}}),'limassol'),error=>{
+    assert.equal(error.indexDiagnostics.responseType,'other');
+    assert.equal('retryAfterSeconds' in error.indexDiagnostics,false);
+    assert.equal(JSON.stringify(error).includes('SECRET'),false);return true;
+  });
+});
