@@ -275,6 +275,9 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(body.outcome, 'RESEARCH_CYCLE_COMPLETE');
     assert.equal(body.executionMode, 'VERCEL_CRON');
     assert.equal(body.discovered, 3);
+    assert.equal(body.purpose, 'REFERRAL_PARTNERS');
+    assert.equal(body.clientProspectsDiscovered, 0);
+    assert.equal(body.discoveryOutcome, 'REFERRAL_REVIEW_REQUIRED');
     assert.equal(body.accepted, 1);
     assert.equal(body.held, 1);
     assert.equal(body.rejected, 1);
@@ -284,7 +287,8 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(body.dashboardRefresh, true);
     const handoffs = database["'Activity Log'"].slice(1).map(row => JSON.parse(row[9]));
     assert.equal(handoffs.length, 3);
-    assert.ok(handoffs.some(item => item.action === 'VERIFY_COMMERCIAL_FIT'));
+    assert.ok(handoffs.some(item => item.action === 'REVIEW_REFERRAL_FIT'));
+    assert.ok(!handoffs.some(item => item.action === 'VERIFY_COMMERCIAL_FIT'));
     assert.ok(handoffs.some(item => item.action === 'RESOLVE_EXISTING_HUBSPOT_IDENTITY'));
     assert.ok(handoffs.some(item => item.action === 'KEEP_REJECTED'));
     assert.ok(handoffs.every(item => item.kind === 'research-commercial-handoff/v1' && item.sendsAuthorized === false && item.crmWritesAuthorized === false));
@@ -337,6 +341,8 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},manual);
     assert.equal(manual.statusCode,200,manual.body);
     assert.equal(JSON.parse(manual.body).discovered,0);
+    assert.equal(JSON.parse(manual.body).discoveryOutcome, 'NO_CANDIDATES');
+    assert.equal(JSON.parse(manual.body).clientProspectsDiscovered, 0);
     assert.match(JSON.parse(manual.body).runId,/-MANUAL-/);
     const cronAfterManual=mkRes();
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY','user-agent':'vercel-cron/1.0'}},cronAfterManual);

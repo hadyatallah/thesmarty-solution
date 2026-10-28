@@ -2,6 +2,7 @@
 import { createHash, randomUUID, timingSafeEqual } from 'node:crypto';
 import { createSessionService, sameOrigin } from '../lib/tssAdminSession.mjs';
 import { researchNextAction } from '../lib/tssIrcHandoff.mjs';
+import { discoveryRoute } from '../lib/tssIrcProspects.mjs';
 import { acquireResearchLock } from '../lib/tssIrcLock.mjs';
 import { nicosiaDay, seasonActive, safeFailureCode, safeIndexDiagnostics } from '../lib/tssIrcRuntime.mjs';
 import { getVercelOidcToken } from '@vercel/oidc';
@@ -307,6 +308,12 @@ export default async function handler(req, res) {
     const supplied = req.headers.authorization?.replace(/^Bearer\s+/i, '');
     if (!authorised(supplied, process.env.CRON_SECRET)) return json(res, 401, { ok: false, error: 'unauthorised' });
   }
+  // Preserve the legacy referral cycle; it cannot satisfy client acquisition.
+  // Explicit client discovery must go to the existing ChatGPT researcher.
+  const route = discoveryRoute(req.query?.purpose || 'REFERRAL_PARTNERS');
+  if (!route.serverDiscoveryAvailable) return json(res, 409, {
+    ok: false, ...route, messagesSent: 0, outreachReady: 0
+  });
   // User-Agent is a label, not independent proof of an unattended invocation.
   const scheduled = req.method === 'GET' && /^vercel-cron\/1\.0$/i.test(text(req.headers['user-agent']));
   const season = req.query?.season;
@@ -405,7 +412,7 @@ export default async function handler(req, res) {
           'INDEX AI Agent API + existing IRC workbook',
           '',
           scheduled ? 'Vercel scheduler' : 'TSS automation',
-          JSON.stringify({kind: 'research-commercial-handoff/v1', sourceRunId: runId, ...researchNextAction(classification, existingResearchId), canonicalCompanyId: classification.canonicalCompanyId || '', note: 'Existing research record; no duplicate row or communication created.'})
+          JSON.stringify({kind: 'research-commercial-handoff/v1', sourceRunId: runId, ...researchNextAction(classification, existingResearchId, route.purpose), canonicalCompanyId: classification.canonicalCompanyId || '', note: 'Existing research record; no duplicate row or communication created.'})
         ]);
         continue;
       }
@@ -486,7 +493,7 @@ export default async function handler(req, res) {
         'INDEX AI Agent API + first-party source + Master Companies',
         '',
         scheduled ? 'Vercel scheduler' : 'TSS automation',
-        JSON.stringify({kind: 'research-commercial-handoff/v1', sourceRunId: runId, ...researchNextAction(classification, referralId), canonicalCompanyId: classification.canonicalCompanyId || '', note: 'No outreach, no HubSpot write, no duplicate communication. Canonical Company creation is not performed by this workflow.'})
+        JSON.stringify({kind: 'research-commercial-handoff/v1', sourceRunId: runId, ...researchNextAction(classification, referralId, route.purpose), canonicalCompanyId: classification.canonicalCompanyId || '', note: 'No outreach, no HubSpot write, no duplicate communication. Canonical Company creation is not performed by this workflow.'})
       ]);
 
       outcomes.push({
@@ -505,6 +512,10 @@ export default async function handler(req, res) {
     const held = outcomes.filter(x => x.summary === 'HELD').length;
     const matchedExisting = outcomes.filter(x => x.disposition === 'DUPLICATE_CANONICAL_COMPANY').length;
     const runDetails = JSON.stringify({
+      purpose: route.purpose,
+      target: route.target,
+      clientProspectsDiscovered: 0,
+      discoveryOutcome: !signals.length ? 'NO_CANDIDATES' : accepted ? 'REFERRAL_REVIEW_REQUIRED' : 'NO_QUALIFIED_CANDIDATES',
       district,
       source: discovery.sourceURL,
       discoveryTotal: discovery.total,
@@ -604,6 +615,10 @@ export default async function handler(req, res) {
       ok: true,
       runId,
       outcome: 'RESEARCH_CYCLE_COMPLETE',
+      purpose: route.purpose,
+      target: route.target,
+      clientProspectsDiscovered: 0,
+      discoveryOutcome: !signals.length ? 'NO_CANDIDATES' : accepted ? 'REFERRAL_REVIEW_REQUIRED' : 'NO_QUALIFIED_CANDIDATES',
       executionMode: scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL',
       district,
       discovered: signals.length,
