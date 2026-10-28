@@ -7,6 +7,7 @@ on:
       - "api/tss-irc-daily.js"
       - "lib/tssIrc*.mjs"
       - "scripts/tss-irc-handoff.mjs"
+      - "scripts/tss-irc-prospect*.mjs"
       - "tests/tssIrc*.test.mjs"
       - ".github/workflows/tss-irc-tests.yml"
   push:
@@ -16,6 +17,7 @@ on:
       - "api/tss-irc-daily.js"
       - "lib/tssIrc*.mjs"
       - "scripts/tss-irc-handoff.mjs"
+      - "scripts/tss-irc-prospect*.mjs"
       - "tests/tssIrc*.test.mjs"
 
 jobs:
@@ -28,3 +30,4 @@ jobs:
           node-version: 22
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: node --test tests/tssIrc*.test.mjs
+      - run: node scripts/tss-irc-prospect-evidence-smoke.mjs

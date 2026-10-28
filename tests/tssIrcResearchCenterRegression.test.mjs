@@ -6,6 +6,15 @@ import vm from 'node:vm';
 
 const html = fs.readFileSync(new URL('../research-center/index.html', import.meta.url), 'utf8');
 
+test('client discovery is separate and empty referral results remain visible', () => {
+  assert.ok(html.includes('TSS client discovery is separate'));
+  const start = html.indexOf('function runDiagnostic('), end = html.indexOf('function stats()', start);
+  const result = vm.runInNewContext(html.slice(start, end) + ';runDiagnostic(run)', {
+    run: { outcome: 'RESEARCH_CYCLE_COMPLETE', details: '{"discoveryOutcome":"NO_CANDIDATES"}' }
+  });
+  assert.equal(result, 'NO_CANDIDATES');
+});
+
 test('organisation research form requires explicit verification', () => {
   assert.ok(html.includes('name="confirmed" required'));
   assert.ok(html.includes('Explicit human verification is required.'));
