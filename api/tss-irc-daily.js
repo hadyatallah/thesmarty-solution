@@ -508,6 +508,7 @@ export default async function handler(req, res) {
       district,
       source: discovery.sourceURL,
       discoveryTotal: discovery.total,
+      discoveryDiagnostics: discovery.successDiagnostics,
       candidatesInspected: signals.length,
       accepted,
       held,
@@ -561,6 +562,7 @@ export default async function handler(req, res) {
     const verifyState = await readState(token);
     const runReadback = parseRowsForRun(verifyState).find(x => x.runId === runId && x.outcome === 'WRITE_VERIFICATION_PENDING');
     if (!runReadback) throw Error('SAVE_READBACK_RUN_MISSING');
+    if (runReadback.details !== runDetails) throw Error('SAVE_READBACK_CONTENT_MISMATCH');
 
     const savedIds = new Set((verifyState.referrals || []).slice(1).map(row => text(row[0])));
     const missing = referralRows.map(row => row[0]).filter(id => !savedIds.has(id));
@@ -592,6 +594,7 @@ export default async function handler(req, res) {
       executionMode: scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL',
       district,
       discovered: signals.length,
+      discoveryDiagnostics: discovery.successDiagnostics,
       accepted,
       held,
       rejected,
@@ -607,6 +610,7 @@ export default async function handler(req, res) {
       executionMode: scheduled ? 'VERCEL_CRON' : 'AUTOMATION_MANUAL',
       district,
       discovered: signals.length,
+      discoveryDiagnostics: discovery.successDiagnostics,
       accepted,
       held,
       rejected,

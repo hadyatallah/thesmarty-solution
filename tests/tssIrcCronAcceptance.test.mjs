@@ -125,6 +125,7 @@ test('Production-style cron run performs discovery, first-party verification, Ma
   const calls = [];
   let sourceMode = "results";
   let concurrentExternalRun = false;
+  let corruptRunDetails = false;
   let injectReadbackFailure = false, failNextReadback = false;
   let lockMetadata;
   let concurrentActivity = false;
@@ -162,6 +163,11 @@ test('Production-style cron run performs discovery, first-party verification, Ma
       if(requests.some(r=>r.updateCells?.start.sheetId===sheetId("'Overview'")&&r.updateCells.start.rowIndex===1)) {
         if(concurrentExternalRun){database["'Runs'"].push(['EXTERNAL-APPROVED-RUN']);concurrentExternalRun=false;}
         if(injectReadbackFailure){failNextReadback=true;injectReadbackFailure=false;}
+        if(corruptRunDetails){
+          const row=database["'Runs'"].find(row=>row[9]==='WRITE_VERIFICATION_PENDING');
+          row[10]=JSON.stringify({discoveryDiagnostics:{outcome:'CORRUPTED'}});
+          corruptRunDetails=false;
+        }
       }
       if(dataBatch&&loseDataResponse){loseDataResponse=false;throw Error('Synthetic lost response after commit');}
       return response(200,{replies:[]});
@@ -275,6 +281,9 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     assert.equal(body.outcome, 'RESEARCH_CYCLE_COMPLETE');
     assert.equal(body.executionMode, 'VERCEL_CRON');
     assert.equal(body.discovered, 3);
+    assert.equal(body.discoveryDiagnostics.outcome, 'MATCHING_SOURCE_RESULTS');
+    const savedDiagnostic = JSON.parse(database["'Runs'"].find(row => row[0] === body.runId)[10]).discoveryDiagnostics;
+    assert.deepEqual(savedDiagnostic, body.discoveryDiagnostics);
     assert.equal(body.accepted, 1);
     assert.equal(body.held, 1);
     assert.equal(body.rejected, 1);
@@ -337,6 +346,9 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},manual);
     assert.equal(manual.statusCode,200,manual.body);
     assert.equal(JSON.parse(manual.body).discovered,0);
+    const manualBody=JSON.parse(manual.body);
+    assert.equal(manualBody.discoveryDiagnostics.outcome,'NO_MATCHING_SOURCE_RESULTS');
+    assert.deepEqual(JSON.parse(database["'Runs'"].find(row=>row[0]===manualBody.runId)[10]).discoveryDiagnostics,manualBody.discoveryDiagnostics);
     assert.match(JSON.parse(manual.body).runId,/-MANUAL-/);
     const cronAfterManual=mkRes();
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY','user-agent':'vercel-cron/1.0'}},cronAfterManual);
@@ -423,6 +435,23 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     await handler(scheduledRequest,reconcile);
     assert.equal(JSON.parse(reconcile.body).error,'IRC_WRITE_RECONCILIATION_REQUIRED');
     assert.equal(calls.slice(beforeRetry).some(url=>url.includes('agent.index.cy')),false);
+
+    // A persisted row with altered details must not receive a completion marker.
+    database["'Runs'"]=database["'Runs'"].slice(0,1); lockMetadata=undefined;
+    corruptRunDetails=true;
+    const logStart=logs.length;
+    const corrupted=mkRes();
+    await handler(scheduledRequest,corrupted);
+    assert.equal(corrupted.statusCode,503);
+    assert.equal(JSON.parse(corrupted.body).error,'SAVE_READBACK_CONTENT_MISMATCH');
+    assert.equal(database["'Runs'"].at(-1)[9],'WRITE_VERIFICATION_PENDING');
+    assert.equal(database["'Runs'"].some(row=>row[9]==='RESEARCH_CYCLE_COMPLETE'),false);
+    assert.equal(logs.slice(logStart).some(line=>String(line).includes('"event":"completed"')),false);
+    lockMetadata=undefined;
+    const callsBeforeCorruptRetry=calls.length,corruptRetry=mkRes();
+    await handler(scheduledRequest,corruptRetry);
+    assert.equal(JSON.parse(corruptRetry.body).error,'IRC_WRITE_RECONCILIATION_REQUIRED');
+    assert.equal(calls.slice(callsBeforeCorruptRetry).some(url=>url.includes('agent.index.cy')),false);
 
     for (const mode of ['rejected','lost-response']) {
       database["'Runs'"]=database["'Runs'"].slice(0,1); lockMetadata=undefined; sourceMode='results';
