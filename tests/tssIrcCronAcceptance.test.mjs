@@ -369,10 +369,10 @@ test('Production-style cron run performs discovery, first-party verification, Ma
     const failure=mkRes();
     await handler({method:'GET',headers:{authorization:'Bearer SYNTHETIC_TEST_KEY'}},failure);
     assert.equal(failure.statusCode,503);
-    assert.equal(JSON.parse(failure.body).error,'INDEX_RESPONSE_SCHEMA_INVALID');
+    assert.equal(JSON.parse(failure.body).error,'INDEX_RESPONSE_UPSTREAM_ERROR');
     assert.equal(JSON.parse(failure.body).failurePersisted,true);
     assert.equal(database["'Runs'"].at(-1)[9],'BLOCKED');
-    assert.match(database["'Overview'"][8][1], /RESEARCH BLOCKED.*DISCOVERY.*INDEX_RESPONSE_SCHEMA_INVALID/);
+    assert.match(database["'Overview'"][8][1], /RESEARCH BLOCKED.*DISCOVERY.*INDEX_RESPONSE_UPSTREAM_ERROR/);
     assert.match(database["'Overview'"][8][2], /failed/);
     // A newer scheduled failure must replace yesterday's success in the overview.
     database["'Runs'"]=database["'Runs'"].filter(row=>row[12]!=='VERCEL_CRON');

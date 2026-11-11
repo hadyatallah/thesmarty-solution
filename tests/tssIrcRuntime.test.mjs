@@ -20,8 +20,8 @@ test('diagnostics never expose arbitrary provider bodies or credentials',()=>{
 test('real zero-result schema is valid, malformed success is a failure',async()=>{
   const f=body=>async()=>({ok:true,status:200,json:async()=>body});
   assert.equal((await discoverDeveloperSignals(f({results:[],total:0}),'larnaca')).total,0);
-  await assert.rejects(discoverDeveloperSignals(f({error:'invalid'}),'larnaca'),/INDEX_RESPONSE_SCHEMA_INVALID/);
-  await assert.rejects(discoverDeveloperSignals(f({results:[],total:2}),'larnaca'),/INDEX_RESPONSE_RESULTS_MISSING/);
+  await assert.rejects(discoverDeveloperSignals(f({error:'invalid'}),'larnaca'),/INDEX_RESPONSE_UPSTREAM_ERROR/);
+  await assert.rejects(discoverDeveloperSignals(f({results:[],total:2}),'larnaca'),/INDEX_RESPONSE_EMPTY_PAGE_WITH_POSITIVE_TOTAL/);
 });
 const res=()=>({status(n){this.statusCode=n;return this},setHeader(){return this},end(body){this.body=JSON.parse(body)}});
 test('production execution rejects anonymous, cross-origin and unsupported requests before provider calls',async()=>{
