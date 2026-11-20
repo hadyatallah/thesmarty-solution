@@ -77,19 +77,29 @@
           "value": "strict-origin-when-cross-origin"
         },
         {
-          "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
-        },
-        {
           "key": "Content-Security-Policy-Report-Only",
           "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' https://js-eu1.hsforms.net https://www.googletagmanager.com https://accounts.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googleapis.com https://accounts.google.com https://*.hsforms.net https://*.hsforms.com; frame-src 'self' https://accounts.google.com https://*.hsforms.net https://*.hsforms.com; form-action 'self' https://*.hsforms.net https://*.hsforms.com; worker-src 'self'"
         }
       ]
     },
     {
-      "source": "/receptionist-pilot/:path*",
+      "source": "/((?!receptionist-pilot(?:/|/index[.]html)?$).*)",
+      "headers": [
+        {"key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()"}
+      ]
+    },
+    {
+      "source": "/(receptionist-pilot(?:/|/index[.]html)?)",
       "headers": [
         {"key": "Permissions-Policy", "value": "camera=(), microphone=(self), geolocation=()"},
+        {"key": "Content-Security-Policy", "value": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; media-src 'self' blob:; form-action 'none'; base-uri 'none'; frame-ancestors 'none'"},
+        {"key": "Cache-Control", "value": "no-store"},
+        {"key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive"}
+      ]
+    },
+    {
+      "source": "/receptionist-pilot/:path*",
+      "headers": [
         {"key": "Content-Security-Policy", "value": "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; media-src 'self' blob:; form-action 'none'; base-uri 'none'; frame-ancestors 'none'"},
         {"key": "Cache-Control", "value": "no-store"},
         {"key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive"}
