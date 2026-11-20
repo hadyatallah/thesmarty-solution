@@ -31,11 +31,11 @@ document.querySelectorAll('[data-year]').forEach((element) => {
     const aboutCurrent = current.endsWith('/about.html') ? ' aria-current="page"' : '';
     const contactCurrent = current.endsWith('/contact.html') ? ' aria-current="page"' : '';
     nav.innerHTML =
-      '<li><a href="divisions.html"' + whatCurrent + '>What We Do</a></li>' +
+      '<li><a href="/divisions.html"' + whatCurrent + '>What We Do</a></li>' +
       
-      '<li><a href="how-we-work.html">How We Work</a></li>' +
-      '<li><a href="about.html"' + aboutCurrent + '>About</a></li>' +
-      '<li><a class="navcta" href="contact.html"' + contactCurrent + ' data-tss-event="discuss_business_click" data-cta-location="header">Discuss Your Business</a></li>';
+      '<li><a href="/how-we-work.html">How We Work</a></li>' +
+      '<li><a href="/about.html"' + aboutCurrent + '>About</a></li>' +
+      '<li><a class="navcta" href="/contact.html"' + contactCurrent + ' data-tss-event="discuss_business_click" data-cta-location="header">Discuss Your Business</a></li>';
   }
 
   document.querySelectorAll('.footer').forEach((footer) => {
@@ -52,7 +52,7 @@ document.querySelectorAll('[data-year]').forEach((element) => {
     });
     if (navCol) {
       const list = navCol.querySelector('ul');
-      if (list) list.innerHTML = '<li><a href="divisions.html">What We Do</a></li><li><a href="how-we-work.html">How We Work</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Discuss Your Business</a></li>';
+      if (list) list.innerHTML = '<li><a href="/divisions.html">What We Do</a></li><li><a href="/how-we-work.html">How We Work</a></li><li><a href="/about.html">About</a></li><li><a href="/contact.html">Discuss Your Business</a></li>';
     }
 
     const contactCol = cols.find((column) => {
@@ -69,7 +69,7 @@ document.querySelectorAll('[data-year]').forEach((element) => {
 
     const bottom = footer.querySelector('.footerbottom');
     if (bottom) {
-      bottom.innerHTML = '© ' + new Date().getFullYear() + ' The Smarty Solution Ltd. <a href="privacy.html">Privacy</a> · Business development and consultancy. Specialist or regulated matters require the appropriate professional. <a class="tss-admin-login" href="/admin-login/">Admin Login</a>';
+      bottom.innerHTML = '© ' + new Date().getFullYear() + ' The Smarty Solution Ltd. <a href="/privacy.html">Privacy</a> · Business development and consultancy. Specialist or regulated matters require the appropriate professional. <a class="tss-admin-login" href="/admin-login/">Admin Login</a>';
     }
   });
 })();
