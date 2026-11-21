@@ -1,0 +1,20 @@
+.tss-receptionist-fab {
+  position: fixed;
+  right: 22px;
+  bottom: 94px;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #1459a6;
+  color: #fff;
+  box-shadow: 0 12px 35px rgb(0 0 0 / 28%);
+}
+.tss-receptionist-fab:hover { background: #104780; color: #fff; }
+.tss-receptionist-fab:focus-visible { outline: 3px solid #fff; outline-offset: -6px; }
+.tss-receptionist-fab svg { display: block; width: 28px; height: 28px; }
+@media (max-width: 940px) {
+  .tss-receptionist-fab { right: 15px; bottom: 82px; width: 55px; height: 55px; }
+}
