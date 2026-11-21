@@ -28,13 +28,21 @@ export function createVoicePilot({mediaDevices, Peer, audio, request=fetch, onSt
     if(current||used) return;
     used=true;
     const run={abort:new AbortController(),started:false,closing:false};
-    current=run;onState("starting");
-    run.deadline=setTimeout(stop,budgetMs);
+    current=run;
+    const stage=state=>{run.stage=state;onState(state);};
+    stage("microphone_request");
+    run.deadline=setTimeout(()=>{
+      if(run.stage==="microphone_request")finish(run,"microphone_timeout");
+      else if(run.stage==="ice_gathering")finish(run,"ice_unavailable");
+      else if(run.stage==="endpoint_request"&&!run.started)finish(run,"endpoint_timeout");
+      else stop();
+    },budgetMs);
     try {
       if(!mediaDevices?.getUserMedia||!Peer||!audio) throw Error("unsupported");
       const stream=await mediaDevices.getUserMedia({audio:true,video:false});
       if(current!==run){stream.getTracks().forEach(t=>t.stop());return;}
       run.stream=stream;
+      stage("ice_gathering");
       const peer=run.peer=new Peer();
       peer.addEventListener("track", event=>{
         if(current===run && event.streams?.[0]) {
@@ -43,7 +51,7 @@ export function createVoicePilot({mediaDevices, Peer, audio, request=fetch, onSt
         }
       });
       peer.addEventListener("connectionstatechange", ()=>{
-        if(["failed","closed"].includes(peer.connectionState)) finish(run,"unconfirmed");
+        if(["failed","closed"].includes(peer.connectionState)) finish(run,"browser_connection_failed");
       });
       for(const track of stream.getTracks()) peer.addTrack(track,stream);
       const events=run.events=peer.createDataChannel("oai-events");
@@ -51,26 +59,35 @@ export function createVoicePilot({mediaDevices, Peer, audio, request=fetch, onSt
         if(current!==run || typeof event.data!=="string" || event.data.length>65536) return;
         let data; try{data=JSON.parse(event.data);}catch{return;}
         if(data.type==="session.started"&&!run.closing){
-          run.started=true;clearTimeout(run.ready);onState("speaking_ready");
+          run.started=true;clearTimeout(run.ready);stage("speaking_ready");
         }
         if(data.type==="session.closed")finish(run,"voice_closed");
-        if(data.type==="error")stop();
+        if(data.type==="error"){if(run.started)stop();else finish(run,"browser_connection_failed");}
       });
       await peer.setLocalDescription(await peer.createOffer());
       if(current!==run) return;
       await iceComplete(peer,run.abort.signal,setupMs);
       if(current!==run || !peer.localDescription?.sdp) throw Error("offer unavailable");
-      run.ready=setTimeout(()=>finish(run,"unconfirmed"),setupMs+12000);
+      stage("endpoint_request");
+      run.ready=setTimeout(()=>finish(run,"endpoint_timeout"),setupMs+12000);
       const response=await request("/api/tss-receptionist-pilot",{
         method:"POST",credentials:"same-origin",redirect:"error",cache:"no-store",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({sdp:peer.localDescription.sdp}),signal:run.abort.signal,
       });
-      if(response.status!==201) throw Error("voice endpoint unavailable");
+      if(response.status!==201) {
+        finish(run,response.status>=400&&response.status<500?"endpoint_rejected":"endpoint_unavailable");
+        return;
+      }
       const {sdp}=await response.json();
       if(current!==run || typeof sdp!=="string" || sdp.length>32768) throw Error("answer unavailable");
-      await peer.setRemoteDescription({type:"answer",sdp});
-    } catch { finish(run,"unconfirmed"); }
+      try { await peer.setRemoteDescription({type:"answer",sdp}); }
+      catch { finish(run,"browser_connection_failed"); }
+    } catch {
+      const failed={microphone_request:"microphone_unavailable",ice_gathering:"ice_unavailable",
+        endpoint_request:"endpoint_unavailable"}[run.stage];
+      finish(run,failed??"unconfirmed");
+    }
   }
   return {start,stop};
 }
