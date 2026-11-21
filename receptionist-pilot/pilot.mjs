@@ -15,9 +15,27 @@ if(window.isSecureContext&&navigator.mediaDevices?.getUserMedia&&window.RTCPeerC
      if(state==="playback_blocked"){ voice.hidden=false; voice.controls=true; }
      if(state==="voice_closed"||state==="unconfirmed"){stop.disabled=true; voice.hidden=true; status.tabIndex=-1; status.focus();}
    }});
- status.textContent="Start when ready. One attempt only.";
- start.disabled=false;
- start.addEventListener("click",()=>{start.disabled=true; stop.disabled=false; void pilot.start();});
+ const unavailable="The voice test is not open right now. The contact form is available.";
+ const check=async()=>{
+   try{
+     const response=await fetch("/api/tss-receptionist-pilot",{cache:"no-store", credentials:"same-origin",redirect:"error"});
+     if(!response.ok)return false;
+     const {remainingMs}=await response.json();
+     return Number.isSafeInteger(remainingMs)&&remainingMs>0&&remainingMs<=300000?remainingMs:false;
+   }catch{return false;}
+ };
+ void (async()=>{
+   const remaining=await check();
+   if(!remaining){status.textContent=unavailable;return;}
+   status.textContent="Start when ready. One attempt only.";
+   start.disabled=false;
+   const expiry=setTimeout(()=>{start.disabled=true;status.textContent=unavailable;},remaining);
+   start.addEventListener("click",async()=>{
+     clearTimeout(expiry);start.disabled=true;
+     if(!await check()){status.textContent=unavailable;return;}
+     stop.disabled=false;void pilot.start();
+   },{once:true});
+ })();
  stop.addEventListener("click",()=>{stop.disabled=true;pilot.stop();});
  window.addEventListener("pagehide",()=>pilot.stop(),{once:true});
 }else status.textContent="This browser cannot start the voice test. The existing contact form is available.";
