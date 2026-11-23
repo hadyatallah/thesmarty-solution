@@ -180,7 +180,7 @@ document.addEventListener('click', (event) => {
   notice.querySelector('.tss-consent-reject').addEventListener('click', () => choose('rejected'));
 })();
 
-// Mirror the existing homepage phone link on public pages with a floating WhatsApp control.
+// Keep the existing contact shortcuts consistent across branded public pages only.
 (() => {
   const publicWithWhatsApp = new Set([
     '/', '/about.html', '/business-growth.html', '/business-systems.html',
@@ -190,9 +190,31 @@ document.addEventListener('click', (event) => {
     '/opportunity-kiti.html', '/projects.html', '/sme-investment-partnerships-cyprus.html',
     '/strategic-connections.html'
   ]);
+  const additionalPublic = new Set([
+    '/insights', '/insights/', '/insights/hub-shell.html', '/privacy.html',
+    '/insights/before-a-business-partnership-questions-worth-asking/',
+    '/insights/buying-property-cyprus-useful-buyer-brief/',
+    '/insights/entering-new-market-five-questions-before-approaching-partners/',
+    '/insights/from-enquiry-to-next-step-simple-follow-up-process-small-businesses/',
+    '/insights/what-makes-a-business-introduction-valuable/'
+  ]);
   const path = window.location.pathname.toLowerCase().replace(/\/index\.html$/, '/');
-  if (!publicWithWhatsApp.has(path) || document.querySelector('.tss-receptionist-fab')) return;
-  const whatsapp = document.querySelector('a.whatsapp[href^="https://wa.me/35799810330"]');
+  const additional = additionalPublic.has(path) || additionalPublic.has(path + '/');
+  if ((!publicWithWhatsApp.has(path) && !additional) || document.querySelector('.tss-receptionist-fab')) return;
+  let whatsapp = document.querySelector('a.whatsapp[href^="https://wa.me/35799810330"]');
+  if (!whatsapp && additional) {
+    whatsapp = document.createElement('a');
+    whatsapp.className = 'whatsapp';
+    whatsapp.href = 'https://wa.me/35799810330?text=Hello%2C%20I%27d%20like%20to%20discuss%20a%20business%20objective%20with%20TSS';
+    whatsapp.target = '_blank';
+    whatsapp.rel = 'noopener';
+    whatsapp.setAttribute('aria-label', 'Message The Smarty Solution on WhatsApp');
+    const icon = document.createElement('img');
+    icon.src = '/whatsapp-icon.png';
+    icon.alt = '';
+    whatsapp.appendChild(icon);
+    document.body.appendChild(whatsapp);
+  }
   if (!whatsapp) return;
 
   const style = document.createElement('link');
