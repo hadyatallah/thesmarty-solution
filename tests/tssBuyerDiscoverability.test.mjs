@@ -55,10 +55,13 @@ test('new pathways inherit the canonical TSS responsive design without exposing 
  assert.match(css,/@media\(max-width:760px\)\{\.buyer-service-path\{grid-template-columns:1fr;/);
  assert.match(css,/\.home-objectives \.home-buyer-path a\{[^}]*color:var\(--teal2\)/);
  assert.match(css,/\.home-hero \.home-buyer-hint a\{color:#5ce6df/);
- assert.match(css,/@media\(max-width:940px\)\{\.menu\{display:grid\}/);
- assert.ok(home.includes('href="style.css?v=20261123-service-dropdown"'));
- assert.ok(what.includes('href="style.css?v=20261123-service-dropdown"'));
- assert.ok(buyer.includes('href="/style.css?v=20260925-phase7"'));
+ assert.match(css,/@media\(max-width:1220px\)\{\s*\.header \.nav\{gap:0\}\s*\.header \.nav>\.menu\{[^}]*margin-inline-start:auto;min-height:48px;min-width:48px/);
+ assert.ok(home.includes('href="style.css?v=20261123-menu-control"'));
+ assert.ok(what.includes('href="style.css?v=20261123-menu-control"'));
+ assert.ok(buyer.includes('href="/style.css?v=20261123-menu-control"'));
+ for (const html of [home, what, buyer]) {
+  assert.match(html, /<button class="menu" type="button" aria-expanded="false" aria-controls="navlinks"><span>Menu<\/span><svg width="28" height="28" [^>]*aria-hidden="true"/);
+ }
  assert.match(home,/class="footer"/);
  assert.match(what,/class="footer"/);
  assert.doesNotMatch(home+'\n'+what,/HH Overseas|Jemma|Cyprus Emerald/);
