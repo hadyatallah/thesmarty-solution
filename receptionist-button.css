@@ -15,6 +15,6 @@
 .tss-receptionist-fab:hover { background: #104780; color: #fff; }
 .tss-receptionist-fab:focus-visible { outline: 3px solid #fff; outline-offset: -6px; }
 .tss-receptionist-fab svg { display: block; width: 28px; height: 28px; }
-@media (max-width: 940px) {
+@media (max-width: 620px) {
   .tss-receptionist-fab { right: 15px; bottom: 82px; width: 55px; height: 55px; }
 }

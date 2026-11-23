@@ -28,12 +28,14 @@ document.querySelectorAll('[data-year]').forEach((element) => {
   const nav = document.querySelector('.navlinks');
   if (nav) {
     const whatCurrent = current.endsWith('/divisions.html') ? ' aria-current="page"' : '';
+    const developmentCurrent = current.endsWith('/development-partnerships.html') ? ' aria-current="page"' : '';
     const aboutCurrent = current.endsWith('/about.html') ? ' aria-current="page"' : '';
     const contactCurrent = current.endsWith('/contact.html') ? ' aria-current="page"' : '';
     nav.innerHTML =
       '<li><a href="/divisions.html"' + whatCurrent + '>What We Do</a></li>' +
       
       '<li><a href="/how-we-work.html">How We Work</a></li>' +
+      '<li><a href="/development-partnerships.html"' + developmentCurrent + '>Development Partnerships</a></li>' +
       '<li><a href="/about.html"' + aboutCurrent + '>About</a></li>' +
       '<li><a class="navcta" href="/contact.html"' + contactCurrent + ' data-tss-event="discuss_business_click" data-cta-location="header">Discuss Your Business</a></li>';
   }
@@ -176,6 +178,34 @@ document.addEventListener('click', (event) => {
   };
   notice.querySelector('.tss-consent-accept').addEventListener('click', () => choose('accepted'));
   notice.querySelector('.tss-consent-reject').addEventListener('click', () => choose('rejected'));
+})();
+
+// Mirror the existing homepage phone link on public pages with a floating WhatsApp control.
+(() => {
+  const publicWithWhatsApp = new Set([
+    '/', '/about.html', '/business-growth.html', '/business-systems.html',
+    '/buyer-interest', '/buyer-interest/', '/contact.html', '/cyprus-investment-opportunities.html',
+    '/development-partnerships.html', '/divisions.html', '/how-we-work.html',
+    '/market-entry.html', '/opportunities.html', '/opportunity-development.html',
+    '/opportunity-kiti.html', '/projects.html', '/sme-investment-partnerships-cyprus.html',
+    '/strategic-connections.html'
+  ]);
+  const path = window.location.pathname.toLowerCase().replace(/\/index\.html$/, '/');
+  if (!publicWithWhatsApp.has(path) || document.querySelector('.tss-receptionist-fab')) return;
+  const whatsapp = document.querySelector('a.whatsapp[href^="https://wa.me/35799810330"]');
+  if (!whatsapp) return;
+
+  const style = document.createElement('link');
+  style.rel = 'stylesheet';
+  style.href = '/receptionist-button.css?v=20261123-global-phone';
+  document.head.appendChild(style);
+  const phone = document.createElement('a');
+  phone.className = 'tss-receptionist-fab';
+  phone.href = '/receptionist-pilot/';
+  phone.setAttribute('aria-label', 'Talk to the TSS AI receptionist');
+  phone.title = 'Talk to TSS';
+  phone.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.4 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 1.9z"/></svg>';
+  whatsapp.before(phone);
 })();
 
 // One shared discovery menu for articles, confirmed partners and useful resources.
