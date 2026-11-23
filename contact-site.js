@@ -4,14 +4,35 @@
   const button = document.querySelector('.menu');
   const navigation = document.querySelector('.navlinks');
   if (button && navigation) {
+    const details = navigation.querySelector('details.insights-menu');
     button.addEventListener('click', () => {
       const open = navigation.classList.toggle('open');
       button.setAttribute('aria-expanded', String(open));
+      if (!open && details) details.open = false;
     });
     navigation.addEventListener('click', event => {
       if (!event.target.closest('a')) return;
       navigation.classList.remove('open');
       button.setAttribute('aria-expanded', 'false');
+      if (details) details.open = false;
+    });
+    document.addEventListener('click', event => {
+      if (details?.open && !details.contains(event.target)) details.open = false;
+    });
+    navigation.addEventListener('keydown', event => {
+      if (event.key !== 'Escape') return;
+      if (details?.open) {
+        event.preventDefault();
+        details.open = false;
+        if (details.contains(event.target)) details.querySelector('summary').focus();
+        return;
+      }
+      if (navigation.classList.contains('open')) {
+        event.preventDefault();
+        navigation.classList.remove('open');
+        button.setAttribute('aria-expanded', 'false');
+        button.focus();
+      }
     });
   }
   // Display the enquiry context. HubSpot owns the form submission and fields.

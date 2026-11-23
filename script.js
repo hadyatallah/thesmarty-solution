@@ -8,12 +8,14 @@ if (menuButton && menu) {
   menuButton.addEventListener('click', () => {
     const isOpen = menu.classList.toggle('open');
     menuButton.setAttribute('aria-expanded', String(isOpen));
+    if (!isOpen) menu.querySelectorAll('details[open]').forEach(details => { details.open = false; });
   });
 
   menu.addEventListener('click', (event) => {
     if (event.target.closest('a')) {
       menu.classList.remove('open');
       menuButton.setAttribute('aria-expanded', 'false');
+      menu.querySelectorAll('details[open]').forEach(details => { details.open = false; });
     }
   });
 }
@@ -32,10 +34,11 @@ document.querySelectorAll('[data-year]').forEach((element) => {
     const aboutCurrent = current.endsWith('/about.html') ? ' aria-current="page"' : '';
     const contactCurrent = current.endsWith('/contact.html') ? ' aria-current="page"' : '';
     nav.innerHTML =
-      '<li><a href="/divisions.html"' + whatCurrent + '>What We Do</a></li>' +
-      
-      '<li><a href="/how-we-work.html">How We Work</a></li>' +
+      '<li><details class="insights-menu services-menu" name="tss-primary-navigation"><summary>What We Do</summary><ul>' +
+      '<li><a href="/divisions.html"' + whatCurrent + '>All Services</a></li>' +
       '<li><a href="/development-partnerships.html"' + developmentCurrent + '>Development Partnerships</a></li>' +
+      '</ul></details></li>' +
+      '<li><a href="/how-we-work.html">How We Work</a></li>' +
       '<li><a href="/about.html"' + aboutCurrent + '>About</a></li>' +
       '<li><a class="navcta" href="/contact.html"' + contactCurrent + ' data-tss-event="discuss_business_click" data-cta-location="header">Discuss Your Business</a></li>';
   }
@@ -235,12 +238,31 @@ document.addEventListener('click', (event) => {
   const nav=document.querySelector('.navlinks');
   if(nav&&!nav.querySelector('[data-insights-menu]')){
     const item=document.createElement('li');item.dataset.insightsMenu='';
-    item.innerHTML='<details class="insights-menu"><summary>Insights &amp; Resources</summary><ul><li><a href="/insights/">Explore Insights &amp; Resources</a></li><li><a href="/insights/#articles">Articles</a></li><li><a href="/insights/#partners">Partners</a></li><li><a href="/insights/#resources">Useful Resources</a></li></ul></details>';
+    item.innerHTML='<details class="insights-menu" name="tss-primary-navigation"><summary>Insights &amp; Resources</summary><ul><li><a href="/insights/">Explore Insights &amp; Resources</a></li><li><a href="/insights/#articles">Articles</a></li><li><a href="/insights/#partners">Partners</a></li><li><a href="/insights/#resources">Useful Resources</a></li></ul></details>';
     const cta=nav.querySelector('.navcta')?.closest('li');cta?nav.insertBefore(item,cta):nav.appendChild(item);
-    const details=item.querySelector('details');
-    document.addEventListener('click',event=>{if(!item.contains(event.target))details.open=false;});
-    item.addEventListener('click',event=>{if(event.target.closest('a'))details.open=false;});
-    item.addEventListener('keydown',event=>{if(event.key==='Escape'){details.open=false;item.querySelector('summary').focus();}});
+  }
+  if (nav) {
+    document.addEventListener('click', event => {
+      nav.querySelectorAll('details[open]').forEach(details => {
+        if (!details.contains(event.target) || event.target.closest('a')) details.open = false;
+      });
+    });
+    nav.addEventListener('keydown', event => {
+      if (event.key !== 'Escape') return;
+      const details = nav.querySelector('details[open]');
+      if (details) {
+        event.preventDefault();
+        details.open = false;
+        if (details.contains(event.target)) details.querySelector('summary').focus();
+        return;
+      }
+      if (menuButton && nav.classList.contains('open')) {
+        event.preventDefault();
+        nav.classList.remove('open');
+        menuButton.setAttribute('aria-expanded', 'false');
+        menuButton.focus();
+      }
+    });
   }
   document.querySelectorAll('.navlinks a,.footer a').forEach(a=>{const href=a.getAttribute('href');if(href&&/^[a-z][a-z0-9-]*\.html(?:[?#].*)?$/.test(href))a.setAttribute('href','/'+href);});
   document.querySelectorAll('.footergrid').forEach(grid=>{
